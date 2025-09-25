@@ -1,0 +1,100 @@
+{
+	"name": "wc-smart-analytics",
+	"version": "0.0.1",
+	"description": "WP Smart Analytics is a WordPress plugin that helps you understand your site traffic and visitors.",
+	"volta": {
+		"node": "18.15.0"
+	},
+	"author": "",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"wordpress",
+		"plugin",
+		"portal",
+		"dashboard"
+	],
+	"homepage": "https://github.com/brainstormforce/wc-smart-analytics#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/brainstormforce/wc-smart-analytics.git"
+	},
+	"bugs": {
+		"url": "https://github.com/brainstormforce/wc-smart-analytics/issues"
+	},
+	"engines": {
+		"npm": ">=9.5.0 <10.4.0",
+		"node": ">=18.15.0 <21.0.0"
+	},
+	"main": "src/dashboard/DashboardApp.js",
+	"dependencies": {
+		"@lodder/grunt-postcss": "^3.1.1",
+		"@wordpress/api-fetch": "^6.54.0",
+		"@wordpress/data": "^9.27.0",
+		"@wordpress/dom-ready": "^3.57.0",
+		"grunt-bumpup": "^0.6.3",
+		"grunt-contrib-cssmin": "^5.0.0",
+		"grunt-contrib-uglify": "^5.2.2",
+		"grunt-rtlcss": "^2.0.2",
+		"grunt-sass": "^3.1.0",
+		"grunt-text-replace": "^0.4.0",
+		"lucide-react": "^0.539.0",
+		"postcss-flexibility": "git+https://github.com/Nikschavan/postcss-flexibility.git#fix-145-build",
+		"prop-types": "^15.8.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-router-dom": "^6.26.2",
+		"react-select": "^5.10.2",
+		"react-virtualized": "^9.22.3",
+		"react-window": "^1.8.10",
+		"webfontloader": "^1.6.28",
+		"zustand": "^5.0.6"
+	},
+	"devDependencies": {
+		"@tanstack/react-query": "^5.74.4",
+		"@wordpress/env": "^4.9.0",
+		"@wordpress/eslint-plugin": "^12.6.0",
+		"@wordpress/i18n": "^4.2.4",
+		"@wordpress/scripts": "^30.14.1",
+		"autoprefixer": "^10.4.19",
+		"date-fns": "^4.1.0",
+		"grunt": "^1.6.1",
+		"grunt-cli": "^1.4.3",
+		"grunt-contrib-clean": "^2.0.0",
+		"grunt-contrib-compress": "^2.0.0",
+		"grunt-contrib-copy": "^1.0.0",
+		"grunt-wp-readme-to-markdown": "^2.1.0",
+		"postcss": "^8.4.38",
+		"prettier": "npm:wp-prettier@2.6.2",
+		"sass": "^1.83.4",
+		"tailwindcss": "^3.4.3"
+	},
+	"scripts": {
+		"start": "wp-scripts start",
+		"build": "wp-scripts build",
+		"makepot": "wp i18n make-pot . --skip-audit --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/wc-sma-app.js' languages/wc-smart-analytics.pot",
+		"php-makepot": "php -d memory_limit=1024M $(which wp) i18n make-pot wp-content/plugins/wc-smart-analytics wp-content/plugins/wc-smart-analytics/languages/wc-smart-analytics.pot --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/wc-sma-app.js'",
+		"pretty": "prettier --check .",
+		"pretty:fix": "prettier --write .",
+		"lint-js": "wp-scripts lint-js",
+		"lint-js:fix": "npm run pretty:fix && npm run lint-js -- --fix",
+		"lint-css": "wp-scripts lint-style --allow-empty-input",
+		"lint-css:fix": "npm run lint-css -- --fix",
+		"lint-pkg-json": "wp-scripts lint-pkg-json",
+		"packages-update": "wp-scripts packages-update",
+		"check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+		"format": "wp-scripts format",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"test:e2e": "wp-scripts test-e2e",
+		"test:unit": "wp-scripts test-unit-js",
+		"json2php": "node bin/json2php.js",
+		"google-fonts": "grunt google-fonts && npm run json2php",
+		"scanner": "npm run lint-js && npm run lint-css && npm run lint-pkg-json && composer lint && composer insights && composer phpstan",
+		"fixer": "grunt minify && npm run lint-js:fix && npm run lint-css:fix && composer format && composer insights:fix && composer phpstan"
+	},
+	"resolutions": {
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
+	}
+}
