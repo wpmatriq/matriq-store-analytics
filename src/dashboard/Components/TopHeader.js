@@ -36,9 +36,14 @@ const CoreVersion = () => (
 export default function TopHeader() {
 	const navMenus = [
 		{
-			name: __( 'Welcome', 'suredash' ),
+			name: __( 'Home', 'suredash' ),
 			slug: wc_sma_admin_data.home_slug,
 			path: 'home',
+		},
+		{
+			name: __( 'Reports', 'suredash' ),
+			slug: wc_sma_admin_data.home_slug,
+			path: 'reports',
 		},
 		{
 			name: __( 'Settings', 'suredash' ),
@@ -79,7 +84,7 @@ export default function TopHeader() {
 								alt="WC Smart Analytics"
 							/>
 						</span>
-						<div className="h-full ml-4 sm:ml-8 sm:flex gap-y-4 gap-x-8">
+						<div className="h-full ml-4 sm:ml-8 sm:flex gap-y-4 gap-x-4">
 							{ menus.map( ( menu, key ) => ( // eslint-disable-line
 								<Fragment key={ `?page=${ menu.slug }&path=${ menu.path }` }>
 									<button
@@ -88,8 +93,8 @@ export default function TopHeader() {
 										} }
 										className={ `${
 											activeTab === menu.path
-												? 'mb-4 sm:mb-0 border-blogapp text-blogapp active:text-blogapp focus:text-blogapp focus-visible:text-blogapp-hover hover:text-blogapp-hover inline-flex items-center px-1 border-b-2 text-sm leading-[0.875rem] font-medium cursor-pointer wpaib-menu wpaib-active-menu'
-												: 'mb-4 sm:mb-0 border-transparent text-slate-600 active:text-blogapp focus-visible:border-slate-300 focus-visible:text-slate-800 hover:border-slate-300 hover:text-slate-800 inline-flex items-center px-1 border-b-2 text-sm leading-[0.875rem] font-medium cursor-pointer wpaib-menu'
+												? 'mb-4 sm:mb-0 border-blogapp text-blogapp active:text-blogapp focus:text-blogapp focus-visible:text-blogapp-hover hover:text-blogapp-hover inline-flex items-center px-1 border-b-2 text-sm leading-[0.875rem] font-medium cursor-pointer wpaib-menu wpsma-button-link wpaib-active-menu'
+												: 'mb-4 sm:mb-0 border-transparent text-slate-600 active:text-blogapp focus-visible:border-slate-300 focus-visible:text-slate-800 hover:border-slate-300 hover:text-slate-800 inline-flex items-center px-1 border-b-2 text-sm leading-[0.875rem] font-medium cursor-pointer wpaib-menu wpsma-button-link border-none background-transparent'
 										}` }
 									>
 										{ menu.name }
@@ -105,7 +110,7 @@ export default function TopHeader() {
 								<div className="text-sm font-medium text-slate-600 border-r hover:text-[#1E293B] hover:svg-hover-color">
 									<button
 										onClick={ redirectToProPurchase }
-										className="inline-flex items-center cursor-pointer text-[#046BD2] hover:text-[#1E293B] focus-visible:text-[#1E293B]"
+										className="inline-flex items-center cursor-pointer text-[#046BD2] hover:text-[#1E293B] focus-visible:text-[#1E293B] bg-transparent p-0 rounded-md border-none wpsma-button-link"
 									>
 										<svg
 											width="16"
@@ -117,7 +122,7 @@ export default function TopHeader() {
 										>
 											<path
 												d="M3.3335 11.3337H12.6668M1.3335 0.666992L3.3335 8.66699H12.6668L14.6668 0.666992L10.6668 5.33366L8.00016 0.666992L5.3335 5.33366L1.3335 0.666992Z"
-												stroke="#046BD2"
+												stroke="currentColor"
 												strokeLinecap="round"
 												strokeLinejoin="round"
 												className="svg-path"
@@ -126,7 +131,6 @@ export default function TopHeader() {
 										{ __( 'Unlock Pro Features', 'suredash' ) }
 									</button>
 								</div>
-								<span className="wpaib-vertical-divider" />
 							</>
 						) }
 

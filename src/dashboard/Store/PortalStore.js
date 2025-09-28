@@ -24,6 +24,30 @@ const useWcSmartStore = create( ( set, get ) => ( {
 			activeTab: 'settings',
 			displayPage: [ 'customizer' ],
 		},
+		reports: {
+			activeTab: 'reports',
+			displayPage: 'reports',
+		},
+		traffic: {
+			activeTab: 'traffic',
+			displayPage: 'traffic',
+		},
+		'physical-products-reports': {
+			activeTab: 'physical-products-reports',
+			displayPage: 'physical-products-reports',
+		},
+		'product-wise-reports': {
+			activeTab: 'product-wise-reports',
+			displayPage: 'product-wise-reports',
+		},
+		'subscription-products-reports': {
+			activeTab: 'subscription-products-reports',
+			displayPage: 'subscription-products-reports',
+		},
+		'variable-products-reports': {
+			activeTab: 'variable-products-reports',
+			displayPage: 'variable-products-reports',
+		},
 	},
 
 	postTypeIcons: {

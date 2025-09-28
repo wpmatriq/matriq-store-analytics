@@ -109,7 +109,7 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 				...( section
 					? [ [ 'section', section ] ]
 					: tab === 'settings'
-						? [ [ 'section', 'branding' ] ]
+						? [ [ 'section', 'general' ] ]
 						: [] ),
 				...Object.entries( extraParams ).filter(
 					( [ key, value ] ) => value !== null // eslint-disable-line no-unused-vars

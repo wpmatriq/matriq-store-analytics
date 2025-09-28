@@ -20,6 +20,7 @@ module.exports = {
 			'@Components': path.resolve( __dirname, 'src/dashboard/Components' ),
 			'@Pages': path.resolve( __dirname, 'src/dashboard/Pages' ),
 			'@Tabs': path.resolve( __dirname, 'src/dashboard/Tabs' ),
+			'@Reports': path.resolve( __dirname, 'src/dashboard/Reports' ),
 			'@Hooks': path.resolve( __dirname, 'src/dashboard/Hooks' ),
 			'@Store': path.resolve( __dirname, 'src/store' ),
 			'@Utils': path.resolve( __dirname, 'src/utils' ),

@@ -1,9 +1,15 @@
 import { useEffect } from 'react';
-import HomePage from '@Tabs/Dashboard/HomePage';
-import SettingsPage from '@Tabs/Settings/SettingsPage';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { STORE_NAME } from '@Store/constants';
 import { __ } from '@wordpress/i18n';
+import HomePage from '@Tabs/Dashboard/HomePage';
+import SettingsPage from '@Tabs/Settings/SettingsPage';
+import TrafficAnalysisPage from '@Tabs/TrafficAnalysis/TrafficAnalysisPage';
+import PhysicalProductsReports from '@Reports/PhysicalProductsReports';
+import ProductWiseReports from '@Reports/ProductWiseReports';
+import ReportsPage from '@Tabs/Reports/ReportsPage';
+import SubscriptionProductsReports from '@Reports/SubscriptionProductsReports';
+import VariableProductsReports from '@Reports/VariableProductsReports';
 
 const useDashboardStates = () => {
 	const { navigateTo, setLoading } = useDispatch( STORE_NAME );
@@ -53,6 +59,18 @@ const useDashboardStates = () => {
 				return <HomePage />;
 			case 'settings':
 				return <SettingsPage />;
+			case 'traffic':
+				return <TrafficAnalysisPage />;
+			case 'reports':
+				return <ReportsPage />;
+			case 'physical-products-reports':
+				return <PhysicalProductsReports />;
+			case 'product-wise-reports':
+				return <ProductWiseReports />;
+			case 'subscription-products-reports':
+				return <SubscriptionProductsReports />;
+			case 'variable-products-reports':
+				return <VariableProductsReports />;
 			default:
 				return (
 					<div className="w-full h-[calc(100vh-32px)] flex flex-col gap-2">
@@ -74,7 +92,7 @@ const TabContent = () => {
 
 	return (
 		<div
-			className="h-full"
+			className="h-full p-6"
 		>
 			<div className="w-full">
 				{ renderActiveTab( activeTab ) }

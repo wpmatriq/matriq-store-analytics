@@ -60,17 +60,34 @@ class Menu {
 	}
 
 	/**
+	 * Check if the current page is a plugin page.
+	 *
+	 * @since x.x.x
+	 */
+	public function is_plugin_page(): bool {
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			return false;
+		}
+
+		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore -- Input var okay.
+			$page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+			if ( $page === self::PAGE_ID || $page === 'wc-sma-onboarding' || strpos( $page, self::PAGE_ID . '_' ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 *  Initialize Admin Setup.
 	 *
 	 * @since x.x.x
 	 */
 	public function settings_admin_scripts(): void {
-		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore -- Input var okay.
-			$page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-			if ( $page === self::PAGE_ID || $page === 'wc-sma-onboarding' || strpos( $page, self::PAGE_ID . '_' ) !== false ) {
-				add_action( 'admin_enqueue_scripts', [ $this, 'app_build_scripts' ] );
-			}
+		if ( $this->is_plugin_page() ) {
+			add_action( 'admin_enqueue_scripts', [ $this, 'app_build_scripts' ] );
 		}
 	}
 
@@ -87,14 +104,40 @@ class Menu {
 			$menu_priority = apply_filters( self::PAGE_ID . '_menu_priority', 40 );
 
 			add_menu_page(
-				'Smart Analytics',
-				'Smart Analytics',
+				'Sales Pulse',
+				'Sales Pulse',
 				$capability,
 				$parent_slug,
 				[ $this, 'render_main_page' ],
-				'dashicons-analytics',
+				'dashicons-chart-area',
 				$menu_priority
 			);
+
+			add_submenu_page(
+				$parent_slug,
+				__( 'Reports', 'wc-smart-analytics' ),
+				__( 'Reports', 'wc-smart-analytics' ),
+				$capability,
+				'admin.php?page=' . self::PAGE_ID . '&tab=reports'
+			);
+
+			if ( $this->is_plugin_page() ) {
+				add_submenu_page(
+					$parent_slug,
+					__( '↳ Physical Products', 'wc-smart-analytics' ),
+					__( '↳ Physical Products', 'wc-smart-analytics' ),
+					$capability,
+					'admin.php?page=' . self::PAGE_ID . '&tab=physical-products-reports'
+				);
+				add_submenu_page(
+					$parent_slug,
+					__( '↳ Variable Products', 'wc-smart-analytics' ),
+					__( '↳ Variable Products', 'wc-smart-analytics' ),
+					$capability,
+					'admin.php?page=' . self::PAGE_ID . '&tab=variable-products-reports'
+				);
+			}
+
 
 			add_submenu_page(
 				$parent_slug,
@@ -106,7 +149,7 @@ class Menu {
 
 			add_submenu_page(
 				'',
-				'WC Smart Analytics ' . __( 'Onboarding', 'wc-smart-analytics' ),
+				'WC Sales Pulse ' . __( 'Onboarding', 'wc-smart-analytics' ),
 				'',
 				$capability,
 				'wc-sma-onboarding',
@@ -123,21 +166,29 @@ class Menu {
 	 * @since x.x.x
 	 */
 	public function admin_menu_css(): void {
+		if ( ! $this->is_plugin_page() ) {
+			return;
+		}
 		echo '<style>
-			#toplevel_page_portal li {
+			#toplevel_page_' . self::PAGE_ID . ' li {
 				clear: both;
 			}
-			#toplevel_page_portal li:not(:last-child) a[href^="admin.php?page=portal"]:after {
+			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '"]:after,
+			#toplevel_page_' . self::PAGE_ID . ' a[href^="admin.php?page=' . self::PAGE_ID . '&tab=settings"]:before {
+				content: "";
 				border-bottom: 1px solid hsla(0,0%,100%,.2);
 				display: block;
 				float: left;
-				margin: 13px -15px 8px;
-				content: "";
+				margin: 8px -15px 8px;
 				width: calc(100% + 26px);
 			}
-			#toplevel_page_portal li:not(:last-child) a[href^="admin.php?page=portal&tab=spaces"]:after,
-			#toplevel_page_portal li:not(:last-child) a[href^="admin.php?page=portal&tab=posts"]:after,
-			#toplevel_page_portal li:not(:last-child) a[href^="admin.php?page=portal&tab=settings"]:after {
+			#toplevel_page_' . self::PAGE_ID . ' a[href^="admin.php?page=' . self::PAGE_ID . '&tab=settings"]:before {
+				margin-top: 8px;
+			}
+			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '&tab=reports"]:after,
+			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '&tab=physical-products-reports"]:after,
+			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '&tab=variable-products-reports"]:after,
+			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '&tab=settings"]:after {
 				content: none;
 			}
 		</style>';
