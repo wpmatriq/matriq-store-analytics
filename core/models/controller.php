@@ -2,10 +2,10 @@
 /**
  * WC SMA Query Model Initialize.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  */
 
-namespace WC_Smart_Analytics\Core\Models;
+namespace EC_Sales_Pulse\Core\Models;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -23,7 +23,7 @@ class Controller {
 	/**
 	 * Base models.
 	 */
-	public const BASE_MODEL = 'WC_Smart_Analytics\Core\Models\\';
+	public const BASE_MODEL = 'EC_Sales_Pulse\Core\Models\\';
 
 	/**
 	 * Get query data.

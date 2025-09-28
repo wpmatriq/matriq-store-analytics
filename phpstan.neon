@@ -18,10 +18,10 @@ parameters:
 	scanFiles:
 	bootstrapFiles:
 		- %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
-		- tests/php/stubs/wc-smart-analytics-constants.php
-		- tests/php/stubs/wc-smart-analytics-stubs.php
+		- tests/php/stubs/sales-pulse-constants.php
+		- tests/php/stubs/sales-pulse-stubs.php
 	paths:
-		- wc-smart-analytics.php
+		- sales-pulse.php
 		- inc
 		- core
 		- admin

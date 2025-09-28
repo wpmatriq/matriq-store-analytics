@@ -27,7 +27,7 @@ const CoreVersion = () => (
 		) }
 
 		{ wp.hooks.applyFilters(
-			'wc_smart_analytics_dashboard.after_navigation_version',
+			'EC_Sales_Pulse_dashboard.after_navigation_version',
 			<span />
 		) }
 	</>
@@ -64,7 +64,7 @@ export default function TopHeader() {
 		);
 	};
 
-	const menus = wp.hooks.applyFilters( 'wc_smart_analytics_dashboard.main_navigation', navMenus );
+	const menus = wp.hooks.applyFilters( 'EC_Sales_Pulse_dashboard.main_navigation', navMenus );
 
 	const { navigateTo } = useDispatch( STORE_NAME );
 	const { activeTab } = useSelect( ( select ) => {

@@ -5,16 +5,16 @@
  * This class will holds the code related to the managing of
  * posts of portals
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  *
  * @since x.x.x
  */
 
-namespace WC_Smart_Analytics\Admin;
+namespace EC_Sales_Pulse\Admin;
 
-use WC_Smart_Analytics\Inc\Traits\API_Base;
-use WC_Smart_Analytics\Inc\Traits\Get_Instance;
-use WC_Smart_Analytics\Inc\Utils\Settings;
+use EC_Sales_Pulse\Inc\Traits\API_Base;
+use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use EC_Sales_Pulse\Inc\Utils\Settings;
 
 defined( 'ABSPATH' ) || exit;
 /**

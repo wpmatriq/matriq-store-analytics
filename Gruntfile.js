@@ -56,24 +56,24 @@ module.exports = function ( grunt ) {
 					'!wp-env.json',
 
 				],
-				dest: 'wc-smart-analytics/',
+				dest: 'sales-pulse/',
 			},
 		},
 		compress: {
 			main: {
 				options: {
-					archive: 'wc-smart-analytics-<%= pkg.version %>.zip',
+					archive: 'sales-pulse-<%= pkg.version %>.zip',
 					mode: 'zip',
 				},
 				files: [
 					{
-						src: [ './wc-smart-analytics/**' ],
+						src: [ './sales-pulse/**' ],
 					},
 				],
 			},
 		},
 		clean: {
-			main: [ 'wc-smart-analytics' ],
+			main: [ 'sales-pulse' ],
 			zip: [ '*.zip' ],
 		},
 		bumpup: {
@@ -86,7 +86,7 @@ module.exports = function ( grunt ) {
 		},
 		replace: {
 			plugin_main: {
-				src: [ 'wc-smart-analytics.php' ],
+				src: [ 'sales-pulse.php' ],
 				overwrite: true,
 				replacements: [
 					{
@@ -106,12 +106,12 @@ module.exports = function ( grunt ) {
 				],
 			},
 			plugin_const: {
-				src: [ 'wc-smart-analytics.php' ],
+				src: [ 'sales-pulse.php' ],
 				overwrite: true,
 				replacements: [
 					{
-						from: /WC_SMART_ANALYTICS_VER', '.*?'/g,
-						to: "WC_SMART_ANALYTICS_VER', '<%= pkg.version %>'",
+						from: /EC_Sales_Pulse_VER', '.*?'/g,
+						to: "EC_Sales_Pulse_VER', '<%= pkg.version %>'",
 					},
 				],
 			},

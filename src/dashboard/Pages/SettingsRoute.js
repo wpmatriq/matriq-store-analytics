@@ -17,7 +17,7 @@ function SettingsRoute() {
 		};
 	} );
 
-	if ( page === 'wc-sma-onboarding' ) {
+	if ( page === 'sales-pulse-onboarding' ) {
 		return <Onboarding />;
 	}
 

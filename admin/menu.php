@@ -5,17 +5,17 @@
  * This class will holds the code related to the admin area modification
  * along with the plugin functionalities.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  *
  * @since x.x.x
  */
 
-namespace WC_Smart_Analytics\Admin;
+namespace EC_Sales_Pulse\Admin;
 
-use WC_Smart_Analytics\Core\Models\Controller;
-use WC_Smart_Analytics\Inc\Traits\Get_Instance;
-use WC_Smart_Analytics\Inc\Utils\Helper;
-use WC_Smart_Analytics\Inc\Utils\Settings;
+use EC_Sales_Pulse\Core\Models\Controller;
+use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use EC_Sales_Pulse\Inc\Utils\Helper;
+use EC_Sales_Pulse\Inc\Utils\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -30,7 +30,7 @@ class Menu {
 	/**
 	 * Settings page ID for Plugin settings.
 	 */
-	public const PAGE_ID = 'wc-smart-analytics';
+	public const PAGE_ID = 'sales-pulse';
 
 	/**
 	 * Constructor
@@ -72,7 +72,7 @@ class Menu {
 		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore -- Input var okay.
 			$page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-			if ( $page === self::PAGE_ID || $page === 'wc-sma-onboarding' || strpos( $page, self::PAGE_ID . '_' ) !== false ) {
+			if ( $page === self::PAGE_ID || $page === 'sales-pulse-onboarding' || strpos( $page, self::PAGE_ID . '_' ) !== false ) {
 				return true;
 			}
 		}
@@ -97,10 +97,10 @@ class Menu {
 	 * @since x.x.x
 	 */
 	public function register_plugin_menus(): void {
-		if ( current_user_can( WC_SMART_ANALYTICS_CAPABILITY ) ) {
+		if ( current_user_can( EC_Sales_Pulse_CAPABILITY ) ) {
 			global $submenu;
 			$parent_slug   = self::PAGE_ID;
-			$capability    = WC_SMART_ANALYTICS_CAPABILITY;
+			$capability    = EC_Sales_Pulse_CAPABILITY;
 			$menu_priority = apply_filters( self::PAGE_ID . '_menu_priority', 40 );
 
 			add_menu_page(
@@ -115,8 +115,8 @@ class Menu {
 
 			add_submenu_page(
 				$parent_slug,
-				__( 'Reports', 'wc-smart-analytics' ),
-				__( 'Reports', 'wc-smart-analytics' ),
+				__( 'Reports', 'sales-pulse' ),
+				__( 'Reports', 'sales-pulse' ),
 				$capability,
 				'admin.php?page=' . self::PAGE_ID . '&tab=reports'
 			);
@@ -124,15 +124,15 @@ class Menu {
 			if ( $this->is_plugin_page() ) {
 				add_submenu_page(
 					$parent_slug,
-					__( '↳ Physical Products', 'wc-smart-analytics' ),
-					__( '↳ Physical Products', 'wc-smart-analytics' ),
+					__( '↳ Physical Products', 'sales-pulse' ),
+					__( '↳ Physical Products', 'sales-pulse' ),
 					$capability,
 					'admin.php?page=' . self::PAGE_ID . '&tab=physical-products-reports'
 				);
 				add_submenu_page(
 					$parent_slug,
-					__( '↳ Variable Products', 'wc-smart-analytics' ),
-					__( '↳ Variable Products', 'wc-smart-analytics' ),
+					__( '↳ Variable Products', 'sales-pulse' ),
+					__( '↳ Variable Products', 'sales-pulse' ),
 					$capability,
 					'admin.php?page=' . self::PAGE_ID . '&tab=variable-products-reports'
 				);
@@ -141,22 +141,22 @@ class Menu {
 
 			add_submenu_page(
 				$parent_slug,
-				__( 'Settings', 'wc-smart-analytics' ),
-				__( 'Settings', 'wc-smart-analytics' ),
+				__( 'Settings', 'sales-pulse' ),
+				__( 'Settings', 'sales-pulse' ),
 				$capability,
 				'admin.php?page=' . self::PAGE_ID . '&tab=settings'
 			);
 
 			add_submenu_page(
 				'',
-				'WC Sales Pulse ' . __( 'Onboarding', 'wc-smart-analytics' ),
+				'WC Sales Pulse ' . __( 'Onboarding', 'sales-pulse' ),
 				'',
 				$capability,
-				'wc-sma-onboarding',
+				'sales-pulse-onboarding',
 				[ $this, 'render_main_page' ]
 			);
 
-			$submenu[ $parent_slug ][0][0] = esc_html__( 'Dashboard', 'wc-smart-analytics' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
+			$submenu[ $parent_slug ][0][0] = esc_html__( 'Dashboard', 'sales-pulse' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
 		}
 	}
 
@@ -216,7 +216,7 @@ class Menu {
 		// Check weather the current page is application or it's child pages.
 		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-		if ( is_admin() && ( $current_page === self::PAGE_ID || $current_page === 'wc-sma-onboarding' ) ) {
+		if ( is_admin() && ( $current_page === self::PAGE_ID || $current_page === 'sales-pulse-onboarding' ) ) {
 			wp_enqueue_media();
 
 			$localized_data = apply_filters(
@@ -224,26 +224,26 @@ class Menu {
 				[
 					'dashboard_url'     => admin_url( 'admin.php?page=' . self::PAGE_ID ),
 					'ajax_url'          => admin_url( 'admin-ajax.php' ),
-					'version'           => WC_SMART_ANALYTICS_VER,
+					'version'           => EC_Sales_Pulse_VER,
 					'update_nonce'      => wp_create_nonce( 'wc_sma_update_admin_setting' ),
 					'home_slug'         => self::PAGE_ID,
 					'settings'          => Settings::get_wc_sma_settings(),
 					'pro_available'     => wc_sma_is_pro_active(),
-					'pro_version'       => wc_sma_is_pro_active() ? WC_SMART_ANALYTICS_PRO_VER : 0,
-					'upgrade_link'      => WC_SMART_ANALYTICS_UPGRADE_LINK,
+					'pro_version'       => wc_sma_is_pro_active() ? EC_Sales_Pulse_PRO_VER : 0,
+					'upgrade_link'      => EC_Sales_Pulse_UPGRADE_LINK,
 					'is_user_onboarded' => get_option( 'suredash_onboarding_completed', false ) === 'yes' || get_option( '__wc_sma_onboarding_skipped' ) === 'yes' ? true : false,
 				]
 			);
 
 			$handle            = 'wc_sma_admin_scripts';
-			$build_path        = WC_SMART_ANALYTICS_URL . 'assets/build/';
-			$script_asset_path = WC_SMART_ANALYTICS_DIR . 'assets/build/wc-sma-app.asset.php';
+			$build_path        = EC_Sales_Pulse_URL . 'assets/build/';
+			$script_asset_path = EC_Sales_Pulse_DIR . 'assets/build/wc-sma-app.asset.php';
 
 			$script_info = file_exists( $script_asset_path )
 			? include $script_asset_path
 			: [
 				'dependencies' => [],
-				'version'      => WC_SMART_ANALYTICS_VER,
+				'version'      => EC_Sales_Pulse_VER,
 			];
 
 			$script_dep = array_merge( $script_info['dependencies'], [ 'wp-plugins', 'wp-edit-site', 'wp-data', 'updates' ] );
@@ -252,22 +252,22 @@ class Menu {
 				$handle,
 				$build_path . 'wc-sma-app.js',
 				$script_dep,
-				WC_SMART_ANALYTICS_VER,
+				EC_Sales_Pulse_VER,
 				true
 			);
 
 			wp_localize_script( $handle, 'wc_sma_admin_data', $localized_data );
 
-			wp_set_script_translations( $handle, 'wc-smart-analytics', WC_SMART_ANALYTICS_DIR . 'languages' );
+			wp_set_script_translations( $handle, 'sales-pulse', EC_Sales_Pulse_DIR . 'languages' );
 
 			wp_enqueue_style(
 				'wc-sma-font',
-				esc_url( WC_SMART_ANALYTICS_CSS_ASSETS_FOLDER . ( is_rtl() ? 'font-rtl' : 'font' ) . WC_SMART_ANALYTICS_CSS_SUFFIX ),
+				esc_url( EC_Sales_Pulse_CSS_ASSETS_FOLDER . ( is_rtl() ? 'font-rtl' : 'font' ) . EC_Sales_Pulse_CSS_SUFFIX ),
 				[],
 				$script_info['version']
 			);
 
-			wp_enqueue_style( $handle, esc_url( is_rtl() ? $build_path . 'wc-sma-app-rtl.css' : $build_path . 'wc-sma-app.css' ), [ 'wc-sma-font' ], WC_SMART_ANALYTICS_VER );
+			wp_enqueue_style( $handle, esc_url( is_rtl() ? $build_path . 'wc-sma-app-rtl.css' : $build_path . 'wc-sma-app.css' ), [ 'wc-sma-font' ], EC_Sales_Pulse_VER );
 		}
 	}
 

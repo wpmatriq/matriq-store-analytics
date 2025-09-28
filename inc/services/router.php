@@ -2,12 +2,12 @@
 /**
  * Router class.
  *
- * @package WC_Smart_Analytics\Inc\Services
+ * @package EC_Sales_Pulse\Inc\Services
  */
 
-namespace WC_Smart_Analytics\Inc\Services;
+namespace EC_Sales_Pulse\Inc\Services;
 
-use WC_Smart_Analytics\Inc\Traits\Get_Instance;
+use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,7 +22,7 @@ class Router extends \WP_REST_Controller {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'wc-smart-analytics/v1'; // Default namespace, can be overridden.
+	protected $namespace = 'sales-pulse/v1'; // Default namespace, can be overridden.
 
 	/**
 	 * Routes.

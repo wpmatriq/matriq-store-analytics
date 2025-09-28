@@ -2,14 +2,14 @@
 /**
  * Define the REST API routes.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  */
 
-namespace WC_Smart_Analytics\Core;
+namespace EC_Sales_Pulse\Core;
 
-use WC_Smart_Analytics\Core\Routers\Misc as MiscRoute;
-use WC_Smart_Analytics\Inc\Services\Router;
-use WC_Smart_Analytics\Inc\Traits\Get_Instance;
+use EC_Sales_Pulse\Core\Routers\Misc as MiscRoute;
+use EC_Sales_Pulse\Inc\Services\Router;
+use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.

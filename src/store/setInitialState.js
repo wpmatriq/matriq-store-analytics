@@ -3,7 +3,7 @@ import { dispatch } from '@wordpress/data';
 import { store } from '@Store/setup';
 
 const setInitialState = () => {
-	apiFetch( { path: '/wc-smart-analytics/v1/dataset' } ).then( ( response ) => {
+	apiFetch( { path: '/sales-pulse/v1/dataset' } ).then( ( response ) => {
 		response.isLoaded = true;
 		dispatch( store ).updateStoreData( response );
 

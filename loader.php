@@ -2,17 +2,17 @@
 /**
  * Plugin Loader.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  * @since x.x.x
  */
 
-namespace WC_Smart_Analytics;
+namespace EC_Sales_Pulse;
 
-use WC_Smart_Analytics\Admin\API;
-use WC_Smart_Analytics\Admin\Menu;
-use WC_Smart_Analytics\Admin\Notices;
-use WC_Smart_Analytics\Core\Routes;
-use WC_Smart_Analytics\Inc\Utils\Maintenance;
+use EC_Sales_Pulse\Admin\API;
+use EC_Sales_Pulse\Admin\Menu;
+use EC_Sales_Pulse\Admin\Notices;
+use EC_Sales_Pulse\Core\Routes;
+use EC_Sales_Pulse\Inc\Utils\Maintenance;
 
 /**
  * WC_SMA_Loader
@@ -45,10 +45,10 @@ class WC_SMA_Loader {
 		add_action( 'admin_init', [ $this, 'activation_redirect' ] );
 
 		// Activation hook.
-		register_activation_hook( WC_SMART_ANALYTICS_FILE, [ $this, 'activation_actions' ] );
+		register_activation_hook( EC_Sales_Pulse_FILE, [ $this, 'activation_actions' ] );
 
 		// Deactivation hook.
-		register_deactivation_hook( WC_SMART_ANALYTICS_FILE, [ $this, 'deactivation_actions' ] );
+		register_deactivation_hook( EC_Sales_Pulse_FILE, [ $this, 'deactivation_actions' ] );
 
 		add_action( 'init', [ $this, 'load_textdomain' ] );
 		add_action( 'plugins_loaded', [ $this, 'load_plugin' ], 99 );
@@ -74,7 +74,7 @@ class WC_SMA_Loader {
 	 * @since x.x.x
 	 */
 	public function suppress_translation_error( $status, $function_name, $message, $version ) {
-		if ( $function_name === '_load_textdomain_just_in_time' && strpos( $message, 'wc-smart-analytics' ) !== false ) {
+		if ( $function_name === '_load_textdomain_just_in_time' && strpos( $message, 'sales-pulse' ) !== false ) {
 			return false;
 		}
 		return $status;
@@ -90,7 +90,7 @@ class WC_SMA_Loader {
 	 * @since x.x.x
 	 */
 	public function prevent_qm_collection( $function_name, $message, $version ): void {
-		if ( $function_name === '_load_textdomain_just_in_time' && strpos( $message, 'wc-smart-analytics' ) !== false ) {
+		if ( $function_name === '_load_textdomain_just_in_time' && strpos( $message, 'sales-pulse' ) !== false ) {
 			// Remove Query Monitor's action temporarily.
 			if ( class_exists( '\QM_Collectors' ) ) {
 				$collector = \QM_Collectors::get( 'doing_it_wrong' );
@@ -115,22 +115,22 @@ class WC_SMA_Loader {
 	/**
 	 * Load Plugin Text Domain.
 	 * This will load the translation textdomain depending on the file priorities.
-	 *      1. Global Languages /wp-content/languages/wc-smart-analytics/ folder
-	 *      2. Local directory /wp-content/plugins/wc-smart-analytics/languages/ folder
+	 *      1. Global Languages /wp-content/languages/sales-pulse/ folder
+	 *      2. Local directory /wp-content/plugins/sales-pulse/languages/ folder
 	 *
 	 * @since x.x.x
 	 * @return void
 	 */
 	public function load_textdomain(): void {
 		// Default languages directory.
-		$lang_dir = WC_SMART_ANALYTICS_DIR . 'languages/';
+		$lang_dir = EC_Sales_Pulse_DIR . 'languages/';
 
 		/**
 		 * Filters the languages directory path to use for plugin.
 		 *
 		 * @param string $lang_dir The languages directory path.
 		 */
-		$lang_dir = apply_filters( 'wc_smart_analytics_languages_directory', $lang_dir );
+		$lang_dir = apply_filters( 'EC_Sales_Pulse_languages_directory', $lang_dir );
 
 		// Traditional WordPress plugin locale filter.
 		global $wp_version;
@@ -147,8 +147,8 @@ class WC_SMA_Loader {
 		 * Uses get_user_locale()` in WordPress 4.7 or greater,
 		 * otherwise uses `get_locale()`.
 		 */
-		$locale = apply_filters( 'plugin_locale', $get_locale, 'wc-smart-analytics' );//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- wordpress hook
-		$mofile = sprintf( '%1$s-%2$s.mo', 'wc-smart-analytics', $locale );
+		$locale = apply_filters( 'plugin_locale', $get_locale, 'sales-pulse' );//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- wordpress hook
+		$mofile = sprintf( '%1$s-%2$s.mo', 'sales-pulse', $locale );
 
 		// Setup paths to current locale file.
 		$mofile_global = WP_LANG_DIR . '/plugins/' . $mofile;
@@ -156,13 +156,13 @@ class WC_SMA_Loader {
 
 		if ( file_exists( $mofile_global ) ) {
 			// Look in global /wp-content/languages/suredash/ folder.
-			load_textdomain( 'wc-smart-analytics', $mofile_global );
+			load_textdomain( 'sales-pulse', $mofile_global );
 		} elseif ( file_exists( $mofile_local ) ) {
-			// Look in local /wp-content/plugins/wc-smart-analytics/languages/ folder.
-			load_textdomain( 'wc-smart-analytics', $mofile_local );
+			// Look in local /wp-content/plugins/sales-pulse/languages/ folder.
+			load_textdomain( 'sales-pulse', $mofile_local );
 		} else {
 			// Load the default language files.
-			load_plugin_textdomain( 'wc-smart-analytics', false, $lang_dir );
+			load_plugin_textdomain( 'sales-pulse', false, $lang_dir );
 		}
 	}
 
@@ -199,7 +199,7 @@ class WC_SMA_Loader {
 			)
 		);
 
-		$file = WC_SMART_ANALYTICS_DIR . $filename . '.php';
+		$file = EC_Sales_Pulse_DIR . $filename . '.php';
 
 		// if the file readable, include it.
 		if ( is_readable( $file ) ) {
@@ -224,7 +224,7 @@ class WC_SMA_Loader {
 			return;
 		}
 
-		$do_redirect = apply_filters( 'wc_smart_analytics_activation_redirection', get_option( '__wc_sma_do_redirect' ) );
+		$do_redirect = apply_filters( 'EC_Sales_Pulse_activation_redirection', get_option( '__wc_sma_do_redirect' ) );
 
 		if ( $do_redirect ) {
 
@@ -242,8 +242,8 @@ class WC_SMA_Loader {
 				wp_safe_redirect(
 					add_query_arg(
 						[
-							'page'                       => 'wc-sma-onboarding',
-							'wc-sma-activation-redirect' => true,
+							'page'                       => 'sales-pulse-onboarding',
+							'ec-sp-activation-redirect' => true,
 						],
 						admin_url( 'admin.php' )
 					)
@@ -261,27 +261,27 @@ class WC_SMA_Loader {
 	 * @return void
 	 */
 	public function define_constants(): void {
-		define( 'WC_SMART_ANALYTICS_UPGRADE_LINK', '#' );
-		define( 'WC_SMART_ANALYTICS_TABLET_BREAKPOINT', '1024' );
-		define( 'WC_SMART_ANALYTICS_MOBILE_BREAKPOINT', '768' );
+		define( 'EC_Sales_Pulse_UPGRADE_LINK', '#' );
+		define( 'EC_Sales_Pulse_TABLET_BREAKPOINT', '1024' );
+		define( 'EC_Sales_Pulse_MOBILE_BREAKPOINT', '768' );
 
-		define( 'WC_SMART_ANALYTICS_BASE', plugin_basename( WC_SMART_ANALYTICS_FILE ) );
-		define( 'WC_SMART_ANALYTICS_DIR', plugin_dir_path( WC_SMART_ANALYTICS_FILE ) );
-		define( 'WC_SMART_ANALYTICS_URL', plugins_url( '/', WC_SMART_ANALYTICS_FILE ) );
+		define( 'EC_Sales_Pulse_BASE', plugin_basename( EC_Sales_Pulse_FILE ) );
+		define( 'EC_Sales_Pulse_DIR', plugin_dir_path( EC_Sales_Pulse_FILE ) );
+		define( 'EC_Sales_Pulse_URL', plugins_url( '/', EC_Sales_Pulse_FILE ) );
 
-		define( 'WC_SMART_ANALYTICS_SETTINGS', 'wc_sma_settings' );
-		define( 'WC_SMART_ANALYTICS_CAPABILITY', 'manage_options' );
+		define( 'EC_Sales_Pulse_SETTINGS', 'wc_sma_settings' );
+		define( 'EC_Sales_Pulse_CAPABILITY', 'manage_options' );
 
-		! defined( 'WC_SMART_ANALYTICS_DEVELOPMENT_MODE' ) && define( 'WC_SMART_ANALYTICS_DEVELOPMENT_MODE', false );
+		! defined( 'EC_Sales_Pulse_DEVELOPMENT_MODE' ) && define( 'EC_Sales_Pulse_DEVELOPMENT_MODE', false );
 
-		$css_suffix = WC_SMART_ANALYTICS_DEVELOPMENT_MODE ? '.css' : '.min.css';
-		$js_suffix  = WC_SMART_ANALYTICS_DEVELOPMENT_MODE ? '.js' : '.min.js';
+		$css_suffix = EC_Sales_Pulse_DEVELOPMENT_MODE ? '.css' : '.min.css';
+		$js_suffix  = EC_Sales_Pulse_DEVELOPMENT_MODE ? '.js' : '.min.js';
 
-		define( 'WC_SMART_ANALYTICS_CSS_SUFFIX', $css_suffix );
-		define( 'WC_SMART_ANALYTICS_JS_SUFFIX', $js_suffix );
+		define( 'EC_Sales_Pulse_CSS_SUFFIX', $css_suffix );
+		define( 'EC_Sales_Pulse_JS_SUFFIX', $js_suffix );
 
-		define( 'WC_SMART_ANALYTICS_CSS_ASSETS_FOLDER', WC_SMART_ANALYTICS_DEVELOPMENT_MODE ? WC_SMART_ANALYTICS_URL . 'assets/css/unminified/' : WC_SMART_ANALYTICS_URL . 'assets/css/minified/' );
-		define( 'WC_SMART_ANALYTICS_JS_ASSETS_FOLDER', WC_SMART_ANALYTICS_DEVELOPMENT_MODE ? WC_SMART_ANALYTICS_URL . 'assets/js/unminified/' : WC_SMART_ANALYTICS_URL . 'assets/js/minified/' );
+		define( 'EC_Sales_Pulse_CSS_ASSETS_FOLDER', EC_Sales_Pulse_DEVELOPMENT_MODE ? EC_Sales_Pulse_URL . 'assets/css/unminified/' : EC_Sales_Pulse_URL . 'assets/css/minified/' );
+		define( 'EC_Sales_Pulse_JS_ASSETS_FOLDER', EC_Sales_Pulse_DEVELOPMENT_MODE ? EC_Sales_Pulse_URL . 'assets/js/unminified/' : EC_Sales_Pulse_URL . 'assets/js/minified/' );
 
 		// Include required functions.
 		require_once 'inc/functions/functions.php';
@@ -344,7 +344,7 @@ class WC_SMA_Loader {
 		 *
 		 * @since x.x.x
 		 */
-		do_action( 'wc_smart_analytics_init' );
+		do_action( 'EC_Sales_Pulse_init' );
 	}
 
 	/**
@@ -356,15 +356,15 @@ class WC_SMA_Loader {
 	 * @since x.x.x
 	 */
 	public function add_meta_links( $links, $file ) {
-		if ( $file === WC_SMART_ANALYTICS_BASE ) {
+		if ( $file === EC_Sales_Pulse_BASE ) {
 			$stars = '';
 			for ( $indx = 0; $indx < 5; $indx++ ) {
 				$stars .= '<span class="dashicons dashicons-star-filled" style="color: #ffb900; font-size: 16px; width: 16px; height: 16px; line-height: 1.2;" aria-hidden="true"></span>';
 			}
 			$links[] = sprintf(
 				'<a href="%s" target="_blank" rel="noopener noreferrer" aria-label="%s" role="button">%s</a>',
-				esc_url( 'https://wordpress.org/support/plugin/wc-smart-analytics/reviews/#new-post' ),
-				esc_attr__( 'Rate our plugin', 'wc-smart-analytics' ),
+				esc_url( 'https://wordpress.org/support/plugin/sales-pulse/reviews/#new-post' ),
+				esc_attr__( 'Rate our plugin', 'sales-pulse' ),
 				$stars
 			);
 		}

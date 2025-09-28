@@ -2,19 +2,19 @@
 /**
  * Helper.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  * @since x.x.x
  */
 
-namespace WC_Smart_Analytics\Inc\Utils;
+namespace EC_Sales_Pulse\Inc\Utils;
 
-use WC_Smart_Analytics\Core\Models\Controller;
+use EC_Sales_Pulse\Core\Models\Controller;
 
 /**
  * Initialize setup
  *
  * @since x.x.x
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -75,7 +75,7 @@ class Helper {
 			$portal_settings[ $key ] = $value;
 		}
 
-		update_option( WC_SMART_ANALYTICS_SETTINGS, $portal_settings );
+		update_option( EC_Sales_Pulse_SETTINGS, $portal_settings );
 
 		return $value;
 	}
@@ -89,7 +89,7 @@ class Helper {
 	 * @since 1.0.0
 	 */
 	public static function delete_option( $key ) {
-		$portal_settings = get_option( WC_SMART_ANALYTICS_SETTINGS );
+		$portal_settings = get_option( EC_Sales_Pulse_SETTINGS );
 
 		if ( empty( $portal_settings ) || ! is_array( $portal_settings ) ) {
 			return false;
@@ -102,7 +102,7 @@ class Helper {
 
 		if ( isset( $portal_settings[ $key ] ) ) {
 			unset( $portal_settings[ $key ] );
-			update_option( WC_SMART_ANALYTICS_SETTINGS, $portal_settings );
+			update_option( EC_Sales_Pulse_SETTINGS, $portal_settings );
 		}
 
 		return true;

@@ -2,13 +2,13 @@
 /**
  * Admin notices.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  * @since x.x.x
  */
 
-namespace WC_Smart_Analytics\Admin;
+namespace EC_Sales_Pulse\Admin;
 
-use WC_Smart_Analytics\Inc\Traits\Get_Instance;
+use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 /**
  * Notices
@@ -50,7 +50,7 @@ class Notices {
 			return;
 		}
 
-		if ( ! defined( 'WC_SMART_ANALYTICS_PRO_VER' ) || ! defined( 'WC_SMART_ANALYTICS_PRO_PRODUCT' ) ) {
+		if ( ! defined( 'EC_Sales_Pulse_PRO_VER' ) || ! defined( 'EC_Sales_Pulse_PRO_PRODUCT' ) ) {
 			return;
 		}
 	}

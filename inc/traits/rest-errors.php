@@ -2,11 +2,11 @@
 /**
  * All REST related actions.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  * @since x.x.x
  */
 
-namespace WC_Smart_Analytics\Inc\Traits;
+namespace EC_Sales_Pulse\Inc\Traits;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,12 +33,12 @@ trait Rest_Errors {
 	 */
 	public function set_rest_event_errors(): void {
 		$this->errors = [
-			'permission'        => __( 'Sorry, you are not allowed to do this operation.', 'wc-smart-analytics' ),
-			'nonce'             => __( 'Nonce validation failed', 'wc-smart-analytics' ),
-			'default'           => __( 'Sorry, something went wrong.', 'wc-smart-analytics' ),
-			'missing_key'       => __( 'Oops, the required key is missing.', 'wc-smart-analytics' ),
-			'invalid_post_type' => __( 'The current post\'s post type is not of this plugin.', 'wc-smart-analytics' ),
-			'success'           => __( 'Data saved successfully.', 'wc-smart-analytics' ),
+			'permission'        => __( 'Sorry, you are not allowed to do this operation.', 'sales-pulse' ),
+			'nonce'             => __( 'Nonce validation failed', 'sales-pulse' ),
+			'default'           => __( 'Sorry, something went wrong.', 'sales-pulse' ),
+			'missing_key'       => __( 'Oops, the required key is missing.', 'sales-pulse' ),
+			'invalid_post_type' => __( 'The current post\'s post type is not of this plugin.', 'sales-pulse' ),
+			'success'           => __( 'Data saved successfully.', 'sales-pulse' ),
 		];
 	}
 

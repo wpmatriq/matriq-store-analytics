@@ -2,11 +2,11 @@
 /**
  * Settings.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  * @since x.x.x
  */
 
-namespace WC_Smart_Analytics\Inc\Utils;
+namespace EC_Sales_Pulse\Inc\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -110,7 +110,7 @@ class Settings {
 	 * @since x.x.x
 	 */
 	public static function update_wc_sma_settings( $settings ): void {
-		update_option( WC_SMART_ANALYTICS_SETTINGS, $settings );
+		update_option( EC_Sales_Pulse_SETTINGS, $settings );
 
 		// Flush the rewrite rules.
 		flush_rewrite_rules();
@@ -124,7 +124,7 @@ class Settings {
 	 */
 	public static function get_settings() {
 		// Adjust this option key to match your plugin's saved settings.
-		return get_option( WC_SMART_ANALYTICS_SETTINGS, [] );
+		return get_option( EC_Sales_Pulse_SETTINGS, [] );
 	}
 
 	/**

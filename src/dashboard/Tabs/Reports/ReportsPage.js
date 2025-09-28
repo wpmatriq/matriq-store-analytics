@@ -35,7 +35,7 @@ export default function ReportsPage() {
 										</div>
 										<div className="text-right">
 											<span className='text-xs text-muted-foreground bg-accent px-2 py-1 text-white rounded-full'>
-												{ __( 'Soon', 'wc-smart-analytics' )}
+												{ __( 'Soon', 'sales-pulse' )}
 											</span>
 										</div>
 									</div>

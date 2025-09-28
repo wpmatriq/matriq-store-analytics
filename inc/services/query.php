@@ -2,10 +2,10 @@
 /**
  * The Query class.
  *
- * @package WC_Smart_Analytics\Inc\Services.
+ * @package EC_Sales_Pulse\Inc\Services.
  */
 
-namespace WC_Smart_Analytics\Inc\Services;
+namespace EC_Sales_Pulse\Inc\Services;
 
 defined( 'ABSPATH' ) || exit;
 

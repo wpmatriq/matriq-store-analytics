@@ -2,16 +2,16 @@
 /**
  * Misc Router Initialize.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  */
 
-namespace WC_Smart_Analytics\Core\Routers;
+namespace EC_Sales_Pulse\Core\Routers;
 
-use WC_Smart_Analytics\Core\Models\Controller;
-use WC_Smart_Analytics\Inc\Traits\Get_Instance;
-use WC_Smart_Analytics\Inc\Traits\Rest_Errors;
-use WC_Smart_Analytics\Inc\Utils\Helper;
-use WC_Smart_Analytics\Inc\Utils\Sanitizer;
+use EC_Sales_Pulse\Core\Models\Controller;
+use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use EC_Sales_Pulse\Inc\Traits\Rest_Errors;
+use EC_Sales_Pulse\Inc\Utils\Helper;
+use EC_Sales_Pulse\Inc\Utils\Sanitizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -43,6 +43,6 @@ class Misc {
 			wp_send_json_error( [ 'message' => $this->get_rest_event_error( 'default' ) ] );
 		}
 
-		wp_send_json_success( [ 'message' => __( 'Thank you for your feedback!', 'wc-smart-analytics' ) ] );
+		wp_send_json_success( [ 'message' => __( 'Thank you for your feedback!', 'sales-pulse' ) ] );
 	}
 }

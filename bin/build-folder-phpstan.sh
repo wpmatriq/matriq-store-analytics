@@ -38,6 +38,6 @@ fi
 cd ..
 
 # Copy files for zip.
-rsync -rc --exclude-from=".distignore" "./" "artifact/phpstan/wc-smart-analytics"
+rsync -rc --exclude-from=".distignore" "./" "artifact/phpstan/sales-pulse"
 
 success "Done. Your WP Plugin Base Folder is copied for creating stubs..! 🎉"

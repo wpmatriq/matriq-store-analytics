@@ -2,7 +2,7 @@
 /**
  * Plugin functions.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  * @since x.x.x
  */
 
@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use WC_Smart_Analytics\Inc\Services\Query;
-use WC_Smart_Analytics\Inc\Services\Router;
+use EC_Sales_Pulse\Inc\Services\Query;
+use EC_Sales_Pulse\Inc\Services\Router;
 
 /**
  * Check if pro version is active.
@@ -21,7 +21,7 @@ use WC_Smart_Analytics\Inc\Services\Router;
  * @since x.x.x
  */
 function wc_sma_is_pro_active() {
-	return defined( 'WC_SMART_ANALYTICS_PRO_VER' );
+	return defined( 'EC_Sales_Pulse_PRO_VER' );
 }
 
 /**

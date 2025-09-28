@@ -1,6 +1,6 @@
 <?php
 
-namespace WC_Smart_Analytics {
+namespace EC_Sales_Pulse {
     /**
      * WC_SMA_Loader
      *
@@ -45,8 +45,8 @@ namespace WC_Smart_Analytics {
         /**
          * Load Plugin Text Domain.
          * This will load the translation textdomain depending on the file priorities.
-         *      1. Global Languages /wp-content/languages/wc-smart-analytics/ folder
-         *      2. Local directory /wp-content/plugins/wc-smart-analytics/languages/ folder
+         *      1. Global Languages /wp-content/languages/sales-pulse/ folder
+         *      2. Local directory /wp-content/plugins/sales-pulse/languages/ folder
          *
          * @since x.x.x
          * @return void
@@ -127,7 +127,7 @@ namespace WC_Smart_Analytics {
         }
     }
 }
-namespace WC_Smart_Analytics\Inc\Traits {
+namespace EC_Sales_Pulse\Inc\Traits {
     /**
      * Trait Get_Instance.
      *
@@ -163,7 +163,7 @@ namespace WC_Smart_Analytics\Inc\Traits {
          *
          * @var string
          */
-        protected $namespace = 'wc-smart-analytics/v1';
+        protected $namespace = 'sales-pulse/v1';
         /**
          * Constructor
          *
@@ -217,15 +217,15 @@ namespace WC_Smart_Analytics\Inc\Traits {
         }
     }
 }
-namespace WC_Smart_Analytics\Inc\Utils {
+namespace EC_Sales_Pulse\Inc\Utils {
     /**
      * Update Compatibility
      *
-     * @package WC_Smart_Analytics
+     * @package EC_Sales_Pulse
      */
     class Maintenance
     {
-        use \WC_Smart_Analytics\Inc\Traits\Get_Instance;
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
         /**
          *  Constructor
          */
@@ -417,19 +417,19 @@ namespace WC_Smart_Analytics\Inc\Utils {
         }
     }
 }
-namespace WC_Smart_Analytics\Inc\Services {
+namespace EC_Sales_Pulse\Inc\Services {
     /**
      * Router class.
      */
     class Router extends \WP_REST_Controller
     {
-        use \WC_Smart_Analytics\Inc\Traits\Get_Instance;
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
         /**
          * Namespace for the API.
          *
          * @var string
          */
-        protected $namespace = 'wc-smart-analytics/v1';
+        protected $namespace = 'sales-pulse/v1';
         // Default namespace, can be overridden.
         /**
          * Routes.
@@ -1243,14 +1243,14 @@ namespace WC_Smart_Analytics\Inc\Services {
         }
     }
 }
-namespace WC_Smart_Analytics\Core\Routers {
+namespace EC_Sales_Pulse\Core\Routers {
     /**
      * Class Misc Router.
      */
     class Misc
     {
-        use \WC_Smart_Analytics\Inc\Traits\Get_Instance;
-        use \WC_Smart_Analytics\Inc\Traits\Rest_Errors;
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \EC_Sales_Pulse\Inc\Traits\Rest_Errors;
         /**
          * Handler to get topic submitted.
          *
@@ -1263,7 +1263,7 @@ namespace WC_Smart_Analytics\Core\Routers {
         }
     }
 }
-namespace WC_Smart_Analytics\Core\Models {
+namespace EC_Sales_Pulse\Core\Models {
     /**
      * Class Query Model.
      */
@@ -1276,7 +1276,7 @@ namespace WC_Smart_Analytics\Core\Models {
         /**
          * Base models.
          */
-        public const BASE_MODEL = 'WC_Smart_Analytics\Core\Models\\';
+        public const BASE_MODEL = 'EC_Sales_Pulse\Core\Models\\';
         /**
          * Get query data.
          *
@@ -1344,13 +1344,13 @@ namespace WC_Smart_Analytics\Core\Models {
         }
     }
 }
-namespace WC_Smart_Analytics\Core {
+namespace EC_Sales_Pulse\Core {
     /**
      * Class CPTs.
      */
     class Routes
     {
-        use \WC_Smart_Analytics\Inc\Traits\Get_Instance;
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
         /**
          * Constructor
          *
@@ -1410,7 +1410,7 @@ namespace WC_Smart_Analytics\Core {
         }
     }
 }
-namespace WC_Smart_Analytics\Admin {
+namespace EC_Sales_Pulse\Admin {
     /**
      * Notices
      *
@@ -1418,7 +1418,7 @@ namespace WC_Smart_Analytics\Admin {
      */
     class Notices
     {
-        use \WC_Smart_Analytics\Inc\Traits\Get_Instance;
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
         /**
          * Constructor
          *
@@ -1451,11 +1451,11 @@ namespace WC_Smart_Analytics\Admin {
      */
     class Menu
     {
-        use \WC_Smart_Analytics\Inc\Traits\Get_Instance;
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
         /**
          * Settings page ID for Plugin settings.
          */
-        public const PAGE_ID = 'wc-smart-analytics';
+        public const PAGE_ID = 'sales-pulse';
         /**
          * Constructor
          *
@@ -1533,8 +1533,8 @@ namespace WC_Smart_Analytics\Admin {
      */
     class API
     {
-        use \WC_Smart_Analytics\Inc\Traits\Get_Instance;
-        use \WC_Smart_Analytics\Inc\Traits\API_Base;
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \EC_Sales_Pulse\Inc\Traits\API_Base;
         /**
          * Route base.
          *
@@ -1635,7 +1635,7 @@ namespace {
     /**
      * Set constants
      */
-    \define('WC_SMART_ANALYTICS_VER', '0.0.1');
-    \define('WC_SMART_ANALYTICS_FILE', __FILE__);
-    \define('WC_SMART_ANALYTICS_PRO_MINIMUM_VER', '0.0.1');
+    \define('EC_Sales_Pulse_VER', '0.0.1');
+    \define('EC_Sales_Pulse_FILE', __FILE__);
+    \define('EC_Sales_Pulse_PRO_MINIMUM_VER', '0.0.1');
 }

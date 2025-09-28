@@ -2,11 +2,11 @@
 /**
  * Sanitizer.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  * @since x.x.x
  */
 
-namespace WC_Smart_Analytics\Inc\Utils;
+namespace EC_Sales_Pulse\Inc\Utils;
 
 defined( 'ABSPATH' ) || exit;
 

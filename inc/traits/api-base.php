@@ -2,11 +2,11 @@
 /**
  * Trait.
  *
- * @package WC_Smart_Analytics
+ * @package EC_Sales_Pulse
  * @since x.x.x
  */
 
-namespace WC_Smart_Analytics\Inc\Traits;
+namespace EC_Sales_Pulse\Inc\Traits;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -21,7 +21,7 @@ trait API_Base {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'wc-smart-analytics/v1';
+	protected $namespace = 'sales-pulse/v1';
 
 	/**
 	 * Constructor
