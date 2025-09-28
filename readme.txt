@@ -1,4 +1,4 @@
-=== SureDash ===
+=== Sales Pulse ===
 Contributors:
 Tags: woocommerce, analytics, woo
 Requires at least: 5.6
@@ -8,11 +8,11 @@ Stable tag: 0.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP Smart Analytics is a WordPress plugin that helps you understand your site traffic and visitors.
+Sales Pulse is a WordPress plugin that helps you to deep dive into your E-Commerce business.
 
 == Description ==
 
-WP Smart Analytics is a WordPress plugin that helps you understand your site traffic and visitors.
+Sales Pulse is a WordPress plugin that helps you to deep dive into your E-Commerce business.
 
 == Key Benefits ==
 
@@ -23,9 +23,9 @@ WP Smart Analytics is a WordPress plugin that helps you understand your site tra
 == Perfect For ==
 
 == Installation ==
-1. Upload the plugin files to the `/wp-content/plugins/wc-smart-analytics` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/sales-pulse` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Navigate to **WC Smart Analytics > Settings** to configure your dashboard.
+3. Navigate to **Sales Pulse > Settings** to configure your dashboard.
 
 == Links ==
 
