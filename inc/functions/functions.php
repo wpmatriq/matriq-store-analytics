@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use EC_Sales_Pulse\Inc\Services\Query;
-use EC_Sales_Pulse\Inc\Services\Router;
 
 /**
  * Check if pro version is active.
@@ -48,11 +47,3 @@ function wc_sma_query() {
 	return Query::init(); // @phpstan-ignore-line
 }
 
-/**
- * Get the Router instance.
- *
- * @return Router
- */
-function wc_sma_route() {
-	return Router::get_instance(); // @phpstan-ignore-line
-}

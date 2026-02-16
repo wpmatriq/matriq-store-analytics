@@ -135,3 +135,12 @@
 	outline: none;
 	border: 1px solid hsl( var( --input ) );
 }
+
+/* Override WordPress admin button shadows within our app. */
+#wc-sma-main-page--wrapper {
+	button,
+	[role="button"] {
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+}
