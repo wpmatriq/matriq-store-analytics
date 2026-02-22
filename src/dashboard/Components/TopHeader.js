@@ -1,13 +1,14 @@
 /**
  * Sales Pulse v2 — Top header with navigation.
  */
+import { __ } from '@wordpress/i18n';
 import { Activity } from 'lucide-react';
 
 const NAV_ITEMS = [
-	{ label: 'Overview', tab: 'overview', href: 'admin.php?page=sales-pulse' },
-	{ label: 'History', tab: 'history', href: 'admin.php?page=sales-pulse&tab=history' },
-	{ label: 'Campaigns', tab: 'campaigns', href: 'admin.php?page=sales-pulse&tab=campaigns' },
-	{ label: 'Settings', tab: 'settings', href: 'admin.php?page=sales-pulse&tab=settings' },
+	{ label: __( 'Overview', 'sales-pulse' ), tab: 'overview', href: 'admin.php?page=sales-pulse' },
+	{ label: __( 'History', 'sales-pulse' ), tab: 'history', href: 'admin.php?page=sales-pulse&tab=history' },
+	{ label: __( 'Campaigns', 'sales-pulse' ), tab: 'campaigns', href: 'admin.php?page=sales-pulse&tab=campaigns' },
+	{ label: __( 'Settings', 'sales-pulse' ), tab: 'settings', href: 'admin.php?page=sales-pulse&tab=settings' },
 ];
 
 export default function TopHeader( { activeTab = 'overview' } ) {
@@ -22,7 +23,7 @@ export default function TopHeader( { activeTab = 'overview' } ) {
 							className="flex items-center gap-2 text-foreground no-underline hover:no-underline"
 						>
 							<Activity className="h-5 w-5 text-accent" />
-							<span className="font-semibold text-sm">Sales Pulse</span>
+							<span className="font-semibold text-sm">{ __( 'Sales Pulse', 'sales-pulse' ) }</span>
 						</a>
 
 						{ /* Nav */ }

@@ -5,6 +5,7 @@
  * (suppress false alarms during sales/launches).
  */
 import React, { useState } from 'react';
+import { __ } from '@wordpress/i18n';
 import { useCampaigns, useEndCampaign, useDeleteCampaign } from '@DashboardApp/hooks/useCampaigns';
 import { Card, CardContent, CardHeader, CardTitle } from '@Components/ui/card';
 import { Button } from '@Components/ui/button';
@@ -14,10 +15,10 @@ import { CampaignForm } from './CampaignForm';
 import { RefreshCw, Plus, Megaphone, StopCircle, Trash2 } from 'lucide-react';
 
 const goalLabels = {
-	orders: 'Increase Orders',
-	aov: 'Increase AOV',
-	clearance: 'Clearance Sale',
-	launch: 'Product Launch',
+	orders: __( 'Increase Orders', 'sales-pulse' ),
+	aov: __( 'Increase AOV', 'sales-pulse' ),
+	clearance: __( 'Clearance Sale', 'sales-pulse' ),
+	launch: __( 'Product Launch', 'sales-pulse' ),
 };
 
 export default function CampaignsPage() {
@@ -30,14 +31,14 @@ export default function CampaignsPage() {
 		<div className="space-y-6">
 			<div className="flex items-center justify-between">
 				<div>
-					<h1 className="text-xl font-semibold mb-2">Campaigns</h1>
+					<h1 className="text-xl font-semibold mb-2">{ __( 'Campaigns', 'sales-pulse' ) }</h1>
 					<p className="text-sm text-muted-foreground mt-1">
-						Mark active campaigns to suppress false alarms in diagnosis
+						{ __( 'Mark active campaigns to suppress false alarms in diagnosis', 'sales-pulse' ) }
 					</p>
 				</div>
 				<Button onClick={ () => setShowForm( ! showForm ) } size="sm">
 					<Plus className="h-4 w-4 mr-1" />
-					New Campaign
+					{ __( 'New Campaign', 'sales-pulse' ) }
 				</Button>
 			</div>
 
@@ -54,7 +55,7 @@ export default function CampaignsPage() {
 					<CardContent className="py-12 text-center">
 						<Megaphone className="h-10 w-10 text-muted-foreground/40 mx-auto mb-3" />
 						<p className="text-sm text-muted-foreground">
-							No campaigns yet. Create one when you run a sale, launch a product, or change pricing.
+							{ __( 'No campaigns yet. Create one when you run a sale, launch a product, or change pricing.', 'sales-pulse' ) }
 						</p>
 					</CardContent>
 				</Card>
@@ -69,11 +70,11 @@ export default function CampaignsPage() {
 											<span className="font-medium text-sm">{ campaign.name }</span>
 											{ campaign.is_active ? (
 												<Badge className="text-xs bg-success/10 text-success border-success/20 border-solid">
-													Active
+													{ __( 'Active', 'sales-pulse' ) }
 												</Badge>
 											) : (
 												<Badge variant="outline" className="text-xs border-solid">
-													Ended
+													{ __( 'Ended', 'sales-pulse' ) }
 												</Badge>
 											) }
 										</div>
@@ -91,7 +92,7 @@ export default function CampaignsPage() {
 												disabled={ endCampaign.isPending }
 											>
 												<StopCircle className="h-3.5 w-3.5 mr-1" />
-												End
+												{ __( 'End', 'sales-pulse' ) }
 											</Button>
 										) }
 										{ ! campaign.is_active && (

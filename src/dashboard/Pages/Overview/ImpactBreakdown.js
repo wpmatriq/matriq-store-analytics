@@ -5,15 +5,16 @@
  * with horizontal bar charts showing relative contribution.
  */
 import React from 'react';
+import { __ } from '@wordpress/i18n';
 import { Card } from '@Components/ui/card';
 import { formatCurrency } from '@Utils/formatters';
 import classnames from '@Utils/classnames';
 import { ArrowUpRight, ArrowDownRight, BarChart3 } from 'lucide-react';
 
 const factorLabels = {
-	orders: 'Order Volume',
-	items: 'Items per Order',
-	price: 'Avg Item Price',
+	orders: __( 'Order Volume', 'sales-pulse' ),
+	items: __( 'Items per Order', 'sales-pulse' ),
+	price: __( 'Avg Item Price', 'sales-pulse' ),
 };
 
 const factorIcons = {
@@ -31,7 +32,7 @@ export function ImpactBreakdown( { diagnosis } ) {
 			<div className="p-5">
 				<div className="flex items-center gap-2 mb-4">
 					<BarChart3 className="h-4 w-4 text-muted-foreground" />
-					<h3 className="text-sm font-semibold m-0">What Changed</h3>
+					<h3 className="text-sm font-semibold m-0">{ __( 'What Changed', 'sales-pulse' ) }</h3>
 				</div>
 
 				{ ! hasData ? (
@@ -40,10 +41,10 @@ export function ImpactBreakdown( { diagnosis } ) {
 							<BarChart3 className="h-5 w-5 text-muted-foreground/50" />
 						</div>
 						<p className="text-sm text-muted-foreground">
-							No significant changes detected.
+							{ __( 'No significant changes detected.', 'sales-pulse' ) }
 						</p>
 						<p className="text-xs text-muted-foreground/60 mt-1">
-							Revenue factors remained stable.
+							{ __( 'Revenue factors remained stable.', 'sales-pulse' ) }
 						</p>
 					</div>
 				) : (

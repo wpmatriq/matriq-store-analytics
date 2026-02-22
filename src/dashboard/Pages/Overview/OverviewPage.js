@@ -9,6 +9,7 @@
  * 5. 7-day trend sparkline
  */
 import React, { useState } from 'react';
+import { __ } from '@wordpress/i18n';
 import { useOverview } from '@DashboardApp/hooks/useOverview';
 import { PeriodToggle } from '@Components/PeriodToggle';
 import { DiagnosisCard } from './DiagnosisCard';
@@ -33,7 +34,7 @@ export default function OverviewPage() {
 	if ( error ) {
 		return (
 			<div className="text-center py-12 text-muted-foreground">
-				<p>Could not load overview data. Please try refreshing.</p>
+				<p>{ __( 'Could not load overview data. Please try refreshing.', 'sales-pulse' ) }</p>
 			</div>
 		);
 	}
@@ -45,9 +46,11 @@ export default function OverviewPage() {
 			{ /* Header with period toggle */ }
 			<div className="flex items-center justify-between">
 				<div>
-					<h1 className="text-xl font-semibold mb-2">Morning Briefing</h1>
+					<h1 className="text-xl font-semibold mb-2">{ __( 'Morning Briefing', 'sales-pulse' ) }</h1>
 					<p className="text-sm text-muted-foreground mt-1">
-						{ period === 'daily' ? "Yesterday's store performance" : 'Last 7 days vs previous 7 days' }
+						{ period === 'daily'
+							? __( "Yesterday's store performance", 'sales-pulse' )
+							: __( 'Last 7 days vs previous 7 days', 'sales-pulse' ) }
 					</p>
 				</div>
 				<PeriodToggle value={ period } onChange={ setPeriod } />

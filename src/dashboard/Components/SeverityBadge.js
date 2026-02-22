@@ -4,6 +4,7 @@
  * Visual indicator for diagnosis severity: success, warning, info.
  */
 import React from 'react';
+import { __ } from '@wordpress/i18n';
 import { Badge } from '@Components/ui/badge';
 import classnames from '@Utils/classnames';
 
@@ -14,9 +15,9 @@ const severityStyles = {
 };
 
 const severityLabels = {
-	success: 'Positive',
-	warning: 'Needs Attention',
-	info: 'Stable',
+	success: __( 'Positive', 'sales-pulse' ),
+	warning: __( 'Needs Attention', 'sales-pulse' ),
+	info: __( 'Stable', 'sales-pulse' ),
 };
 
 export function SeverityBadge( { severity = 'info', label, className } ) {

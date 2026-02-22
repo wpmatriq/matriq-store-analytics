@@ -5,6 +5,7 @@
  * through a visible track record.
  */
 import React, { useState } from 'react';
+import { __, sprintf } from '@wordpress/i18n';
 import { useHistory } from '@DashboardApp/hooks/useHistory';
 import { Card } from '@Components/ui/card';
 import { SeverityBadge } from '@Components/SeverityBadge';
@@ -26,9 +27,9 @@ export default function HistoryPage() {
 	return (
 		<div className="space-y-5">
 			<div>
-				<h1 className="text-xl font-semibold mb-2">History</h1>
+				<h1 className="text-xl font-semibold mb-2">{ __( 'History', 'sales-pulse' ) }</h1>
 				<p className="text-sm text-muted-foreground mt-1">
-					Daily revenue diagnosis log
+					{ __( 'Daily revenue diagnosis log', 'sales-pulse' ) }
 				</p>
 			</div>
 
@@ -39,19 +40,19 @@ export default function HistoryPage() {
 					</div>
 				) : ! data?.items?.length ? (
 					<div className="text-center py-16 text-muted-foreground text-sm">
-						No history data available yet. Snapshots will appear here after the first nightly run.
+						{ __( 'No history data available yet. Snapshots will appear here after the first nightly run.', 'sales-pulse' ) }
 					</div>
 				) : (
 					<table className="w-full text-sm">
 						<thead>
 							<tr className="border-b border-solid bg-muted/40">
 								<th className="w-10 px-3 py-2.5"></th>
-								<th className="text-left font-medium text-xs text-muted-foreground px-4 py-2.5 w-24">Date</th>
-								<th className="text-left font-medium text-xs text-muted-foreground px-4 py-2.5">Diagnosis</th>
-								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-24">Change</th>
-								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-24">Revenue</th>
-								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-20">Orders</th>
-								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-28">Status</th>
+								<th className="text-left font-medium text-xs text-muted-foreground px-4 py-2.5 w-24">{ __( 'Date', 'sales-pulse' ) }</th>
+								<th className="text-left font-medium text-xs text-muted-foreground px-4 py-2.5">{ __( 'Diagnosis', 'sales-pulse' ) }</th>
+								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-24">{ __( 'Change', 'sales-pulse' ) }</th>
+								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-24">{ __( 'Revenue', 'sales-pulse' ) }</th>
+								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-20">{ __( 'Orders', 'sales-pulse' ) }</th>
+								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-28">{ __( 'Status', 'sales-pulse' ) }</th>
 							</tr>
 						</thead>
 						<tbody className="divide-y">
@@ -67,7 +68,13 @@ export default function HistoryPage() {
 			{ data?.total_pages > 1 && (
 				<div className="flex items-center justify-between">
 					<p className="text-xs text-muted-foreground">
-						Page { page } of { data.total_pages } ({ data.total } days)
+						{ sprintf(
+							/* translators: %1$d: current page, %2$d: total pages, %3$d: total days */
+							__( 'Page %1$d of %2$d (%3$d days)', 'sales-pulse' ),
+							page,
+							data.total_pages,
+							data.total
+						) }
 					</p>
 					<div className="flex gap-2">
 						<Button

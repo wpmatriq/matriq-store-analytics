@@ -2,6 +2,7 @@
  * Trend Chart — 7-day revenue sparkline.
  */
 import React from 'react';
+import { __ } from '@wordpress/i18n';
 import { useTrend } from '@DashboardApp/hooks/useOverview';
 import { Card } from '@Components/ui/card';
 import { formatCurrency, formatDate } from '@Utils/formatters';
@@ -25,7 +26,7 @@ function CustomTooltip( { active, payload, label } ) {
 		<div className="bg-popover border border-solid rounded-md p-2 shadow-md text-xs">
 			<p className="font-medium">{ formatDate( label ) }</p>
 			<p className="text-muted-foreground">
-				Revenue: { formatCurrency( payload[ 0 ]?.value ) }
+				{ __( 'Revenue:', 'sales-pulse' ) } { formatCurrency( payload[ 0 ]?.value ) }
 			</p>
 		</div>
 	);
@@ -43,7 +44,7 @@ export function TrendChart() {
 			<div className="p-5">
 				<div className="flex items-center gap-2 mb-4">
 					<TrendingUp className="h-4 w-4 text-muted-foreground" />
-					<h3 className="text-sm font-semibold m-0">7-Day Revenue Trend</h3>
+					<h3 className="text-sm font-semibold m-0">{ __( '7-Day Revenue Trend', 'sales-pulse' ) }</h3>
 				</div>
 				<ResponsiveContainer width="100%" height={ 200 }>
 					<AreaChart data={ data.trend } margin={ { top: 5, right: 5, bottom: 5, left: 5 } }>

@@ -5,6 +5,7 @@
  * until all data prerequisites are met.
  */
 import React from 'react';
+import { __, sprintf } from '@wordpress/i18n';
 import { useReadiness, useTriggerSnapshot, useTriggerBackfill } from '@DashboardApp/hooks/useReadiness';
 import { Card } from '@Components/ui/card';
 import { Button } from '@Components/ui/button';
@@ -21,7 +22,7 @@ export function ReadinessGate( { children } ) {
 			<div className="flex items-center justify-center min-h-[400px]">
 				<div className="text-center space-y-3">
 					<RefreshCw className="h-8 w-8 animate-spin mx-auto text-muted-foreground" />
-					<p className="text-sm text-muted-foreground">Checking data readiness...</p>
+					<p className="text-sm text-muted-foreground">{ __( 'Checking data readiness...', 'sales-pulse' ) }</p>
 				</div>
 			</div>
 		);
@@ -33,7 +34,7 @@ export function ReadinessGate( { children } ) {
 				<div className="p-6 text-center space-y-3">
 					<AlertCircle className="h-10 w-10 text-destructive mx-auto" />
 					<p className="text-sm text-muted-foreground">
-						Could not check system status. Please refresh the page.
+						{ __( 'Could not check system status. Please refresh the page.', 'sales-pulse' ) }
 					</p>
 				</div>
 			</Card>
@@ -52,28 +53,28 @@ export function ReadinessGate( { children } ) {
 				<div className="p-5">
 					<div className="flex items-center gap-2 mb-4">
 						<Database className="h-5 w-5" />
-						<h3 className="text-lg font-semibold m-0">Setting up Sales Pulse</h3>
+						<h3 className="text-lg font-semibold m-0">{ __( 'Setting up Sales Pulse', 'sales-pulse' ) }</h3>
 					</div>
 
 					<div className="space-y-3">
 						<CheckItem
-							label="WooCommerce active"
+							label={ __( 'WooCommerce active', 'sales-pulse' ) }
 							checked={ data?.woocommerce_active }
 						/>
 						<CheckItem
-							label="Analytics tables available"
+							label={ __( 'Analytics tables available', 'sales-pulse' ) }
 							checked={ data?.analytics_tables_exist }
 						/>
 						<CheckItem
-							label="Orders found"
+							label={ __( 'Orders found', 'sales-pulse' ) }
 							checked={ data?.orders_exist }
 						/>
 						<CheckItem
-							label="Plugin tables created"
+							label={ __( 'Plugin tables created', 'sales-pulse' ) }
 							checked={ data?.plugin_tables_exist }
 						/>
 						<CheckItem
-							label="Snapshot data available"
+							label={ __( 'Snapshot data available', 'sales-pulse' ) }
 							checked={ data?.dashboard_ready }
 						/>
 					</div>
@@ -81,7 +82,7 @@ export function ReadinessGate( { children } ) {
 					{ data?.plugin_tables_exist && ! data?.dashboard_ready && data?.orders_exist && (
 						<div className="pt-4 space-y-3">
 							<p className="text-sm text-muted-foreground">
-								Your store has orders ready to analyze. This will take a few seconds.
+								{ __( 'Your store has orders ready to analyze. This will take a few seconds.', 'sales-pulse' ) }
 							</p>
 							<Button
 								onClick={ () => triggerSnapshot.mutate( { days: 14 } ) }
@@ -91,10 +92,10 @@ export function ReadinessGate( { children } ) {
 								{ triggerSnapshot.isPending ? (
 									<>
 										<RefreshCw className="h-4 w-4 animate-spin" />
-										Analyzing your recent sales...
+										{ __( 'Analyzing your recent sales...', 'sales-pulse' ) }
 									</>
 								) : (
-									'Analyze Your Store'
+									__( 'Analyze Your Store', 'sales-pulse' )
 								) }
 							</Button>
 						</div>
@@ -103,8 +104,12 @@ export function ReadinessGate( { children } ) {
 					{ ! data?.backfill_complete && data?.has_data && (
 						<div className="pt-4 space-y-2">
 							<div className="flex items-center justify-between text-xs text-muted-foreground">
-								<span>Backfilling historical data...</span>
-								<span>{ data?.snapshot_count || 0 } days</span>
+								<span>{ __( 'Backfilling historical data...', 'sales-pulse' ) }</span>
+								<span>{ sprintf(
+									/* translators: %d: number of days */
+									__( '%d days', 'sales-pulse' ),
+									data?.snapshot_count || 0
+								) }</span>
 							</div>
 							<Progress value={ data?.snapshot_count > 0 ? Math.min( ( data.snapshot_count / 365 ) * 100, 95 ) : 5 } />
 							<Button
@@ -113,7 +118,7 @@ export function ReadinessGate( { children } ) {
 								onClick={ () => triggerBackfill.mutate() }
 								disabled={ triggerBackfill.isPending }
 							>
-								{ triggerBackfill.isPending ? 'Processing...' : 'Speed up backfill' }
+								{ triggerBackfill.isPending ? __( 'Processing...', 'sales-pulse' ) : __( 'Speed up backfill', 'sales-pulse' ) }
 							</Button>
 						</div>
 					) }

@@ -2,6 +2,7 @@
  * Campaign Form — create a new campaign.
  */
 import React, { useState } from 'react';
+import { __ } from '@wordpress/i18n';
 import { useCreateCampaign } from '@DashboardApp/hooks/useCampaigns';
 import { Card } from '@Components/ui/card';
 import { Button } from '@Components/ui/button';
@@ -10,10 +11,10 @@ import { Label } from '@Components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@Components/ui/select';
 
 const goals = [
-	{ value: 'orders', label: 'Increase Orders — e.g., flash sale, coupon code' },
-	{ value: 'aov', label: 'Increase AOV — e.g., bundle deals, upsells' },
-	{ value: 'clearance', label: 'Clearance Sale — e.g., end-of-season, overstock' },
-	{ value: 'launch', label: 'Product Launch — e.g., new product, new category' },
+	{ value: 'orders', label: __( 'Increase Orders — e.g., flash sale, coupon code', 'sales-pulse' ) },
+	{ value: 'aov', label: __( 'Increase AOV — e.g., bundle deals, upsells', 'sales-pulse' ) },
+	{ value: 'clearance', label: __( 'Clearance Sale — e.g., end-of-season, overstock', 'sales-pulse' ) },
+	{ value: 'launch', label: __( 'Product Launch — e.g., new product, new category', 'sales-pulse' ) },
 ];
 
 export function CampaignForm( { onSuccess, onCancel } ) {
@@ -30,12 +31,12 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 		setError( '' );
 
 		if ( ! name.trim() || ! goal || ! startDate || ! endDate ) {
-			setError( 'All fields are required.' );
+			setError( __( 'All fields are required.', 'sales-pulse' ) );
 			return;
 		}
 
 		if ( endDate < startDate ) {
-			setError( 'End date must be after start date.' );
+			setError( __( 'End date must be after start date.', 'sales-pulse' ) );
 			return;
 		}
 
@@ -43,7 +44,7 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 			{ name: name.trim(), goal, start_date: startDate, end_date: endDate },
 			{
 				onSuccess: () => onSuccess?.(),
-				onError: ( err ) => setError( err?.message || 'Failed to create campaign.' ),
+				onError: ( err ) => setError( err?.message || __( 'Failed to create campaign.', 'sales-pulse' ) ),
 			}
 		);
 	};
@@ -51,23 +52,23 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 	return (
 		<Card className="border border-solid">
 			<div className="p-5">
-				<h3 className="text-sm font-semibold m-0 mb-4">New Campaign</h3>
+				<h3 className="text-sm font-semibold m-0 mb-4">{ __( 'New Campaign', 'sales-pulse' ) }</h3>
 				<form onSubmit={ handleSubmit } className="space-y-4">
 					<div className="space-y-1.5">
-						<Label htmlFor="campaign-name">Campaign Name</Label>
+						<Label htmlFor="campaign-name">{ __( 'Campaign Name', 'sales-pulse' ) }</Label>
 						<Input
 							id="campaign-name"
-							placeholder="e.g., Summer Sale 2026"
+							placeholder={ __( 'e.g., Summer Sale 2026', 'sales-pulse' ) }
 							value={ name }
 							onChange={ ( e ) => setName( e.target.value ) }
 						/>
 					</div>
 
 					<div className="space-y-1.5">
-						<Label>Campaign Goal</Label>
+						<Label>{ __( 'Campaign Goal', 'sales-pulse' ) }</Label>
 						<Select value={ goal } onValueChange={ setGoal }>
 							<SelectTrigger>
-								<SelectValue placeholder="Select a goal..." />
+								<SelectValue placeholder={ __( 'Select a goal...', 'sales-pulse' ) } />
 							</SelectTrigger>
 							<SelectContent>
 								{ goals.map( ( g ) => (
@@ -81,7 +82,7 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 
 					<div className="grid grid-cols-2 gap-4">
 						<div className="space-y-1.5">
-							<Label htmlFor="start-date">Start Date</Label>
+							<Label htmlFor="start-date">{ __( 'Start Date', 'sales-pulse' ) }</Label>
 							<Input
 								id="start-date"
 								type="date"
@@ -90,7 +91,7 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 							/>
 						</div>
 						<div className="space-y-1.5">
-							<Label htmlFor="end-date">End Date</Label>
+							<Label htmlFor="end-date">{ __( 'End Date', 'sales-pulse' ) }</Label>
 							<Input
 								id="end-date"
 								type="date"
@@ -106,10 +107,10 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 
 					<div className="flex items-center gap-2 pt-1">
 						<Button type="submit" size="sm" disabled={ createCampaign.isPending }>
-							{ createCampaign.isPending ? 'Creating...' : 'Create Campaign' }
+							{ createCampaign.isPending ? __( 'Creating...', 'sales-pulse' ) : __( 'Create Campaign', 'sales-pulse' ) }
 						</Button>
 						<Button type="button" variant="ghost" size="sm" onClick={ onCancel }>
-							Cancel
+							{ __( 'Cancel', 'sales-pulse' ) }
 						</Button>
 					</div>
 				</form>

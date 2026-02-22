@@ -2,6 +2,7 @@
  * Settings Page — minimal plugin configuration.
  */
 import React, { useState, useEffect } from 'react';
+import { __ } from '@wordpress/i18n';
 import { useSettings, useUpdateSettings } from '@DashboardApp/hooks/useSettings';
 import { Card } from '@Components/ui/card';
 import { Button } from '@Components/ui/button';
@@ -56,28 +57,28 @@ export default function SettingsPage() {
 		<div className="space-y-5 max-w-3xl mx-auto">
 			<div className="flex items-center justify-between">
 				<div>
-					<h1 className="text-xl font-semibold mb-2">Settings</h1>
+					<h1 className="text-xl font-semibold mb-2">{ __( 'Settings', 'sales-pulse' ) }</h1>
 					<p className="text-sm text-muted-foreground mt-1">
-						Configure Sales Pulse behavior
+						{ __( 'Configure Sales Pulse behavior', 'sales-pulse' ) }
 					</p>
 				</div>
 				<div className="flex items-center gap-3">
 					{ saved && (
 						<span className="text-sm text-success flex items-center gap-1">
 							<CheckCircle2 className="h-4 w-4" />
-							Saved
+							{ __( 'Saved', 'sales-pulse' ) }
 						</span>
 					) }
 					<Button onClick={ handleSave } disabled={ updateSettings.isPending }>
 						{ updateSettings.isPending ? (
 							<>
 								<RefreshCw className="h-4 w-4 animate-spin" />
-								Saving...
+								{ __( 'Saving...', 'sales-pulse' ) }
 							</>
 						) : (
 							<>
 								<Save className="h-4 w-4" />
-								Save Settings
+								{ __( 'Save Settings', 'sales-pulse' ) }
 							</>
 						) }
 					</Button>
@@ -90,19 +91,19 @@ export default function SettingsPage() {
 					<div className="p-5">
 						<div className="flex items-center gap-2 mb-4">
 							<Globe className="h-4 w-4 text-muted-foreground" />
-							<h3 className="text-sm font-semibold m-0">General</h3>
+							<h3 className="text-sm font-semibold m-0">{ __( 'General', 'sales-pulse' ) }</h3>
 						</div>
 						<div className="space-y-4">
 							<div className="space-y-1.5">
-								<Label>Timezone</Label>
+								<Label>{ __( 'Timezone', 'sales-pulse' ) }</Label>
 								<Input value={ form.timezone || '' } disabled className="bg-muted" />
 								<p className="text-xs text-muted-foreground">
-									Inherited from WordPress settings.
+									{ __( 'Inherited from WordPress settings.', 'sales-pulse' ) }
 								</p>
 							</div>
 
 							<div className="space-y-1.5">
-								<Label>Revenue Basis</Label>
+								<Label>{ __( 'Revenue Basis', 'sales-pulse' ) }</Label>
 								<Select
 									value={ form.revenue_basis || 'net' }
 									onValueChange={ ( val ) => handleChange( 'revenue_basis', val ) }
@@ -111,17 +112,17 @@ export default function SettingsPage() {
 										<SelectValue />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="net">Net Revenue (after discounts & refunds)</SelectItem>
-										<SelectItem value="gross">Gross Revenue (before discounts)</SelectItem>
+										<SelectItem value="net">{ __( 'Net Revenue (after discounts & refunds)', 'sales-pulse' ) }</SelectItem>
+										<SelectItem value="gross">{ __( 'Gross Revenue (before discounts)', 'sales-pulse' ) }</SelectItem>
 									</SelectContent>
 								</Select>
 							</div>
 
 							<div className="space-y-1.5">
-								<Label>Currency</Label>
+								<Label>{ __( 'Currency', 'sales-pulse' ) }</Label>
 								<Input value={ `${ form.currency || '' } (${ form.currency_symbol || '' })` } disabled className="bg-muted" />
 								<p className="text-xs text-muted-foreground">
-									Inherited from WooCommerce settings.
+									{ __( 'Inherited from WooCommerce settings.', 'sales-pulse' ) }
 								</p>
 							</div>
 						</div>
@@ -133,12 +134,12 @@ export default function SettingsPage() {
 					<div className="p-5">
 						<div className="flex items-center gap-2 mb-4">
 							<Clock className="h-4 w-4 text-muted-foreground" />
-							<h3 className="text-sm font-semibold m-0">Snapshot Schedule</h3>
+							<h3 className="text-sm font-semibold m-0">{ __( 'Snapshot Schedule', 'sales-pulse' ) }</h3>
 						</div>
 						<div className="space-y-4">
 							<div className="grid grid-cols-2 gap-4">
 								<div className="space-y-1.5">
-									<Label>Hour (0-23)</Label>
+									<Label>{ __( 'Hour (0-23)', 'sales-pulse' ) }</Label>
 									<Input
 										type="number"
 										min="0"
@@ -148,7 +149,7 @@ export default function SettingsPage() {
 									/>
 								</div>
 								<div className="space-y-1.5">
-									<Label>Minute (0-59)</Label>
+									<Label>{ __( 'Minute (0-59)', 'sales-pulse' ) }</Label>
 									<Input
 										type="number"
 										min="0"
@@ -159,7 +160,7 @@ export default function SettingsPage() {
 								</div>
 							</div>
 							<p className="text-xs text-muted-foreground">
-								Default: 02:10 AM. The nightly snapshot runs at this time in your store timezone.
+								{ __( 'Default: 02:10 AM. The nightly snapshot runs at this time in your store timezone.', 'sales-pulse' ) }
 							</p>
 						</div>
 					</div>
@@ -170,11 +171,11 @@ export default function SettingsPage() {
 					<div className="p-5">
 						<div className="flex items-center gap-2 mb-4">
 							<Mail className="h-4 w-4 text-muted-foreground" />
-							<h3 className="text-sm font-semibold m-0">Email Digest</h3>
+							<h3 className="text-sm font-semibold m-0">{ __( 'Email Digest', 'sales-pulse' ) }</h3>
 						</div>
 						<div className="space-y-4">
 							<div className="flex items-center justify-between">
-								<Label htmlFor="email-toggle">Enable email digest</Label>
+								<Label htmlFor="email-toggle">{ __( 'Enable email digest', 'sales-pulse' ) }</Label>
 								<Switch
 									id="email-toggle"
 									checked={ !! form.email_enabled }
@@ -183,13 +184,13 @@ export default function SettingsPage() {
 							</div>
 							{ form.email_enabled && (
 								<div className="space-y-1.5">
-									<Label htmlFor="email-address">Recipient email</Label>
+									<Label htmlFor="email-address">{ __( 'Recipient email', 'sales-pulse' ) }</Label>
 									<Input
 										id="email-address"
 										type="email"
 										value={ form.email_address || '' }
 										onChange={ ( e ) => handleChange( 'email_address', e.target.value ) }
-										placeholder="admin@yourstore.com"
+										placeholder={ __( 'admin@yourstore.com', 'sales-pulse' ) }
 									/>
 								</div>
 							) }
