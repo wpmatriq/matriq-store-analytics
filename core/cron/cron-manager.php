@@ -11,6 +11,7 @@
 
 namespace EC_Sales_Pulse\Core\Cron;
 
+use EC_Sales_Pulse\Core\Database\DailyStats;
 use EC_Sales_Pulse\Core\Database\SystemState;
 use EC_Sales_Pulse\Core\Services\SnapshotBuilder;
 use EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -100,8 +101,9 @@ class CronManager {
 	}
 
 	/**
-	 * Fallback: if admin visits and yesterday's snapshot is missing, trigger build.
-	 * Only runs once per admin session using a transient guard.
+	 * Fallback: build yesterday + day-before-yesterday on admin visit if missing.
+	 * Ensures the daily view has the minimum 2 snapshots needed for comparison.
+	 * Only runs once per hour using a transient guard.
 	 */
 	public function maybe_fallback_snapshot(): void {
 		// Only check once per hour to avoid repeated queries.
@@ -111,9 +113,16 @@ class CronManager {
 
 		set_transient( 'salespulse_fallback_checked', 1, HOUR_IN_SECONDS );
 
-		$builder = SnapshotBuilder::get_instance();
-		if ( ! $builder->has_yesterday_snapshot() ) {
-			$builder->build_yesterday();
+		$builder     = SnapshotBuilder::get_instance();
+		$daily_stats = DailyStats::get_instance();
+		$timezone    = wp_timezone();
+
+		// Build yesterday and day-before-yesterday (minimum for daily view).
+		for ( $i = 1; $i <= 2; $i++ ) {
+			$date = ( new \DateTime( "-{$i} days", $timezone ) )->format( 'Y-m-d' );
+			if ( ! $daily_stats->has_snapshot( $date ) ) {
+				$builder->build_snapshot( $date );
+			}
 		}
 	}
 

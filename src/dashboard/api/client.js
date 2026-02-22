@@ -78,7 +78,7 @@ export const settingsApi = {
 
 export const systemApi = {
 	readiness: () => apiGet( '/system/readiness' ),
-	triggerSnapshot: ( date ) => apiPost( '/system/snapshot', date ? { date } : {} ),
+	triggerSnapshot: ( params ) => apiPost( '/system/snapshot', params || {} ),
 	backfillStatus: () => apiGet( '/system/backfill' ),
 	triggerBackfill: () => apiPost( '/system/backfill' ),
 };

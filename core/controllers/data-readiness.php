@@ -61,6 +61,13 @@ class DataReadiness extends BaseController {
 						'type'              => 'string',
 						'sanitize_callback' => 'sanitize_text_field',
 					],
+					'days' => [
+						'type'              => 'integer',
+						'default'           => 14,
+						'minimum'           => 1,
+						'maximum'           => 30,
+						'sanitize_callback' => 'absint',
+					],
 				],
 			]
 		);
@@ -119,22 +126,28 @@ class DataReadiness extends BaseController {
 		$checks['snapshot_count']  = $checks['plugin_tables_exist'] ? $daily_stats->count() : 0;
 		$checks['has_data']        = $checks['snapshot_count'] > 0;
 
+		// Dashboard needs at minimum 2 snapshots (yesterday + day-before) for daily view.
+		$checks['dashboard_ready'] = $checks['snapshot_count'] >= 2;
+
 		// 6. Backfill status.
 		$state                         = SystemState::get_instance();
 		$checks['backfill_complete']   = $checks['plugin_tables_exist'] && $state->is_backfill_complete();
 		$checks['last_snapshot_date']  = $checks['plugin_tables_exist'] ? $state->get_last_snapshot_date() : null;
 
-		// Overall readiness.
+		// Overall readiness — require at least 2 snapshots so the dashboard can compare periods.
 		$checks['ready'] = $checks['woocommerce_active']
 			&& $checks['analytics_tables_exist']
 			&& $checks['plugin_tables_exist']
-			&& $checks['has_data'];
+			&& $checks['dashboard_ready'];
 
 		return $this->success( $checks );
 	}
 
 	/**
-	 * Manually trigger a snapshot for a specific date (or yesterday by default).
+	 * Manually trigger a snapshot for a specific date, or build an initial batch.
+	 *
+	 * - If `date` param is provided, builds that single date (existing behavior).
+	 * - Otherwise, builds an initial batch of recent days for dashboard readiness.
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
@@ -144,6 +157,7 @@ class DataReadiness extends BaseController {
 
 		$builder = SnapshotBuilder::get_instance();
 
+		// If a specific date is requested, build just that date.
 		if ( $date ) {
 			$result = $builder->build_snapshot( $date );
 			return $this->success( [
@@ -152,12 +166,11 @@ class DataReadiness extends BaseController {
 			] );
 		}
 
-		// Default: build yesterday.
-		$result = $builder->build_yesterday();
-		return $this->success( [
-			'date'    => 'yesterday',
-			'success' => $result,
-		] );
+		// Otherwise, build an initial batch of days.
+		$days   = $this->get_int_param( $request, 'days', 14 );
+		$result = $builder->build_initial_batch( $days );
+
+		return $this->success( $result );
 	}
 
 	/**

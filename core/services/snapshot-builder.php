@@ -186,6 +186,40 @@ class SnapshotBuilder {
 	}
 
 	/**
+	 * Build snapshots for the last N days (for initial setup).
+	 * Skips dates that already have snapshots.
+	 *
+	 * @param int $days Number of days to build (from yesterday going backwards).
+	 * @return array<string, int> Summary with days_requested and days_built.
+	 */
+	public function build_initial_batch( int $days = 14 ): array {
+		$days        = min( $days, 30 ); // Security cap.
+		$built       = 0;
+		$daily_stats = DailyStats::get_instance();
+		$timezone    = wp_timezone();
+
+		for ( $i = 1; $i <= $days; $i++ ) {
+			$date = ( new \DateTime( "-{$i} days", $timezone ) )->format( 'Y-m-d' );
+
+			if ( ! $daily_stats->has_snapshot( $date ) ) {
+				if ( $this->build_snapshot( $date ) ) {
+					++$built;
+				}
+			}
+		}
+
+		if ( $built > 0 ) {
+			$state = SystemState::get_instance();
+			$state->set_last_snapshot_date( $this->get_yesterday_date() );
+		}
+
+		return [
+			'days_requested' => $days,
+			'days_built'     => $built,
+		];
+	}
+
+	/**
 	 * Check if yesterday's snapshot exists (for cron fallback).
 	 *
 	 * @return bool
