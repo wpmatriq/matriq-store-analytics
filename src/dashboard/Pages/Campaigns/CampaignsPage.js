@@ -101,6 +101,7 @@ export default function CampaignsPage() {
 												size="sm"
 												onClick={ () => deleteCampaign.mutate( campaign.id ) }
 												disabled={ deleteCampaign.isPending }
+												className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
 											>
 												<Trash2 className="h-3.5 w-3.5" />
 											</Button>
