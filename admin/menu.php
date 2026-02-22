@@ -12,9 +12,7 @@
 
 namespace EC_Sales_Pulse\Admin;
 
-use EC_Sales_Pulse\Core\Models\Controller;
 use EC_Sales_Pulse\Inc\Traits\Get_Instance;
-use EC_Sales_Pulse\Inc\Utils\Helper;
 use EC_Sales_Pulse\Inc\Utils\Settings;
 
 defined( 'ABSPATH' ) || exit;
