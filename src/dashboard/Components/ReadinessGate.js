@@ -74,27 +74,27 @@ export function ReadinessGate( { children } ) {
 						/>
 						<CheckItem
 							label="Snapshot data available"
-							checked={ data?.has_data }
+							checked={ data?.dashboard_ready }
 						/>
 					</div>
 
-					{ data?.plugin_tables_exist && ! data?.has_data && data?.orders_exist && (
+					{ data?.plugin_tables_exist && ! data?.dashboard_ready && data?.orders_exist && (
 						<div className="pt-4 space-y-3">
 							<p className="text-sm text-muted-foreground">
-								Your store has orders but no snapshots yet. Build the first snapshot to get started.
+								Your store has orders ready to analyze. This will take a few seconds.
 							</p>
 							<Button
-								onClick={ () => triggerSnapshot.mutate() }
+								onClick={ () => triggerSnapshot.mutate( { days: 14 } ) }
 								disabled={ triggerSnapshot.isPending }
 								className="w-full"
 							>
 								{ triggerSnapshot.isPending ? (
 									<>
 										<RefreshCw className="h-4 w-4 animate-spin" />
-										Building snapshot...
+										Analyzing your recent sales...
 									</>
 								) : (
-									'Build First Snapshot'
+									'Analyze Your Store'
 								) }
 							</Button>
 						</div>
