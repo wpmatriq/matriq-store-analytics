@@ -12,9 +12,7 @@
 
 namespace EC_Sales_Pulse\Admin;
 
-use EC_Sales_Pulse\Core\Models\Controller;
 use EC_Sales_Pulse\Inc\Traits\Get_Instance;
-use EC_Sales_Pulse\Inc\Utils\Helper;
 use EC_Sales_Pulse\Inc\Utils\Settings;
 
 defined( 'ABSPATH' ) || exit;
@@ -94,6 +92,12 @@ class Menu {
 	/**
 	 * Add submenu to admin menu.
 	 *
+	 * v2 Navigation:
+	 * - Overview (default — morning briefing)
+	 * - History (daily explanation list)
+	 * - Campaigns (start/stop active campaigns)
+	 * - Settings (timezone, revenue basis, email digest)
+	 *
 	 * @since x.x.x
 	 */
 	public function register_plugin_menus(): void {
@@ -115,29 +119,19 @@ class Menu {
 
 			add_submenu_page(
 				$parent_slug,
-				__( 'Reports', 'sales-pulse' ),
-				__( 'Reports', 'sales-pulse' ),
+				__( 'History', 'sales-pulse' ),
+				__( 'History', 'sales-pulse' ),
 				$capability,
-				'admin.php?page=' . self::PAGE_ID . '&tab=reports'
+				'admin.php?page=' . self::PAGE_ID . '&tab=history'
 			);
 
-			if ( $this->is_plugin_page() ) {
-				add_submenu_page(
-					$parent_slug,
-					__( '↳ Physical Products', 'sales-pulse' ),
-					__( '↳ Physical Products', 'sales-pulse' ),
-					$capability,
-					'admin.php?page=' . self::PAGE_ID . '&tab=physical-products-reports'
-				);
-				add_submenu_page(
-					$parent_slug,
-					__( '↳ Variable Products', 'sales-pulse' ),
-					__( '↳ Variable Products', 'sales-pulse' ),
-					$capability,
-					'admin.php?page=' . self::PAGE_ID . '&tab=variable-products-reports'
-				);
-			}
-
+			add_submenu_page(
+				$parent_slug,
+				__( 'Campaigns', 'sales-pulse' ),
+				__( 'Campaigns', 'sales-pulse' ),
+				$capability,
+				'admin.php?page=' . self::PAGE_ID . '&tab=campaigns'
+			);
 
 			add_submenu_page(
 				$parent_slug,
@@ -156,7 +150,7 @@ class Menu {
 				[ $this, 'render_main_page' ]
 			);
 
-			$submenu[ $parent_slug ][0][0] = esc_html__( 'Dashboard', 'sales-pulse' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
+			$submenu[ $parent_slug ][0][0] = esc_html__( 'Overview', 'sales-pulse' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
 		}
 	}
 
@@ -169,27 +163,18 @@ class Menu {
 		if ( ! $this->is_plugin_page() ) {
 			return;
 		}
+		$page_id = self::PAGE_ID;
 		echo '<style>
-			#toplevel_page_' . self::PAGE_ID . ' li {
+			#toplevel_page_' . $page_id . ' li {
 				clear: both;
 			}
-			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '"]:after,
-			#toplevel_page_' . self::PAGE_ID . ' a[href^="admin.php?page=' . self::PAGE_ID . '&tab=settings"]:before {
+			#toplevel_page_' . $page_id . ' a[href^="admin.php?page=' . $page_id . '&tab=settings"]:before {
 				content: "";
 				border-bottom: 1px solid hsla(0,0%,100%,.2);
 				display: block;
 				float: left;
 				margin: 8px -15px 8px;
 				width: calc(100% + 26px);
-			}
-			#toplevel_page_' . self::PAGE_ID . ' a[href^="admin.php?page=' . self::PAGE_ID . '&tab=settings"]:before {
-				margin-top: 8px;
-			}
-			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '&tab=reports"]:after,
-			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '&tab=physical-products-reports"]:after,
-			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '&tab=variable-products-reports"]:after,
-			#toplevel_page_' . self::PAGE_ID . ' li:not(:last-child) a[href^="admin.php?page=' . self::PAGE_ID . '&tab=settings"]:after {
-				content: none;
 			}
 		</style>';
 	}
@@ -224,6 +209,8 @@ class Menu {
 				[
 					'dashboard_url'     => admin_url( 'admin.php?page=' . self::PAGE_ID ),
 					'ajax_url'          => admin_url( 'admin-ajax.php' ),
+					'rest_url'          => esc_url_raw( rest_url( 'sales-pulse/v2/' ) ),
+					'rest_nonce'        => wp_create_nonce( 'wp_rest' ),
 					'version'           => EC_Sales_Pulse_VER,
 					'update_nonce'      => wp_create_nonce( 'wc_sma_update_admin_setting' ),
 					'home_slug'         => self::PAGE_ID,
@@ -246,7 +233,7 @@ class Menu {
 				'version'      => EC_Sales_Pulse_VER,
 			];
 
-			$script_dep = array_merge( $script_info['dependencies'], [ 'wp-plugins', 'wp-edit-site', 'wp-data', 'updates' ] );
+			$script_dep = $script_info['dependencies'];
 
 			wp_enqueue_script(
 				$handle,

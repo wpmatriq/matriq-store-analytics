@@ -11,7 +11,14 @@ namespace EC_Sales_Pulse;
 use EC_Sales_Pulse\Admin\API;
 use EC_Sales_Pulse\Admin\Menu;
 use EC_Sales_Pulse\Admin\Notices;
-use EC_Sales_Pulse\Core\Routes;
+use EC_Sales_Pulse\Core\Controllers\CampaignsController;
+use EC_Sales_Pulse\Core\Controllers\DataReadiness;
+use EC_Sales_Pulse\Core\Controllers\History;
+use EC_Sales_Pulse\Core\Controllers\Overview;
+use EC_Sales_Pulse\Core\Controllers\SettingsController;
+use EC_Sales_Pulse\Core\Cron\CronManager;
+use EC_Sales_Pulse\Core\Database\Schema;
+use EC_Sales_Pulse\Core\Hooks\OrderHooks;
 use EC_Sales_Pulse\Inc\Utils\Maintenance;
 
 /**
@@ -303,6 +310,9 @@ class WC_SMA_Loader {
 		update_option( '__wc_sma_do_redirect', true );
 
 		flush_rewrite_rules();
+
+		// Create plugin database tables.
+		Schema::get_instance()->install();
 	}
 
 	/**
@@ -311,6 +321,8 @@ class WC_SMA_Loader {
 	 * @since x.x.x
 	 */
 	public function deactivation_actions(): void {
+		// Unschedule all plugin cron jobs (preserve tables on deactivation).
+		CronManager::unschedule_all();
 	}
 
 	/**
@@ -323,11 +335,26 @@ class WC_SMA_Loader {
 		/* Maintenance init */
 		Maintenance::get_instance();
 
-		/* Load Router for API. */
-		Routes::get_instance();
-
 		/* API init */
 		API::get_instance();
+
+		/* --- Sales Pulse v2: Revenue Diagnosis Engine --- */
+
+		// Database schema check (auto-upgrade on version mismatch).
+		Schema::get_instance()->maybe_upgrade();
+
+		// WooCommerce order hooks (dirty date tracking).
+		OrderHooks::get_instance();
+
+		// Cron job manager (nightly snapshot + backfill).
+		CronManager::get_instance();
+
+		// REST API v2 controllers.
+		Overview::get_instance();
+		History::get_instance();
+		CampaignsController::get_instance();
+		SettingsController::get_instance();
+		DataReadiness::get_instance();
 
 		if ( is_admin() ) {
 			/* Admin Notices init */

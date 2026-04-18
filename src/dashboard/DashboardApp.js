@@ -1,14 +1,13 @@
+/**
+ * Sales Pulse v2 — Dashboard entry point.
+ */
 import { mountComponent } from '@Utils/mountComponent';
-import setInitialState from '@Store/setInitialState';
-import Wrapper from './Wrapper';
+import App from './App';
 
 // Import main CSS.
 import './MainApp.scss';
 
-// Set initial store setup according to the app.
-setInitialState();
-
-// Mount the main app component.
+// Mount the app.
 if ( document.getElementById( 'wc-sma-main-page--wrapper' ) ) {
-	mountComponent( '#wc-sma-main-page--wrapper', <Wrapper /> );
+	mountComponent( '#wc-sma-main-page--wrapper', <App /> );
 }

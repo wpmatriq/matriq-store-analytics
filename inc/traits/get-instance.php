@@ -30,9 +30,9 @@ trait Get_Instance {
 	 * @return object initialized object of class.
 	 */
 	public static function get_instance() {
-		if ( self::$instance === null ) {
-			self::$instance = new self();
+		if ( null === static::$instance || ! ( static::$instance instanceof static ) ) {
+			static::$instance = new static();
 		}
-		return self::$instance;
+		return static::$instance;
 	}
 }
