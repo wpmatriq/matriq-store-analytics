@@ -1,133 +1,196 @@
 /**
- * History Page — daily diagnosis log.
+ * History Page — 34 days of pulse readings.
  *
- * Paginated table of daily revenue explanations, building trust
- * through a visible track record.
+ * Paginated log of daily revenue diagnoses with change deltas and status flags.
+ * Each row renders a trend-icon tile, date, diagnosis headline, change %,
+ * revenue, orders, and a status pill. Export CSV is a placeholder until the
+ * backend supports exports (see plan resolved decision #5).
  */
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { __, sprintf } from '@wordpress/i18n';
+import { AlertTriangle, Download } from 'lucide-react';
 import { useHistory } from '@DashboardApp/hooks/useHistory';
-import { Card } from '@Components/ui/card';
-import { SeverityBadge } from '@Components/SeverityBadge';
-import { Button } from '@Components/ui/button';
-import { formatDate, formatCurrency, formatPercent, formatNumber } from '@Utils/formatters';
-import classnames from '@Utils/classnames';
-import { RefreshCw, ChevronLeft, ChevronRight, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { PageHeader } from '@Components/pulse/PageHeader';
+import { InsightCard } from '@Components/pulse/InsightCard';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from '@Components/ui/tooltip';
+import { HistoryRow } from './HistoryRow';
+import { HistoryPager } from './HistoryPager';
 
-const directionIcons = {
-	growth: <TrendingUp className="h-4 w-4 text-success" />,
-	decline: <TrendingDown className="h-4 w-4 text-destructive" />,
-	stable: <Minus className="h-4 w-4 text-muted-foreground" />,
-};
+const EASE = [ 0.16, 1, 0.3, 1 ];
 
 export default function HistoryPage() {
 	const [ page, setPage ] = useState( 1 );
-	const { data, isLoading } = useHistory( page );
+	const { data, isLoading, error, refetch } = useHistory( page );
+
+	const total = data?.total || 0;
+	const totalPages = data?.total_pages || 0;
+	const items = data?.items || [];
 
 	return (
-		<div className="space-y-5">
-			<div>
-				<h1 className="text-xl font-semibold mb-2">{ __( 'History', 'sales-pulse' ) }</h1>
-				<p className="text-sm text-muted-foreground mt-1">
-					{ __( 'Daily revenue diagnosis log', 'sales-pulse' ) }
-				</p>
-			</div>
-
-			<Card className="border border-solid overflow-hidden">
-				{ isLoading ? (
-					<div className="flex items-center justify-center py-16">
-						<RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
-					</div>
-				) : ! data?.items?.length ? (
-					<div className="text-center py-16 text-muted-foreground text-sm">
-						{ __( 'No history data available yet. Snapshots will appear here after the first nightly run.', 'sales-pulse' ) }
-					</div>
-				) : (
-					<table className="w-full text-sm">
-						<thead>
-							<tr className="border-b border-solid bg-muted/40">
-								<th className="w-10 px-3 py-2.5"></th>
-								<th className="text-left font-medium text-xs text-muted-foreground px-4 py-2.5 w-24">{ __( 'Date', 'sales-pulse' ) }</th>
-								<th className="text-left font-medium text-xs text-muted-foreground px-4 py-2.5">{ __( 'Diagnosis', 'sales-pulse' ) }</th>
-								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-24">{ __( 'Change', 'sales-pulse' ) }</th>
-								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-24">{ __( 'Revenue', 'sales-pulse' ) }</th>
-								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-20">{ __( 'Orders', 'sales-pulse' ) }</th>
-								<th className="text-right font-medium text-xs text-muted-foreground px-4 py-2.5 w-28">{ __( 'Status', 'sales-pulse' ) }</th>
-							</tr>
-						</thead>
-						<tbody className="divide-y">
-							{ data.items.map( ( item ) => (
-								<HistoryRow key={ item.date } item={ item } />
-							) ) }
-						</tbody>
-					</table>
+		<motion.div
+			initial={ { opacity: 0 } }
+			animate={ { opacity: 1 } }
+			transition={ { duration: 0.4, ease: EASE } }
+			className="space-y-6"
+		>
+			<PageHeader
+				eyebrow={ __( 'Diagnosis log', 'sales-pulse' ) }
+				title={
+					total > 0
+						? sprintf(
+							/* translators: %d: total days */
+							__( '%d days of pulse readings.', 'sales-pulse' ),
+							total
+						  )
+						: __( 'Your diagnosis log.', 'sales-pulse' )
+				}
+				subtitle={ __(
+					'A complete record of daily revenue diagnoses, change deltas, and status flags.',
+					'sales-pulse'
 				) }
-			</Card>
+				actions={ <ExportCsvButton /> }
+			/>
 
-			{ /* Pagination */ }
-			{ data?.total_pages > 1 && (
-				<div className="flex items-center justify-between">
-					<p className="text-xs text-muted-foreground">
-						{ sprintf(
-							/* translators: %1$d: current page, %2$d: total pages, %3$d: total days */
-							__( 'Page %1$d of %2$d (%3$d days)', 'sales-pulse' ),
-							page,
-							data.total_pages,
-							data.total
-						) }
-					</p>
-					<div className="flex gap-2">
-						<Button
-							variant="outline"
-							size="sm"
-							disabled={ page <= 1 }
-							onClick={ () => setPage( ( p ) => p - 1 ) }
+			{ error ? (
+				<InsightCard
+					icon={ <AlertTriangle className="h-4 w-4" /> }
+					title={ __( 'Could not load history', 'sales-pulse' ) }
+					accent="warning"
+				>
+					<div className="flex flex-col items-start gap-4">
+						<p className="m-0 text-sm text-muted-foreground">
+							{ __(
+								'We hit an error fetching the diagnosis log. Retry, or refresh the page.',
+								'sales-pulse'
+							) }
+						</p>
+						<button
+							type="button"
+							onClick={ () => refetch() }
+							className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 						>
-							<ChevronLeft className="h-4 w-4" />
-						</Button>
-						<Button
-							variant="outline"
-							size="sm"
-							disabled={ page >= data.total_pages }
-							onClick={ () => setPage( ( p ) => p + 1 ) }
-						>
-							<ChevronRight className="h-4 w-4" />
-						</Button>
+							{ __( 'Retry', 'sales-pulse' ) }
+						</button>
 					</div>
+				</InsightCard>
+			) : (
+				<div className="overflow-hidden rounded-2xl border border-solid border-border bg-card shadow-sm">
+					<div className="overflow-x-auto">
+						<table className="w-full border-collapse">
+							<thead>
+								<tr className="bg-muted/30 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+									<th className="w-14 px-4 py-3 text-left">
+										{ __( 'Trend', 'sales-pulse' ) }
+									</th>
+									<th className="w-28 px-4 py-3 text-left">
+										{ __( 'Date', 'sales-pulse' ) }
+									</th>
+									<th className="px-4 py-3 text-left">
+										{ __( 'Diagnosis', 'sales-pulse' ) }
+									</th>
+									<th className="w-24 px-4 py-3 text-right">
+										{ __( 'Change', 'sales-pulse' ) }
+									</th>
+									<th className="w-28 px-4 py-3 text-right">
+										{ __( 'Revenue', 'sales-pulse' ) }
+									</th>
+									<th className="w-20 px-4 py-3 text-right">
+										{ __( 'Orders', 'sales-pulse' ) }
+									</th>
+									<th className="w-36 px-4 py-3 text-right">
+										{ __( 'Status', 'sales-pulse' ) }
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{ isLoading ? (
+									Array.from( { length: 7 } ).map( ( _, index ) => (
+										<HistoryRowSkeleton key={ index } />
+									) )
+								) : items.length === 0 ? (
+									<tr>
+										<td
+											colSpan={ 7 }
+											className="px-6 py-16 text-center text-sm text-muted-foreground"
+										>
+											{ __(
+												'No history data available yet. Snapshots will appear here after the first nightly run.',
+												'sales-pulse'
+											) }
+										</td>
+									</tr>
+								) : (
+									items.map( ( item ) => (
+										<HistoryRow key={ item.date } item={ item } />
+									) )
+								) }
+							</tbody>
+						</table>
+					</div>
+					<HistoryPager
+						page={ page }
+						totalPages={ totalPages }
+						total={ total }
+						onPrev={ () => setPage( ( p ) => Math.max( 1, p - 1 ) ) }
+						onNext={ () => setPage( ( p ) => Math.min( totalPages, p + 1 ) ) }
+					/>
 				</div>
 			) }
-		</div>
+		</motion.div>
 	);
 }
 
-function HistoryRow( { item } ) {
+function ExportCsvButton() {
 	return (
-		<tr className="hover:bg-muted/30 transition-colors">
-			<td className="px-3 py-3 text-center">
-				{ directionIcons[ item.direction ] || directionIcons.stable }
+		<TooltipProvider delayDuration={ 200 }>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<button
+						type="button"
+						disabled
+						className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-solid border-border bg-surface px-4 py-1.5 text-sm font-medium text-muted-foreground opacity-70"
+					>
+						<Download className="h-3.5 w-3.5" />
+						{ __( 'Export CSV', 'sales-pulse' ) }
+					</button>
+				</TooltipTrigger>
+				<TooltipContent>
+					{ __( 'Coming soon', 'sales-pulse' ) }
+				</TooltipContent>
+			</Tooltip>
+		</TooltipProvider>
+	);
+}
+
+function HistoryRowSkeleton() {
+	return (
+		<tr className="border-t border-solid border-border/60">
+			<td className="px-4 py-3.5">
+				<span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted shimmer" />
 			</td>
-			<td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
-				{ formatDate( item.date ) }
+			<td className="px-4 py-3.5">
+				<span className="block h-3 w-20 rounded bg-muted shimmer" />
 			</td>
-			<td className="px-4 py-3">
-				<span className="truncate">{ item.headline }</span>
+			<td className="px-4 py-3.5">
+				<span className="block h-3 w-full rounded bg-muted shimmer" />
 			</td>
-			<td className="px-4 py-3 text-right whitespace-nowrap">
-				<span className={ classnames(
-					'font-medium tabular-nums',
-					item.change_percent > 0 ? 'text-success' : item.change_percent < 0 ? 'text-destructive' : 'text-muted-foreground'
-				) }>
-					{ formatPercent( item.change_percent ) }
-				</span>
+			<td className="px-4 py-3.5">
+				<span className="block h-3 w-16 rounded bg-muted shimmer" />
 			</td>
-			<td className="px-4 py-3 text-right text-muted-foreground tabular-nums whitespace-nowrap">
-				{ formatCurrency( item.revenue ) }
+			<td className="px-4 py-3.5">
+				<span className="block h-3 w-20 rounded bg-muted shimmer" />
 			</td>
-			<td className="px-4 py-3 text-right text-muted-foreground tabular-nums whitespace-nowrap">
-				{ formatNumber( item.orders ) }
+			<td className="px-4 py-3.5">
+				<span className="block h-3 w-12 rounded bg-muted shimmer" />
 			</td>
-			<td className="px-4 py-3 text-right">
-				<SeverityBadge severity={ item.severity } />
+			<td className="px-4 py-3.5">
+				<span className="ml-auto block h-6 w-24 rounded-full bg-muted shimmer" />
 			</td>
 		</tr>
 	);

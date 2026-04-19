@@ -11,6 +11,7 @@
 
 namespace EC_Sales_Pulse\Core\Controllers;
 
+use EC_Sales_Pulse\Core\Controllers\SettingsController;
 use EC_Sales_Pulse\Core\Database\Campaigns;
 use EC_Sales_Pulse\Core\Database\DailyStats;
 use EC_Sales_Pulse\Core\Services\ActionEngine;
@@ -88,13 +89,14 @@ class History extends BaseController {
 		$diagnosis_engine = DiagnosisEngine::get_instance();
 		$action_engine    = ActionEngine::get_instance();
 		$campaigns_db     = Campaigns::get_instance();
+		$sensitivity      = (string) SettingsController::get( 'diagnosis_sensitivity', 'balanced' );
 
 		$items = [];
 		foreach ( $rows as $row ) {
 			$prev_date = gmdate( 'Y-m-d', strtotime( $row->stat_date . ' -1 day' ) );
 			$prev_row  = $daily_stats->get_by_date( $prev_date );
 
-			$diagnosis      = $diagnosis_engine->diagnose( $row, $prev_row );
+			$diagnosis      = $diagnosis_engine->diagnose( $row, $prev_row, $sensitivity );
 			$campaign        = $campaigns_db->get_active_for_date( $row->stat_date );
 			$recommendation = $action_engine->recommend( $diagnosis, $campaign );
 

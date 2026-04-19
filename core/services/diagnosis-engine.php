@@ -21,7 +21,7 @@ class DiagnosisEngine {
 	use Get_Instance;
 
 	/**
-	 * Minimum revenue change percentage to trigger diagnosis.
+	 * Minimum revenue change percentage to trigger diagnosis (base; scaled by sensitivity).
 	 *
 	 * @var float
 	 */
@@ -35,13 +35,39 @@ class DiagnosisEngine {
 	const MIN_REVENUE_THRESHOLD = 1.0;
 
 	/**
+	 * Multipliers applied to CHANGE_THRESHOLD for each sensitivity level.
+	 *
+	 * Calm    — larger threshold, only flag major shifts.
+	 * Balanced — base threshold (5%).
+	 * Vigilant — tighter threshold, surface smaller movements.
+	 *
+	 * @var array<string, float>
+	 */
+	const SENSITIVITY_MULTIPLIERS = [
+		'calm'     => 1.5,
+		'balanced' => 1.0,
+		'vigilant' => 0.6,
+	];
+
+	/**
+	 * Active change threshold. Updated per call via {@see diagnose()}.
+	 *
+	 * @var float
+	 */
+	private $change_threshold = self::CHANGE_THRESHOLD;
+
+	/**
 	 * Run full diagnosis comparing current vs previous period.
 	 *
-	 * @param object $current  Current period metrics (from daily_stats or aggregated).
-	 * @param object $previous Previous period metrics.
+	 * @param object $current     Current period metrics (from daily_stats or aggregated).
+	 * @param object $previous    Previous period metrics.
+	 * @param string $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
 	 * @return array<string, mixed> Diagnosis result.
 	 */
-	public function diagnose( $current, $previous ): array {
+	public function diagnose( $current, $previous, string $sensitivity = 'balanced' ): array {
+		$multiplier             = self::SENSITIVITY_MULTIPLIERS[ $sensitivity ] ?? 1.0;
+		$this->change_threshold = self::CHANGE_THRESHOLD * $multiplier;
+
 		$current  = $this->normalize_metrics( $current );
 		$previous = $this->normalize_metrics( $previous );
 
@@ -89,7 +115,7 @@ class DiagnosisEngine {
 		$direction             = $this->get_direction( $revenue_change_pct );
 
 		// If change is below threshold, report stable.
-		if ( abs( $revenue_change_pct ) < self::CHANGE_THRESHOLD ) {
+		if ( abs( $revenue_change_pct ) < $this->change_threshold ) {
 			return $this->build_result(
 				round( $revenue_change_pct, 1 ),
 				round( $revenue_change_amount, 2 ),
@@ -376,10 +402,10 @@ class DiagnosisEngine {
 	 * @return string growth, decline, or stable.
 	 */
 	private function get_direction( float $pct_change ): string {
-		if ( $pct_change > self::CHANGE_THRESHOLD ) {
+		if ( $pct_change > $this->change_threshold ) {
 			return 'growth';
 		}
-		if ( $pct_change < -self::CHANGE_THRESHOLD ) {
+		if ( $pct_change < -$this->change_threshold ) {
 			return 'decline';
 		}
 		return 'stable';

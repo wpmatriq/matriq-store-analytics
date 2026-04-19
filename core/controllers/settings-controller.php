@@ -34,12 +34,20 @@ class SettingsController extends BaseController {
 	 * @var array<string, mixed>
 	 */
 	const DEFAULTS = [
-		'revenue_basis'  => 'net',          // 'net' or 'gross'.
-		'snapshot_hour'  => 2,              // 0-23.
-		'snapshot_min'   => 10,             // 0-59.
-		'email_enabled'  => false,
-		'email_address'  => '',             // Defaults to admin email.
+		'revenue_basis'         => 'net',          // 'net' or 'gross'.
+		'snapshot_hour'         => 2,              // 0-23.
+		'snapshot_min'          => 10,             // 0-59.
+		'email_enabled'         => false,
+		'email_address'         => '',             // Defaults to admin email.
+		'diagnosis_sensitivity' => 'balanced',     // 'calm' | 'balanced' | 'vigilant'.
 	];
+
+	/**
+	 * Allowed values for the diagnosis_sensitivity setting.
+	 *
+	 * @var string[]
+	 */
+	const SENSITIVITY_VALUES = [ 'calm', 'balanced', 'vigilant' ];
 
 	/**
 	 * Register routes.
@@ -90,6 +98,11 @@ class SettingsController extends BaseController {
 						'type'              => 'string',
 						'sanitize_callback' => 'sanitize_email',
 					],
+					'diagnosis_sensitivity' => [
+						'type'              => 'string',
+						'enum'              => self::SENSITIVITY_VALUES,
+						'sanitize_callback' => 'sanitize_text_field',
+					],
 				],
 			]
 		);
@@ -132,6 +145,9 @@ class SettingsController extends BaseController {
 					continue;
 				}
 				if ( $key === 'email_address' && ! empty( $value ) && ! is_email( $value ) ) {
+					continue;
+				}
+				if ( $key === 'diagnosis_sensitivity' && ! in_array( $value, self::SENSITIVITY_VALUES, true ) ) {
 					continue;
 				}
 

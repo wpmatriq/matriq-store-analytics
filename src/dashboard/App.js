@@ -1,12 +1,14 @@
 /**
  * Sales Pulse v2 — App shell.
  *
- * Provides QueryClient, ReadinessGate, routing, and top-level layout.
+ * Provides QueryClient, PulseShell layout, ErrorBoundary, ReadinessGate,
+ * and tab-based routing driven by `?tab=` query parameter.
  */
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReadinessGate } from '@Components/ReadinessGate';
-import TopHeader from '@Components/TopHeader';
+import ErrorBoundary from '@Components/ErrorBoundary';
+import { PulseShell } from '@Components/pulse/PulseShell';
 import OverviewPage from '@DashboardApp/pages/Overview/OverviewPage';
 import HistoryPage from '@DashboardApp/pages/History/HistoryPage';
 import CampaignsPage from '@DashboardApp/pages/Campaigns/CampaignsPage';
@@ -53,14 +55,13 @@ export default function App() {
 
 	return (
 		<QueryClientProvider client={ queryClient }>
-			<div className="wc-sma-application-main-container">
-				<TopHeader activeTab={ activeTab } />
-				<div className="px-4 py-6 max-w-7xl mx-auto">
+			<PulseShell activeTab={ activeTab }>
+				<ErrorBoundary>
 					<ReadinessGate>
 						<PageRouter tab={ activeTab } />
 					</ReadinessGate>
-				</div>
-			</div>
+				</ErrorBoundary>
+			</PulseShell>
 		</QueryClientProvider>
 	);
 }

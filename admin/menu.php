@@ -12,6 +12,7 @@
 
 namespace EC_Sales_Pulse\Admin;
 
+use EC_Sales_Pulse\Core\Database\SystemState;
 use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 use EC_Sales_Pulse\Inc\Utils\Settings;
 
@@ -204,6 +205,15 @@ class Menu {
 		if ( is_admin() && ( $current_page === self::PAGE_ID || $current_page === 'sales-pulse-onboarding' ) ) {
 			wp_enqueue_media();
 
+			$last_snapshot_at = null;
+			if ( class_exists( SystemState::class ) ) {
+				$last_snapshot_at = SystemState::get_instance()->get_last_snapshot_timestamp();
+				if ( $last_snapshot_at ) {
+					// MySQL datetime (local) → ISO8601 so JS can parse it unambiguously.
+					$last_snapshot_at = mysql2date( 'c', $last_snapshot_at, false );
+				}
+			}
+
 			$localized_data = apply_filters(
 				'portal_localized_admin_data',
 				[
@@ -215,6 +225,8 @@ class Menu {
 					'update_nonce'      => wp_create_nonce( 'wc_sma_update_admin_setting' ),
 					'home_slug'         => self::PAGE_ID,
 					'settings'          => Settings::get_wc_sma_settings(),
+					'last_snapshot_at'  => $last_snapshot_at,
+					'currency'          => function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD',
 					'pro_available'     => wc_sma_is_pro_active(),
 					'pro_version'       => wc_sma_is_pro_active() ? EC_Sales_Pulse_PRO_VER : 0,
 					'upgrade_link'      => EC_Sales_Pulse_UPGRADE_LINK,

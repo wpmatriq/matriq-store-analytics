@@ -1,118 +1,146 @@
 /**
- * Campaigns Page — manage campaign context.
+ * Campaigns Page — mark what's running so diagnosis adjusts.
  *
- * Campaigns affect how the diagnosis engine interprets changes
- * (suppress false alarms during sales/launches).
+ * Active campaigns tell the diagnosis engine to suppress false alarms during
+ * sales, launches, and retention pushes. Users create/end/delete campaigns
+ * here; the form slides in via AnimatePresence.
  */
 import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { __ } from '@wordpress/i18n';
-import { useCampaigns, useEndCampaign, useDeleteCampaign } from '@DashboardApp/hooks/useCampaigns';
-import { Card, CardContent, CardHeader, CardTitle } from '@Components/ui/card';
-import { Button } from '@Components/ui/button';
-import { Badge } from '@Components/ui/badge';
-import { formatDate } from '@Utils/formatters';
+import { AlertTriangle, Megaphone, Plus } from 'lucide-react';
+import {
+	useCampaigns,
+	useDeleteCampaign,
+	useEndCampaign,
+} from '@DashboardApp/hooks/useCampaigns';
+import { PageHeader } from '@Components/pulse/PageHeader';
+import { InsightCard } from '@Components/pulse/InsightCard';
 import { CampaignForm } from './CampaignForm';
-import { RefreshCw, Plus, Megaphone, StopCircle, Trash2 } from 'lucide-react';
+import { CampaignRow } from './CampaignRow';
 
-const goalLabels = {
-	orders: __( 'Increase Orders', 'sales-pulse' ),
-	aov: __( 'Increase AOV', 'sales-pulse' ),
-	clearance: __( 'Clearance Sale', 'sales-pulse' ),
-	launch: __( 'Product Launch', 'sales-pulse' ),
-};
+const EASE = [ 0.16, 1, 0.3, 1 ];
 
 export default function CampaignsPage() {
 	const [ showForm, setShowForm ] = useState( false );
-	const { data: campaigns, isLoading } = useCampaigns();
+	const { data: campaigns, isLoading, error, refetch } = useCampaigns();
 	const endCampaign = useEndCampaign();
 	const deleteCampaign = useDeleteCampaign();
 
+	const hasCampaigns = Array.isArray( campaigns ) && campaigns.length > 0;
+
 	return (
-		<div className="space-y-6">
-			<div className="flex items-center justify-between">
-				<div>
-					<h1 className="text-xl font-semibold mb-2">{ __( 'Campaigns', 'sales-pulse' ) }</h1>
-					<p className="text-sm text-muted-foreground mt-1">
-						{ __( 'Mark active campaigns to suppress false alarms in diagnosis', 'sales-pulse' ) }
-					</p>
-				</div>
-				<Button onClick={ () => setShowForm( ! showForm ) } size="sm">
-					<Plus className="h-4 w-4 mr-1" />
-					{ __( 'New Campaign', 'sales-pulse' ) }
-				</Button>
-			</div>
+		<motion.div
+			initial={ { opacity: 0 } }
+			animate={ { opacity: 1 } }
+			transition={ { duration: 0.4, ease: EASE } }
+			className="space-y-8"
+		>
+			<PageHeader
+				eyebrow={ __( 'Campaign tracker', 'sales-pulse' ) }
+				title={ __( "Mark what's running.", 'sales-pulse' ) }
+				subtitle={ __(
+					'When a campaign is active, Sales Pulse adjusts diagnosis to suppress false alarms and credit lift correctly.',
+					'sales-pulse'
+				) }
+				actions={
+					! showForm && (
+						<button
+							type="button"
+							onClick={ () => setShowForm( true ) }
+							className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
+						>
+							<Plus className="h-4 w-4" />
+							{ __( 'New campaign', 'sales-pulse' ) }
+						</button>
+					)
+				}
+			/>
 
-			{ showForm && (
-				<CampaignForm onSuccess={ () => setShowForm( false ) } onCancel={ () => setShowForm( false ) } />
-			) }
+			<AnimatePresence initial={ false }>
+				{ showForm && (
+					<CampaignForm
+						onSuccess={ () => setShowForm( false ) }
+						onCancel={ () => setShowForm( false ) }
+					/>
+				) }
+			</AnimatePresence>
 
-			{ isLoading ? (
-				<div className="flex items-center justify-center py-16">
-					<RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
-				</div>
-			) : ! campaigns?.length ? (
-				<Card className="border border-solid">
-					<CardContent className="py-12 text-center">
-						<Megaphone className="h-10 w-10 text-muted-foreground/40 mx-auto mb-3" />
-						<p className="text-sm text-muted-foreground">
-							{ __( 'No campaigns yet. Create one when you run a sale, launch a product, or change pricing.', 'sales-pulse' ) }
+			{ error ? (
+				<InsightCard
+					icon={ <AlertTriangle className="h-4 w-4" /> }
+					title={ __( 'Could not load campaigns', 'sales-pulse' ) }
+					accent="warning"
+				>
+					<div className="flex flex-col items-start gap-4">
+						<p className="m-0 text-sm text-muted-foreground">
+							{ __(
+								'We hit an error fetching your campaigns. Retry, or refresh the page.',
+								'sales-pulse'
+							) }
 						</p>
-					</CardContent>
-				</Card>
+						<button
+							type="button"
+							onClick={ () => refetch() }
+							className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
+						>
+							{ __( 'Retry', 'sales-pulse' ) }
+						</button>
+					</div>
+				</InsightCard>
 			) : (
-				<div className="space-y-3">
-					{ campaigns.map( ( campaign ) => (
-						<Card key={ campaign.id } className="border border-solid">
-							<CardContent className="p-4">
-								<div className="flex items-center justify-between">
-									<div className="space-y-1">
-										<div className="flex items-center gap-2">
-											<span className="font-medium text-sm">{ campaign.name }</span>
-											{ campaign.is_active ? (
-												<Badge className="text-xs bg-success/10 text-success border-success/20 border-solid">
-													{ __( 'Active', 'sales-pulse' ) }
-												</Badge>
-											) : (
-												<Badge variant="outline" className="text-xs border-solid">
-													{ __( 'Ended', 'sales-pulse' ) }
-												</Badge>
-											) }
-										</div>
-										<div className="flex items-center gap-3 text-xs text-muted-foreground">
-											<span>{ goalLabels[ campaign.goal ] || campaign.goal }</span>
-											<span>{ formatDate( campaign.start_date ) } — { formatDate( campaign.end_date ) }</span>
-										</div>
-									</div>
-									<div className="flex items-center gap-2">
-										{ campaign.is_active && (
-											<Button
-												variant="outline"
-												size="sm"
-												onClick={ () => endCampaign.mutate( campaign.id ) }
-												disabled={ endCampaign.isPending }
-											>
-												<StopCircle className="h-3.5 w-3.5 mr-1" />
-												{ __( 'End', 'sales-pulse' ) }
-											</Button>
-										) }
-										{ ! campaign.is_active && (
-											<Button
-												variant="ghost"
-												size="sm"
-												onClick={ () => deleteCampaign.mutate( campaign.id ) }
-												disabled={ deleteCampaign.isPending }
-												className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-											>
-												<Trash2 className="h-3.5 w-3.5" />
-											</Button>
-										) }
-									</div>
-								</div>
-							</CardContent>
-						</Card>
-					) ) }
-				</div>
+				<section className="space-y-4">
+					<h2 className="m-0 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+						{ __( 'Active & recent', 'sales-pulse' ) }
+					</h2>
+
+					{ isLoading ? (
+						<div className="space-y-3">
+							{ Array.from( { length: 3 } ).map( ( _, index ) => (
+								<CampaignRowSkeleton key={ index } />
+							) ) }
+						</div>
+					) : hasCampaigns ? (
+						<div className="space-y-3">
+							{ campaigns.map( ( campaign ) => (
+								<CampaignRow
+									key={ campaign.id }
+									campaign={ campaign }
+									onEnd={ ( id ) => endCampaign.mutate( id ) }
+									onDelete={ ( id ) => deleteCampaign.mutate( id ) }
+									endPending={ endCampaign.isPending }
+									deletePending={ deleteCampaign.isPending }
+								/>
+							) ) }
+						</div>
+					) : (
+						<InsightCard
+							icon={ <Megaphone className="h-4 w-4" /> }
+							title={ __( 'No campaigns yet', 'sales-pulse' ) }
+							emptyTitle={ __( 'Nothing running right now', 'sales-pulse' ) }
+							emptyDescription={ __(
+								"Create one when you run a sale, launch a product, or change pricing — we'll adjust diagnosis during the campaign window.",
+								'sales-pulse'
+							) }
+						/>
+					) }
+				</section>
 			) }
+		</motion.div>
+	);
+}
+
+function CampaignRowSkeleton() {
+	return (
+		<div className="rounded-2xl border border-solid border-border bg-card p-5 shadow-sm">
+			<div className="flex items-center gap-3">
+				<span className="h-10 w-10 shrink-0 rounded-xl bg-muted shimmer" />
+				<div className="flex-1 space-y-2">
+					<span className="block h-4 w-1/3 rounded bg-muted shimmer" />
+					<span className="block h-3 w-1/2 rounded bg-muted shimmer" />
+				</div>
+				<span className="h-8 w-28 rounded-full bg-muted shimmer" />
+			</div>
 		</div>
 	);
 }

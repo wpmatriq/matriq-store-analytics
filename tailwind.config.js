@@ -1,114 +1,152 @@
+/**
+ * Tailwind configuration — Sales Pulse dashboard.
+ *
+ * Tokens are authored in SCSS (`src/dashboard/design-tokens.scss`) as OKLch
+ * CSS variables. Tailwind theme values below reference `var(--*)` directly so
+ * any change in the SCSS ripples through utility classes without editing here.
+ */
 module.exports = {
 	content: [ './src/dashboard/**/*.{js,jsx,ts,tsx}' ],
 	theme: {
 		container: {
 			center: true,
-			padding: "2rem",
+			padding: '2rem',
 			screens: {
-				"2xl": "1400px",
+				'2xl': '1400px',
 			},
 		},
 		extend: {
 			colors: {
-				border: "hsl(var(--border))",
-				input: "hsl(var(--input))",
-				ring: "hsl(var(--ring))",
-				background: "hsl(var(--background))",
-				foreground: "hsl(var(--foreground))",
+				border: 'var(--border)',
+				input: 'var(--input)',
+				ring: 'var(--ring)',
+				background: 'var(--background)',
+				foreground: 'var(--foreground)',
+				canvas: 'var(--canvas)',
+				surface: {
+					DEFAULT: 'var(--surface)',
+					elevated: 'var(--surface-elevated)',
+				},
+				ink: 'var(--ink)',
+				pulse: {
+					DEFAULT: 'var(--pulse)',
+					foreground: 'var(--pulse-foreground)',
+				},
 				primary: {
-				DEFAULT: "hsl(var(--primary))",
-				foreground: "hsl(var(--primary-foreground))",
-				light: "hsl(var(--primary-light))",
-				glow: "hsl(var(--primary-glow))",
+					DEFAULT: 'var(--primary)',
+					foreground: 'var(--primary-foreground)',
 				},
 				secondary: {
-				DEFAULT: "hsl(var(--secondary))",
-				foreground: "hsl(var(--secondary-foreground))",
+					DEFAULT: 'var(--secondary)',
+					foreground: 'var(--secondary-foreground)',
 				},
 				destructive: {
-				DEFAULT: "hsl(var(--destructive))",
-				foreground: "hsl(var(--destructive-foreground))",
+					DEFAULT: 'var(--destructive)',
+					foreground: 'var(--destructive-foreground)',
 				},
 				success: {
-				DEFAULT: "hsl(var(--success))",
-				foreground: "hsl(var(--success-foreground))",
+					DEFAULT: 'var(--success)',
+					foreground: 'var(--success-foreground)',
 				},
 				warning: {
-				DEFAULT: "hsl(var(--warning))",
-				foreground: "hsl(var(--warning-foreground))",
+					DEFAULT: 'var(--warning)',
+					foreground: 'var(--warning-foreground)',
 				},
 				muted: {
-				DEFAULT: "hsl(var(--muted))",
-				foreground: "hsl(var(--muted-foreground))",
+					DEFAULT: 'var(--muted)',
+					foreground: 'var(--muted-foreground)',
 				},
 				accent: {
-				DEFAULT: "hsl(var(--accent))",
-				foreground: "hsl(var(--accent-foreground))",
+					DEFAULT: 'var(--accent)',
+					foreground: 'var(--accent-foreground)',
 				},
 				popover: {
-				DEFAULT: "hsl(var(--popover))",
-				foreground: "hsl(var(--popover-foreground))",
+					DEFAULT: 'var(--popover)',
+					foreground: 'var(--popover-foreground)',
 				},
 				card: {
-				DEFAULT: "hsl(var(--card))",
-				foreground: "hsl(var(--card-foreground))",
-				},
-				dashboard: {
-				bg: "hsl(var(--dashboard-bg))",
-				},
-				metric: {
-				card: "hsl(var(--metric-card))",
+					DEFAULT: 'var(--card)',
+					foreground: 'var(--card-foreground)',
 				},
 				chart: {
-				primary: "hsl(var(--chart-primary))",
-				secondary: "hsl(var(--chart-secondary))",
-				tertiary: "hsl(var(--chart-tertiary))",
-				quaternary: "hsl(var(--chart-quaternary))",
+					1: 'var(--chart-1)',
+					2: 'var(--chart-2)',
+					3: 'var(--chart-3)',
+					4: 'var(--chart-4)',
+					5: 'var(--chart-5)',
 				},
-				sidebar: {
-				DEFAULT: "hsl(var(--sidebar-background))",
-				foreground: "hsl(var(--sidebar-foreground))",
-				primary: "hsl(var(--sidebar-primary))",
-				"primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-				accent: "hsl(var(--sidebar-accent))",
-				"accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-				border: "hsl(var(--sidebar-border))",
-				ring: "hsl(var(--sidebar-ring))",
-				},
+			},
+			fontFamily: {
+				display: [ 'var(--font-display)' ],
+				sans: [ 'var(--font-sans)' ],
+				mono: [ 'var(--font-mono)' ],
+			},
+			spacing: {
+				4.5: '1.125rem',
 			},
 			borderRadius: {
-				lg: "var(--radius)",
-				md: "calc(var(--radius) - 2px)",
-				sm: "calc(var(--radius) - 4px)",
+				sm: 'calc(var(--radius) - 4px)',
+				md: 'calc(var(--radius) - 2px)',
+				lg: 'var(--radius)',
+				xl: 'calc(var(--radius) + 4px)',
+				'2xl': 'calc(var(--radius) + 8px)',
+				'3xl': 'calc(var(--radius) + 12px)',
+			},
+			boxShadow: {
+				xs: 'var(--shadow-xs)',
+				sm: 'var(--shadow-sm)',
+				md: 'var(--shadow-md)',
+				lg: 'var(--shadow-lg)',
+				glow: 'var(--shadow-glow)',
+				inset: 'var(--shadow-inset)',
+			},
+			backgroundImage: {
+				'gradient-pulse': 'var(--gradient-pulse)',
+				'gradient-ink': 'var(--gradient-ink)',
+				'gradient-canvas': 'var(--gradient-canvas)',
+				'gradient-card': 'var(--gradient-card)',
+				'gradient-warning': 'var(--gradient-warning)',
+				'gradient-danger': 'var(--gradient-danger)',
+			},
+			transitionTimingFunction: {
+				'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
 			},
 			keyframes: {
-				"accordion-down": {
-				from: {
-					height: "0",
+				'accordion-down': {
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' },
 				},
-				to: {
-					height: "var(--radix-accordion-content-height)",
+				'accordion-up': {
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' },
 				},
+				'fade-up': {
+					from: { opacity: '0', transform: 'translateY(8px)' },
+					to: { opacity: '1', transform: 'translateY(0)' },
 				},
-				"accordion-up": {
-				from: {
-					height: "var(--radix-accordion-content-height)",
+				'pulse-ring': {
+					'0%': { boxShadow: '0 0 0 0 oklch(0.65 0.2 165 / 0.5)' },
+					'70%': { boxShadow: '0 0 0 8px oklch(0.65 0.2 165 / 0)' },
+					'100%': { boxShadow: '0 0 0 0 oklch(0.65 0.2 165 / 0)' },
 				},
-				to: {
-					height: "0",
-				},
+				shimmer: {
+					'0%': { backgroundPosition: '-200% 0' },
+					'100%': { backgroundPosition: '200% 0' },
 				},
 			},
 			animation: {
-				"accordion-down": "accordion-down 0.2s ease-out",
-				"accordion-up": "accordion-up 0.2s ease-out",
+				'accordion-down': 'accordion-down 0.2s ease-out',
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-up': 'fade-up 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+				'pulse-ring': 'pulse-ring 2s cubic-bezier(0.16, 1, 0.3, 1) infinite',
+				shimmer: 'shimmer 3s linear infinite',
 			},
-    	},
+		},
 	},
 	variants: {
 		extend: {},
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [ require( 'tailwindcss-animate' ) ],
 	corePlugins: {
 		preflight: false,
 	},

@@ -137,4 +137,28 @@ class SystemState extends Base {
 	public function set_last_snapshot_date( string $date ): bool {
 		return $this->set( self::KEY_LAST_SNAPSHOT_DATE, $date );
 	}
+
+	/**
+	 * Get the `updated_at` timestamp of the last-snapshot record.
+	 *
+	 * Used by the dashboard header to surface a LIVE vs STALE badge.
+	 *
+	 * @return string|null ISO8601-compatible MySQL datetime, or null if never set.
+	 */
+	public function get_last_snapshot_timestamp() {
+		$table = $this->get_table_name();
+
+		if ( ! $this->table_exists() ) {
+			return null;
+		}
+
+		$value = $this->wpdb->get_var(
+			$this->wpdb->prepare(
+				"SELECT updated_at FROM `{$table}` WHERE state_key = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				self::KEY_LAST_SNAPSHOT_DATE
+			)
+		);
+
+		return $value !== null ? $value : null;
+	}
 }
