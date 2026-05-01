@@ -3,7 +3,7 @@
  * Action Recommendation Engine.
  *
  * Converts diagnosis results into context-aware, actionable recommendations.
- * Rule-based — no AI. Campaign-aware for tone adjustment.
+ * Rule-based - no AI. Campaign-aware for tone adjustment.
  *
  * @package EC_Sales_Pulse\Core\Services
  */
@@ -26,7 +26,7 @@ class ActionEngine {
 	private $scenarios = [];
 
 	/**
-	 * Constructor — register scenarios.
+	 * Constructor - register scenarios.
 	 */
 	public function __construct() {
 		$this->register_scenarios();
@@ -44,7 +44,7 @@ class ActionEngine {
 		$factor    = $diagnosis['primary_factor'] ?? 'none';
 		$sub_cause = $diagnosis['sub_cause'] ?? '';
 
-		// Stable — no action needed.
+		// Stable - no action needed.
 		if ( $direction === 'stable' || $factor === 'none' || $factor === 'no_data' || $factor === 'no_revenue' ) {
 			return [
 				'scenario'       => 'stable',

@@ -96,7 +96,7 @@ class DataReadiness extends BaseController {
 	}
 
 	/**
-	 * Check data readiness — all prerequisites for dashboard to function.
+	 * Check data readiness - all prerequisites for dashboard to function.
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
@@ -135,7 +135,7 @@ class DataReadiness extends BaseController {
 		$checks['last_snapshot_date']  = $checks['plugin_tables_exist'] ? $state->get_last_snapshot_date() : null;
 		$checks['last_snapshot_at']    = $checks['plugin_tables_exist'] ? $state->get_last_snapshot_timestamp() : null;
 
-		// Overall readiness — require at least 2 snapshots so the dashboard can compare periods.
+		// Overall readiness - require at least 2 snapshots so the dashboard can compare periods.
 		$checks['ready'] = $checks['woocommerce_active']
 			&& $checks['analytics_tables_exist']
 			&& $checks['plugin_tables_exist']

@@ -94,7 +94,7 @@ class Menu {
 	 * Add submenu to admin menu.
 	 *
 	 * v2 Navigation:
-	 * - Overview (default — morning briefing)
+	 * - Overview (default - morning briefing)
 	 * - History (daily explanation list)
 	 * - Campaigns (start/stop active campaigns)
 	 * - Settings (timezone, revenue basis, email digest)

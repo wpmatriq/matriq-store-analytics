@@ -1,5 +1,5 @@
 /**
- * ActionCardContent — rendered inside <InsightCard title="Suggested action">.
+ * ActionCardContent - rendered inside <InsightCard title="Suggested action">.
  *
  * Displays the recommendation headline with a severity pill and an optional
  * scenario tag. Card chrome is owned by InsightCard.

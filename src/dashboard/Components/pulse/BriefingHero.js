@@ -1,5 +1,5 @@
 /**
- * BriefingHero — editorial headline card for the Overview page.
+ * BriefingHero - editorial headline card for the Overview page.
  *
  * Shows the day's diagnosis at a glance: status pill, optional campaign tag,
  * large change %, headline, cause, and an animated pulse signature graphic.

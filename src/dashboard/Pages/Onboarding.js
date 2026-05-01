@@ -1,5 +1,5 @@
 /**
- * Onboarding — minimal welcome screen for the hidden sales-pulse-onboarding page.
+ * Onboarding - minimal welcome screen for the hidden sales-pulse-onboarding page.
  *
  * The real first-run data-readiness flow lives in `ReadinessGate` inside the
  * main dashboard. This screen is only reached via the hidden submenu and acts

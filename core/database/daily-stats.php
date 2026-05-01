@@ -2,7 +2,7 @@
 /**
  * Daily Stats Database Model.
  *
- * Core brain of Sales Pulse — one row per day of store health.
+ * Core brain of Sales Pulse - one row per day of store health.
  * Dashboard reads from this table only for instant performance.
  *
  * @package EC_Sales_Pulse\Core\Database

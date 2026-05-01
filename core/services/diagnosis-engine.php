@@ -4,7 +4,7 @@
  *
  * Deterministic revenue decomposition engine.
  * Compares two periods and explains WHY revenue changed using midpoint decomposition math.
- * No AI — pure math and rules.
+ * No AI - pure math and rules.
  *
  * Formula: Revenue = Orders x Items/Order x Avg Item Price
  *
@@ -37,9 +37,9 @@ class DiagnosisEngine {
 	/**
 	 * Multipliers applied to CHANGE_THRESHOLD for each sensitivity level.
 	 *
-	 * Calm    — larger threshold, only flag major shifts.
-	 * Balanced — base threshold (5%).
-	 * Vigilant — tighter threshold, surface smaller movements.
+	 * Calm    - larger threshold, only flag major shifts.
+	 * Balanced - base threshold (5%).
+	 * Vigilant - tighter threshold, surface smaller movements.
 	 *
 	 * @var array<string, float>
 	 */

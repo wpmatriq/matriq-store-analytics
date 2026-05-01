@@ -3,7 +3,7 @@
  * Data Collector Service.
  *
  * Reads from WooCommerce Analytics tables to collect daily store metrics.
- * This is the ONLY class that touches WC data tables — all other services
+ * This is the ONLY class that touches WC data tables - all other services
  * read from our snapshot tables.
  *
  * @package EC_Sales_Pulse\Core\Services

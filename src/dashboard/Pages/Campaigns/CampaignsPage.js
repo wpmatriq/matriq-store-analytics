@@ -1,5 +1,5 @@
 /**
- * Campaigns Page — mark what's running so diagnosis adjusts.
+ * Campaigns Page - mark what's running so diagnosis adjusts.
  *
  * Active campaigns tell the diagnosis engine to suppress false alarms during
  * sales, launches, and retention pushes. Users create/end/delete campaigns
@@ -119,7 +119,7 @@ export default function CampaignsPage() {
 							title={ __( 'No campaigns yet', 'sales-pulse' ) }
 							emptyTitle={ __( 'Nothing running right now', 'sales-pulse' ) }
 							emptyDescription={ __(
-								"Create one when you run a sale, launch a product, or change pricing — we'll adjust diagnosis during the campaign window.",
+								"Create one when you run a sale, launch a product, or change pricing - we'll adjust diagnosis during the campaign window.",
 								'sales-pulse'
 							) }
 						/>

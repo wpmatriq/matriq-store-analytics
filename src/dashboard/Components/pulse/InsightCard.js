@@ -1,5 +1,5 @@
 /**
- * InsightCard — generic card with icon header + content slot + empty state.
+ * InsightCard - generic card with icon header + content slot + empty state.
  *
  * Used for "What changed", "Suggested action", error fallbacks, etc.
  * Children render in the body; absent children reveal the empty-state block.

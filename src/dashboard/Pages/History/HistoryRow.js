@@ -1,5 +1,5 @@
 /**
- * HistoryRow — single day row in the diagnosis log table.
+ * HistoryRow - single day row in the diagnosis log table.
  */
 import React from 'react';
 import classnames from '@Utils/classnames';

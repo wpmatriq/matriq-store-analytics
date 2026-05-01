@@ -1,9 +1,9 @@
 /**
- * Metric Cards grid — 4 KPI cards (Revenue, Orders, AOV, Items per Order).
+ * Metric Cards grid - 4 KPI cards (Revenue, Orders, AOV, Items per Order).
  *
  * Revenue uses the real 7-day revenue series for its sparkline. The other
  * three fall back to a flat baseline until the backend exposes per-metric
- * history — see resolved decision #3 in the plan.
+ * history - see resolved decision #3 in the plan.
  */
 import React from 'react';
 import { DollarSign, Package, Receipt, ShoppingCart } from 'lucide-react';

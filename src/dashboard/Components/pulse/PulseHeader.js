@@ -1,10 +1,10 @@
 /**
- * PulseHeader — sticky brand + nav header.
+ * PulseHeader - sticky brand + nav header.
  *
  * Preserves sales-pulse tab-routing: each nav item is a plain <a> that
  * triggers a full WordPress admin reload. `activeTab` is supplied by App.js.
  *
- * The "LIVE" badge reflects snapshot freshness — `wc_sma_admin_data.last_snapshot_at`
+ * The "LIVE" badge reflects snapshot freshness - `wc_sma_admin_data.last_snapshot_at`
  * is an ISO8601 string set by the PHP boot. Missing/older than 26h → "Stale" variant.
  */
 import React from 'react';

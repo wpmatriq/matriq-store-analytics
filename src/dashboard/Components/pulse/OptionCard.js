@@ -1,5 +1,5 @@
 /**
- * OptionCard — selectable tile used in groups (Campaign goals, Revenue basis,
+ * OptionCard - selectable tile used in groups (Campaign goals, Revenue basis,
  * Diagnosis sensitivity).
  *
  * Renders as `role="radio"`. Parent container should provide the radiogroup
@@ -68,7 +68,7 @@ export function OptionCard( {
 }
 
 /**
- * OptionCardGroup — radiogroup wrapper with arrow-key navigation.
+ * OptionCardGroup - radiogroup wrapper with arrow-key navigation.
  *
  * @param {Object}   props
  * @param {string}   [props.label]

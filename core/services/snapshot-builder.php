@@ -133,7 +133,7 @@ class SnapshotBuilder {
 
 		$state->set( SystemState::KEY_BACKFILL_START, $backfill_start );
 
-		// Find cursor (where we left off) — work backwards from yesterday.
+		// Find cursor (where we left off) - work backwards from yesterday.
 		$cursor = $state->get( SystemState::KEY_BACKFILL_CURSOR );
 		if ( ! $cursor ) {
 			$cursor = $this->get_yesterday_date();
@@ -143,7 +143,7 @@ class SnapshotBuilder {
 		$daily_stats   = DailyStats::get_instance();
 		$missing_dates = $daily_stats->get_missing_dates( $backfill_start, $cursor );
 
-		// Sort descending (newest first — reverse chronological).
+		// Sort descending (newest first - reverse chronological).
 		rsort( $missing_dates );
 
 		if ( empty( $missing_dates ) ) {
@@ -161,7 +161,7 @@ class SnapshotBuilder {
 				break;
 			}
 
-			// Time guard — stop before hitting 15 seconds.
+			// Time guard - stop before hitting 15 seconds.
 			if ( ( microtime( true ) - $start ) > $max_time ) {
 				break;
 			}

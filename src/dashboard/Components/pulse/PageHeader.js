@@ -1,5 +1,5 @@
 /**
- * PageHeader — editorial title block used at the top of every screen.
+ * PageHeader - editorial title block used at the top of every screen.
  *
  * Renders an eyebrow pill, a large display title, optional subtitle, and
  * an actions slot (usually a `SegmentedControl`, save button, etc.).

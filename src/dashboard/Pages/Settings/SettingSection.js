@@ -1,5 +1,5 @@
 /**
- * SettingSection — framed section for the Settings page.
+ * SettingSection - framed section for the Settings page.
  *
  * Header: small icon tile + title + description. Body: section content.
  * Animated entry with a small stagger, driven by `delay`.

@@ -1,5 +1,5 @@
 /**
- * HistoryPager — pill pagination control for the diagnosis log.
+ * HistoryPager - pill pagination control for the diagnosis log.
  */
 import React from 'react';
 import { __, sprintf } from '@wordpress/i18n';

@@ -1,5 +1,5 @@
 /**
- * CampaignForm — create a campaign.
+ * CampaignForm - create a campaign.
  *
  * Uses an OptionCard grid for goal selection and pulse-styled date inputs.
  * Rendered inside an <AnimatePresence> from CampaignsPage so the form slides

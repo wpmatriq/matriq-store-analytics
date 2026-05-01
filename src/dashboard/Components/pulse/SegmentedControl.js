@@ -1,5 +1,5 @@
 /**
- * SegmentedControl — accessible pill group for toggle-like choices.
+ * SegmentedControl - accessible pill group for toggle-like choices.
  *
  * Renders as `role="radiogroup"` with arrow-key navigation between options.
  * Used for period toggles and sensitivity selectors.

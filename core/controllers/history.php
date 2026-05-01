@@ -3,7 +3,7 @@
  * History Controller.
  *
  * Returns a paginated list of daily diagnosis results.
- * Each entry shows the date, headline, direction, and severity —
+ * Each entry shows the date, headline, direction, and severity -
  * building trust through a visible track record.
  *
  * @package EC_Sales_Pulse\Core\Controllers

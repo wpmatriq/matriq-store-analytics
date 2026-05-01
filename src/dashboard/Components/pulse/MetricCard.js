@@ -1,5 +1,5 @@
 /**
- * MetricCard — KPI card with label, display value, change chip, and sparkline.
+ * MetricCard - KPI card with label, display value, change chip, and sparkline.
  *
  * Sparkline is drawn as an inline SVG area+line so the card stays cheap to
  * render. When `spark` has fewer than 2 data points, the sparkline degrades

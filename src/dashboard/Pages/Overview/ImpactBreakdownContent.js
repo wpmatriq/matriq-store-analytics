@@ -1,5 +1,5 @@
 /**
- * ImpactBreakdownContent — revenue decomposition bars.
+ * ImpactBreakdownContent - revenue decomposition bars.
  *
  * Rendered inside an <InsightCard title="What changed">. This file owns just
  * the factor bars; the card chrome, header, and empty state are handled by

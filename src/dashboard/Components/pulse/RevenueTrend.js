@@ -1,5 +1,5 @@
 /**
- * RevenueTrend — 7-day revenue area chart with Total / Peak / Avg summary.
+ * RevenueTrend - 7-day revenue area chart with Total / Peak / Avg summary.
  *
  * Takes an array of `{ date, revenue }` points from the overview trend hook.
  * The day label is derived client-side from `date` (expected YYYY-MM-DD).

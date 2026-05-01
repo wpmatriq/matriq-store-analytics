@@ -5,7 +5,7 @@
  * Listens for WooCommerce order events and marks affected dates as dirty
  * so the nightly snapshot can repair them.
  *
- * Lightweight — only writes to dirty_dates, never aggregates.
+ * Lightweight - only writes to dirty_dates, never aggregates.
  *
  * @package EC_Sales_Pulse\Core\Hooks
  */
@@ -21,7 +21,7 @@ class OrderHooks {
 	use Get_Instance;
 
 	/**
-	 * Constructor — register WooCommerce hooks.
+	 * Constructor - register WooCommerce hooks.
 	 */
 	public function __construct() {
 		// New order created.
@@ -84,10 +84,10 @@ class OrderHooks {
 	 * Extract order creation date and mark it dirty.
 	 *
 	 * @param int            $order_id Order ID.
-	 * @param \WC_Order|null $order    Order object (optional — will be loaded if null).
+	 * @param \WC_Order|null $order    Order object (optional - will be loaded if null).
 	 */
 	private function mark_order_date_dirty( int $order_id, $order = null ): void {
-		// Skip refund child orders — we handle these via the parent.
+		// Skip refund child orders - we handle these via the parent.
 		if ( ! $order ) {
 			$order = wc_get_order( $order_id );
 		}
@@ -96,7 +96,7 @@ class OrderHooks {
 			return;
 		}
 
-		// Skip refund objects — only process parent orders.
+		// Skip refund objects - only process parent orders.
 		if ( $order->get_type() === 'shop_order_refund' ) {
 			return;
 		}

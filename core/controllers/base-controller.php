@@ -32,7 +32,7 @@ abstract class BaseController {
 	protected $rest_base = '';
 
 	/**
-	 * Constructor — hook into rest_api_init.
+	 * Constructor - hook into rest_api_init.
 	 */
 	public function __construct() {
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );

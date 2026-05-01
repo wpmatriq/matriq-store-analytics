@@ -1,5 +1,5 @@
 /**
- * Tailwind configuration — Sales Pulse dashboard.
+ * Tailwind configuration - Sales Pulse dashboard.
  *
  * Tokens are authored in SCSS (`src/dashboard/design-tokens.scss`) as OKLch
  * CSS variables. Tailwind theme values below reference `var(--*)` directly so

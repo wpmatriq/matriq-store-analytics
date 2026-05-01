@@ -1,5 +1,5 @@
 /**
- * ReadinessGate — blocks the dashboard until data prerequisites are met.
+ * ReadinessGate - blocks the dashboard until data prerequisites are met.
  *
  * Renders a pulse-styled setup card that walks the user through WooCommerce
  * activation, schema checks, and the initial snapshot backfill. Once the

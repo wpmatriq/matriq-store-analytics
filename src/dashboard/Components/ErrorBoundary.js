@@ -1,5 +1,5 @@
 /**
- * ErrorBoundary — top-level fallback for uncaught render errors.
+ * ErrorBoundary - top-level fallback for uncaught render errors.
  *
  * Wraps the active page router so a single broken component doesn't white-screen
  * the whole dashboard. In development, logs the error to console so stack traces

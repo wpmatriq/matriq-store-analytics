@@ -119,7 +119,7 @@ class SettingsController extends BaseController {
 	}
 
 	/**
-	 * Update settings (partial update — only provided keys are changed).
+	 * Update settings (partial update - only provided keys are changed).
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response

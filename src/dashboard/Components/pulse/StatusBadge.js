@@ -1,5 +1,5 @@
 /**
- * StatusBadge — pill indicator for diagnosis state.
+ * StatusBadge - pill indicator for diagnosis state.
  *
  * Variants map to backend severity semantics:
  *   stable     → "Stable"         (info / no meaningful change)

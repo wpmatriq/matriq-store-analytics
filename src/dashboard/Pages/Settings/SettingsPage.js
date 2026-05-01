@@ -1,11 +1,11 @@
 /**
- * Settings Page — tune how Sales Pulse interprets, schedules, and digests.
+ * Settings Page - tune how Sales Pulse interprets, schedules, and digests.
  *
  * Sections:
- *   1. General — timezone (read-only), currency (read-only), revenue basis (Net/Gross).
- *   2. Snapshot schedule — hour:minute for the nightly cron.
- *   3. Email digest — toggle + recipient.
- *   4. Diagnosis sensitivity — Calm / Balanced / Vigilant.
+ *   1. General - timezone (read-only), currency (read-only), revenue basis (Net/Gross).
+ *   2. Snapshot schedule - hour:minute for the nightly cron.
+ *   3. Email digest - toggle + recipient.
+ *   4. Diagnosis sensitivity - Calm / Balanced / Vigilant.
  *
  * Save UX: button stays disabled until a field changes; flashes a Saved pill
  * with a checkmark for ~2s on success. Saved state clears whenever the form
@@ -329,7 +329,7 @@ function ReadOnlyField( { label, value, hint } ) {
 		<div className="space-y-2">
 			<span className="text-sm font-semibold text-foreground">{ label }</span>
 			<div className="block w-full rounded-xl border border-solid border-border bg-muted/60 px-4 py-2.5 font-mono text-sm text-muted-foreground">
-				{ value || '—' }
+				{ value || '-' }
 			</div>
 			{ hint && (
 				<p className="m-0 text-xs text-muted-foreground">{ hint }</p>

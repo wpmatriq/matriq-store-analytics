@@ -1,5 +1,5 @@
 /**
- * History Page — 34 days of pulse readings.
+ * History Page - 34 days of pulse readings.
  *
  * Paginated log of daily revenue diagnoses with change deltas and status flags.
  * Each row renders a trend-icon tile, date, diagnosis headline, change %,

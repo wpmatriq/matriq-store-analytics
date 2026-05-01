@@ -1,5 +1,5 @@
 /**
- * Sales Pulse v2 — App shell.
+ * Sales Pulse v2 - App shell.
  *
  * Provides QueryClient, PulseShell layout, ErrorBoundary, ReadinessGate,
  * and tab-based routing driven by `?tab=` query parameter.

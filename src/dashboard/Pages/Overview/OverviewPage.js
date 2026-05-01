@@ -1,12 +1,12 @@
 /**
- * Overview Page — Morning Briefing.
+ * Overview Page - Morning Briefing.
  *
  * The primary dashboard view:
  *   1. PageHeader with period SegmentedControl.
- *   2. BriefingHero — big headline diagnosis.
- *   3. MetricCards — 4 KPI cards with sparklines.
+ *   2. BriefingHero - big headline diagnosis.
+ *   3. MetricCards - 4 KPI cards with sparklines.
  *   4. What changed / Suggested action side-by-side InsightCards.
- *   5. RevenueTrend — 7-day area chart.
+ *   5. RevenueTrend - 7-day area chart.
  */
 import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
@@ -31,25 +31,37 @@ const PERIOD_OPTIONS = [
 	{ value: 'monthly', label: __( 'Last 30 days', 'sales-pulse' ) },
 ];
 
+const PERIOD_TITLES = {
+	daily: __( 'Yesterday at a glance.', 'sales-pulse' ),
+	weekly: __( 'Last 7 days at a glance.', 'sales-pulse' ),
+	monthly: __( 'Last 30 days at a glance.', 'sales-pulse' ),
+};
+
 const PERIOD_SUBTITLES = {
 	daily: __(
-		'A daily diagnosis of your store performance — what changed, why it matters, and what to do next.',
+		'A daily diagnosis of your store performance, what changed, why it matters, and what to do next.',
 		'sales-pulse'
 	),
 	weekly: __(
-		'The last 7 days compared to the previous 7 — what shifted across the week.',
+		'The last 7 days compared to the previous 7, what shifted across the week.',
 		'sales-pulse'
 	),
 	monthly: __(
-		'The last 30 days compared to the previous 30 — your rolling monthly pulse.',
+		'The last 30 days compared to the previous 30, your rolling monthly pulse.',
 		'sales-pulse'
 	),
+};
+
+const PERIOD_TREND_DAYS = {
+	daily: 7,
+	weekly: 7,
+	monthly: 30,
 };
 
 export default function OverviewPage() {
 	const [ period, setPeriod ] = useState( 'daily' );
 	const { data, isLoading, error, refetch } = useOverview( period );
-	const { data: trendData } = useTrend( 7 );
+	const { data: trendData } = useTrend( PERIOD_TREND_DAYS[ period ] || 7 );
 
 	const diagnosis = data?.diagnosis;
 	const recommendation = data?.recommendation;
@@ -72,7 +84,7 @@ export default function OverviewPage() {
 		>
 			<PageHeader
 				eyebrow={ __( 'Morning briefing', 'sales-pulse' ) }
-				title={ __( 'Yesterday at a glance.', 'sales-pulse' ) }
+				title={ PERIOD_TITLES[ period ] }
 				subtitle={ PERIOD_SUBTITLES[ period ] }
 				actions={
 					<SegmentedControl

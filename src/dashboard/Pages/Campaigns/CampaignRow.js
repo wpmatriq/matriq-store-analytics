@@ -1,5 +1,5 @@
 /**
- * CampaignRow — single active/recent campaign card.
+ * CampaignRow - single active/recent campaign card.
  *
  * Active campaigns render with a left-accent success bar and a pulsing dot.
  * Destructive delete sits behind an AlertDialog confirmation; ending a
@@ -88,7 +88,7 @@ export function CampaignRow( { campaign, onEnd, onDelete, endPending, deletePend
 							<span className="inline-flex items-center gap-1.5 font-mono">
 								<CalendarRange className="h-3 w-3" />
 								{ formatDate( campaign.start_date ) }
-								{ ' — ' }
+								{ ' - ' }
 								{ formatDate( campaign.end_date ) }
 							</span>
 						</div>

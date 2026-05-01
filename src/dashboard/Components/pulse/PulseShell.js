@@ -1,5 +1,5 @@
 /**
- * PulseShell — top-level dashboard layout.
+ * PulseShell - top-level dashboard layout.
  *
  * Sticky PulseHeader + editorial grid backdrop + constrained main + footer.
  */
@@ -21,12 +21,12 @@ export function PulseShell( { activeTab = 'overview', children } ) {
 					<div className="flex items-center justify-between border-t border-solid border-border/60 pt-6 text-xs text-muted-foreground">
 						<span>
 							{ __(
-								'Sales Pulse · Built for WooCommerce stores that take revenue seriously.',
+								'Built for WooCommerce stores that take revenue seriously.',
 								'sales-pulse'
 							) }
 						</span>
 						<span className="font-mono">
-							{ `© ${ new Date().getFullYear() }` }
+							{ `Sales Pulse · ${ new Date().getFullYear() }` }
 						</span>
 					</div>
 				</footer>
