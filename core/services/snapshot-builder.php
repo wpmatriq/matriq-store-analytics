@@ -101,6 +101,14 @@ class SnapshotBuilder {
 		$summary['yesterday_built'] = $this->build_yesterday();
 		$summary['dirty_repaired']  = $this->repair_dirty_dates();
 
+		/**
+		 * Fires after the nightly snapshot completes. Listeners can react with
+		 * follow-on work (e.g. DigestMailer) without coupling to this class.
+		 *
+		 * @param array<string, mixed> $summary Snapshot summary.
+		 */
+		do_action( 'salespulse_after_nightly_snapshot', $summary );
+
 		return $summary;
 	}
 

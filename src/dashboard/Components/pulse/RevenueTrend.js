@@ -1,8 +1,9 @@
 /**
- * RevenueTrend - 7-day revenue area chart with Total / Peak / Avg summary.
+ * RevenueTrend - revenue area chart with Total / Peak / Avg summary.
  *
- * Takes an array of `{ date, revenue }` points from the overview trend hook.
- * The day label is derived client-side from `date` (expected YYYY-MM-DD).
+ * Title and subtitle are driven by the `period` prop (weekly | monthly), not
+ * by the row count returned from the API - sparse data should not change the
+ * stated window. Caller is responsible for hiding this on the daily tab.
  */
 import React from 'react';
 import { motion } from 'framer-motion';
@@ -21,30 +22,53 @@ import { formatCurrency } from '@Utils/formatters';
 
 const EASE = [ 0.16, 1, 0.3, 1 ];
 
-function toDayLabel( isoDate ) {
+function toDayLabel( isoDate, format = 'weekday' ) {
 	if ( ! isoDate ) {
 		return '';
 	}
 	try {
 		const d = new Date( `${ isoDate }T00:00:00` );
+		if ( format === 'monthday' ) {
+			return d.toLocaleDateString( undefined, { month: 'short', day: 'numeric' } );
+		}
 		return d.toLocaleDateString( undefined, { weekday: 'short' } );
 	} catch ( e ) {
 		return isoDate;
 	}
 }
 
-export function RevenueTrend( { trend = [], currency } ) {
+const PERIOD_CONFIG = {
+	weekly: {
+		days: 7,
+		labelFormat: 'weekday',
+		title: __( '7-Day Revenue Trend', 'sales-pulse' ),
+		subtitle: __( 'Daily net revenue across the week', 'sales-pulse' ),
+	},
+	monthly: {
+		days: 30,
+		labelFormat: 'monthday',
+		title: __( '30-Day Revenue Trend', 'sales-pulse' ),
+		subtitle: __( 'Daily net revenue across the month', 'sales-pulse' ),
+	},
+};
+
+export function RevenueTrend( { trend = [], currency, period = 'weekly' } ) {
+	const config = PERIOD_CONFIG[ period ] || PERIOD_CONFIG.weekly;
 	const data = ( trend || [] ).map( ( point ) => ( {
-		day: toDayLabel( point.date ),
+		day: toDayLabel( point.date, config.labelFormat ),
 		revenue: Number( point.revenue ) || 0,
 	} ) );
-	const safeData = data.length ? data : Array.from( { length: 7 }, () => ( { day: '', revenue: 0 } ) );
+	const safeData = data.length
+		? data
+		: Array.from( { length: config.days }, () => ( { day: '', revenue: 0 } ) );
 	const revenues = safeData.map( ( d ) => d.revenue );
 	const total = revenues.reduce( ( s, n ) => s + n, 0 );
 	const peak = revenues.length ? Math.max( ...revenues ) : 0;
 	const avg = revenues.length ? total / revenues.length : 0;
 
 	const fmt = ( n ) => formatCurrency( n, currency );
+	const title = config.title;
+	const subtitle = config.subtitle;
 
 	return (
 		<motion.section
@@ -60,10 +84,10 @@ export function RevenueTrend( { trend = [], currency } ) {
 					</div>
 					<div>
 						<h3 className="m-0 text-sm font-semibold text-foreground">
-							{ __( '7-Day Revenue Trend', 'sales-pulse' ) }
+							{ title }
 						</h3>
 						<p className="m-0 text-xs text-muted-foreground">
-							{ __( 'Rolling daily net revenue', 'sales-pulse' ) }
+							{ subtitle }
 						</p>
 					</div>
 				</div>
@@ -96,6 +120,8 @@ export function RevenueTrend( { trend = [], currency } ) {
 							tick={ { fontSize: 12, fill: 'oklch(0.5 0.02 260)' } }
 							axisLine={ false }
 							tickLine={ false }
+							interval={ period === 'monthly' ? 'preserveStartEnd' : 0 }
+							minTickGap={ 16 }
 						/>
 						<YAxis
 							tick={ { fontSize: 12, fill: 'oklch(0.5 0.02 260)' } }

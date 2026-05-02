@@ -24,7 +24,11 @@ import {
 	Save,
 	Sparkles,
 } from 'lucide-react';
-import { useSettings, useUpdateSettings } from '@DashboardApp/hooks/useSettings';
+import {
+	useSettings,
+	useUpdateSettings,
+	useSendTestDigest,
+} from '@DashboardApp/hooks/useSettings';
 import { PageHeader } from '@Components/pulse/PageHeader';
 import { InsightCard } from '@Components/pulse/InsightCard';
 import { OptionCardGroup } from '@Components/pulse/OptionCard';
@@ -208,6 +212,7 @@ export default function SettingsPage() {
 				delay={ 0.05 }
 			/>
 			<EmailSection
+				settings={ settings }
 				form={ form }
 				onChange={ handleChange }
 				delay={ 0.1 }
@@ -410,8 +415,102 @@ function NumberInput( { label, value, min, max, onChange } ) {
 	);
 }
 
-function EmailSection( { form, onChange, delay } ) {
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function formatRelative( iso ) {
+	if ( ! iso ) {
+		return '';
+	}
+	const then = new Date( iso ).getTime();
+	if ( Number.isNaN( then ) ) {
+		return '';
+	}
+	const diffSec = Math.max( 0, ( Date.now() - then ) / 1000 );
+	if ( diffSec < 60 ) {
+		return __( 'just now', 'sales-pulse' );
+	}
+	if ( diffSec < 3600 ) {
+		const m = Math.round( diffSec / 60 );
+		return m === 1
+			? __( '1 minute ago', 'sales-pulse' )
+			// translators: %d: minutes elapsed.
+			: `${ m } ${ __( 'minutes ago', 'sales-pulse' ) }`;
+	}
+	if ( diffSec < 86400 ) {
+		const h = Math.round( diffSec / 3600 );
+		return h === 1
+			? __( '1 hour ago', 'sales-pulse' )
+			: `${ h } ${ __( 'hours ago', 'sales-pulse' ) }`;
+	}
+	const d = Math.round( diffSec / 86400 );
+	return d === 1
+		? __( '1 day ago', 'sales-pulse' )
+		: `${ d } ${ __( 'days ago', 'sales-pulse' ) }`;
+}
+
+function formatAbsolute( iso ) {
+	if ( ! iso ) {
+		return '';
+	}
+	try {
+		return new Date( iso ).toLocaleString();
+	} catch ( e ) {
+		return iso;
+	}
+}
+
+function parseDigestError( raw ) {
+	if ( ! raw || typeof raw !== 'string' ) {
+		return null;
+	}
+	const sep = raw.indexOf( '|' );
+	if ( sep === -1 ) {
+		return { iso: null, message: raw };
+	}
+	return { iso: raw.slice( 0, sep ), message: raw.slice( sep + 1 ) };
+}
+
+function EmailSection( { settings, form, onChange, delay } ) {
 	const enabled = !! form.email_enabled;
+	const recipient = ( form.email_address || '' ).trim();
+	const recipientValid = recipient !== '' && EMAIL_RE.test( recipient );
+	const canSendTest = enabled && recipientValid;
+
+	const sendTest = useSendTestDigest();
+	const [ testFeedback, setTestFeedback ] = useState( null );
+	useEffect( () => {
+		if ( ! testFeedback ) {
+			return undefined;
+		}
+		const timeout = setTimeout(
+			() => setTestFeedback( null ),
+			testFeedback.tone === 'error' ? 6000 : 3500
+		);
+		return () => clearTimeout( timeout );
+	}, [ testFeedback ] );
+
+	const lastSentAt = settings?.last_digest_sent_at || null;
+	const lastError = parseDigestError( settings?.last_digest_error );
+
+	const handleSendTest = () => {
+		if ( ! canSendTest || sendTest.isPending ) {
+			return;
+		}
+		sendTest.mutate( recipient, {
+			onSuccess: () => {
+				setTestFeedback( {
+					tone: 'success',
+					text: __( 'Test digest sent.', 'sales-pulse' ),
+				} );
+			},
+			onError: ( err ) => {
+				const message =
+					err?.message ||
+					__( 'Could not send the test digest.', 'sales-pulse' );
+				setTestFeedback( { tone: 'error', text: message } );
+			},
+		} );
+	};
 
 	return (
 		<SettingSection
@@ -442,6 +541,22 @@ function EmailSection( { form, onChange, delay } ) {
 				/>
 			</div>
 
+			{ lastError ? (
+				<p
+					className="m-0 mt-2 text-xs text-destructive"
+					title={ lastError.iso ? formatAbsolute( lastError.iso ) : '' }
+				>
+					{ __( 'Last attempt failed:', 'sales-pulse' ) } { lastError.message }
+				</p>
+			) : lastSentAt ? (
+				<p
+					className="m-0 mt-2 text-xs text-muted-foreground"
+					title={ formatAbsolute( lastSentAt ) }
+				>
+					{ __( 'Last sent', 'sales-pulse' ) } { formatRelative( lastSentAt ) }
+				</p>
+			) : null }
+
 			<div className="mt-4 space-y-2">
 				<label
 					htmlFor="email-address"
@@ -461,6 +576,36 @@ function EmailSection( { form, onChange, delay } ) {
 						! enabled && 'cursor-not-allowed bg-muted/60 opacity-60'
 					) }
 				/>
+			</div>
+
+			<div className="mt-4 flex items-center gap-3">
+				<button
+					type="button"
+					onClick={ handleSendTest }
+					disabled={ ! canSendTest || sendTest.isPending }
+					className={ classnames(
+						'inline-flex items-center gap-2 rounded-full border border-solid border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground transition-all hover:border-border/80 hover:bg-surface-elevated focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse',
+						( ! canSendTest || sendTest.isPending ) &&
+							'cursor-not-allowed opacity-60 hover:bg-surface'
+					) }
+				>
+					<Mail className="h-3.5 w-3.5" />
+					{ sendTest.isPending
+						? __( 'Sending…', 'sales-pulse' )
+						: __( 'Send test digest', 'sales-pulse' ) }
+				</button>
+				{ testFeedback ? (
+					<span
+						className={ classnames(
+							'text-xs',
+							testFeedback.tone === 'success'
+								? 'text-success'
+								: 'text-destructive'
+						) }
+					>
+						{ testFeedback.text }
+					</span>
+				) : null }
 			</div>
 		</SettingSection>
 	);

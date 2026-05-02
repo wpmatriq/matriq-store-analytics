@@ -13,12 +13,15 @@ use EC_Sales_Pulse\Admin\Menu;
 use EC_Sales_Pulse\Admin\Notices;
 use EC_Sales_Pulse\Core\Controllers\CampaignsController;
 use EC_Sales_Pulse\Core\Controllers\DataReadiness;
+use EC_Sales_Pulse\Core\Controllers\DigestController;
 use EC_Sales_Pulse\Core\Controllers\History;
 use EC_Sales_Pulse\Core\Controllers\Overview;
 use EC_Sales_Pulse\Core\Controllers\SettingsController;
 use EC_Sales_Pulse\Core\Cron\CronManager;
 use EC_Sales_Pulse\Core\Database\Schema;
 use EC_Sales_Pulse\Core\Hooks\OrderHooks;
+use EC_Sales_Pulse\Core\Services\DigestEmail;
+use EC_Sales_Pulse\Core\Services\DigestMailer;
 use EC_Sales_Pulse\Inc\Utils\Maintenance;
 
 /**
@@ -349,12 +352,29 @@ class WC_SMA_Loader {
 		// Cron job manager (nightly snapshot + backfill).
 		CronManager::get_instance();
 
+		// Email digest mailer (listens for the post-snapshot hook).
+		DigestMailer::get_instance();
+
+		// Register the WC_Email subclass so the digest appears in WC -> Settings -> Emails.
+		if ( class_exists( '\\WC_Email' ) ) {
+			add_filter(
+				'woocommerce_email_classes',
+				static function ( $classes ) {
+					if ( ! isset( $classes['DigestEmail'] ) ) {
+						$classes['DigestEmail'] = new DigestEmail();
+					}
+					return $classes;
+				}
+			);
+		}
+
 		// REST API v2 controllers.
 		Overview::get_instance();
 		History::get_instance();
 		CampaignsController::get_instance();
 		SettingsController::get_instance();
 		DataReadiness::get_instance();
+		DigestController::get_instance();
 
 		if ( is_admin() ) {
 			/* Admin Notices init */

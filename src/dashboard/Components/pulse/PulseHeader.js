@@ -45,7 +45,7 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 		liveState === 'live' ? 'bg-success pulse-dot' : 'bg-warning';
 
 	return (
-		<header className="sticky top-0 z-30 border-b border-solid border-border/70 bg-background/85 backdrop-blur-xl">
+		<header className="border-b border-solid border-border/70 bg-background/85 backdrop-blur-xl">
 			<div className="mx-auto flex max-w-[1280px] items-center justify-between gap-6 px-6 py-4 lg:px-10">
 				<a
 					href="admin.php?page=sales-pulse"
@@ -81,8 +81,8 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 								className={ classnames(
 									'relative rounded-full px-4 py-1.5 text-sm font-medium no-underline transition-all',
 									active
-										? 'bg-primary text-primary-foreground shadow-sm'
-										: 'text-muted-foreground hover:text-foreground'
+										? 'bg-primary text-primary-foreground hover:text-primary-foreground shadow-sm'
+										: 'text-muted-foreground hover:text-muted-foreground'
 								) }
 							>
 								{ tab.label }

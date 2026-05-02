@@ -34,12 +34,14 @@ class SystemState extends Base {
 	/**
 	 * Known state keys.
 	 */
-	const KEY_LAST_SNAPSHOT_DATE = 'last_snapshot_date';
-	const KEY_BACKFILL_START     = 'backfill_start';
-	const KEY_BACKFILL_CURSOR    = 'backfill_cursor';
-	const KEY_BACKFILL_COMPLETE  = 'backfill_complete';
-	const KEY_DB_VERSION         = 'db_version';
-	const KEY_PLUGIN_VERSION     = 'plugin_version';
+	const KEY_LAST_SNAPSHOT_DATE     = 'last_snapshot_date';
+	const KEY_BACKFILL_START         = 'backfill_start';
+	const KEY_BACKFILL_CURSOR        = 'backfill_cursor';
+	const KEY_BACKFILL_COMPLETE      = 'backfill_complete';
+	const KEY_DB_VERSION             = 'db_version';
+	const KEY_PLUGIN_VERSION         = 'plugin_version';
+	const KEY_LAST_DIGEST_SENT_DATE  = 'last_digest_sent_date';
+	const KEY_LAST_DIGEST_SENT_AT    = 'last_digest_sent_at';
 
 	/**
 	 * Get the CREATE TABLE SQL.

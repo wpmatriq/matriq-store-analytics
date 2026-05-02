@@ -81,4 +81,6 @@ export const systemApi = {
 	triggerSnapshot: ( params ) => apiPost( '/system/snapshot', params || {} ),
 	backfillStatus: () => apiGet( '/system/backfill' ),
 	triggerBackfill: () => apiPost( '/system/backfill' ),
+	sendTestDigest: ( recipient ) =>
+		apiPost( '/system/digest/test', recipient ? { recipient } : {} ),
 };

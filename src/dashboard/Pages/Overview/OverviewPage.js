@@ -39,7 +39,7 @@ const PERIOD_TITLES = {
 
 const PERIOD_SUBTITLES = {
 	daily: __(
-		'A daily diagnosis of your store performance, what changed, why it matters, and what to do next.',
+		'Daily store insights: what changed, why it matters, and what to do next.',
 		'sales-pulse'
 	),
 	weekly: __(
@@ -163,7 +163,13 @@ export default function OverviewPage() {
 						</InsightCard>
 					</div>
 
-					<RevenueTrend trend={ trendData?.trend } currency={ currency } />
+					{ period !== 'daily' && (
+						<RevenueTrend
+							trend={ trendData?.trend }
+							currency={ currency }
+							period={ period }
+						/>
+					) }
 				</>
 			) }
 		</motion.div>
