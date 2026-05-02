@@ -62,13 +62,6 @@ class DigestController extends BaseController {
 			);
 		}
 
-		if ( ! SettingsController::get( 'email_enabled' ) ) {
-			return $this->error(
-				__( 'Enable the email digest toggle before sending a test.', 'sales-pulse' ),
-				409
-			);
-		}
-
 		$override = $request->get_param( 'recipient' );
 		$override = is_string( $override ) && $override !== '' ? $override : null;
 
