@@ -13,12 +13,15 @@ use EC_Sales_Pulse\Admin\Menu;
 use EC_Sales_Pulse\Admin\Notices;
 use EC_Sales_Pulse\Core\Controllers\CampaignsController;
 use EC_Sales_Pulse\Core\Controllers\DataReadiness;
+use EC_Sales_Pulse\Core\Controllers\DigestController;
 use EC_Sales_Pulse\Core\Controllers\History;
 use EC_Sales_Pulse\Core\Controllers\Overview;
 use EC_Sales_Pulse\Core\Controllers\SettingsController;
 use EC_Sales_Pulse\Core\Cron\CronManager;
 use EC_Sales_Pulse\Core\Database\Schema;
 use EC_Sales_Pulse\Core\Hooks\OrderHooks;
+use EC_Sales_Pulse\Core\Services\DigestEmail;
+use EC_Sales_Pulse\Core\Services\DigestMailer;
 use EC_Sales_Pulse\Inc\Utils\Maintenance;
 
 /**
@@ -57,7 +60,6 @@ class WC_SMA_Loader {
 		// Deactivation hook.
 		register_deactivation_hook( EC_Sales_Pulse_FILE, [ $this, 'deactivation_actions' ] );
 
-		add_action( 'init', [ $this, 'load_textdomain' ] );
 		add_action( 'plugins_loaded', [ $this, 'load_plugin' ], 99 );
 
 		// Remove this after the translation error is fixed.
@@ -116,60 +118,6 @@ class WC_SMA_Loader {
 					);
 				}
 			}
-		}
-	}
-
-	/**
-	 * Load Plugin Text Domain.
-	 * This will load the translation textdomain depending on the file priorities.
-	 *      1. Global Languages /wp-content/languages/sales-pulse/ folder
-	 *      2. Local directory /wp-content/plugins/sales-pulse/languages/ folder
-	 *
-	 * @since x.x.x
-	 * @return void
-	 */
-	public function load_textdomain(): void {
-		// Default languages directory.
-		$lang_dir = EC_Sales_Pulse_DIR . 'languages/';
-
-		/**
-		 * Filters the languages directory path to use for plugin.
-		 *
-		 * @param string $lang_dir The languages directory path.
-		 */
-		$lang_dir = apply_filters( 'EC_Sales_Pulse_languages_directory', $lang_dir );
-
-		// Traditional WordPress plugin locale filter.
-		global $wp_version;
-
-		$get_locale = get_locale();
-
-		if ( $wp_version >= 4.7 ) {
-			$get_locale = get_user_locale();
-		}
-
-		/**
-		 * Language Locale for plugin
-		 *
-		 * Uses get_user_locale()` in WordPress 4.7 or greater,
-		 * otherwise uses `get_locale()`.
-		 */
-		$locale = apply_filters( 'plugin_locale', $get_locale, 'sales-pulse' );//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- wordpress hook
-		$mofile = sprintf( '%1$s-%2$s.mo', 'sales-pulse', $locale );
-
-		// Setup paths to current locale file.
-		$mofile_global = WP_LANG_DIR . '/plugins/' . $mofile;
-		$mofile_local  = $lang_dir . $mofile;
-
-		if ( file_exists( $mofile_global ) ) {
-			// Look in global /wp-content/languages/suredash/ folder.
-			load_textdomain( 'sales-pulse', $mofile_global );
-		} elseif ( file_exists( $mofile_local ) ) {
-			// Look in local /wp-content/plugins/sales-pulse/languages/ folder.
-			load_textdomain( 'sales-pulse', $mofile_local );
-		} else {
-			// Load the default language files.
-			load_plugin_textdomain( 'sales-pulse', false, $lang_dir );
 		}
 	}
 
@@ -349,12 +297,29 @@ class WC_SMA_Loader {
 		// Cron job manager (nightly snapshot + backfill).
 		CronManager::get_instance();
 
+		// Email digest mailer (listens for the post-snapshot hook).
+		DigestMailer::get_instance();
+
+		// Register the WC_Email subclass so the digest appears in WC -> Settings -> Emails.
+		if ( class_exists( '\\WC_Email' ) ) {
+			add_filter(
+				'woocommerce_email_classes',
+				static function ( $classes ) {
+					if ( ! isset( $classes['DigestEmail'] ) ) {
+						$classes['DigestEmail'] = new DigestEmail();
+					}
+					return $classes;
+				}
+			);
+		}
+
 		// REST API v2 controllers.
 		Overview::get_instance();
 		History::get_instance();
 		CampaignsController::get_instance();
 		SettingsController::get_instance();
 		DataReadiness::get_instance();
+		DigestController::get_instance();
 
 		if ( is_admin() ) {
 			/* Admin Notices init */

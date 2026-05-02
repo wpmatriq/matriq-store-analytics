@@ -1,5 +1,5 @@
 /**
- * Sales Pulse v2 — Dashboard entry point.
+ * Sales Pulse v2 - Dashboard entry point.
  */
 import { mountComponent } from '@Utils/mountComponent';
 import App from './App';

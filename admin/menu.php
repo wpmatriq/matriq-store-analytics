@@ -12,6 +12,7 @@
 
 namespace EC_Sales_Pulse\Admin;
 
+use EC_Sales_Pulse\Core\Database\SystemState;
 use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 use EC_Sales_Pulse\Inc\Utils\Settings;
 
@@ -93,7 +94,7 @@ class Menu {
 	 * Add submenu to admin menu.
 	 *
 	 * v2 Navigation:
-	 * - Overview (default — morning briefing)
+	 * - Overview (default - morning briefing)
 	 * - History (daily explanation list)
 	 * - Campaigns (start/stop active campaigns)
 	 * - Settings (timezone, revenue basis, email digest)
@@ -101,57 +102,87 @@ class Menu {
 	 * @since x.x.x
 	 */
 	public function register_plugin_menus(): void {
-		if ( current_user_can( EC_Sales_Pulse_CAPABILITY ) ) {
-			global $submenu;
-			$parent_slug   = self::PAGE_ID;
-			$capability    = EC_Sales_Pulse_CAPABILITY;
-			$menu_priority = apply_filters( self::PAGE_ID . '_menu_priority', 40 );
-
-			add_menu_page(
-				'Sales Pulse',
-				'Sales Pulse',
-				$capability,
-				$parent_slug,
-				[ $this, 'render_main_page' ],
-				'dashicons-chart-area',
-				$menu_priority
-			);
-
-			add_submenu_page(
-				$parent_slug,
-				__( 'History', 'sales-pulse' ),
-				__( 'History', 'sales-pulse' ),
-				$capability,
-				'admin.php?page=' . self::PAGE_ID . '&tab=history'
-			);
-
-			add_submenu_page(
-				$parent_slug,
-				__( 'Campaigns', 'sales-pulse' ),
-				__( 'Campaigns', 'sales-pulse' ),
-				$capability,
-				'admin.php?page=' . self::PAGE_ID . '&tab=campaigns'
-			);
-
-			add_submenu_page(
-				$parent_slug,
-				__( 'Settings', 'sales-pulse' ),
-				__( 'Settings', 'sales-pulse' ),
-				$capability,
-				'admin.php?page=' . self::PAGE_ID . '&tab=settings'
-			);
-
-			add_submenu_page(
-				'',
-				'WC Sales Pulse ' . __( 'Onboarding', 'sales-pulse' ),
-				'',
-				$capability,
-				'sales-pulse-onboarding',
-				[ $this, 'render_main_page' ]
-			);
-
-			$submenu[ $parent_slug ][0][0] = esc_html__( 'Overview', 'sales-pulse' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
+		if ( ! current_user_can( EC_Sales_Pulse_CAPABILITY ) ) {
+			return;
 		}
+
+		global $submenu;
+		$parent_slug   = self::PAGE_ID;
+		$capability    = EC_Sales_Pulse_CAPABILITY;
+		$menu_priority = apply_filters( self::PAGE_ID . '_menu_priority', 40 );
+
+		add_menu_page(
+			'Sales Pulse',
+			'Sales Pulse',
+			$capability,
+			$parent_slug,
+			[ $this, 'render_main_page' ],
+			'dashicons-chart-area',
+			$menu_priority
+		);
+
+		$default_submenus = [
+			'history'   => [
+				'page_title' => __( 'History', 'sales-pulse' ),
+				'menu_title' => __( 'History', 'sales-pulse' ),
+				'capability' => $capability,
+				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=history',
+				'callback'   => null,
+			],
+			'campaigns' => [
+				'page_title' => __( 'Campaigns', 'sales-pulse' ),
+				'menu_title' => __( 'Campaigns', 'sales-pulse' ),
+				'capability' => $capability,
+				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=campaigns',
+				'callback'   => null,
+			],
+			'settings'  => [
+				'page_title' => __( 'Settings', 'sales-pulse' ),
+				'menu_title' => __( 'Settings', 'sales-pulse' ),
+				'capability' => $capability,
+				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=settings',
+				'callback'   => null,
+			],
+		];
+
+		/**
+		 * Filter the Sales Pulse admin sub-menus before they are registered.
+		 *
+		 * Premium extensions add tabs (e.g. "Copilot") here. Each entry is keyed
+		 * by a stable slug and must define page_title, menu_title, capability,
+		 * menu_slug (string), and an optional callback (callable|null).
+		 *
+		 * @since x.x.x
+		 *
+		 * @param array<string, array<string, mixed>> $submenus    Submenu definitions.
+		 * @param string                              $parent_slug Parent menu slug.
+		 */
+		$submenus = apply_filters( 'salespulse_admin_submenus', $default_submenus, $parent_slug );
+
+		foreach ( $submenus as $entry ) {
+			if ( empty( $entry['menu_slug'] ) ) {
+				continue;
+			}
+			add_submenu_page(
+				$parent_slug,
+				(string) ( $entry['page_title'] ?? '' ),
+				(string) ( $entry['menu_title'] ?? '' ),
+				(string) ( $entry['capability'] ?? $capability ),
+				(string) $entry['menu_slug'],
+				is_callable( $entry['callback'] ?? null ) ? $entry['callback'] : ''
+			);
+		}
+
+		add_submenu_page(
+			'',
+			'WC Sales Pulse ' . __( 'Onboarding', 'sales-pulse' ),
+			'',
+			$capability,
+			'sales-pulse-onboarding',
+			[ $this, 'render_main_page' ]
+		);
+
+		$submenu[ $parent_slug ][0][0] = esc_html__( 'Overview', 'sales-pulse' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
 	}
 
 	/**
@@ -204,6 +235,15 @@ class Menu {
 		if ( is_admin() && ( $current_page === self::PAGE_ID || $current_page === 'sales-pulse-onboarding' ) ) {
 			wp_enqueue_media();
 
+			$last_snapshot_at = null;
+			if ( class_exists( SystemState::class ) ) {
+				$last_snapshot_at = SystemState::get_instance()->get_last_snapshot_timestamp();
+				if ( $last_snapshot_at ) {
+					// MySQL datetime (local) → ISO8601 so JS can parse it unambiguously.
+					$last_snapshot_at = mysql2date( 'c', $last_snapshot_at, false );
+				}
+			}
+
 			$localized_data = apply_filters(
 				'portal_localized_admin_data',
 				[
@@ -215,6 +255,8 @@ class Menu {
 					'update_nonce'      => wp_create_nonce( 'wc_sma_update_admin_setting' ),
 					'home_slug'         => self::PAGE_ID,
 					'settings'          => Settings::get_wc_sma_settings(),
+					'last_snapshot_at'  => $last_snapshot_at,
+					'currency'          => function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD',
 					'pro_available'     => wc_sma_is_pro_active(),
 					'pro_version'       => wc_sma_is_pro_active() ? EC_Sales_Pulse_PRO_VER : 0,
 					'upgrade_link'      => EC_Sales_Pulse_UPGRADE_LINK,

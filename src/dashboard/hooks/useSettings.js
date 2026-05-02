@@ -2,7 +2,7 @@
  * Settings data hooks.
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { settingsApi } from '@DashboardApp/api/client';
+import { settingsApi, systemApi } from '@DashboardApp/api/client';
 
 export function useSettings() {
 	return useQuery( {
@@ -20,6 +20,18 @@ export function useUpdateSettings() {
 		mutationFn: ( data ) => settingsApi.update( data ),
 		onSuccess: ( data ) => {
 			queryClient.setQueryData( [ 'settings' ], data );
+		},
+	} );
+}
+
+export function useSendTestDigest() {
+	const queryClient = useQueryClient();
+
+	return useMutation( {
+		mutationFn: ( recipient ) => systemApi.sendTestDigest( recipient ),
+		onSuccess: () => {
+			// Refetch settings so the "Last sent" line updates from SystemState.
+			queryClient.invalidateQueries( { queryKey: [ 'settings' ] } );
 		},
 	} );
 }

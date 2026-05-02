@@ -10,7 +10,7 @@ export function useReadiness() {
 	return useQuery( {
 		queryKey: [ 'readiness' ],
 		queryFn: () => systemApi.readiness(),
-		staleTime: 30 * 1000, // 30 seconds — check often during setup.
+		staleTime: 30 * 1000, // 30 seconds - check often during setup.
 		refetchOnWindowFocus: true,
 	} );
 }

@@ -42,6 +42,22 @@ class SnapshotBuilder {
 		$daily_stats = DailyStats::get_instance();
 		$result      = $daily_stats->upsert( $metrics );
 
+		if ( $result !== false ) {
+			/**
+			 * Fires after a per-day snapshot has been written.
+			 *
+			 * Premium extensions hook here to fan out to additional collectors
+			 * (per-product, per-customer, cohort updates) for the same date,
+			 * sharing this run's WC analytics read pass.
+			 *
+			 * @since x.x.x
+			 *
+			 * @param string               $date    Date the snapshot was built for (Y-m-d).
+			 * @param array<string, mixed> $metrics Metrics array that was upserted.
+			 */
+			do_action( 'salespulse_data_collector_extra', $date, $metrics );
+		}
+
 		return $result !== false;
 	}
 
@@ -101,6 +117,14 @@ class SnapshotBuilder {
 		$summary['yesterday_built'] = $this->build_yesterday();
 		$summary['dirty_repaired']  = $this->repair_dirty_dates();
 
+		/**
+		 * Fires after the nightly snapshot completes. Listeners can react with
+		 * follow-on work (e.g. DigestMailer) without coupling to this class.
+		 *
+		 * @param array<string, mixed> $summary Snapshot summary.
+		 */
+		do_action( 'salespulse_after_nightly_snapshot', $summary );
+
 		return $summary;
 	}
 
@@ -133,7 +157,7 @@ class SnapshotBuilder {
 
 		$state->set( SystemState::KEY_BACKFILL_START, $backfill_start );
 
-		// Find cursor (where we left off) — work backwards from yesterday.
+		// Find cursor (where we left off) - work backwards from yesterday.
 		$cursor = $state->get( SystemState::KEY_BACKFILL_CURSOR );
 		if ( ! $cursor ) {
 			$cursor = $this->get_yesterday_date();
@@ -143,7 +167,7 @@ class SnapshotBuilder {
 		$daily_stats   = DailyStats::get_instance();
 		$missing_dates = $daily_stats->get_missing_dates( $backfill_start, $cursor );
 
-		// Sort descending (newest first — reverse chronological).
+		// Sort descending (newest first - reverse chronological).
 		rsort( $missing_dates );
 
 		if ( empty( $missing_dates ) ) {
@@ -161,7 +185,7 @@ class SnapshotBuilder {
 				break;
 			}
 
-			// Time guard — stop before hitting 15 seconds.
+			// Time guard - stop before hitting 15 seconds.
 			if ( ( microtime( true ) - $start ) > $max_time ) {
 				break;
 			}

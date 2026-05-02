@@ -1,4 +1,4 @@
-# Sales Pulse v2 — Revenue Diagnosis Engine
+# Sales Pulse v2 - Revenue Diagnosis Engine
 
 > Complete Strategy & Implementation Plan
 > Last Updated: February 2026
@@ -8,7 +8,7 @@
 ## Table of Contents
 
 1. [Product Vision & Identity](#1-product-vision--identity)
-2. [v1 Scope — Clear Boundaries](#2-v1-scope--clear-boundaries)
+2. [v1 Scope - Clear Boundaries](#2-v1-scope--clear-boundaries)
 3. [Two-Product Architecture](#3-two-product-architecture)
 4. [System Architecture & Data Flow](#4-system-architecture--data-flow)
 5. [Database Schema](#5-database-schema)
@@ -16,19 +16,19 @@
 7. [Action Recommendation Engine](#7-action-recommendation-engine)
 8. [WordPress Hooks & Events Map](#8-wordpress-hooks--events-map)
 9. [Snapshot System](#9-snapshot-system)
-10. [Backfill Strategy — First Install Experience](#10-backfill-strategy--first-install-experience)
+10. [Backfill Strategy - First Install Experience](#10-backfill-strategy--first-install-experience)
 11. [Campaign Context System](#11-campaign-context-system)
-12. [UI Structure — Morning Briefing](#12-ui-structure--morning-briefing)
+12. [UI Structure - Morning Briefing](#12-ui-structure--morning-briefing)
 13. [Copy & Language System](#13-copy--language-system)
 14. [Email Digest](#14-email-digest)
 15. [Navigation & Menu Structure](#15-navigation--menu-structure)
-16. [Settings — Minimal by Design](#16-settings--minimal-by-design)
+16. [Settings - Minimal by Design](#16-settings--minimal-by-design)
 17. [Safety, Edge Cases & Fail-Safes](#17-safety-edge-cases--fail-safes)
-18. [Brand & Tone — Calm Intelligence](#18-brand--tone--calm-intelligence)
+18. [Brand & Tone - Calm Intelligence](#18-brand--tone--calm-intelligence)
 19. [Monetization Strategy](#19-monetization-strategy)
 20. [Current Codebase Impact](#20-current-codebase-impact)
 21. [Four-Week Sprint Plan](#21-four-week-sprint-plan)
-22. [Future Roadmap — Store Copilot](#22-future-roadmap--store-copilot)
+22. [Future Roadmap - Store Copilot](#22-future-roadmap--store-copilot)
 23. [SQL Query Reference](#23-sql-query-reference)
 24. [Testing Strategy](#24-testing-strategy)
 
@@ -50,7 +50,7 @@
 
 > **"Stop guessing why revenue changed."**
 
-Subline: Sales Pulse analyzes your WooCommerce store daily and explains what changed — and why — in plain language.
+Subline: Sales Pulse analyzes your WooCommerce store daily and explains what changed - and why - in plain language.
 
 ### What Sales Pulse Is
 
@@ -83,7 +83,7 @@ AI agents CANNOT easily clone:
 
 ---
 
-## 2. v1 Scope — Clear Boundaries
+## 2. v1 Scope - Clear Boundaries
 
 ### What v1 DOES (Store-Level Revenue Diagnosis Only)
 
@@ -143,10 +143,10 @@ Role: "Store Brain"
 
 ### Why This Separation Is Strategic
 
-**Problem 1 — Data correctness** (boring but defensible)
+**Problem 1 - Data correctness** (boring but defensible)
 LLMs are terrible at raw commerce accounting logic. The company that owns the cleanest commerce dataset wins the AI layer. Sales Pulse becomes the moat.
 
-**Problem 2 — Intelligence** (fast evolving)
+**Problem 2 - Intelligence** (fast evolving)
 AI features change every 6 months. If AI is baked into Sales Pulse, you rewrite constantly. With separation, the data platform stays stable while unlimited AI products can be built on top.
 
 ### Positioning
@@ -217,13 +217,13 @@ WooCommerce Analytics Tables
 | Diagnosis | Deterministic math | Trustworthy, explainable, no AI hallucination |
 | Campaign context | Manual | Avoids fake AI guesses (auto-detection is wrong 40-60% of time) |
 | Settings | Minimal | Opinionated product, not configuration engine |
-| Monetization | Free forever | Lead magnet — build habit, own dataset, convert to premium |
+| Monetization | Free forever | Lead magnet - build habit, own dataset, convert to premium |
 
 ---
 
 ## 5. Database Schema
 
-**4 tables only** — small, focused, scalable.
+**4 tables only** - small, focused, scalable.
 
 ### Table 1: `wp_salespulse_daily_stats` (Core Brain)
 
@@ -274,7 +274,7 @@ CREATE TABLE wp_salespulse_dirty_dates (
 
 ### Table 3: `wp_salespulse_campaigns` (Context Layer)
 
-Manual merchant input — affects interpretation only, not data.
+Manual merchant input - affects interpretation only, not data.
 
 ```sql
 CREATE TABLE wp_salespulse_campaigns (
@@ -427,7 +427,7 @@ Output structure:
 
 ### Purpose
 
-Convert diagnosis into actionable advice. Not generic tips — context-aware actions.
+Convert diagnosis into actionable advice. Not generic tips - context-aware actions.
 
 ### Scenario-to-Action Mapping
 
@@ -438,7 +438,7 @@ Convert diagnosis into actionable advice. Not generic tips — context-aware act
 | Items/order ↓ | Bundle loss | Cross-sell removed or OOS | "Shoppers are adding fewer items to each order. Verify cross-sell widgets and product recommendations visibility." |
 | Returning customers ↓ | Retention drop | Product dissatisfaction or season gap | "Fewer repeat customers purchased today. This often happens after delivery issues or poor product experience." |
 | New customers ↓ | Acquisition drop | Ads stopped or tracking broken | "Fewer new customers are making first purchases. Review advertising campaigns, referral traffic, or tracking setup." |
-| Refunds ↑ sharply | Quality mismatch | Wrong size/expectation/defect | "Refunds increased significantly. Review recent orders — likely product expectation mismatch or defect batch." |
+| Refunds ↑ sharply | Quality mismatch | Wrong size/expectation/defect | "Refunds increased significantly. Review recent orders - likely product expectation mismatch or defect batch." |
 | Revenue ↑ but Orders ↓ | Premium skew | High ticket purchases increased | "Revenue improved from higher-value purchases. Consider highlighting premium products while demand is strong." |
 | Mixed factors | No clear issue | Multiple small changes | "No clear issue detected. Monitor the next day before making changes." |
 
@@ -486,7 +486,7 @@ Never:
 add_action('woocommerce_new_order', 'mark_order_date_dirty');
 add_action('woocommerce_update_order', 'mark_order_date_dirty');
 
-// B) Order Status Changed (very important — affects revenue)
+// B) Order Status Changed (very important - affects revenue)
 add_action('woocommerce_order_status_changed', 'mark_original_date_dirty');
 
 // C) Refund Created (affects original order date)
@@ -499,7 +499,7 @@ function mark_order_date_dirty($order_id) {
     $order = wc_get_order($order_id);
     $order_date = $order->get_date_created()->date('Y-m-d');
 
-    // INSERT IGNORE — no duplicates, very lightweight
+    // INSERT IGNORE - no duplicates, very lightweight
     INSERT IGNORE INTO wp_salespulse_dirty_dates
         (stat_date, reason, detected_at)
     VALUES ($order_date, 'order_update', NOW());
@@ -607,7 +607,7 @@ System stays accurate without heavy full recalculations.
 
 ---
 
-## 10. Backfill Strategy — First Install Experience
+## 10. Backfill Strategy - First Install Experience
 
 ### The Problem
 
@@ -619,7 +619,7 @@ We build history from **newest to oldest** because merchants only care about rec
 
 ### Phases
 
-**Phase 1 — Instant Insight (0-5 seconds)**
+**Phase 1 - Instant Insight (0-5 seconds)**
 ```
 Build: Yesterday + Day before yesterday
 Result: Diagnosis engine works immediately
@@ -630,7 +630,7 @@ Dashboard shows real insight:
 → Value delivered. User trusts plugin.
 ```
 
-**Phase 2 — Recent Context (5-20 seconds)**
+**Phase 2 - Recent Context (5-20 seconds)**
 ```
 Background job builds: Last 7 → 14 → 30 days
 Result: Weekly comparison unlocks
@@ -638,7 +638,7 @@ Result: Weekly comparison unlocks
 Dashboard updates automatically. No waiting screen.
 ```
 
-**Phase 3 — Deep History (background, silent)**
+**Phase 3 - Deep History (background, silent)**
 ```
 Cron continues: Month 2, 3, ... up to 12 months
 Result: Full trend history available
@@ -689,7 +689,7 @@ Don't process empty years.
 
 ### Purpose
 
-When a merchant runs a sale, launch, or ads burst — revenue behavior becomes intentional. We must prevent false alarms.
+When a merchant runs a sale, launch, or ads burst - revenue behavior becomes intentional. We must prevent false alarms.
 
 Campaign mode **doesn't change data**. It **changes interpretation**.
 
@@ -714,7 +714,7 @@ Primary Goal:
 
 Active state:
 ```
-Campaign Active: "Summer Sale" — diagnostics adapted
+Campaign Active: "Summer Sale" - diagnostics adapted
 [ End Campaign ]
 ```
 
@@ -741,7 +741,7 @@ If active → modify Action Engine tone (see Section 7).
 
 ---
 
-## 12. UI Structure — Morning Briefing
+## 12. UI Structure - Morning Briefing
 
 ### Design Philosophy
 
@@ -810,23 +810,23 @@ Every sentence follows: **Observation → Cause → Guidance**
 
 ### Headline Templates
 
-**Revenue Drop — High confidence (>60%)**
+**Revenue Drop - High confidence (>60%)**
 - "Revenue decreased {%}% yesterday, mainly due to fewer orders."
 - "Revenue fell {%}% driven by lower average order value."
 - "Revenue declined {%}% because customers bought fewer items per order."
 
-**Revenue Drop — Medium confidence (40-60%)**
+**Revenue Drop - Medium confidence (40-60%)**
 - "Revenue decreased {%}% due to multiple smaller changes in customer behavior."
 
-**Revenue Drop — Low confidence (<40%)**
+**Revenue Drop - Low confidence (<40%)**
 - "Revenue decreased {%}% but no single strong cause was detected."
 
-**Revenue Increase — High confidence**
+**Revenue Increase - High confidence**
 - "Revenue increased {%}% primarily from more completed orders."
 - "Revenue grew {%}% as customers purchased higher-value products."
 - "Revenue improved {%}% due to larger baskets per order."
 
-**Revenue Increase — Medium confidence**
+**Revenue Increase - Medium confidence**
 - "Revenue increased {%}% from combined improvements across the store."
 
 **Stable**
@@ -873,13 +873,13 @@ Recipient: Admin email (editable)
 ### Email Template
 
 **Subject Lines:**
-- Revenue down: `Revenue decreased 12% yesterday — here's why`
+- Revenue down: `Revenue decreased 12% yesterday - here's why`
 - Revenue up: `Revenue increased 9% yesterday`
 - Stable: `Yesterday's revenue remained stable`
 
 **Body:**
 ```
-Sales Pulse — Daily Store Briefing
+Sales Pulse - Daily Store Briefing
 Date: February 14, 2026
 
 ─────────────────────────────────
@@ -968,7 +968,7 @@ Auto-redirect to Sales Pulse → Overview with onboarding banner:
 
 ---
 
-## 16. Settings — Minimal by Design
+## 16. Settings - Minimal by Design
 
 ### Philosophy
 
@@ -1065,7 +1065,7 @@ Snapshot date boundaries must align with store timezone.
 
 ---
 
-## 18. Brand & Tone — Calm Intelligence
+## 18. Brand & Tone - Calm Intelligence
 
 ### The Fourth Category
 
@@ -1092,7 +1092,7 @@ Every sentence: **Observation → Cause → Guidance**
 | Typography | System font stack, readable > stylish, medium weight headings |
 | Gradients | Avoid bright SaaS gradients (feel marketing, not financial) |
 | Spacing | Generous whitespace, breathable layout |
-| Charts | Minimal — only 7-day sparkline for context, not analysis |
+| Charts | Minimal - only 7-day sparkline for context, not analysis |
 
 ### Emotional Target
 
@@ -1172,27 +1172,27 @@ If you lock the core brain → trust breaks.
 
 ```
 core/services/
-├── DataCollector.php        — Reads WC analytics tables
-├── SnapshotBuilder.php      — Aggregates day → inserts snapshot
-├── DiagnosisEngine.php      — Revenue decomposition math
-├── ActionEngine.php         — Rule-based recommendations
-├── CampaignManager.php      — Campaign CRUD + active check
-├── EmailDigest.php          — Morning briefing email
-├── BackfillRunner.php       — Progressive history builder
-└── SchemaManager.php        — Table creation + migrations
+├── DataCollector.php        - Reads WC analytics tables
+├── SnapshotBuilder.php      - Aggregates day → inserts snapshot
+├── DiagnosisEngine.php      - Revenue decomposition math
+├── ActionEngine.php         - Rule-based recommendations
+├── CampaignManager.php      - Campaign CRUD + active check
+├── EmailDigest.php          - Morning briefing email
+├── BackfillRunner.php       - Progressive history builder
+└── SchemaManager.php        - Table creation + migrations
 ```
 
 ### New REST Endpoints
 
 ```
-GET  /sales-pulse/v1/overview/       — Diagnosis + metrics for dashboard
-GET  /sales-pulse/v1/history/        — List of daily explanations
-POST /sales-pulse/v1/campaigns/      — Create campaign
-GET  /sales-pulse/v1/campaigns/      — List campaigns
-PUT  /sales-pulse/v1/campaigns/{id}  — End campaign
-GET  /sales-pulse/v1/settings/       — Get settings
-POST /sales-pulse/v1/settings/       — Update settings
-POST /sales-pulse/v1/snapshot/       — Manual snapshot trigger (admin)
+GET  /sales-pulse/v1/overview/       - Diagnosis + metrics for dashboard
+GET  /sales-pulse/v1/history/        - List of daily explanations
+POST /sales-pulse/v1/campaigns/      - Create campaign
+GET  /sales-pulse/v1/campaigns/      - List campaigns
+PUT  /sales-pulse/v1/campaigns/{id}  - End campaign
+GET  /sales-pulse/v1/settings/       - Get settings
+POST /sales-pulse/v1/settings/       - Update settings
+POST /sales-pulse/v1/snapshot/       - Manual snapshot trigger (admin)
 ```
 
 ### What Gets Removed (Phase 2, after v2 is stable)
@@ -1207,7 +1207,7 @@ POST /sales-pulse/v1/snapshot/       — Manual snapshot trigger (admin)
 
 ## 21. Four-Week Sprint Plan
 
-### Week 1 — Data Foundation ("Make numbers exist")
+### Week 1 - Data Foundation ("Make numbers exist")
 
 **Goal**: Store one correct daily snapshot.
 
@@ -1224,7 +1224,7 @@ POST /sales-pulse/v1/snapshot/       — Manual snapshot trigger (admin)
 
 ---
 
-### Week 2 — Automatic Intelligence ("Make meaning exist")
+### Week 2 - Automatic Intelligence ("Make meaning exist")
 
 **Goal**: Plugin auto-explains revenue change.
 
@@ -1241,14 +1241,14 @@ POST /sales-pulse/v1/snapshot/       — Manual snapshot trigger (admin)
 
 ---
 
-### Week 3 — Product Experience ("Make it usable")
+### Week 3 - Product Experience ("Make it usable")
 
 **Goal**: Real product that works on a live store.
 
 | # | Task | Details |
 |---|------|---------|
 | 1 | Overview page UI | Headline + metric cards + what changed + suggested action |
-| 2 | Period toggle | [Yesterday] [Last 7 Days] — same engine, different window |
+| 2 | Period toggle | [Yesterday] [Last 7 Days] - same engine, different window |
 | 3 | Campaign CRUD | Start/stop/view campaigns + tone adjustment |
 | 4 | `BackfillRunner` class | Progressive reverse-chronological + safety limits |
 | 5 | History page | Daily explanation list (date + headline + direction) |
@@ -1258,7 +1258,7 @@ POST /sales-pulse/v1/snapshot/       — Manual snapshot trigger (admin)
 
 ---
 
-### Week 4 — Trust & Retention ("Make it shippable")
+### Week 4 - Trust & Retention ("Make it shippable")
 
 **Goal**: Plugin is safe for public users.
 
@@ -1277,7 +1277,7 @@ POST /sales-pulse/v1/snapshot/       — Manual snapshot trigger (admin)
 
 ---
 
-## 22. Future Roadmap — Store Copilot
+## 22. Future Roadmap - Store Copilot
 
 ### Store Copilot = Premium Plugin (Requires Sales Pulse)
 

@@ -16,6 +16,7 @@
 
 namespace EC_Sales_Pulse\Core\Controllers;
 
+use EC_Sales_Pulse\Core\Controllers\SettingsController;
 use EC_Sales_Pulse\Core\Database\Campaigns;
 use EC_Sales_Pulse\Core\Database\DailyStats;
 use EC_Sales_Pulse\Core\Services\ActionEngine;
@@ -47,7 +48,7 @@ class Overview extends BaseController {
 					'period' => [
 						'type'              => 'string',
 						'default'           => 'daily',
-						'enum'              => [ 'daily', 'weekly' ],
+						'enum'              => [ 'daily', 'weekly', 'monthly' ],
 						'sanitize_callback' => 'sanitize_text_field',
 					],
 				],
@@ -84,17 +85,22 @@ class Overview extends BaseController {
 		$period     = $request->get_param( 'period' ) ?? 'daily';
 		$daily_stats = DailyStats::get_instance();
 
-		if ( $period === 'weekly' ) {
-			$current  = $this->get_weekly_metrics( $daily_stats, 0 );
-			$previous = $this->get_weekly_metrics( $daily_stats, 1 );
+		if ( $period === 'monthly' ) {
+			$current  = $this->get_rolling_metrics( $daily_stats, 0, 30 );
+			$previous = $this->get_rolling_metrics( $daily_stats, 1, 30 );
+		} elseif ( $period === 'weekly' ) {
+			$current  = $this->get_rolling_metrics( $daily_stats, 0, 7 );
+			$previous = $this->get_rolling_metrics( $daily_stats, 1, 7 );
 		} else {
 			$current  = $this->get_daily_metrics( $daily_stats, 0 );
 			$previous = $this->get_daily_metrics( $daily_stats, 1 );
 		}
 
-		// Run diagnosis.
+		// Run diagnosis with configured sensitivity.
+		$sensitivity      = (string) SettingsController::get( 'diagnosis_sensitivity', 'balanced' );
 		$diagnosis_engine = DiagnosisEngine::get_instance();
-		$diagnosis        = $diagnosis_engine->diagnose( $current, $previous );
+		$diagnosis        = $diagnosis_engine->diagnose( $current, $previous, $sensitivity );
+		$diagnosis['severity'] = $this->severity_from_diagnosis( $diagnosis );
 
 		// Get active campaign for context.
 		$campaigns = Campaigns::get_instance();
@@ -109,7 +115,7 @@ class Overview extends BaseController {
 		// Build metric cards.
 		$metric_cards = $this->build_metric_cards( $current, $previous );
 
-		return $this->success( [
+		$response = [
 			'period'         => $period,
 			'diagnosis'      => $diagnosis,
 			'recommendation' => $recommendation,
@@ -121,7 +127,23 @@ class Overview extends BaseController {
 				'name' => $campaign->name,
 				'goal' => $campaign->goal,
 			] : null,
-		] );
+		];
+
+		/**
+		 * Filter the Overview REST response payload.
+		 *
+		 * Premium extensions append keys such as `forecast`, `anomalies`, or
+		 * `pro_recommendations` so the Overview page can render Pro insights
+		 * inline without a second round-trip.
+		 *
+		 * @since x.x.x
+		 *
+		 * @param array<string, mixed> $response The response payload.
+		 * @param string               $period   Period parameter (daily|weekly|monthly).
+		 */
+		$response = apply_filters( 'salespulse_overview_response', $response, $period );
+
+		return $this->success( $response );
 	}
 
 	/**
@@ -175,24 +197,50 @@ class Overview extends BaseController {
 	}
 
 	/**
-	 * Get weekly aggregated metrics.
+	 * Get aggregated metrics for a rolling window of N days.
 	 *
 	 * @param DailyStats $daily_stats DailyStats instance.
-	 * @param int        $offset      0 = last 7 days, 1 = previous 7 days.
+	 * @param int        $offset      0 = most recent window, 1 = previous window, etc.
+	 * @param int        $days        Window length in days (7 for weekly, 30 for monthly).
 	 * @return array<string, float>|null
 	 */
-	private function get_weekly_metrics( DailyStats $daily_stats, int $offset ) {
-		$timezone   = wp_timezone();
-		$week_shift = $offset * 7;
+	private function get_rolling_metrics( DailyStats $daily_stats, int $offset, int $days ) {
+		$timezone = wp_timezone();
+		$shift    = $offset * $days;
 
-		$end_offset   = $week_shift + 1; // End at yesterday for offset 0.
-		$start_offset = $week_shift + 7;
+		$end_offset   = $shift + 1; // End at yesterday for offset 0.
+		$start_offset = $shift + $days;
 
 		$end   = ( new \DateTime( "-{$end_offset} days", $timezone ) )->format( 'Y-m-d' );
 		$start = ( new \DateTime( "-{$start_offset} days", $timezone ) )->format( 'Y-m-d' );
 
 		$row = $daily_stats->get_aggregated( $start, $end );
 		return $row ? (array) $row : null;
+	}
+
+	/**
+	 * Derive a UI-facing severity code from a diagnosis result.
+	 *
+	 * Mapping:
+	 *   growth  → success (Surge)
+	 *   decline → danger  (Needs Attention)
+	 *   stable  → info    (Stable)
+	 *
+	 * @param array<string, mixed> $diagnosis Diagnosis array from DiagnosisEngine.
+	 * @return string One of success|warning|info|danger.
+	 */
+	private function severity_from_diagnosis( array $diagnosis ): string {
+		$direction = $diagnosis['direction'] ?? 'stable';
+
+		if ( $direction === 'growth' ) {
+			return 'success';
+		}
+
+		if ( $direction === 'decline' ) {
+			return 'danger';
+		}
+
+		return 'info';
 	}
 
 	/**

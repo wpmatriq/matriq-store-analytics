@@ -28,7 +28,7 @@ class CronManager {
 	const HOOK_BACKFILL = 'salespulse_backfill_runner';
 
 	/**
-	 * Constructor — register cron hooks and schedules.
+	 * Constructor - register cron hooks and schedules.
 	 */
 	public function __construct() {
 		// Register custom cron interval.

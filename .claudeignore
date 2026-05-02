@@ -1,0 +1,50 @@
+# Dependencies — large, not project code
+vendor/
+node_modules/
+
+# Build output — generated files, not source
+build/
+dist/
+artifact/
+plugin-zip/
+
+# Lock files — large, auto-generated
+package-lock.json
+composer.lock
+
+# WordPress test framework stubs (large vendor data)
+vendor/wp-phpunit/
+
+# Grunt intermediate storage
+.grunt/
+
+# Git internals
+.git/
+
+# IDE / editor configs
+.vscode/
+.husky/
+.qodo/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+*.tar.gz
+
+# Source maps
+*.map
+
+# Logs
+*.log
+
+# PHPStan output
+phpstan_output.txt
+phpstan-baseline.neon
+
+# Cache files
+.eslintcache
+.phpunit.result.cache
+.npm/

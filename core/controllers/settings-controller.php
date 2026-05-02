@@ -10,6 +10,8 @@
 
 namespace EC_Sales_Pulse\Core\Controllers;
 
+use EC_Sales_Pulse\Core\Database\SystemState;
+
 defined( 'ABSPATH' ) || exit;
 
 class SettingsController extends BaseController {
@@ -34,12 +36,21 @@ class SettingsController extends BaseController {
 	 * @var array<string, mixed>
 	 */
 	const DEFAULTS = [
-		'revenue_basis'  => 'net',          // 'net' or 'gross'.
-		'snapshot_hour'  => 2,              // 0-23.
-		'snapshot_min'   => 10,             // 0-59.
-		'email_enabled'  => false,
-		'email_address'  => '',             // Defaults to admin email.
+		'revenue_basis'         => 'net',          // 'net' or 'gross'.
+		'snapshot_hour'         => 2,              // 0-23.
+		'snapshot_min'          => 10,             // 0-59.
+		'email_enabled'         => false,
+		'email_address'         => '',             // Defaults to admin email.
+		'diagnosis_sensitivity' => 'balanced',     // 'calm' | 'balanced' | 'vigilant'.
+		'last_digest_error'     => null,           // string|null - last failure reason, cleared on success.
 	];
+
+	/**
+	 * Allowed values for the diagnosis_sensitivity setting.
+	 *
+	 * @var string[]
+	 */
+	const SENSITIVITY_VALUES = [ 'calm', 'balanced', 'vigilant' ];
 
 	/**
 	 * Register routes.
@@ -90,6 +101,11 @@ class SettingsController extends BaseController {
 						'type'              => 'string',
 						'sanitize_callback' => 'sanitize_email',
 					],
+					'diagnosis_sensitivity' => [
+						'type'              => 'string',
+						'enum'              => self::SENSITIVITY_VALUES,
+						'sanitize_callback' => 'sanitize_text_field',
+					],
 				],
 			]
 		);
@@ -106,7 +122,7 @@ class SettingsController extends BaseController {
 	}
 
 	/**
-	 * Update settings (partial update — only provided keys are changed).
+	 * Update settings (partial update - only provided keys are changed).
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
@@ -114,7 +130,8 @@ class SettingsController extends BaseController {
 	public function update_settings( \WP_REST_Request $request ): \WP_REST_Response {
 		$current  = self::get_all();
 		$params   = $request->get_json_params();
-		$allowed  = array_keys( self::DEFAULTS );
+		// `last_digest_error` is internal-only, set by DigestMailer; never accept it from clients.
+		$allowed  = array_diff( array_keys( self::DEFAULTS ), [ 'last_digest_error' ] );
 		$updated  = false;
 
 		foreach ( $allowed as $key ) {
@@ -132,6 +149,9 @@ class SettingsController extends BaseController {
 					continue;
 				}
 				if ( $key === 'email_address' && ! empty( $value ) && ! is_email( $value ) ) {
+					continue;
+				}
+				if ( $key === 'diagnosis_sensitivity' && ! in_array( $value, self::SENSITIVITY_VALUES, true ) ) {
 					continue;
 				}
 
@@ -169,6 +189,10 @@ class SettingsController extends BaseController {
 		$settings['timezone']        = wp_timezone_string();
 		$settings['currency']        = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD';
 		$settings['currency_symbol'] = function_exists( 'get_woocommerce_currency_symbol' ) ? html_entity_decode( get_woocommerce_currency_symbol() ) : '$';
+
+		// Surface digest health from SystemState so the UI can render "Last sent ..." without a second round-trip.
+		$state                          = SystemState::get_instance();
+		$settings['last_digest_sent_at'] = $state->get( SystemState::KEY_LAST_DIGEST_SENT_AT );
 
 		return $settings;
 	}

@@ -50,7 +50,7 @@ class DirtyDates extends Base {
 
 	/**
 	 * Mark a date as dirty (needs rebuild).
-	 * Uses INSERT IGNORE to avoid duplicates — very lightweight.
+	 * Uses INSERT IGNORE to avoid duplicates - very lightweight.
 	 *
 	 * @param string $date   Date in Y-m-d format.
 	 * @param string $reason Reason for marking dirty (order_update, refund, status_change).
