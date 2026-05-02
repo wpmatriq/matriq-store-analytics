@@ -15,12 +15,21 @@ import classnames from '@Utils/classnames';
 const STALE_THRESHOLD_MS = 26 * 60 * 60 * 1000;
 
 function getTabs() {
-	return [
+	const builtIn = [
 		{ slug: 'overview', label: __( 'Overview', 'sales-pulse' ), href: 'admin.php?page=sales-pulse' },
 		{ slug: 'history', label: __( 'History', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=history' },
 		{ slug: 'campaigns', label: __( 'Campaigns', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=campaigns' },
 		{ slug: 'settings', label: __( 'Settings', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=settings' },
 	];
+
+	// Tabs registered by premium extensions via `window.salesPulse.registerTab`.
+	const registered = Object.values( window?.salesPulse?.tabs || {} ).map( ( entry ) => ( {
+		slug: entry.id,
+		label: entry.label || entry.id,
+		href: `admin.php?page=sales-pulse&tab=${ entry.id }`,
+	} ) );
+
+	return [ ...builtIn, ...registered ];
 }
 
 function useLiveState() {

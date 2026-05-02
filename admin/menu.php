@@ -51,11 +51,7 @@ class Menu {
 	 * @since x.x.x
 	 */
 	public function initialize_hooks(): void {
-		// Load the Plugin's main menus.
 		add_action( 'admin_menu', [ $this, 'register_plugin_menus' ] );
-
-		// Load the Plugin's main menu CSS for some custom design.
-		add_action( 'admin_head', [ $this, 'admin_menu_css' ] );
 	}
 
 	/**
@@ -183,31 +179,6 @@ class Menu {
 		);
 
 		$submenu[ $parent_slug ][0][0] = esc_html__( 'Overview', 'sales-pulse' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
-	}
-
-	/**
-	 * Add the CSS to design the main side-bar menu of the plugin.
-	 *
-	 * @since x.x.x
-	 */
-	public function admin_menu_css(): void {
-		if ( ! $this->is_plugin_page() ) {
-			return;
-		}
-		$page_id = self::PAGE_ID;
-		echo '<style>
-			#toplevel_page_' . $page_id . ' li {
-				clear: both;
-			}
-			#toplevel_page_' . $page_id . ' a[href^="admin.php?page=' . $page_id . '&tab=settings"]:before {
-				content: "";
-				border-bottom: 1px solid hsla(0,0%,100%,.2);
-				display: block;
-				float: left;
-				margin: 8px -15px 8px;
-				width: calc(100% + 26px);
-			}
-		</style>';
 	}
 
 	/**
