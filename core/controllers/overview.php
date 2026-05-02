@@ -115,7 +115,7 @@ class Overview extends BaseController {
 		// Build metric cards.
 		$metric_cards = $this->build_metric_cards( $current, $previous );
 
-		return $this->success( [
+		$response = [
 			'period'         => $period,
 			'diagnosis'      => $diagnosis,
 			'recommendation' => $recommendation,
@@ -127,7 +127,23 @@ class Overview extends BaseController {
 				'name' => $campaign->name,
 				'goal' => $campaign->goal,
 			] : null,
-		] );
+		];
+
+		/**
+		 * Filter the Overview REST response payload.
+		 *
+		 * Premium extensions append keys such as `forecast`, `anomalies`, or
+		 * `pro_recommendations` so the Overview page can render Pro insights
+		 * inline without a second round-trip.
+		 *
+		 * @since x.x.x
+		 *
+		 * @param array<string, mixed> $response The response payload.
+		 * @param string               $period   Period parameter (daily|weekly|monthly).
+		 */
+		$response = apply_filters( 'salespulse_overview_response', $response, $period );
+
+		return $this->success( $response );
 	}
 
 	/**

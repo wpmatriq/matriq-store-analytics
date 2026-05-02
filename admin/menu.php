@@ -102,57 +102,87 @@ class Menu {
 	 * @since x.x.x
 	 */
 	public function register_plugin_menus(): void {
-		if ( current_user_can( EC_Sales_Pulse_CAPABILITY ) ) {
-			global $submenu;
-			$parent_slug   = self::PAGE_ID;
-			$capability    = EC_Sales_Pulse_CAPABILITY;
-			$menu_priority = apply_filters( self::PAGE_ID . '_menu_priority', 40 );
-
-			add_menu_page(
-				'Sales Pulse',
-				'Sales Pulse',
-				$capability,
-				$parent_slug,
-				[ $this, 'render_main_page' ],
-				'dashicons-chart-area',
-				$menu_priority
-			);
-
-			add_submenu_page(
-				$parent_slug,
-				__( 'History', 'sales-pulse' ),
-				__( 'History', 'sales-pulse' ),
-				$capability,
-				'admin.php?page=' . self::PAGE_ID . '&tab=history'
-			);
-
-			add_submenu_page(
-				$parent_slug,
-				__( 'Campaigns', 'sales-pulse' ),
-				__( 'Campaigns', 'sales-pulse' ),
-				$capability,
-				'admin.php?page=' . self::PAGE_ID . '&tab=campaigns'
-			);
-
-			add_submenu_page(
-				$parent_slug,
-				__( 'Settings', 'sales-pulse' ),
-				__( 'Settings', 'sales-pulse' ),
-				$capability,
-				'admin.php?page=' . self::PAGE_ID . '&tab=settings'
-			);
-
-			add_submenu_page(
-				'',
-				'WC Sales Pulse ' . __( 'Onboarding', 'sales-pulse' ),
-				'',
-				$capability,
-				'sales-pulse-onboarding',
-				[ $this, 'render_main_page' ]
-			);
-
-			$submenu[ $parent_slug ][0][0] = esc_html__( 'Overview', 'sales-pulse' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
+		if ( ! current_user_can( EC_Sales_Pulse_CAPABILITY ) ) {
+			return;
 		}
+
+		global $submenu;
+		$parent_slug   = self::PAGE_ID;
+		$capability    = EC_Sales_Pulse_CAPABILITY;
+		$menu_priority = apply_filters( self::PAGE_ID . '_menu_priority', 40 );
+
+		add_menu_page(
+			'Sales Pulse',
+			'Sales Pulse',
+			$capability,
+			$parent_slug,
+			[ $this, 'render_main_page' ],
+			'dashicons-chart-area',
+			$menu_priority
+		);
+
+		$default_submenus = [
+			'history'   => [
+				'page_title' => __( 'History', 'sales-pulse' ),
+				'menu_title' => __( 'History', 'sales-pulse' ),
+				'capability' => $capability,
+				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=history',
+				'callback'   => null,
+			],
+			'campaigns' => [
+				'page_title' => __( 'Campaigns', 'sales-pulse' ),
+				'menu_title' => __( 'Campaigns', 'sales-pulse' ),
+				'capability' => $capability,
+				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=campaigns',
+				'callback'   => null,
+			],
+			'settings'  => [
+				'page_title' => __( 'Settings', 'sales-pulse' ),
+				'menu_title' => __( 'Settings', 'sales-pulse' ),
+				'capability' => $capability,
+				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=settings',
+				'callback'   => null,
+			],
+		];
+
+		/**
+		 * Filter the Sales Pulse admin sub-menus before they are registered.
+		 *
+		 * Premium extensions add tabs (e.g. "Copilot") here. Each entry is keyed
+		 * by a stable slug and must define page_title, menu_title, capability,
+		 * menu_slug (string), and an optional callback (callable|null).
+		 *
+		 * @since x.x.x
+		 *
+		 * @param array<string, array<string, mixed>> $submenus    Submenu definitions.
+		 * @param string                              $parent_slug Parent menu slug.
+		 */
+		$submenus = apply_filters( 'salespulse_admin_submenus', $default_submenus, $parent_slug );
+
+		foreach ( $submenus as $entry ) {
+			if ( empty( $entry['menu_slug'] ) ) {
+				continue;
+			}
+			add_submenu_page(
+				$parent_slug,
+				(string) ( $entry['page_title'] ?? '' ),
+				(string) ( $entry['menu_title'] ?? '' ),
+				(string) ( $entry['capability'] ?? $capability ),
+				(string) $entry['menu_slug'],
+				is_callable( $entry['callback'] ?? null ) ? $entry['callback'] : ''
+			);
+		}
+
+		add_submenu_page(
+			'',
+			'WC Sales Pulse ' . __( 'Onboarding', 'sales-pulse' ),
+			'',
+			$capability,
+			'sales-pulse-onboarding',
+			[ $this, 'render_main_page' ]
+		);
+
+		$submenu[ $parent_slug ][0][0] = esc_html__( 'Overview', 'sales-pulse' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
 	}
 
 	/**

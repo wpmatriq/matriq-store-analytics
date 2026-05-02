@@ -46,22 +46,32 @@ class ActionEngine {
 
 		// Stable - no action needed.
 		if ( $direction === 'stable' || $factor === 'none' || $factor === 'no_data' || $factor === 'no_revenue' ) {
-			return [
+			$scenario = [
 				'scenario'       => 'stable',
 				'recommendation' => __( 'No clear issue detected. Monitor the next day before making changes.', 'sales-pulse' ),
 				'severity'       => 'info',
 			];
+		} else {
+			$scenario = $this->match_scenario( $direction, $factor, $sub_cause );
+
+			if ( $campaign ) {
+				$scenario = $this->apply_campaign_context( $scenario, $campaign, $direction );
+			}
 		}
 
-		// Match scenario.
-		$scenario = $this->match_scenario( $direction, $factor, $sub_cause );
-
-		// Apply campaign tone adjustment.
-		if ( $campaign ) {
-			$scenario = $this->apply_campaign_context( $scenario, $campaign, $direction );
-		}
-
-		return $scenario;
+		/**
+		 * Filter the action recommendation before it is returned.
+		 *
+		 * Premium extensions hook here to replace generic copy with AI-tailored
+		 * next steps grounded in the merchant's actual catalog and customer base.
+		 *
+		 * @since x.x.x
+		 *
+		 * @param array<string, mixed> $scenario  The matched recommendation scenario.
+		 * @param array<string, mixed> $diagnosis The diagnosis the recommendation reacts to.
+		 * @param object|null          $campaign  Active campaign (if any).
+		 */
+		return apply_filters( 'salespulse_action_recommendation', $scenario, $diagnosis, $campaign );
 	}
 
 	/**

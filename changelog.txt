@@ -1,4 +1,11 @@
 *** WC Smart Analytics Changelog ***
 
 Unreleased - version 0.0.1
+* Add: Public extension surface for premium add-ons (Phase 0 of Store Copilot integration).
+  - Filter `salespulse_diagnosis_result` wraps `DiagnosisEngine::diagnose()` output for AI enrichment.
+  - Filter `salespulse_action_recommendation` wraps `ActionEngine::recommend()` output for tailored next-step copy.
+  - Filter `salespulse_overview_response` wraps the `/overview` REST payload so extensions can append fields.
+  - Filter `salespulse_admin_submenus` lets extensions register additional admin sub-tabs.
+  - Action `salespulse_data_collector_extra` fires after every per-day snapshot write so extensions can fan out per-product / per-customer collection sharing the same WC analytics read pass.
+  - JavaScript slot `window.salesPulse.registerTab({ id, label, component })` lets extensions plug a React page into the dashboard. Built-in tabs cannot be overridden.
 * Initial Release.

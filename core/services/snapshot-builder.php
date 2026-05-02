@@ -42,6 +42,22 @@ class SnapshotBuilder {
 		$daily_stats = DailyStats::get_instance();
 		$result      = $daily_stats->upsert( $metrics );
 
+		if ( $result !== false ) {
+			/**
+			 * Fires after a per-day snapshot has been written.
+			 *
+			 * Premium extensions hook here to fan out to additional collectors
+			 * (per-product, per-customer, cohort updates) for the same date,
+			 * sharing this run's WC analytics read pass.
+			 *
+			 * @since x.x.x
+			 *
+			 * @param string               $date    Date the snapshot was built for (Y-m-d).
+			 * @param array<string, mixed> $metrics Metrics array that was upserted.
+			 */
+			do_action( 'salespulse_data_collector_extra', $date, $metrics );
+		}
+
 		return $result !== false;
 	}
 

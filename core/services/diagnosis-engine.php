@@ -65,6 +65,34 @@ class DiagnosisEngine {
 	 * @return array<string, mixed> Diagnosis result.
 	 */
 	public function diagnose( $current, $previous, string $sensitivity = 'balanced' ): array {
+		$diagnosis = $this->compute_diagnosis( $current, $previous, $sensitivity );
+
+		/**
+		 * Filter the deterministic diagnosis result before it is returned.
+		 *
+		 * Premium extensions (e.g. Store Copilot) hook here to enrich the
+		 * diagnosis with AI-generated explanations or additional fields.
+		 *
+		 * @since x.x.x
+		 *
+		 * @param array<string, mixed> $diagnosis   The computed diagnosis result.
+		 * @param mixed                $current     Current period metrics.
+		 * @param mixed                $previous    Previous period metrics.
+		 * @param string               $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
+		 */
+		return apply_filters( 'salespulse_diagnosis_result', $diagnosis, $current, $previous, $sensitivity );
+	}
+
+	/**
+	 * Compute the deterministic diagnosis. Pure math, no filters - the public
+	 * `diagnose()` wraps this with `salespulse_diagnosis_result`.
+	 *
+	 * @param mixed  $current     Current period metrics.
+	 * @param mixed  $previous    Previous period metrics.
+	 * @param string $sensitivity Diagnosis sensitivity.
+	 * @return array<string, mixed>
+	 */
+	private function compute_diagnosis( $current, $previous, string $sensitivity ): array {
 		$multiplier             = self::SENSITIVITY_MULTIPLIERS[ $sensitivity ] ?? 1.0;
 		$this->change_threshold = self::CHANGE_THRESHOLD * $multiplier;
 
