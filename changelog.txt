@@ -1,6 +1,10 @@
 *** WC Smart Analytics Changelog ***
 
 Unreleased - version 0.0.1
+* Add: PluginSlot inline component slot system for premium extensions.
+  - New `<PluginSlot name>` component renders any components registered via `window.salesPulse.registerSlot(name, entry)`, in weight-ascending order.
+  - Two named slots in OverviewPage: `overview-after-hero` (between BriefingHero and MetricCards) and `overview-action-extra` (inside the Suggested Action card).
+  - Email digest templates render `$diagnosis['ai_paragraph']` and `$recommendation['ai_text']` if set by a premium extension; otherwise unchanged.
 * Add: Public extension surface for premium add-ons (Phase 0 of Store Copilot integration).
   - Filter `salespulse_diagnosis_result` wraps `DiagnosisEngine::diagnose()` output for AI enrichment.
   - Filter `salespulse_action_recommendation` wraps `ActionEngine::recommend()` output for tailored next-step copy.

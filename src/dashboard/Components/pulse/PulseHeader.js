@@ -69,7 +69,7 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 							{ __( 'Sales Pulse', 'sales-pulse' ) }
 						</span>
 						<span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-							{ __( 'WooCommerce insights', 'sales-pulse' ) }
+							{ __( 'Your Store Insights', 'sales-pulse' ) }
 						</span>
 					</div>
 				</a>

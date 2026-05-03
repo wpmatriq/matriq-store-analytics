@@ -66,13 +66,17 @@ foreach ( $sections as $key => $label ) {
 		continue;
 	}
 
-	$diagnosis = (array) ( $section['diagnosis'] ?? [] );
-	$rec       = (array) ( $section['recommendation'] ?? [] );
-	$cards     = (array) ( $section['metric_cards'] ?? [] );
-	$pct       = (float) ( $diagnosis['revenue_change_percent'] ?? 0 );
-	$headline  = (string) ( $diagnosis['headline'] ?? '' );
-	$sub_cause = (string) ( $diagnosis['confidence_label'] ?? '' );
-	$rec_text  = (string) ( $rec['recommendation'] ?? '' );
+	$diagnosis    = (array) ( $section['diagnosis'] ?? [] );
+	$rec          = (array) ( $section['recommendation'] ?? [] );
+	$cards        = (array) ( $section['metric_cards'] ?? [] );
+	$pct          = (float) ( $diagnosis['revenue_change_percent'] ?? 0 );
+	$headline     = (string) ( $diagnosis['headline'] ?? '' );
+	$sub_cause    = (string) ( $diagnosis['confidence_label'] ?? '' );
+	$rec_text     = (string) ( $rec['recommendation'] ?? '' );
+	// Phase 2: Pro AI fields are emitted only on the daily window.
+	$ai_paragraph = ( $key === 'daily' ) ? (string) ( $diagnosis['ai_paragraph'] ?? '' ) : '';
+	$ai_offline   = ( $key === 'daily' ) && ! empty( $diagnosis['ai_offline'] );
+	$ai_action    = ( $key === 'daily' ) ? (string) ( $rec['ai_text'] ?? '' ) : '';
 
 	echo $label . "\n";
 	echo str_repeat( '-', 60 ) . "\n";
@@ -81,6 +85,13 @@ foreach ( $sections as $key => $label ) {
 		echo $sub_cause . "\n";
 	}
 	echo "\n";
+
+	if ( $ai_paragraph !== '' ) {
+		echo __( 'COPILOT · WHY THIS HAPPENED', 'sales-pulse' ) . "\n";
+		echo '  ' . $ai_paragraph . "\n\n";
+	} elseif ( $ai_offline ) {
+		echo '  ' . __( '(AI insights paused)', 'sales-pulse' ) . "\n\n";
+	}
 
 	if ( $cards ) {
 		foreach ( $cards as $card ) {
@@ -95,6 +106,11 @@ foreach ( $sections as $key => $label ) {
 	if ( $rec_text !== '' ) {
 		echo __( 'Suggested action:', 'sales-pulse' ) . "\n";
 		echo '  ' . $rec_text . "\n\n";
+	}
+
+	if ( $ai_action !== '' ) {
+		echo __( 'COPILOT · AI alternative', 'sales-pulse' ) . "\n";
+		echo '  ' . $ai_action . "\n\n";
 	}
 }
 

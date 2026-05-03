@@ -25,6 +25,8 @@ const BUILT_IN_TABS = [ 'overview', 'history', 'campaigns', 'settings' ];
 if ( typeof window !== 'undefined' ) {
 	window.salesPulse = window.salesPulse || {};
 	window.salesPulse.tabs = window.salesPulse.tabs || {};
+	window.salesPulse.slots = window.salesPulse.slots || {};
+
 	if ( typeof window.salesPulse.registerTab !== 'function' ) {
 		window.salesPulse.registerTab = function ( entry ) {
 			if ( ! entry || ! entry.id || ! entry.component ) {
@@ -38,6 +40,27 @@ if ( typeof window !== 'undefined' ) {
 				label: entry.label || entry.id,
 				component: entry.component,
 			};
+			return true;
+		};
+	}
+
+	// Inline component slot registry (Phase 0.1). Premium extensions register
+	// components into named slots that the host pages render via <PluginSlot>.
+	if ( typeof window.salesPulse.registerSlot !== 'function' ) {
+		window.salesPulse.registerSlot = function ( name, entry ) {
+			if ( ! name || ! entry || ! entry.id || ! entry.component ) {
+				return false;
+			}
+			const list = window.salesPulse.slots[ name ] = window.salesPulse.slots[ name ] || [];
+			if ( list.some( ( e ) => e.id === entry.id ) ) {
+				return false; // idempotent on re-register
+			}
+			list.push( {
+				id: entry.id,
+				component: entry.component,
+				weight: typeof entry.weight === 'number' ? entry.weight : 0,
+			} );
+			list.sort( ( a, b ) => a.weight - b.weight );
 			return true;
 		};
 	}

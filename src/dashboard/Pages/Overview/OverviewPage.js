@@ -14,6 +14,7 @@ import { __ } from '@wordpress/i18n';
 import { AlertTriangle, BarChart3, Sparkles } from 'lucide-react';
 import { useOverview, useTrend } from '@DashboardApp/hooks/useOverview';
 import { PageHeader } from '@Components/pulse/PageHeader';
+import { PluginSlot } from '@Components/PluginSlot';
 import { SegmentedControl } from '@Components/pulse/SegmentedControl';
 import { BriefingHero } from '@Components/pulse/BriefingHero';
 import { InsightCard } from '@Components/pulse/InsightCard';
@@ -128,6 +129,17 @@ export default function OverviewPage() {
 						cause={ diagnosis?.confidence_label }
 					/>
 
+					<PluginSlot
+						name="overview-after-hero"
+						props={ {
+							data,
+							diagnosis,
+							recommendation,
+							period,
+							isLoading,
+						} }
+					/>
+
 					<MetricCards cards={ metricCards } trend={ trendData?.trend } />
 
 					<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -160,6 +172,16 @@ export default function OverviewPage() {
 							{ hasAction && ! isLoading ? (
 								<ActionCardContent recommendation={ recommendation } />
 							) : null }
+							<PluginSlot
+								name="overview-action-extra"
+								props={ {
+									data,
+									diagnosis,
+									recommendation,
+									period,
+									isLoading,
+								} }
+							/>
 						</InsightCard>
 					</div>
 

@@ -160,10 +160,27 @@ class DigestMailer {
 				'campaign'        => $campaign_arr,
 				'dashboard_url'   => admin_url( 'admin.php?page=sales-pulse' ),
 			],
-			'daily'   => $build_section( $daily_current, $daily_previous, true ),
-			'weekly'  => $build_section( $weekly_current, $weekly_previous, false ),
-			'monthly' => $build_section( $monthly_current, $monthly_previous, false ),
+			'daily'   => $this->run_section( 'daily', $build_section, $daily_current, $daily_previous, true ),
+			'weekly'  => $this->run_section( 'weekly', $build_section, $weekly_current, $weekly_previous, false ),
+			'monthly' => $this->run_section( 'monthly', $build_section, $monthly_current, $monthly_previous, false ),
 		];
+	}
+
+	/**
+	 * Run one section build with the period announced via the standard
+	 * `salespulse_overview_period_resolved` action so premium extensions
+	 * (e.g. Store Copilot) can scope per-window enrichment correctly.
+	 *
+	 * @param string                                                                                                              $period      Window name.
+	 * @param callable(array<string,mixed>|null,array<string,mixed>|null,bool):array<string,mixed>                                 $builder     The closure built in build_payload().
+	 * @param array<string, mixed>|null                                                                                           $current     Current-period metrics.
+	 * @param array<string, mixed>|null                                                                                           $previous    Previous-period metrics.
+	 * @param bool                                                                                                                $is_daily    Whether this is the daily-window build.
+	 * @return array<string, mixed>
+	 */
+	private function run_section( string $period, callable $builder, $current, $previous, bool $is_daily ): array {
+		do_action( 'salespulse_overview_period_resolved', $period );
+		return $builder( $current, $previous, $is_daily );
 	}
 
 	/**

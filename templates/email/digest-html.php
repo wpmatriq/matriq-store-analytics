@@ -119,13 +119,18 @@ $sections = [
 					if ( ! $section ) {
 						continue;
 					}
-					$diagnosis  = (array) ( $section['diagnosis'] ?? [] );
-					$rec        = (array) ( $section['recommendation'] ?? [] );
-					$cards      = (array) ( $section['metric_cards'] ?? [] );
-					$pct        = (float) ( $diagnosis['revenue_change_percent'] ?? 0 );
-					$headline   = (string) ( $diagnosis['headline'] ?? '' );
-					$sub_cause  = (string) ( $diagnosis['confidence_label'] ?? '' );
-					$rec_text   = (string) ( $rec['recommendation'] ?? '' );
+					$diagnosis    = (array) ( $section['diagnosis'] ?? [] );
+					$rec          = (array) ( $section['recommendation'] ?? [] );
+					$cards        = (array) ( $section['metric_cards'] ?? [] );
+					$pct          = (float) ( $diagnosis['revenue_change_percent'] ?? 0 );
+					$headline     = (string) ( $diagnosis['headline'] ?? '' );
+					$sub_cause    = (string) ( $diagnosis['confidence_label'] ?? '' );
+					$rec_text     = (string) ( $rec['recommendation'] ?? '' );
+					// Phase 2: Pro plugin enriches the daily section with an AI paragraph
+					// and a tailored action via filters; render them only on the daily window.
+					$ai_paragraph = ( $key === 'daily' ) ? (string) ( $diagnosis['ai_paragraph'] ?? '' ) : '';
+					$ai_offline   = ( $key === 'daily' ) && ! empty( $diagnosis['ai_offline'] );
+					$ai_action    = ( $key === 'daily' ) ? (string) ( $rec['ai_text'] ?? '' ) : '';
 					?>
 					<tr>
 						<td style="padding:24px 32px;border-bottom:1px solid #ece9e0;">
@@ -154,6 +159,25 @@ $sections = [
 									</td>
 								</tr>
 							</table>
+
+							<?php if ( $ai_paragraph !== '' ) : ?>
+								<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;">
+									<tr>
+										<td style="border-left:3px solid #6366f1;padding:10px 0 10px 14px;background:transparent;">
+											<div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;">
+												✦ <?php echo esc_html__( 'Copilot · Why this happened', 'sales-pulse' ); ?>
+											</div>
+											<div style="margin-top:6px;font-size:14px;color:#1a1d2e;line-height:1.55;">
+												<?php echo esc_html( $ai_paragraph ); ?>
+											</div>
+										</td>
+									</tr>
+								</table>
+							<?php elseif ( $ai_offline ) : ?>
+								<div style="margin-top:14px;display:inline-block;font-size:11px;color:#7c8093;background:#f7f5f0;border:1px solid #ece9e0;border-radius:999px;padding:4px 10px;">
+									<?php echo esc_html__( 'AI insights paused', 'sales-pulse' ); ?>
+								</div>
+							<?php endif; ?>
 
 							<?php if ( $cards ) : ?>
 								<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;border-collapse:separate;border-spacing:8px 0;">
@@ -187,6 +211,21 @@ $sections = [
 											</div>
 											<div style="margin-top:4px;font-size:14px;color:#1a1d2e;line-height:1.5;">
 												<?php echo esc_html( $rec_text ); ?>
+											</div>
+										</td>
+									</tr>
+								</table>
+							<?php endif; ?>
+
+							<?php if ( $ai_action !== '' ) : ?>
+								<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:14px;">
+									<tr>
+										<td style="border-left:3px solid #6366f1;padding:8px 0 8px 14px;background:transparent;">
+											<div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;">
+												✦ <?php echo esc_html__( 'Copilot · AI alternative', 'sales-pulse' ); ?>
+											</div>
+											<div style="margin-top:4px;font-size:14px;color:#1a1d2e;line-height:1.5;">
+												<?php echo esc_html( $ai_action ); ?>
 											</div>
 										</td>
 									</tr>

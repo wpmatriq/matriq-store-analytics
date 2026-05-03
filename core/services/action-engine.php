@@ -51,6 +51,13 @@ class ActionEngine {
 				'recommendation' => __( 'No clear issue detected. Monitor the next day before making changes.', 'sales-pulse' ),
 				'severity'       => 'info',
 			];
+		} elseif ( $factor === 'low_sample' ) {
+			// Single-order-vs-single-order comparisons: do not surface a confident action.
+			$scenario = [
+				'scenario'       => 'low_sample',
+				'recommendation' => __( 'Comparison ran on too few orders to be reliable. Wait for a few more days of activity before acting on this signal.', 'sales-pulse' ),
+				'severity'       => 'info',
+			];
 		} else {
 			$scenario = $this->match_scenario( $direction, $factor, $sub_cause );
 

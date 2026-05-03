@@ -85,6 +85,17 @@ class Overview extends BaseController {
 		$period     = $request->get_param( 'period' ) ?? 'daily';
 		$daily_stats = DailyStats::get_instance();
 
+		/**
+		 * Fires once the resolved period for this Overview request is known.
+		 * Premium extensions listen here to scope per-window behaviour
+		 * (e.g. only enrich diagnosis on the daily window).
+		 *
+		 * @since x.x.x
+		 *
+		 * @param string $period One of `daily` | `weekly` | `monthly`.
+		 */
+		do_action( 'salespulse_overview_period_resolved', $period );
+
 		if ( $period === 'monthly' ) {
 			$current  = $this->get_rolling_metrics( $daily_stats, 0, 30 );
 			$previous = $this->get_rolling_metrics( $daily_stats, 1, 30 );
@@ -231,6 +242,15 @@ class Overview extends BaseController {
 	 */
 	private function severity_from_diagnosis( array $diagnosis ): string {
 		$direction = $diagnosis['direction'] ?? 'stable';
+		$factor    = $diagnosis['primary_factor'] ?? 'none';
+
+		// Low-sample comparisons (e.g. 1 order yesterday vs 1 the day before)
+		// mathematically swing by hundreds of percent. Suppress the green/red
+		// surge/decline treatment so the headline carries the truth without
+		// the dashboard visually screaming about it.
+		if ( $factor === 'low_sample' ) {
+			return 'info';
+		}
 
 		if ( $direction === 'growth' ) {
 			return 'success';

@@ -28,11 +28,31 @@ class DiagnosisEngine {
 	const CHANGE_THRESHOLD = 5.0;
 
 	/**
-	 * Minimum revenue amount for meaningful diagnosis.
+	 * Absolute floor: anything below this is treated as "no revenue" rather
+	 * than a real signal. Used by the new-store / dead-store edge cases.
 	 *
 	 * @var float
 	 */
 	const MIN_REVENUE_THRESHOLD = 1.0;
+
+	/**
+	 * Below this revenue, comparisons are statistically meaningless even
+	 * when both days have orders. STRATEGY.md Section 6: "Suppress strong
+	 * diagnosis, mark 'low sample size'." A jump from $7 to $76 is a
+	 * one-order-vs-one-order spike, not a trend.
+	 *
+	 * @var float
+	 */
+	const LOW_SAMPLE_REVENUE_THRESHOLD = 50.0;
+
+	/**
+	 * Below this order count on either side, the diagnosis is downgraded to
+	 * "low sample size" regardless of the dollar swing. Three orders is the
+	 * minimum where a primary-factor decomposition starts to mean something.
+	 *
+	 * @var int
+	 */
+	const MIN_ORDERS_FOR_CONFIDENCE = 3;
 
 	/**
 	 * Multipliers applied to CHANGE_THRESHOLD for each sensitivity level.
@@ -141,6 +161,35 @@ class DiagnosisEngine {
 		$revenue_change_pct    = $this->pct_change( $current['revenue'], $previous['revenue'] );
 		$revenue_change_amount = $current['revenue'] - $previous['revenue'];
 		$direction             = $this->get_direction( $revenue_change_pct );
+
+		// Edge case: low sample size. Either day below the meaningful-revenue
+		// floor OR fewer than the minimum order count means a single
+		// transaction can swing the headline by hundreds of percent. Report
+		// the truth in numbers but suppress the strong "Clear cause" framing.
+		$low_sample = $previous['revenue'] < self::LOW_SAMPLE_REVENUE_THRESHOLD
+			|| $current['revenue'] < self::LOW_SAMPLE_REVENUE_THRESHOLD
+			|| (int) ( $previous['orders'] ?? 0 ) < self::MIN_ORDERS_FOR_CONFIDENCE
+			|| (int) ( $current['orders'] ?? 0 ) < self::MIN_ORDERS_FOR_CONFIDENCE;
+
+		if ( $low_sample ) {
+			$headline = $direction === 'stable'
+				? 'Revenue moved on a small base, no clear signal yet.'
+				: sprintf(
+					'Revenue %s on a small base, treat as low signal.',
+					$direction === 'growth' ? 'rose' : 'dropped'
+				);
+
+			return $this->build_result(
+				round( $revenue_change_pct, 1 ),
+				round( $revenue_change_amount, 2 ),
+				$direction,
+				'low_sample',
+				'Too few orders for a reliable comparison.',
+				[],
+				0.0,
+				$headline
+			);
+		}
 
 		// If change is below threshold, report stable.
 		if ( abs( $revenue_change_pct ) < $this->change_threshold ) {
