@@ -71,7 +71,6 @@ class API {
 					'permission_callback' => [ $this, 'get_permissions_check' ],
 					'args'                => [],
 				],
-				'schema' => [ $this, 'get_public_item_schema' ],
 			]
 		);
 	}
