@@ -83,6 +83,11 @@ export default function OverviewPage() {
 			transition={ { duration: 0.4, ease: EASE } }
 			className="space-y-8"
 		>
+			<PluginSlot
+				name="overview-banner"
+				props={ { data, period, isLoading } }
+			/>
+
 			<PageHeader
 				eyebrow={ __( 'Morning briefing', 'sales-pulse' ) }
 				title={ PERIOD_TITLES[ period ] }
@@ -192,6 +197,11 @@ export default function OverviewPage() {
 							period={ period }
 						/>
 					) }
+
+					<PluginSlot
+						name="overview-after-trend"
+						props={ { data, trendData, currency, period, isLoading } }
+					/>
 				</>
 			) }
 		</motion.div>

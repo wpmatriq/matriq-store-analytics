@@ -60,9 +60,8 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 					href="admin.php?page=sales-pulse"
 					className="group flex items-center gap-2.5 no-underline"
 				>
-					<div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-ink shadow-md">
+					<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-ink shadow-md">
 						<Activity className="h-[18px] w-[18px] text-pulse" strokeWidth={ 2.5 } />
-						<span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-pulse pulse-dot" />
 					</div>
 					<div className="flex flex-col leading-none">
 						<span className="font-display text-lg text-ink">
