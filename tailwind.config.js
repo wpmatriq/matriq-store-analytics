@@ -4,9 +4,24 @@
  * Tokens are authored in SCSS (`src/dashboard/design-tokens.scss`) as OKLch
  * CSS variables. Tailwind theme values below reference `var(--*)` directly so
  * any change in the SCSS ripples through utility classes without editing here.
+ *
+ * `content` also scans Store Copilot's source so utility classes used only by
+ * the Pro plugin's slot components (e.g. ChatTrigger, AnomalyBanner) end up
+ * in the compiled CSS that loads on every Sales Pulse admin page. Pro reuses
+ * SP's stylesheet rather than shipping its own.
  */
+const fs = require( 'fs' );
+const path = require( 'path' );
+
+const proSourcePath = path.resolve( __dirname, '../store-copilot/src' );
+const content = [ './src/dashboard/**/*.{js,jsx,ts,tsx}' ];
+
+if ( fs.existsSync( proSourcePath ) ) {
+	content.push( '../store-copilot/src/**/*.{js,jsx,ts,tsx}' );
+}
+
 module.exports = {
-	content: [ './src/dashboard/**/*.{js,jsx,ts,tsx}' ],
+	content,
 	theme: {
 		container: {
 			center: true,

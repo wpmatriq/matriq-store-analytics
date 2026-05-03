@@ -6,15 +6,33 @@
  *
  * Components registered into the same slot render in weight-ascending order
  * (lower weight = higher in the DOM). Each registered component receives
- * the `props` object passed to PluginSlot - typically the page's data so
+ * the `props` object passed to PluginSlot — typically the page's data so
  * the slot component can render its inline UI without making its own request.
+ *
+ * Subscribes to the `salespulse:slot-registered` window event so slots that
+ * mount inside otherwise-static parents (e.g. the header) re-render when a
+ * Pro bundle loads after the SP shell has already painted.
  *
  * Returns `null` when no entries are registered, so the host page's layout
  * is unaffected by the empty slot.
  */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export function PluginSlot( { name, props } ) {
+	const [ , bump ] = useState( 0 );
+
+	useEffect( () => {
+		const onRegistered = ( event ) => {
+			if ( event?.detail?.name === name ) {
+				bump( ( v ) => v + 1 );
+			}
+		};
+		window.addEventListener( 'salespulse:slot-registered', onRegistered );
+		return () => {
+			window.removeEventListener( 'salespulse:slot-registered', onRegistered );
+		};
+	}, [ name ] );
+
 	const entries = ( typeof window !== 'undefined' && window.salesPulse?.slots?.[ name ] ) || [];
 
 	if ( ! entries.length ) {

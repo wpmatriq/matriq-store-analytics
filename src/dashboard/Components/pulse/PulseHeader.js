@@ -11,6 +11,7 @@ import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { Activity } from 'lucide-react';
 import classnames from '@Utils/classnames';
+import { PluginSlot } from '@Components/PluginSlot';
 
 const STALE_THRESHOLD_MS = 26 * 60 * 60 * 1000;
 
@@ -100,11 +101,7 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 				</nav>
 
 				<div className="flex items-center gap-3">
-					{ version && (
-						<span className="hidden font-mono text-xs text-muted-foreground lg:inline">
-							{ `v${ version }` }
-						</span>
-					) }
+					<PluginSlot name="header-action" props={ { activeTab } } />
 					<div
 						className={ classnames(
 							'flex items-center gap-1.5 rounded-full border border-solid px-2.5 py-1',
@@ -120,6 +117,11 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 								: __( 'Stale', 'sales-pulse' ) }
 						</span>
 					</div>
+					{ version && (
+						<span className="hidden font-mono text-xs text-muted-foreground lg:inline">
+							{ `v${ version }` }
+						</span>
+					) }
 				</div>
 			</div>
 

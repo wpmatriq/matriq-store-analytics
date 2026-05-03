@@ -1,6 +1,7 @@
 *** WC Smart Analytics Changelog ***
 
 Unreleased - version 0.0.1
+* Add: Two more named slots for premium extensions: `header-action` (in the dashboard header, for action triggers) and `app-overlay` (at the shell root, for portal-mounted overlays like a chat drawer).
 * Add: Two more named slots in OverviewPage for premium extensions: `overview-banner` (above the page header, for anomaly banners) and `overview-after-trend` (below the revenue trend chart, for forecasts).
 * Add: PluginSlot inline component slot system for premium extensions.
   - New `<PluginSlot name>` component renders any components registered via `window.salesPulse.registerSlot(name, entry)`, in weight-ascending order.

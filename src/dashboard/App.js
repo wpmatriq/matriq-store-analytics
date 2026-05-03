@@ -12,6 +12,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReadinessGate } from '@Components/ReadinessGate';
 import ErrorBoundary from '@Components/ErrorBoundary';
+import { PluginSlot } from '@Components/PluginSlot';
 import { PulseShell } from '@Components/pulse/PulseShell';
 import OverviewPage from '@DashboardApp/pages/Overview/OverviewPage';
 import HistoryPage from '@DashboardApp/pages/History/HistoryPage';
@@ -46,6 +47,10 @@ if ( typeof window !== 'undefined' ) {
 
 	// Inline component slot registry (Phase 0.1). Premium extensions register
 	// components into named slots that the host pages render via <PluginSlot>.
+	// A custom `salespulse:slot-registered` event fires after each successful
+	// registration so PluginSlot can re-render — Pro bundles often load AFTER
+	// the host shell has already mounted, so a one-shot read at first render
+	// would miss late registrations.
 	if ( typeof window.salesPulse.registerSlot !== 'function' ) {
 		window.salesPulse.registerSlot = function ( name, entry ) {
 			if ( ! name || ! entry || ! entry.id || ! entry.component ) {
@@ -61,6 +66,10 @@ if ( typeof window !== 'undefined' ) {
 				weight: typeof entry.weight === 'number' ? entry.weight : 0,
 			} );
 			list.sort( ( a, b ) => a.weight - b.weight );
+
+			window.dispatchEvent(
+				new CustomEvent( 'salespulse:slot-registered', { detail: { name, id: entry.id } } )
+			);
 			return true;
 		};
 	}
@@ -122,6 +131,7 @@ export default function App() {
 					</ReadinessGate>
 				</ErrorBoundary>
 			</PulseShell>
+			<PluginSlot name="app-overlay" props={ { activeTab } } />
 		</QueryClientProvider>
 	);
 }
