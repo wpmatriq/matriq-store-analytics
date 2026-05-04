@@ -12,7 +12,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$payload = is_object( $email ) && isset( $email->payload ) ? (array) $email->payload : [];
+// Guard against include paths that don't seed `$email` (some WC admin preview flows re-render templates without the parent context).
+$payload = ( isset( $email ) && is_object( $email ) && isset( $email->payload ) ) ? (array) $email->payload : [];
 $meta    = isset( $payload['meta'] ) ? (array) $payload['meta'] : [];
 
 $site_name       = (string) ( $meta['site_name'] ?? get_bloginfo( 'name' ) );
