@@ -2,7 +2,7 @@
  * Settings Page - tune how Sales Pulse interprets, schedules, and digests.
  *
  * Sections:
- *   1. General - timezone (read-only), currency (read-only), revenue basis (Net/Gross).
+ *   1. General - timezone (read-only), currency (read-only).
  *   2. Snapshot schedule - hour:minute for the nightly cron.
  *   3. Email digest - toggle + recipient.
  *   4. Diagnosis sensitivity - Calm / Balanced / Vigilant.
@@ -36,7 +36,6 @@ import classnames from '@Utils/classnames';
 import { SettingSection } from './SettingSection';
 
 const EDITABLE_KEYS = [
-	'revenue_basis',
 	'snapshot_hour',
 	'snapshot_min',
 	'email_enabled',
@@ -117,7 +116,6 @@ export default function SettingsPage() {
 		}
 
 		const payload = {
-			revenue_basis: form.revenue_basis,
 			snapshot_hour: parseInt( form.snapshot_hour, 10 ) || 0,
 			snapshot_min: parseInt( form.snapshot_min, 10 ) || 0,
 			email_enabled: !! form.email_enabled,
@@ -202,8 +200,6 @@ export default function SettingsPage() {
 
 			<GeneralSection
 				settings={ settings }
-				form={ form }
-				onChange={ handleChange }
 				delay={ 0 }
 			/>
 			<ScheduleSection
@@ -271,19 +267,7 @@ function SaveButton( { isDirty, pending, saved, onClick } ) {
 	);
 }
 
-function GeneralSection( { settings, form, onChange, delay } ) {
-	const revenueOptions = [
-		{
-			value: 'net',
-			title: __( 'Net Revenue', 'sales-pulse' ),
-			description: __( 'After discounts & refunds', 'sales-pulse' ),
-		},
-		{
-			value: 'gross',
-			title: __( 'Gross Revenue', 'sales-pulse' ),
-			description: __( 'Before any deductions', 'sales-pulse' ),
-		},
-	];
+function GeneralSection( { settings, delay } ) {
 	const timezoneLabel = settings?.timezone || '+00:00';
 	const currencyLabel = settings?.currency
 		? `${ settings.currency }${ settings?.currency_symbol ? ` (${ settings.currency_symbol })` : '' }`
@@ -308,34 +292,17 @@ function GeneralSection( { settings, form, onChange, delay } ) {
 					hint={ __( 'Inherited from WooCommerce settings', 'sales-pulse' ) }
 				/>
 			</div>
-			<div className="mt-6 space-y-2">
-				<span className="text-sm font-semibold text-foreground">
-					{ __( 'Revenue basis', 'sales-pulse' ) }
-				</span>
-				<OptionCardGroup
-					label={ __( 'Revenue basis', 'sales-pulse' ) }
-					value={ form.revenue_basis || 'net' }
-					onChange={ ( value ) => onChange( 'revenue_basis', value ) }
-					options={ revenueOptions }
-				/>
-				<p className="m-0 text-xs text-muted-foreground">
-					{ __(
-						'Determines which revenue figure powers diagnosis.',
-						'sales-pulse'
-					) }
-				</p>
-			</div>
 		</SettingSection>
 	);
 }
 
 function ReadOnlyField( { label, value, hint } ) {
 	return (
-		<div className="space-y-2">
+		<div className="flex min-w-0 flex-col gap-2">
 			<span className="text-sm font-semibold text-foreground">{ label }</span>
-			<div className="block w-full rounded-xl border border-solid border-border bg-muted/60 px-4 py-2.5 font-mono text-sm text-muted-foreground">
-				{ value || '-' }
-			</div>
+			<span className="inline-flex w-fit max-w-full items-center rounded-lg border border-solid border-border bg-muted/60 px-3 py-1.5 font-mono text-sm text-muted-foreground">
+				<span className="truncate">{ value || '-' }</span>
+			</span>
 			{ hint && (
 				<p className="m-0 text-xs text-muted-foreground">{ hint }</p>
 			) }
@@ -356,7 +323,7 @@ function ScheduleSection( { form, onChange, delay } ) {
 			) }
 			delay={ delay }
 		>
-			<div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-muted/50 p-6 md:flex-row md:items-center">
+			<div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-muted/50 md:flex-row md:items-center">
 				<div>
 					<p className="m-0 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
 						{ __( 'Runs daily at', 'sales-pulse' ) }
@@ -620,16 +587,16 @@ function ToggleSwitch( { checked, onChange, ariaLabel } ) {
 			aria-label={ ariaLabel }
 			onClick={ () => onChange( ! checked ) }
 			className={ classnames(
-				'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-0 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse',
-				checked ? 'bg-success' : 'bg-muted'
+				'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-0 shadow-inner ring-1 ring-inset ring-border/60 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse p-1',
+				checked ? 'bg-success' : 'bg-foreground/15'
 			) }
 		>
 			<motion.span
 				layout
 				transition={ { type: 'spring', stiffness: 520, damping: 32 } }
 				className={ classnames(
-					'inline-block h-5 w-5 rounded-full bg-white shadow',
-					checked ? 'ml-[22px]' : 'ml-[2px]'
+					'inline-block h-4 w-4 rounded-full bg-white shadow-sm ring-1 ring-foreground/5',
+					checked ? 'ml-[20px]' : ''
 				) }
 			/>
 		</button>

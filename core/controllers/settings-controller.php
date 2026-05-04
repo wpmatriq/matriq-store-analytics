@@ -2,7 +2,7 @@
 /**
  * Settings Controller.
  *
- * Minimal settings: timezone, revenue basis, snapshot time, email digest toggle.
+ * Minimal settings: snapshot time, email digest toggle, diagnosis sensitivity.
  * Stored in wp_options (few keys, not worth a custom table).
  *
  * @package EC_Sales_Pulse\Core\Controllers
@@ -36,7 +36,6 @@ class SettingsController extends BaseController {
 	 * @var array<string, mixed>
 	 */
 	const DEFAULTS = [
-		'revenue_basis'         => 'net',          // 'net' or 'gross'.
 		'snapshot_hour'         => 2,              // 0-23.
 		'snapshot_min'          => 10,             // 0-59.
 		'email_enabled'         => false,
@@ -76,11 +75,6 @@ class SettingsController extends BaseController {
 				'callback'            => [ $this, 'update_settings' ],
 				'permission_callback' => [ $this, 'admin_permission_check' ],
 				'args'                => [
-					'revenue_basis' => [
-						'type'              => 'string',
-						'enum'              => [ 'net', 'gross' ],
-						'sanitize_callback' => 'sanitize_text_field',
-					],
 					'snapshot_hour' => [
 						'type'              => 'integer',
 						'minimum'           => 0,
@@ -139,9 +133,6 @@ class SettingsController extends BaseController {
 				$value = $params[ $key ];
 
 				// Validate specific fields.
-				if ( $key === 'revenue_basis' && ! in_array( $value, [ 'net', 'gross' ], true ) ) {
-					continue;
-				}
 				if ( $key === 'snapshot_hour' && ( $value < 0 || $value > 23 ) ) {
 					continue;
 				}

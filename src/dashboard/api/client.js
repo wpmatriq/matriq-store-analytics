@@ -61,7 +61,7 @@ export const overviewApi = {
 };
 
 export const historyApi = {
-	list: ( page = 1, perPage = 14 ) => apiGet( '/history', { page, per_page: perPage } ),
+	list: ( page = 1, perPage = 10 ) => apiGet( '/history', { page, per_page: perPage } ),
 };
 
 export const campaignsApi = {

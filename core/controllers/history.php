@@ -48,7 +48,7 @@ class History extends BaseController {
 					],
 					'per_page' => [
 						'type'              => 'integer',
-						'default'           => 14,
+						'default'           => 10,
 						'minimum'           => 1,
 						'maximum'           => 60,
 						'sanitize_callback' => 'absint',
@@ -66,7 +66,7 @@ class History extends BaseController {
 	 */
 	public function get_history( \WP_REST_Request $request ): \WP_REST_Response {
 		$page     = $this->get_int_param( $request, 'page', 1 );
-		$per_page = $this->get_int_param( $request, 'per_page', 14 );
+		$per_page = $this->get_int_param( $request, 'per_page', 10 );
 
 		$daily_stats = DailyStats::get_instance();
 		$total       = $daily_stats->count();
@@ -85,19 +85,39 @@ class History extends BaseController {
 			] );
 		}
 
-		// For each day, we need the previous day to run diagnosis.
+		/**
+		 * History is a track record of past diagnoses, not a fresh briefing.
+		 * Premium AI enrichers gate on this signal so they don't issue an LLM
+		 * call per row (the Phase 2 enricher had us at ~21s/page before this).
+		 *
+		 * @param string $context Diagnosis context. `history` is non-`daily`,
+		 *                        which is the existing skip signal.
+		 */
+		do_action( 'salespulse_overview_period_resolved', 'history' );
+
+		// Batch the previous-day rows in one IN-list query instead of N
+		// per-row lookups. Same shape as the per-row method; just keyed by date.
+		$prev_dates = [];
+		foreach ( $rows as $row ) {
+			$prev_dates[] = gmdate( 'Y-m-d', strtotime( $row->stat_date . ' -1 day' ) );
+		}
+		$prev_by_date = $this->fetch_prev_rows_by_date( $daily_stats, $prev_dates );
+
+		// Pull every campaign once, walk in PHP. Most stores have < 50 campaigns
+		// total, so this is cheaper than running N range queries.
+		$campaigns_index = $this->index_campaigns( Campaigns::get_instance()->get_all( 200 ) );
+
 		$diagnosis_engine = DiagnosisEngine::get_instance();
 		$action_engine    = ActionEngine::get_instance();
-		$campaigns_db     = Campaigns::get_instance();
 		$sensitivity      = (string) SettingsController::get( 'diagnosis_sensitivity', 'balanced' );
 
 		$items = [];
 		foreach ( $rows as $row ) {
 			$prev_date = gmdate( 'Y-m-d', strtotime( $row->stat_date . ' -1 day' ) );
-			$prev_row  = $daily_stats->get_by_date( $prev_date );
+			$prev_row  = $prev_by_date[ $prev_date ] ?? null;
 
 			$diagnosis      = $diagnosis_engine->diagnose( $row, $prev_row, $sensitivity );
-			$campaign        = $campaigns_db->get_active_for_date( $row->stat_date );
+			$campaign       = $this->campaign_for_date( $campaigns_index, $row->stat_date );
 			$recommendation = $action_engine->recommend( $diagnosis, $campaign );
 
 			$items[] = [
@@ -120,5 +140,69 @@ class History extends BaseController {
 			'total_pages' => $total_pages,
 			'page'        => $page,
 		] );
+	}
+
+	/**
+	 * Fetch a list of daily_stats rows in one query, keyed by stat_date.
+	 *
+	 * @param DailyStats    $daily_stats Database accessor.
+	 * @param array<string> $dates       Y-m-d dates to fetch.
+	 * @return array<string, object>
+	 */
+	private function fetch_prev_rows_by_date( DailyStats $daily_stats, array $dates ): array {
+		$dates = array_values( array_unique( array_filter( $dates ) ) );
+		if ( empty( $dates ) ) {
+			return [];
+		}
+
+		// Cheapest correct: pick the min/max range and fetch once. Returns more
+		// rows than needed if the dates are sparse, but the table is small and
+		// the query stays under one round-trip.
+		sort( $dates );
+		$rows = $daily_stats->get_range( reset( $dates ), end( $dates ) );
+
+		$by_date = [];
+		foreach ( $rows as $row ) {
+			$by_date[ (string) $row->stat_date ] = $row;
+		}
+		return $by_date;
+	}
+
+	/**
+	 * Sort campaigns descending by id so the first match for a date is the
+	 * most-recently-created active campaign (matches the per-row query's
+	 * `ORDER BY id DESC LIMIT 1` semantics).
+	 *
+	 * @param array<object> $campaigns Raw rows from Campaigns::get_all.
+	 * @return array<object>
+	 */
+	private function index_campaigns( array $campaigns ): array {
+		usort(
+			$campaigns,
+			static fn( $a, $b ) => (int) $b->id - (int) $a->id
+		);
+		return $campaigns;
+	}
+
+	/**
+	 * Find the active campaign for a date in the pre-fetched list. Mirrors
+	 * `Campaigns::get_active_for_date()` semantics but in PHP.
+	 *
+	 * @param array<object> $campaigns Sorted descending by id.
+	 * @param string        $date      Y-m-d.
+	 * @return object|null
+	 */
+	private function campaign_for_date( array $campaigns, string $date ) {
+		foreach ( $campaigns as $campaign ) {
+			$start = (string) ( $campaign->start_date ?? '' );
+			$end   = (string) ( $campaign->end_date ?? '' );
+			if ( $start === '' || $start > $date ) {
+				continue;
+			}
+			if ( $end === '' || $end >= $date ) {
+				return $campaign;
+			}
+		}
+		return null;
 	}
 }
