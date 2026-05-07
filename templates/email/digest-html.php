@@ -141,7 +141,7 @@ $sections = [
 
 							<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:12px;">
 								<tr>
-									<td style="vertical-align:baseline;">
+									<td style="vertical-align:middle;">
 										<span style="font-size:36px;font-weight:600;letter-spacing:-0.02em;color:<?php echo esc_attr( $pct_color( $pct ) ); ?>;">
 											<?php echo esc_html( $fmt_pct( $pct ) ); ?>
 										</span>
