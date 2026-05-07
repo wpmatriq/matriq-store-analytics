@@ -122,8 +122,11 @@ class ImpactSummary {
 	 */
 	private function format_currency( float $value ): string {
 		if ( function_exists( 'wc_price' ) ) {
+			// wc_price() returns HTML wrapped in <bdi> with the currency symbol
+			// as a numeric HTML entity (e.g. `&#036;`). Strip tags first, then
+			// decode entities so the headline reads "$0.00" not "&#036;0.00".
 			$html = (string) wc_price( $value );
-			return wp_strip_all_tags( $html );
+			return html_entity_decode( wp_strip_all_tags( $html ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 		}
 		return '$' . number_format( $value, 2 );
 	}
