@@ -76,6 +76,10 @@ export const settingsApi = {
 	update: ( data ) => apiPost( '/settings', data ),
 };
 
+export const impactApi = {
+	summary: () => apiGet( '/impact/summary' ),
+};
+
 export const systemApi = {
 	readiness: () => apiGet( '/system/readiness' ),
 	triggerSnapshot: ( params ) => apiPost( '/system/snapshot', params || {} ),

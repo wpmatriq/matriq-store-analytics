@@ -20,15 +20,23 @@ function getTabs() {
 		{ slug: 'overview', label: __( 'Overview', 'sales-pulse' ), href: 'admin.php?page=sales-pulse' },
 		{ slug: 'history', label: __( 'History', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=history' },
 		{ slug: 'campaigns', label: __( 'Campaigns', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=campaigns' },
+		{ slug: 'impact', label: __( 'Impact', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=impact' },
 		{ slug: 'settings', label: __( 'Settings', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=settings' },
 	];
 
+	const builtInSlugs = builtIn.map( ( t ) => t.slug );
+
 	// Tabs registered by premium extensions via `window.salesPulse.registerTab`.
-	const registered = Object.values( window?.salesPulse?.tabs || {} ).map( ( entry ) => ( {
-		slug: entry.id,
-		label: entry.label || entry.id,
-		href: `admin.php?page=sales-pulse&tab=${ entry.id }`,
-	} ) );
+	// Skip any whose slug already exists as a built-in: Pro uses registerTab
+	// for "soft built-ins" (e.g. impact) only to override the rendered
+	// component in PageRouter, never to add a duplicate nav entry.
+	const registered = Object.values( window?.salesPulse?.tabs || {} )
+		.filter( ( entry ) => builtInSlugs.indexOf( entry.id ) === -1 )
+		.map( ( entry ) => ( {
+			slug: entry.id,
+			label: entry.label || entry.id,
+			href: `admin.php?page=sales-pulse&tab=${ entry.id }`,
+		} ) );
 
 	return [ ...builtIn, ...registered ];
 }

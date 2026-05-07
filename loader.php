@@ -15,6 +15,7 @@ use EC_Sales_Pulse\Core\Controllers\CampaignsController;
 use EC_Sales_Pulse\Core\Controllers\DataReadiness;
 use EC_Sales_Pulse\Core\Controllers\DigestController;
 use EC_Sales_Pulse\Core\Controllers\History;
+use EC_Sales_Pulse\Core\Controllers\ImpactController;
 use EC_Sales_Pulse\Core\Controllers\Overview;
 use EC_Sales_Pulse\Core\Controllers\SettingsController;
 use EC_Sales_Pulse\Core\Cron\CronManager;
@@ -320,6 +321,7 @@ class WC_SMA_Loader {
 		SettingsController::get_instance();
 		DataReadiness::get_instance();
 		DigestController::get_instance();
+		ImpactController::get_instance();
 
 		if ( is_admin() ) {
 			/* Admin Notices init */

@@ -17,6 +17,7 @@ import { PulseShell } from '@Components/pulse/PulseShell';
 import OverviewPage from '@DashboardApp/pages/Overview/OverviewPage';
 import HistoryPage from '@DashboardApp/pages/History/HistoryPage';
 import CampaignsPage from '@DashboardApp/pages/Campaigns/CampaignsPage';
+import ImpactPage from '@DashboardApp/pages/Impact/ImpactPage';
 import SettingsPage from '@DashboardApp/pages/Settings/SettingsPage';
 
 const BUILT_IN_TABS = [ 'overview', 'history', 'campaigns', 'settings' ];
@@ -108,6 +109,18 @@ function PageRouter( { tab } ) {
 			return <SettingsPage />;
 		case 'overview':
 			return <OverviewPage />;
+		case 'impact': {
+			// "Soft built-in": Pro can register a richer Impact component via
+			// window.salesPulse.registerTab. When present, prefer it over the
+			// free data-foundation surface so Pro merchants see attribution
+			// numbers instead.
+			const proImpact = window?.salesPulse?.tabs?.[ 'impact' ];
+			if ( proImpact && proImpact.component ) {
+				const ProComponent = proImpact.component;
+				return <ProComponent />;
+			}
+			return <ImpactPage />;
+		}
 		default: {
 			const registered = window?.salesPulse?.tabs?.[ tab ];
 			if ( registered && registered.component ) {

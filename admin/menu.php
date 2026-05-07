@@ -132,6 +132,13 @@ class Menu {
 				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=campaigns',
 				'callback'   => null,
 			],
+			'impact'    => [
+				'page_title' => __( 'Impact', 'sales-pulse' ),
+				'menu_title' => __( 'Impact', 'sales-pulse' ),
+				'capability' => $capability,
+				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=impact',
+				'callback'   => null,
+			],
 			'settings'  => [
 				'page_title' => __( 'Settings', 'sales-pulse' ),
 				'menu_title' => __( 'Settings', 'sales-pulse' ),
