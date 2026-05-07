@@ -14,6 +14,12 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * `dirty_dates` table model. Tracks dates whose `daily_stats` row is stale
+ * because of an order edit, refund, or status change, so the nightly cron
+ * can rebuild only the affected days. Once a date is repaired, the row
+ * keeps a `resolved_at` stamp so the Impact tab can count repairs.
+ */
 class DirtyDates extends Base {
 	use Get_Instance;
 

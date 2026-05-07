@@ -14,6 +14,11 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * `daily_stats` table model. One row per day with the rolled-up store
+ * metrics (revenue, orders, items, AOV, refunds, new-vs-returning) that
+ * every diagnosis, comparison, and chart reads from.
+ */
 class DailyStats extends Base {
 	use Get_Instance;
 

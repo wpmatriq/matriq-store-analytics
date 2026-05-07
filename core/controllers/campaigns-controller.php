@@ -14,6 +14,11 @@ use EC_Sales_Pulse\Core\Database\Campaigns;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * REST controller for tagging, listing, and ending campaigns. Mounted at
+ * `sales-pulse/v2/campaigns/*`. Campaigns colour the diagnosis but never
+ * change `daily_stats` numbers.
+ */
 class CampaignsController extends BaseController {
 
 	/**

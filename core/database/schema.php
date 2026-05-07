@@ -14,6 +14,11 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Plugin schema manager. Owns DB_VERSION + the list of table model classes,
+ * runs `dbDelta()` for each one on install/upgrade, and stamps the version
+ * in `system_state`.
+ */
 class Schema {
 	use Get_Instance;
 

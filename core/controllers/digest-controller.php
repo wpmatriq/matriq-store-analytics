@@ -15,6 +15,11 @@ use EC_Sales_Pulse\Core\Services\DigestMailer;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * REST controller for the morning-briefing email digest. Surfaces a
+ * "send test" endpoint for the Settings UI to verify mail configuration
+ * before the daily cron fires.
+ */
 class DigestController extends BaseController {
 
 	/**

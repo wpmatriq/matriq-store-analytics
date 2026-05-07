@@ -24,6 +24,13 @@ use EC_Sales_Pulse\Core\Services\DiagnosisEngine;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * REST controller for the morning-briefing Overview page. Composes the
+ * KPI cards, diagnosis, and suggested action for a given period
+ * (daily / weekly / monthly) into one response. Filterable via
+ * `salespulse_overview_response` so Pro can append forecast + anomaly
+ * data to the same payload.
+ */
 class Overview extends BaseController {
 
 	/**

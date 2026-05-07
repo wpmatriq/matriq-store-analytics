@@ -14,6 +14,13 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Plugin-level key/value state store.
+ *
+ * Tracks one-shot markers like the last snapshot date, last digest send
+ * timestamp, db_version, backfill cursor, and similar bookkeeping that
+ * doesn't fit a per-day table.
+ */
 class SystemState extends Base {
 	use Get_Instance;
 

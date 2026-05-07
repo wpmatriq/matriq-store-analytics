@@ -14,6 +14,11 @@ use EC_Sales_Pulse\Core\Database\SystemState;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * REST controller for the Settings page. Reads/writes the `salespulse_settings`
+ * option (digest schedule, recipient, sensitivity, etc.) under the
+ * `sales-pulse/v2/settings` namespace.
+ */
 class SettingsController extends BaseController {
 
 	/**

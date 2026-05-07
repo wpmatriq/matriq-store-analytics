@@ -14,6 +14,11 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * `campaigns` table model. Stores merchant-tagged date windows that adjust
+ * the diagnosis tone but never the underlying numbers (a Black Friday sale
+ * shouldn't read as an "anomalous spike", for example).
+ */
 class Campaigns extends Base {
 	use Get_Instance;
 

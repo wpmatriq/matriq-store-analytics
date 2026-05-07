@@ -21,6 +21,12 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Builds and sends the morning-briefing digest email. Composes the
+ * payload from yesterday's snapshot, dispatches via WC_Email when
+ * available (and falls back to wp_mail), and logs every send into
+ * `digest_history` with `sent`/`failed`/`skipped` status.
+ */
 class DigestMailer {
 	use Get_Instance;
 

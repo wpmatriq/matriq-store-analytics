@@ -23,6 +23,11 @@ if ( ! class_exists( '\\WC_Email' ) ) {
 	return;
 }
 
+/**
+ * WC_Email subclass for the morning-briefing digest. Hooked into the
+ * WooCommerce email manager so merchants can configure subject/template
+ * via the standard WC Settings → Emails surface.
+ */
 class DigestEmail extends \WC_Email {
 
 	/**

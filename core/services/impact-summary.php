@@ -26,6 +26,12 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Read-only stat builder for the free Impact tab. Composes the six
+ * data-foundation numbers (days of trustworthy data, order edits caught
+ * & repaired, campaigns tracked, briefings delivered, latest refresh,
+ * yesterday at a glance) without touching any AI surface.
+ */
 class ImpactSummary {
 	use Get_Instance;
 

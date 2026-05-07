@@ -24,6 +24,11 @@ use EC_Sales_Pulse\Core\Services\SnapshotBuilder;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Data-readiness REST controller. Surfaces a "is the dashboard ready to
+ * render" probe (WC active, analytics tables present, snapshots have run)
+ * plus a manual snapshot trigger for admin-side troubleshooting.
+ */
 class DataReadiness extends BaseController {
 
 	/**

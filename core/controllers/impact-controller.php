@@ -17,6 +17,11 @@ use EC_Sales_Pulse\Core\Services\ImpactSummary;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * REST controller for the free Impact tab. Exposes a single read-only
+ * `summary` endpoint backed by ImpactSummary; Pro overrides nothing here
+ * and instead mounts its richer endpoints under `copilot/impact/*`.
+ */
 class ImpactController extends BaseController {
 
 	/**

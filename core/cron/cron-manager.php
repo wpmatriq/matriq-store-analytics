@@ -18,6 +18,11 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Cron registration + dispatch. Schedules the nightly snapshot at 02:10
+ * site-time and the digest send at the merchant's configured hour, and
+ * fires the corresponding services when WP triggers the event.
+ */
 class CronManager {
 	use Get_Instance;
 

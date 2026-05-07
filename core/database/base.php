@@ -12,6 +12,13 @@ namespace EC_Sales_Pulse\Core\Database;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Shared base for every Sales Pulse / Store Copilot DB table model.
+ *
+ * Concrete subclasses declare a table name and prefix; this class supplies
+ * the wpdb connection, charset_collate, and standard insert/update/delete
+ * helpers so subclasses focus on schema and domain queries.
+ */
 abstract class Base {
 
 	/**

@@ -15,6 +15,14 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Deterministic action recommender.
+ *
+ * Given a diagnosis + optional active campaign, picks one of a curated
+ * set of action scenarios (winback, AOV-booster, abandonment-recovery,
+ * etc.) and returns the merchant-facing recommendation. No AI calls;
+ * the Pro plugin extends this to layer LLM-tailored copy on top.
+ */
 class ActionEngine {
 	use Get_Instance;
 

@@ -19,6 +19,10 @@ use EC_Sales_Pulse\Core\Services\DiagnosisEngine;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * REST controller for the History tab. Returns paginated daily snapshots
+ * with diagnoses so the merchant can scrub backwards through time.
+ */
 class History extends BaseController {
 
 	/**

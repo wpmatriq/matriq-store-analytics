@@ -14,6 +14,13 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Shared base for every Sales Pulse REST controller.
+ *
+ * Centralises the `sales-pulse/v2` namespace, the `manage_woocommerce`
+ * permission check, and the success/error response envelope so subclasses
+ * only need to declare a `rest_base` and register their routes.
+ */
 abstract class BaseController {
 	use Get_Instance;
 

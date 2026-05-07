@@ -17,6 +17,13 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * WooCommerce order-event listener.
+ *
+ * Marks affected dates as dirty when orders are created, updated, status-changed
+ * or refunded. Aggregation and snapshot rebuild happen later in the nightly cron;
+ * this class only writes lightweight `dirty_dates` rows.
+ */
 class OrderHooks {
 	use Get_Instance;
 

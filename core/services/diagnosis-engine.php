@@ -17,6 +17,15 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Deterministic revenue diagnosis.
+ *
+ * Compares a current period to a prior period, decomposes the revenue
+ * delta into orders and AOV factors, weighs them against a sensitivity
+ * threshold, and returns a "What changed and why" verdict. The output is
+ * filterable via `salespulse_diagnosis_result` so Pro can layer LLM
+ * explanations on top.
+ */
 class DiagnosisEngine {
 	use Get_Instance;
 

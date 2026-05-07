@@ -18,6 +18,10 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * `digest_history` table model. One row per morning-briefing send attempt;
+ * powers the "Morning briefings delivered" stat on the free Impact tab.
+ */
 class DigestHistory extends Base {
 	use Get_Instance;
 

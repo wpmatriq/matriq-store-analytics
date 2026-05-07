@@ -17,6 +17,13 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Nightly daily-stats snapshot builder.
+ *
+ * Builds a `daily_stats` row from `wc_order_stats` for a given date and
+ * processes the dirty-dates queue so any post-edit corrections are
+ * reflected in the next morning's briefing.
+ */
 class SnapshotBuilder {
 	use Get_Instance;
 

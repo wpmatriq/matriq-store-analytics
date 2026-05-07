@@ -15,6 +15,11 @@ use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Reads aggregate metrics from WooCommerce analytics tables for a given
+ * date and returns them in the shape `daily_stats` expects. Wraps the WC
+ * query so the SnapshotBuilder stays free of WC-table SQL.
+ */
 class DataCollector {
 	use Get_Instance;
 
