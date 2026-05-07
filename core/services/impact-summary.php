@@ -82,8 +82,8 @@ class ImpactSummary {
 			return null;
 		}
 
-		$yesterday_revenue  = (float) ( $yesterday_row->total_sales ?? 0 );
-		$day_before_revenue = (float) ( $day_before_row->total_sales ?? 0 );
+		$yesterday_revenue  = (float) ( $yesterday_row->revenue ?? 0 );
+		$day_before_revenue = $day_before_row ? (float) ( $day_before_row->revenue ?? 0 ) : 0.0;
 
 		if ( $yesterday_revenue <= 0 && $day_before_revenue <= 0 ) {
 			return null;
