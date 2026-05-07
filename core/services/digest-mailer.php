@@ -15,6 +15,7 @@ namespace EC_Sales_Pulse\Core\Services;
 use EC_Sales_Pulse\Core\Controllers\SettingsController;
 use EC_Sales_Pulse\Core\Database\Campaigns;
 use EC_Sales_Pulse\Core\Database\DailyStats;
+use EC_Sales_Pulse\Core\Database\DigestHistory;
 use EC_Sales_Pulse\Core\Database\SystemState;
 use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
@@ -72,14 +73,17 @@ class DigestMailer {
 		if ( $recipient === '' || ! is_email( $recipient ) ) {
 			$reason = __( 'Recipient email is missing or invalid.', 'sales-pulse' );
 			$this->record_error( $reason );
+			$this->log_history( $recipient, 'failed', $reason, $is_test );
 			return [ 'sent' => false, 'recipient' => $recipient, 'reason' => $reason ];
 		}
 
 		if ( ! $is_test && ! SettingsController::get( 'email_enabled' ) ) {
+			$reason = __( 'Email digest is disabled.', 'sales-pulse' );
+			$this->log_history( $recipient, 'skipped', $reason, $is_test );
 			return [
 				'sent'      => false,
 				'recipient' => $recipient,
-				'reason'    => __( 'Email digest is disabled.', 'sales-pulse' ),
+				'reason'    => $reason,
 			];
 		}
 
@@ -97,12 +101,34 @@ class DigestMailer {
 			}
 			$this->record_sent_at();
 			$this->clear_error();
+			$this->log_history( $recipient, 'sent', null, $is_test );
 			return [ 'sent' => true, 'recipient' => $recipient, 'reason' => null ];
 		}
 
 		$reason = __( 'Mail server rejected the message. Check your SMTP setup.', 'sales-pulse' );
 		$this->record_error( $reason );
+		$this->log_history( $recipient, 'failed', $reason, $is_test );
 		return [ 'sent' => false, 'recipient' => $recipient, 'reason' => $reason ];
+	}
+
+	/**
+	 * Append one row to the digest_history table for every send attempt.
+	 *
+	 * @param string      $recipient  Recipient email (may be empty if invalid).
+	 * @param string      $status     'sent' | 'failed' | 'skipped'.
+	 * @param string|null $error_text Optional error description.
+	 * @param bool        $is_test    True when invoked from the test-send button.
+	 */
+	private function log_history( string $recipient, string $status, ?string $error_text, bool $is_test ): void {
+		DigestHistory::get_instance()->record(
+			[
+				'sent_at'    => current_time( 'mysql' ),
+				'recipient'  => $recipient,
+				'status'     => $status,
+				'error_text' => $error_text,
+				'is_test'    => $is_test ? 1 : 0,
+			]
+		);
 	}
 
 	/**

@@ -92,7 +92,7 @@ class SnapshotBuilder {
 		foreach ( $pending as $dirty ) {
 			$success = $this->build_snapshot( $dirty->stat_date );
 			if ( $success ) {
-				$dirty_dates->clear_date( $dirty->stat_date );
+				$dirty_dates->mark_resolved( $dirty->stat_date );
 				++$repaired;
 			}
 		}

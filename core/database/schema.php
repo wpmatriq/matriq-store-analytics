@@ -22,7 +22,7 @@ class Schema {
 	 *
 	 * @var int
 	 */
-	const DB_VERSION = 1;
+	const DB_VERSION = 2;
 
 	/**
 	 * All table model class names.
@@ -34,6 +34,7 @@ class Schema {
 		DirtyDates::class,
 		Campaigns::class,
 		SystemState::class,
+		DigestHistory::class,
 	];
 
 	/**

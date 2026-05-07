@@ -44,13 +44,18 @@ class DirtyDates extends Base {
 			stat_date DATE NOT NULL,
 			reason VARCHAR(50) DEFAULT NULL,
 			detected_at DATETIME NOT NULL,
-			PRIMARY KEY (stat_date)
+			resolved_at DATETIME NULL,
+			PRIMARY KEY (stat_date),
+			KEY resolved_at_idx (resolved_at)
 		) {$charset};";
 	}
 
 	/**
 	 * Mark a date as dirty (needs rebuild).
-	 * Uses INSERT IGNORE to avoid duplicates - very lightweight.
+	 *
+	 * Idempotent on the (stat_date) primary key: an already-pending row stays
+	 * pending; an already-resolved row is reopened so the next nightly run
+	 * picks it up and the audit trail advances.
 	 *
 	 * @param string $date   Date in Y-m-d format.
 	 * @param string $reason Reason for marking dirty (order_update, refund, status_change).
@@ -61,7 +66,12 @@ class DirtyDates extends Base {
 
 		$result = $this->wpdb->query(
 			$this->wpdb->prepare(
-				"INSERT IGNORE INTO `{$table}` (stat_date, reason, detected_at) VALUES (%s, %s, %s)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"INSERT INTO `{$table}` (stat_date, reason, detected_at, resolved_at)
+				 VALUES (%s, %s, %s, NULL)
+				 ON DUPLICATE KEY UPDATE
+					reason = VALUES(reason),
+					detected_at = VALUES(detected_at),
+					resolved_at = NULL", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$date,
 				$reason,
 				current_time( 'mysql' )
@@ -72,7 +82,7 @@ class DirtyDates extends Base {
 	}
 
 	/**
-	 * Get all dirty dates that need processing.
+	 * Get dirty dates still pending repair.
 	 *
 	 * @param int $limit Max dates to return.
 	 * @return array<object>
@@ -82,25 +92,67 @@ class DirtyDates extends Base {
 
 		return $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"SELECT * FROM `{$table}` ORDER BY stat_date DESC LIMIT %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT * FROM `{$table}` WHERE resolved_at IS NULL ORDER BY stat_date DESC LIMIT %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$limit
 			)
 		);
 	}
 
 	/**
-	 * Remove a date from dirty list after successful rebuild.
+	 * Mark a date as repaired.
+	 *
+	 * The row is kept (with resolved_at stamped) so the Impact dashboard can
+	 * count repaired dates as a free-plugin "data foundation" stat.
 	 *
 	 * @param string $date Date in Y-m-d format.
 	 * @return bool
 	 */
-	public function clear_date( string $date ): bool {
-		$result = $this->delete( [ 'stat_date' => $date ] );
+	public function mark_resolved( string $date ): bool {
+		$result = $this->update(
+			[ 'resolved_at' => current_time( 'mysql' ) ],
+			[ 'stat_date' => $date ]
+		);
 		return $result !== false;
 	}
 
 	/**
-	 * Clear all dirty dates.
+	 * Count dates ever repaired in a date range. Used by the Impact summary.
+	 *
+	 * @param string $from Inclusive ISO datetime (resolved_at >=).
+	 * @param string $to   Exclusive ISO datetime (resolved_at <).
+	 * @return int
+	 */
+	public function count_resolved_in_range( string $from, string $to ): int {
+		$table = $this->get_table_name();
+
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return (int) $this->wpdb->get_var(
+			$this->wpdb->prepare(
+				"SELECT COUNT(*) FROM `{$table}` WHERE resolved_at IS NOT NULL AND resolved_at >= %s AND resolved_at < %s",
+				$from,
+				$to
+			)
+		);
+		// phpcs:enable
+	}
+
+	/**
+	 * Total count of repaired dates (for "all-time" stats).
+	 *
+	 * @return int
+	 */
+	public function count_resolved(): int {
+		$table = $this->get_table_name();
+
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return (int) $this->wpdb->get_var(
+			"SELECT COUNT(*) FROM `{$table}` WHERE resolved_at IS NOT NULL"
+		);
+		// phpcs:enable
+	}
+
+	/**
+	 * Clear all dirty dates. Reserved for uninstall paths.
 	 *
 	 * @return bool
 	 */
