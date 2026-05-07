@@ -18,7 +18,7 @@ module.exports = {
 		'jsdoc/check-tag-names': [ 'error', { definedTags: [ 'jsx' ] } ],
 		'@wordpress/i18n-text-domain': [
 			'error',
-			{ allowedTextDomain: 'suredash' },
+			{ allowedTextDomain: 'sales-pulse' },
 		],
 	},
 	parserOptions: {
