@@ -4,7 +4,7 @@
  * value represents whether query matches.
  * Ignored from documentation as it is for internal use only.
  *
- * @param  portalData
+ * @param portalData
  */
 
 export function updateStoreData( portalData ) {

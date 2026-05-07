@@ -105,7 +105,7 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 							</h3>
 							<p className="m-0 mt-1 text-sm text-muted-foreground">
 								{ __(
-									"Set the scope so we know when to dampen alerts.",
+									'Set the scope so we know when to dampen alerts.',
 									'sales-pulse'
 								) }
 							</p>

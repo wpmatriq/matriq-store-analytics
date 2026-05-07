@@ -98,6 +98,8 @@ function getActiveTab() {
 
 /**
  * Route to the correct page component.
+ * @param root0
+ * @param root0.tab
  */
 function PageRouter( { tab } ) {
 	switch ( tab ) {
@@ -114,7 +116,7 @@ function PageRouter( { tab } ) {
 			// window.salesPulse.registerTab. When present, prefer it over the
 			// free data-foundation surface so Pro merchants see attribution
 			// numbers instead.
-			const proImpact = window?.salesPulse?.tabs?.[ 'impact' ];
+			const proImpact = window?.salesPulse?.tabs?.impact;
 			if ( proImpact && proImpact.component ) {
 				const ProComponent = proImpact.component;
 				return <ProComponent />;

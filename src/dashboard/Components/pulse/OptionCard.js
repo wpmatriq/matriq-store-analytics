@@ -74,7 +74,7 @@ export function OptionCard( {
  * @param {string}   [props.label]
  * @param {string}   props.value
  * @param {Function} props.onChange
- * @param {Array}    props.options  `{ value, title, description }`.
+ * @param {Array}    props.options         `{ value, title, description }`.
  * @param {string}   [props.gridClassName]
  */
 export function OptionCardGroup( {

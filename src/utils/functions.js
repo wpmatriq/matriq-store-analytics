@@ -16,7 +16,7 @@ export const activatePlugin = async ( plugin ) => {
 			console.log(
 				sprintf(
 					/* translators: %s: Plugin name */
-					__( '%s Plugin Activated Successfully..!', 'suredash' ),
+					__( '%s Plugin Activated Successfully..!', 'sales-pulse' ),
 					plugin?.name
 				)
 			);
@@ -43,7 +43,7 @@ export const installPlugins = async ( pluginInstallList ) => {
 							/* translators: %s: Plugin name */
 							__(
 								'Installing %s plugin. Please wait..',
-								'suredash'
+								'sales-pulse'
 							),
 							plugin?.name
 						)
@@ -59,7 +59,7 @@ export const installPlugins = async ( pluginInstallList ) => {
 										/* translators: %s: Plugin name */
 										__(
 											`%s plugin Installed Successfully..`,
-											'suredash'
+											'sales-pulse'
 										),
 										plugin?.name
 									)
