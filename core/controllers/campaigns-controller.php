@@ -204,7 +204,12 @@ class CampaignsController extends BaseController {
 			return $this->error( __( 'Failed to end campaign.', 'sales-pulse' ), 500 );
 		}
 
-		return $this->success( [ 'id' => $id, 'ended' => true ] );
+		return $this->success(
+			[
+				'id'    => $id,
+				'ended' => true,
+			] 
+		);
 	}
 
 	/**
@@ -225,6 +230,11 @@ class CampaignsController extends BaseController {
 
 		$campaigns->delete( [ 'id' => $id ] );
 
-		return $this->success( [ 'id' => $id, 'deleted' => true ] );
+		return $this->success(
+			[
+				'id'      => $id,
+				'deleted' => true,
+			] 
+		);
 	}
 }

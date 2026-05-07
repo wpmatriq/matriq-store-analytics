@@ -397,8 +397,8 @@ class DiagnosisEngine {
 			);
 		}
 
-		$factor  = $primary['factor'];
-		$cause   = '';
+		$factor = $primary['factor'];
+		$cause  = '';
 
 		switch ( $factor ) {
 			case 'orders':

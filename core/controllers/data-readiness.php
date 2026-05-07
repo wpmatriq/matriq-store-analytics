@@ -108,8 +108,8 @@ class DataReadiness extends BaseController {
 		$checks['woocommerce_active'] = class_exists( 'WooCommerce' );
 
 		// 2. Analytics tables available.
-		$collector                         = DataCollector::get_instance();
-		$checks['analytics_tables_exist']  = $collector->are_analytics_tables_available();
+		$collector                        = DataCollector::get_instance();
+		$checks['analytics_tables_exist'] = $collector->are_analytics_tables_available();
 
 		// 3. Orders exist.
 		$checks['orders_exist'] = $checks['analytics_tables_exist']
@@ -117,23 +117,23 @@ class DataReadiness extends BaseController {
 			: false;
 
 		// 4. Plugin tables created.
-		$schema                       = Schema::get_instance();
+		$schema                        = Schema::get_instance();
 		$checks['plugin_tables_exist'] = $schema->tables_exist();
 		$checks['tables_status']       = $schema->get_tables_status();
 
 		// 5. Snapshots available.
-		$daily_stats               = DailyStats::get_instance();
-		$checks['snapshot_count']  = $checks['plugin_tables_exist'] ? $daily_stats->count() : 0;
-		$checks['has_data']        = $checks['snapshot_count'] > 0;
+		$daily_stats              = DailyStats::get_instance();
+		$checks['snapshot_count'] = $checks['plugin_tables_exist'] ? $daily_stats->count() : 0;
+		$checks['has_data']       = $checks['snapshot_count'] > 0;
 
 		// Dashboard needs at minimum 2 snapshots (yesterday + day-before) for daily view.
 		$checks['dashboard_ready'] = $checks['snapshot_count'] >= 2;
 
 		// 6. Backfill status.
-		$state                         = SystemState::get_instance();
-		$checks['backfill_complete']   = $checks['plugin_tables_exist'] && $state->is_backfill_complete();
-		$checks['last_snapshot_date']  = $checks['plugin_tables_exist'] ? $state->get_last_snapshot_date() : null;
-		$checks['last_snapshot_at']    = $checks['plugin_tables_exist'] ? $state->get_last_snapshot_timestamp() : null;
+		$state                        = SystemState::get_instance();
+		$checks['backfill_complete']  = $checks['plugin_tables_exist'] && $state->is_backfill_complete();
+		$checks['last_snapshot_date'] = $checks['plugin_tables_exist'] ? $state->get_last_snapshot_date() : null;
+		$checks['last_snapshot_at']   = $checks['plugin_tables_exist'] ? $state->get_last_snapshot_timestamp() : null;
 
 		// Overall readiness - require at least 2 snapshots so the dashboard can compare periods.
 		$checks['ready'] = $checks['woocommerce_active']
@@ -161,10 +161,12 @@ class DataReadiness extends BaseController {
 		// If a specific date is requested, build just that date.
 		if ( $date ) {
 			$result = $builder->build_snapshot( $date );
-			return $this->success( [
-				'date'    => $date,
-				'success' => $result,
-			] );
+			return $this->success(
+				[
+					'date'    => $date,
+					'success' => $result,
+				] 
+			);
 		}
 
 		// Otherwise, build an initial batch of days.
@@ -183,12 +185,14 @@ class DataReadiness extends BaseController {
 	public function get_backfill_status( \WP_REST_Request $request ): \WP_REST_Response {
 		$state = SystemState::get_instance();
 
-		return $this->success( [
-			'complete'       => $state->is_backfill_complete(),
-			'cursor'         => $state->get( SystemState::KEY_BACKFILL_CURSOR ),
-			'start'          => $state->get( SystemState::KEY_BACKFILL_START ),
-			'snapshot_count' => DailyStats::get_instance()->count(),
-		] );
+		return $this->success(
+			[
+				'complete'       => $state->is_backfill_complete(),
+				'cursor'         => $state->get( SystemState::KEY_BACKFILL_CURSOR ),
+				'start'          => $state->get( SystemState::KEY_BACKFILL_START ),
+				'snapshot_count' => DailyStats::get_instance()->count(),
+			] 
+		);
 	}
 
 	/**

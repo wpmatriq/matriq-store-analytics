@@ -75,23 +75,23 @@ class SettingsController extends BaseController {
 				'callback'            => [ $this, 'update_settings' ],
 				'permission_callback' => [ $this, 'admin_permission_check' ],
 				'args'                => [
-					'snapshot_hour' => [
+					'snapshot_hour'         => [
 						'type'              => 'integer',
 						'minimum'           => 0,
 						'maximum'           => 23,
 						'sanitize_callback' => 'absint',
 					],
-					'snapshot_min'  => [
+					'snapshot_min'          => [
 						'type'              => 'integer',
 						'minimum'           => 0,
 						'maximum'           => 59,
 						'sanitize_callback' => 'absint',
 					],
-					'email_enabled' => [
+					'email_enabled'         => [
 						'type'              => 'boolean',
 						'sanitize_callback' => 'rest_sanitize_boolean',
 					],
-					'email_address' => [
+					'email_address'         => [
 						'type'              => 'string',
 						'sanitize_callback' => 'sanitize_email',
 					],
@@ -122,11 +122,11 @@ class SettingsController extends BaseController {
 	 * @return \WP_REST_Response
 	 */
 	public function update_settings( \WP_REST_Request $request ): \WP_REST_Response {
-		$current  = self::get_all();
-		$params   = $request->get_json_params();
+		$current = self::get_all();
+		$params  = $request->get_json_params();
 		// `last_digest_error` is internal-only, set by DigestMailer; never accept it from clients.
-		$allowed  = array_diff( array_keys( self::DEFAULTS ), [ 'last_digest_error' ] );
-		$updated  = false;
+		$allowed = array_diff( array_keys( self::DEFAULTS ), [ 'last_digest_error' ] );
+		$updated = false;
 
 		foreach ( $allowed as $key ) {
 			if ( array_key_exists( $key, $params ) ) {
@@ -182,7 +182,7 @@ class SettingsController extends BaseController {
 		$settings['currency_symbol'] = function_exists( 'get_woocommerce_currency_symbol' ) ? html_entity_decode( get_woocommerce_currency_symbol() ) : '$';
 
 		// Surface digest health from SystemState so the UI can render "Last sent ..." without a second round-trip.
-		$state                          = SystemState::get_instance();
+		$state                           = SystemState::get_instance();
 		$settings['last_digest_sent_at'] = $state->get( SystemState::KEY_LAST_DIGEST_SENT_AT );
 
 		return $settings;

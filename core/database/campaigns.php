@@ -127,13 +127,15 @@ class Campaigns extends Base {
 			return false;
 		}
 
-		return $this->insert( [
-			'name'       => sanitize_text_field( $name ),
-			'goal'       => $goal,
-			'start_date' => $start_date,
-			'end_date'   => $end_date,
-			'created_at' => current_time( 'mysql' ),
-		] );
+		return $this->insert(
+			[
+				'name'       => sanitize_text_field( $name ),
+				'goal'       => $goal,
+				'start_date' => $start_date,
+				'end_date'   => $end_date,
+				'created_at' => current_time( 'mysql' ),
+			] 
+		);
 	}
 
 	/**

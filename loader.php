@@ -198,7 +198,7 @@ class WC_SMA_Loader {
 				wp_safe_redirect(
 					add_query_arg(
 						[
-							'page'                       => 'sales-pulse-onboarding',
+							'page'                      => 'sales-pulse-onboarding',
 							'ec-sp-activation-redirect' => true,
 						],
 						admin_url( 'admin.php' )

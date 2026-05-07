@@ -67,13 +67,13 @@ foreach ( $sections as $key => $label ) {
 		continue;
 	}
 
-	$diagnosis    = (array) ( $section['diagnosis'] ?? [] );
-	$rec          = (array) ( $section['recommendation'] ?? [] );
-	$cards        = (array) ( $section['metric_cards'] ?? [] );
-	$pct          = (float) ( $diagnosis['revenue_change_percent'] ?? 0 );
-	$headline     = (string) ( $diagnosis['headline'] ?? '' );
-	$sub_cause    = (string) ( $diagnosis['confidence_label'] ?? '' );
-	$rec_text     = (string) ( $rec['recommendation'] ?? '' );
+	$diagnosis = (array) ( $section['diagnosis'] ?? [] );
+	$rec       = (array) ( $section['recommendation'] ?? [] );
+	$cards     = (array) ( $section['metric_cards'] ?? [] );
+	$pct       = (float) ( $diagnosis['revenue_change_percent'] ?? 0 );
+	$headline  = (string) ( $diagnosis['headline'] ?? '' );
+	$sub_cause = (string) ( $diagnosis['confidence_label'] ?? '' );
+	$rec_text  = (string) ( $rec['recommendation'] ?? '' );
 	// Phase 2: Pro AI fields are emitted only on the daily window.
 	$ai_paragraph = ( $key === 'daily' ) ? (string) ( $diagnosis['ai_paragraph'] ?? '' ) : '';
 	$ai_offline   = ( $key === 'daily' ) && ! empty( $diagnosis['ai_offline'] );

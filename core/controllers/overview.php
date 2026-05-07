@@ -82,7 +82,7 @@ class Overview extends BaseController {
 	 * @return \WP_REST_Response
 	 */
 	public function get_overview( \WP_REST_Request $request ): \WP_REST_Response {
-		$period     = $request->get_param( 'period' ) ?? 'daily';
+		$period      = $request->get_param( 'period' ) ?? 'daily';
 		$daily_stats = DailyStats::get_instance();
 
 		/**
@@ -108,9 +108,9 @@ class Overview extends BaseController {
 		}
 
 		// Run diagnosis with configured sensitivity.
-		$sensitivity      = (string) SettingsController::get( 'diagnosis_sensitivity', 'balanced' );
-		$diagnosis_engine = DiagnosisEngine::get_instance();
-		$diagnosis        = $diagnosis_engine->diagnose( $current, $previous, $sensitivity );
+		$sensitivity           = (string) SettingsController::get( 'diagnosis_sensitivity', 'balanced' );
+		$diagnosis_engine      = DiagnosisEngine::get_instance();
+		$diagnosis             = $diagnosis_engine->diagnose( $current, $previous, $sensitivity );
 		$diagnosis['severity'] = $this->severity_from_diagnosis( $diagnosis );
 
 		// Get active campaign for context.
@@ -183,12 +183,14 @@ class Overview extends BaseController {
 			$rows
 		);
 
-		return $this->success( [
-			'days'  => $days,
-			'start' => $start,
-			'end'   => $end,
-			'trend' => $trend,
-		] );
+		return $this->success(
+			[
+				'days'  => $days,
+				'start' => $start,
+				'end'   => $end,
+				'trend' => $trend,
+			] 
+		);
 	}
 
 	/**

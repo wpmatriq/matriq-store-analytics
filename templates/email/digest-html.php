@@ -115,18 +115,19 @@ $sections = [
 					</td>
 				</tr>
 
-				<?php foreach ( $sections as $key => $label ) :
+				<?php
+				foreach ( $sections as $key => $label ) :
 					$section = isset( $payload[ $key ] ) ? (array) $payload[ $key ] : [];
 					if ( ! $section ) {
 						continue;
 					}
-					$diagnosis    = (array) ( $section['diagnosis'] ?? [] );
-					$rec          = (array) ( $section['recommendation'] ?? [] );
-					$cards        = (array) ( $section['metric_cards'] ?? [] );
-					$pct          = (float) ( $diagnosis['revenue_change_percent'] ?? 0 );
-					$headline     = (string) ( $diagnosis['headline'] ?? '' );
-					$sub_cause    = (string) ( $diagnosis['confidence_label'] ?? '' );
-					$rec_text     = (string) ( $rec['recommendation'] ?? '' );
+					$diagnosis = (array) ( $section['diagnosis'] ?? [] );
+					$rec       = (array) ( $section['recommendation'] ?? [] );
+					$cards     = (array) ( $section['metric_cards'] ?? [] );
+					$pct       = (float) ( $diagnosis['revenue_change_percent'] ?? 0 );
+					$headline  = (string) ( $diagnosis['headline'] ?? '' );
+					$sub_cause = (string) ( $diagnosis['confidence_label'] ?? '' );
+					$rec_text  = (string) ( $rec['recommendation'] ?? '' );
 					// Phase 2: Pro plugin enriches the daily section with an AI paragraph
 					// and a tailored action via filters; render them only on the daily window.
 					$ai_paragraph = ( $key === 'daily' ) ? (string) ( $diagnosis['ai_paragraph'] ?? '' ) : '';
@@ -183,7 +184,8 @@ $sections = [
 							<?php if ( $cards ) : ?>
 								<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;border-collapse:separate;border-spacing:8px 0;">
 									<tr>
-										<?php foreach ( $cards as $card ) :
+										<?php
+										foreach ( $cards as $card ) :
 											$card_value  = $fmt_value( $card['current'] ?? 0, (string) ( $card['format'] ?? 'number' ), $currency_symbol );
 											$card_change = (float) ( $card['change'] ?? 0 );
 											?>
@@ -266,7 +268,12 @@ $sections = [
 									__( 'Manage your morning digest in <a href="%s" style="color:#1a1d2e;">Sales Pulse Settings</a>.', 'sales-pulse' ),
 									esc_url( admin_url( 'admin.php?page=sales-pulse&tab=settings' ) )
 								),
-								[ 'a' => [ 'href' => [], 'style' => [] ] ]
+								[
+									'a' => [
+										'href'  => [],
+										'style' => [],
+									],
+								]
 							);
 							?>
 						</div>

@@ -77,12 +77,14 @@ class History extends BaseController {
 		$rows   = $daily_stats->get_paginated( $per_page, $offset );
 
 		if ( empty( $rows ) ) {
-			return $this->success( [
-				'items'       => [],
-				'total'       => $total,
-				'total_pages' => $total_pages,
-				'page'        => $page,
-			] );
+			return $this->success(
+				[
+					'items'       => [],
+					'total'       => $total,
+					'total_pages' => $total_pages,
+					'page'        => $page,
+				] 
+			);
 		}
 
 		/**
@@ -134,12 +136,14 @@ class History extends BaseController {
 			];
 		}
 
-		return $this->success( [
-			'items'       => $items,
-			'total'       => $total,
-			'total_pages' => $total_pages,
-			'page'        => $page,
-		] );
+		return $this->success(
+			[
+				'items'       => $items,
+				'total'       => $total,
+				'total_pages' => $total_pages,
+				'page'        => $page,
+			] 
+		);
 	}
 
 	/**

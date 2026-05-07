@@ -35,17 +35,17 @@ class ImpactSummary {
 	 * @return array<string, mixed>
 	 */
 	public function build(): array {
-		$daily_stats     = DailyStats::get_instance();
-		$dirty_dates     = DirtyDates::get_instance();
-		$campaigns       = Campaigns::get_instance();
-		$digest_history  = DigestHistory::get_instance();
-		$system_state    = SystemState::get_instance();
+		$daily_stats    = DailyStats::get_instance();
+		$dirty_dates    = DirtyDates::get_instance();
+		$campaigns      = Campaigns::get_instance();
+		$digest_history = DigestHistory::get_instance();
+		$system_state   = SystemState::get_instance();
 
-		$days_of_data       = (int) $daily_stats->count();
-		$order_edits        = (int) $dirty_dates->count_resolved();
-		$campaigns_tracked  = (int) $campaigns->count();
-		$briefings_sent     = (int) $digest_history->count_total( 'sent' );
-		$last_snapshot_at   = (string) $system_state->get( SystemState::KEY_LAST_SNAPSHOT_DATE, '' );
+		$days_of_data      = (int) $daily_stats->count();
+		$order_edits       = (int) $dirty_dates->count_resolved();
+		$campaigns_tracked = (int) $campaigns->count();
+		$briefings_sent    = (int) $digest_history->count_total( 'sent' );
+		$last_snapshot_at  = (string) $system_state->get( SystemState::KEY_LAST_SNAPSHOT_DATE, '' );
 
 		return [
 			'days_of_data'      => $days_of_data,

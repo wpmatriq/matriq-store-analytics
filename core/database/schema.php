@@ -110,9 +110,9 @@ class Schema {
 		$status = [];
 
 		foreach ( $this->table_models as $model_class ) {
-			$model    = $model_class::get_instance();
-			$exists   = $model->table_exists();
-			$class    = ( new \ReflectionClass( $model_class ) )->getShortName();
+			$model            = $model_class::get_instance();
+			$exists           = $model->table_exists();
+			$class            = ( new \ReflectionClass( $model_class ) )->getShortName();
 			$status[ $class ] = [
 				'table'  => $model->get_table_name(),
 				'exists' => $exists,

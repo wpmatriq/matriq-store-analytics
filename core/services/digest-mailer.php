@@ -74,7 +74,11 @@ class DigestMailer {
 			$reason = __( 'Recipient email is missing or invalid.', 'sales-pulse' );
 			$this->record_error( $reason );
 			$this->log_history( $recipient, 'failed', $reason, $is_test );
-			return [ 'sent' => false, 'recipient' => $recipient, 'reason' => $reason ];
+			return [
+				'sent'      => false,
+				'recipient' => $recipient,
+				'reason'    => $reason,
+			];
 		}
 
 		if ( ! $is_test && ! SettingsController::get( 'email_enabled' ) ) {
@@ -102,13 +106,21 @@ class DigestMailer {
 			$this->record_sent_at();
 			$this->clear_error();
 			$this->log_history( $recipient, 'sent', null, $is_test );
-			return [ 'sent' => true, 'recipient' => $recipient, 'reason' => null ];
+			return [
+				'sent'      => true,
+				'recipient' => $recipient,
+				'reason'    => null,
+			];
 		}
 
 		$reason = __( 'Mail server rejected the message. Check your SMTP setup.', 'sales-pulse' );
 		$this->record_error( $reason );
 		$this->log_history( $recipient, 'failed', $reason, $is_test );
-		return [ 'sent' => false, 'recipient' => $recipient, 'reason' => $reason ];
+		return [
+			'sent'      => false,
+			'recipient' => $recipient,
+			'reason'    => $reason,
+		];
 	}
 
 	/**
@@ -197,11 +209,11 @@ class DigestMailer {
 	 * `salespulse_overview_period_resolved` action so premium extensions
 	 * (e.g. Store Copilot) can scope per-window enrichment correctly.
 	 *
-	 * @param string                                                                                                              $period      Window name.
-	 * @param callable(array<string,mixed>|null,array<string,mixed>|null,bool):array<string,mixed>                                 $builder     The closure built in build_payload().
-	 * @param array<string, mixed>|null                                                                                           $current     Current-period metrics.
-	 * @param array<string, mixed>|null                                                                                           $previous    Previous-period metrics.
-	 * @param bool                                                                                                                $is_daily    Whether this is the daily-window build.
+	 * @param string                                                                               $period      Window name.
+	 * @param callable(array<string,mixed>|null,array<string,mixed>|null,bool):array<string,mixed> $builder     The closure built in build_payload().
+	 * @param array<string, mixed>|null                                                            $current     Current-period metrics.
+	 * @param array<string, mixed>|null                                                            $previous    Previous-period metrics.
+	 * @param bool                                                                                 $is_daily    Whether this is the daily-window build.
 	 * @return array<string, mixed>
 	 */
 	private function run_section( string $period, callable $builder, $current, $previous, bool $is_daily ): array {
@@ -389,10 +401,26 @@ class DigestMailer {
 		$previous = $previous ? (array) $previous : [];
 
 		$metrics = [
-			[ 'key' => 'revenue', 'label' => __( 'Revenue', 'sales-pulse' ), 'format' => 'currency' ],
-			[ 'key' => 'orders', 'label' => __( 'Orders', 'sales-pulse' ), 'format' => 'number' ],
-			[ 'key' => 'avg_order_value', 'label' => __( 'Avg Order Value', 'sales-pulse' ), 'format' => 'currency' ],
-			[ 'key' => 'items_per_order', 'label' => __( 'Items per Order', 'sales-pulse' ), 'format' => 'decimal' ],
+			[
+				'key'    => 'revenue',
+				'label'  => __( 'Revenue', 'sales-pulse' ),
+				'format' => 'currency',
+			],
+			[
+				'key'    => 'orders',
+				'label'  => __( 'Orders', 'sales-pulse' ),
+				'format' => 'number',
+			],
+			[
+				'key'    => 'avg_order_value',
+				'label'  => __( 'Avg Order Value', 'sales-pulse' ),
+				'format' => 'currency',
+			],
+			[
+				'key'    => 'items_per_order',
+				'label'  => __( 'Items per Order', 'sales-pulse' ),
+				'format' => 'decimal',
+			],
 		];
 
 		$cards = [];

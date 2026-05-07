@@ -186,7 +186,7 @@ class ActionEngine {
 		$suppressed = $suppress_map[ $goal ] ?? [];
 
 		if ( in_array( $scenario['scenario'], $suppressed, true ) ) {
-			$campaign_name = esc_html( $campaign->name ?? '' );
+			$campaign_name              = esc_html( $campaign->name ?? '' );
 			$scenario['recommendation'] = sprintf(
 				/* translators: %1$s: campaign name, %2$s: original recommendation */
 				__( 'During your campaign "%1$s": This pattern is expected and not a concern. %2$s', 'sales-pulse' ),
