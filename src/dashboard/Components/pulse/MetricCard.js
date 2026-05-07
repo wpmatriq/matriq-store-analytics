@@ -22,7 +22,7 @@ function buildSparkPaths( spark ) {
 	const range = max - min || 1;
 	const points = series.map( ( v, i ) => {
 		const x = ( i / ( series.length - 1 ) ) * SPARK_WIDTH;
-		const y = SPARK_HEIGHT - ( ( v - min ) / range ) * SPARK_HEIGHT;
+		const y = SPARK_HEIGHT - ( ( ( v - min ) / range ) * SPARK_HEIGHT );
 		return `${ x },${ y }`;
 	} );
 	const linePath = `M ${ points.join( ' L ' ) }`;

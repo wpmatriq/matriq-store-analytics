@@ -11,7 +11,7 @@
  * with a checkmark for ~2s on success. Saved state clears whenever the form
  * drifts from the persisted settings again.
  */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { __ } from '@wordpress/i18n';
 import {
@@ -365,9 +365,11 @@ function ScheduleSection( { form, onChange, delay } ) {
 }
 
 function NumberInput( { label, value, min, max, onChange } ) {
+	const inputId = useId();
 	return (
-		<label className="flex flex-col items-center gap-1">
+		<label htmlFor={ inputId } className="flex flex-col items-center gap-1">
 			<input
+				id={ inputId }
 				type="number"
 				min={ min }
 				max={ max }

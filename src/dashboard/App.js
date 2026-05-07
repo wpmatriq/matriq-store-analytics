@@ -97,9 +97,11 @@ function getActiveTab() {
 }
 
 /**
- * Route to the correct page component.
- * @param root0
- * @param root0.tab
+ * Route to the correct page component for the requested tab.
+ *
+ * @param {Object} props     Component props.
+ * @param {string} props.tab Active tab slug from the URL.
+ * @return {JSX.Element} The mounted page component.
  */
 function PageRouter( { tab } ) {
 	switch ( tab ) {

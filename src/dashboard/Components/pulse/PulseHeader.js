@@ -82,7 +82,7 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 					</div>
 				</a>
 
-				<nav
+				<div
 					role="tablist"
 					aria-label={ __( 'Dashboard sections', 'sales-pulse' ) }
 					className="hidden items-center gap-1 rounded-full border border-solid border-border/80 bg-surface/60 p-1 shadow-xs md:flex"
@@ -106,7 +106,7 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 							</a>
 						);
 					} ) }
-				</nav>
+				</div>
 
 				<div className="flex items-center gap-3">
 					<PluginSlot name="header-action" props={ { activeTab } } />

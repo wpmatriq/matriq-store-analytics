@@ -27,8 +27,8 @@ export function directionFromChange( changePct ) {
 /**
  * Icon component for a trend direction.
  *
- * @param {'up'|'down'|'flat'|'growth'|'decline'|'stable'} direction
- * @return {import('lucide-react').LucideIcon}
+ * @param {'up'|'down'|'flat'|'growth'|'decline'|'stable'} direction Direction signal.
+ * @return {import('lucide-react').LucideIcon} Lucide icon component to render.
  */
 export function trendIcon( direction ) {
 	if ( direction === 'up' || direction === 'growth' ) {
@@ -43,8 +43,8 @@ export function trendIcon( direction ) {
 /**
  * Tailwind color classes for a trend direction.
  *
- * @param {'up'|'down'|'flat'|'growth'|'decline'|'stable'} direction
- * @return {string}
+ * @param {'up'|'down'|'flat'|'growth'|'decline'|'stable'} direction Direction signal.
+ * @return {string} Tailwind text-color class for the matching tone.
  */
 export function trendTextColor( direction ) {
 	if ( direction === 'up' || direction === 'growth' ) {
@@ -59,8 +59,8 @@ export function trendTextColor( direction ) {
 /**
  * Map backend severity to UI status label (human-readable).
  *
- * @param {'success'|'warning'|'info'|'danger'} severity
- * @return {string}
+ * @param {'success'|'warning'|'info'|'danger'} severity Backend severity code.
+ * @return {string} Translated, merchant-facing label.
  */
 export function statusLabel( severity ) {
 	switch ( severity ) {
@@ -78,8 +78,8 @@ export function statusLabel( severity ) {
 /**
  * Map backend severity to the visual variant used by StatusBadge.
  *
- * @param {'success'|'warning'|'info'|'danger'} severity
- * @return {'stable'|'surge'|'attention'}
+ * @param {'success'|'warning'|'info'|'danger'} severity Backend severity code.
+ * @return {'stable'|'surge'|'attention'} StatusBadge variant slug for tone styling.
  */
 export function statusVariant( severity ) {
 	if ( severity === 'success' ) {
