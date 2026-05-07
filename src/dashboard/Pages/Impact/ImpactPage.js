@@ -87,6 +87,9 @@ function StatsGrid( { data } ) {
 			value: data.campaigns_tracked,
 			hint: __( 'Tagged windows that adjust how the diagnosis reads your numbers.', 'sales-pulse' ),
 		},
+	];
+
+	const extraCards = [
 		{
 			icon: Mail,
 			label: __( 'Morning briefings delivered', 'sales-pulse' ),
@@ -112,11 +115,18 @@ function StatsGrid( { data } ) {
 	];
 
 	return (
-		<div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-			{ cards.map( ( card ) => (
-				<StatCard key={ card.label } { ...card } />
-			) ) }
-		</div>
+		<>
+			<div className="flex gap-4">
+				{ cards.map( ( card ) => (
+					<StatCard key={ card.label } { ...card } />
+				) ) }
+			</div>
+			<div className="flex gap-4">
+				{ extraCards.map( ( extraCard ) => (
+					<StatCard key={ extraCard.label } { ...extraCard } />
+				) ) }
+			</div>
+		</>
 	);
 }
 
@@ -175,11 +185,18 @@ function UpgradeCard() {
 
 function ImpactSkeleton() {
 	return (
-		<div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-			{ [ 0, 1, 2, 3, 4, 5 ].map( ( i ) => (
-				<div key={ i } className="h-32 animate-pulse rounded-2xl bg-muted/30" />
-			) ) }
-		</div>
+		<>
+			<div className="flex gap-4">
+				{ [ 0, 1, 2 ].map( ( i ) => (
+					<div key={ i } className="h-32 animate-pulse rounded-2xl bg-muted/30" />
+				) ) }
+			</div>
+			<div className="flex gap-4">
+				{ [ 0, 1, 2 ].map( ( i ) => (
+					<div key={ i } className="h-32 animate-pulse rounded-2xl bg-muted/30" />
+				) ) }
+			</div>
+		</>
 	);
 }
 
