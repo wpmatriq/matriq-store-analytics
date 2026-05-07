@@ -43,18 +43,6 @@ namespace EC_Sales_Pulse {
         {
         }
         /**
-         * Load Plugin Text Domain.
-         * This will load the translation textdomain depending on the file priorities.
-         *      1. Global Languages /wp-content/languages/sales-pulse/ folder
-         *      2. Local directory /wp-content/plugins/sales-pulse/languages/ folder
-         *
-         * @since x.x.x
-         * @return void
-         */
-        public function load_textdomain(): void
-        {
-        }
-        /**
          * Initiator
          *
          * @since x.x.x
@@ -418,108 +406,6 @@ namespace EC_Sales_Pulse\Inc\Utils {
     }
 }
 namespace EC_Sales_Pulse\Inc\Services {
-    /**
-     * Router class.
-     */
-    class Router extends \WP_REST_Controller
-    {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
-        /**
-         * Namespace for the API.
-         *
-         * @var string
-         */
-        protected $namespace = 'sales-pulse/v1';
-        // Default namespace, can be overridden.
-        /**
-         * Routes.
-         *
-         * @var array<mixed> $routes routes.
-         */
-        protected $routes = [];
-        /**
-         * Dynamic method handler for HTTP methods.
-         *
-         * @param string       $name name.
-         * @param array<mixed> $arguments arguments.
-         * @return void
-         * @throws \BadMethodCallException If HTTP method is not supported.
-         * @throws \InvalidArgumentException If a valid callback is not provided.
-         */
-        public static function __callStatic($name, $arguments): void
-        {
-        }
-        /**
-         * Register a REST route.
-         *
-         * @param string                $method HTTP method (GET, POST, etc.).
-         * @param string                $endpoint Endpoint URL (e.g., '/example').
-         * @param callable|array<mixed> $callback Callback function or array (Controller::method).
-         * @param callable|null         $permission_callback Custom permission callback.
-         * @param array<mixed>          $args Argument schema for validation.
-         */
-        public function addRoute($method, $endpoint, $callback, $permission_callback = null, $args = []): void
-        {
-        }
-        /**
-         * Default permission callback.
-         *
-         * @return bool
-         */
-        public function default_permission_callback()
-        {
-        }
-        /**
-         * Admin permission callback.
-         *
-         * @return bool
-         */
-        public function admin_permission_callback()
-        {
-        }
-        /**
-         * User permission callback.
-         *
-         * @return bool
-         */
-        public function user_permission_callback()
-        {
-        }
-        /**
-         * Default permission callback.
-         *
-         * @return bool
-         */
-        public function allowPermission()
-        {
-        }
-        /**
-         * Register all defined routes with WordPress.
-         */
-        public function registerRoutes(): void
-        {
-        }
-        /**
-         * Standardized success response.
-         *
-         * @param array<mixed> $data data.
-         * @param int          $status status.
-         * @return \WP_REST_Response
-         */
-        public static function success($data, $status = 200)
-        {
-        }
-        /**
-         * Standardized error response.
-         *
-         * @param string $message message.
-         * @param int    $status status.
-         * @return \WP_REST_Response
-         */
-        public static function error($message, $status = 400)
-        {
-        }
-    }
     class Query
     {
         /**
@@ -1243,22 +1129,627 @@ namespace EC_Sales_Pulse\Inc\Services {
         }
     }
 }
-namespace EC_Sales_Pulse\Core\Routers {
-    /**
-     * Class Misc Router.
-     */
-    class Misc
+namespace EC_Sales_Pulse\Core\Database {
+    abstract class Base
+    {
+        /**
+         * Table name without prefix.
+         *
+         * @var string
+         */
+        protected $table_name = '';
+        /**
+         * Table prefix.
+         *
+         * @var string
+         */
+        protected $prefix = 'salespulse_';
+        /**
+         * Primary key column.
+         *
+         * @var string
+         */
+        protected $primary_key = 'id';
+        /**
+         * WordPress database instance.
+         *
+         * @var \wpdb
+         */
+        protected $wpdb;
+        /**
+         * Constructor.
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Get the full table name with WordPress prefix.
+         *
+         * @return string
+         */
+        public function get_table_name(): string
+        {
+        }
+        /**
+         * Check if the table exists in the database.
+         *
+         * @return bool
+         */
+        public function table_exists(): bool
+        {
+        }
+        /**
+         * Get the CREATE TABLE SQL for this model.
+         * Must be implemented by child classes.
+         *
+         * @return string SQL CREATE TABLE statement compatible with dbDelta().
+         */
+        abstract public function get_schema(): string;
+        /**
+         * Insert a row into the table.
+         *
+         * @param array<string, mixed> $data   Column => value pairs.
+         * @param array<string>        $format Optional format array (%s, %d, %f).
+         * @return int|false Insert ID on success, false on failure.
+         */
+        public function insert(array $data, array $format = [])
+        {
+        }
+        /**
+         * Update rows matching conditions.
+         *
+         * @param array<string, mixed> $data         Column => value pairs to update.
+         * @param array<string, mixed> $where        Column => value pairs for WHERE clause.
+         * @param array<string>        $format       Optional format for data.
+         * @param array<string>        $where_format Optional format for where.
+         * @return int|false Number of rows updated, or false on error.
+         */
+        public function update(array $data, array $where, array $format = [], array $where_format = [])
+        {
+        }
+        /**
+         * Insert or update a row (REPLACE INTO).
+         *
+         * @param array<string, mixed> $data   Column => value pairs.
+         * @param array<string>        $format Optional format array.
+         * @return int|false Rows affected or false on error.
+         */
+        public function replace(array $data, array $format = [])
+        {
+        }
+        /**
+         * Delete rows matching conditions.
+         *
+         * @param array<string, mixed> $where        Column => value pairs for WHERE clause.
+         * @param array<string>        $where_format Optional format for where.
+         * @return int|false Number of rows deleted, or false on error.
+         */
+        public function delete(array $where, array $where_format = [])
+        {
+        }
+        /**
+         * Get a single row by primary key.
+         *
+         * @param mixed $id Primary key value.
+         * @return object|null Row object or null.
+         */
+        public function find($id)
+        {
+        }
+        /**
+         * Get all rows, optionally ordered.
+         *
+         * @param string $order_by Column to order by.
+         * @param string $order    ASC or DESC.
+         * @param int    $limit    Max rows to return. 0 = unlimited.
+         * @return array<object>
+         */
+        public function all(string $order_by = '', string $order = 'ASC', int $limit = 0): array
+        {
+        }
+        /**
+         * Count rows, optionally with conditions.
+         *
+         * @param array<string, mixed> $where Optional WHERE conditions.
+         * @return int
+         */
+        public function count(array $where = []): int
+        {
+        }
+        /**
+         * Truncate the table.
+         *
+         * @return bool
+         */
+        public function truncate(): bool
+        {
+        }
+        /**
+         * Get the charset collate for table creation.
+         *
+         * @return string
+         */
+        protected function get_charset_collate(): string
+        {
+        }
+    }
+    class DirtyDates extends \EC_Sales_Pulse\Core\Database\Base
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
-        use \EC_Sales_Pulse\Inc\Traits\Rest_Errors;
         /**
-         * Handler to get topic submitted.
+         * Table name without prefix.
          *
-         * @param \WP_REST_Request $request The request object.
-         * @since x.x.x
+         * @var string
+         */
+        protected $table_name = 'dirty_dates';
+        /**
+         * Primary key column.
+         *
+         * @var string
+         */
+        protected $primary_key = 'stat_date';
+        /**
+         * Get the CREATE TABLE SQL.
+         *
+         * @return string
+         */
+        public function get_schema(): string
+        {
+        }
+        /**
+         * Mark a date as dirty (needs rebuild).
+         *
+         * Idempotent on the (stat_date) primary key: an already-pending row stays
+         * pending; an already-resolved row is reopened so the next nightly run
+         * picks it up and the audit trail advances.
+         *
+         * @param string $date   Date in Y-m-d format.
+         * @param string $reason Reason for marking dirty (order_update, refund, status_change).
+         * @return bool
+         */
+        public function mark_dirty(string $date, string $reason = 'order_update'): bool
+        {
+        }
+        /**
+         * Get dirty dates still pending repair.
+         *
+         * @param int $limit Max dates to return.
+         * @return array<object>
+         */
+        public function get_pending(int $limit = 10): array
+        {
+        }
+        /**
+         * Mark a date as repaired.
+         *
+         * The row is kept (with resolved_at stamped) so the Impact dashboard can
+         * count repaired dates as a free-plugin "data foundation" stat.
+         *
+         * @param string $date Date in Y-m-d format.
+         * @return bool
+         */
+        public function mark_resolved(string $date): bool
+        {
+        }
+        /**
+         * Count dates ever repaired in a date range. Used by the Impact summary.
+         *
+         * @param string $from Inclusive ISO datetime (resolved_at >=).
+         * @param string $to   Exclusive ISO datetime (resolved_at <).
+         * @return int
+         */
+        public function count_resolved_in_range(string $from, string $to): int
+        {
+        }
+        /**
+         * Total count of repaired dates (for "all-time" stats).
+         *
+         * @return int
+         */
+        public function count_resolved(): int
+        {
+        }
+        /**
+         * Clear all dirty dates. Reserved for uninstall paths.
+         *
+         * @return bool
+         */
+        public function clear_all(): bool
+        {
+        }
+    }
+    class Campaigns extends \EC_Sales_Pulse\Core\Database\Base
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Table name without prefix.
+         *
+         * @var string
+         */
+        protected $table_name = 'campaigns';
+        /**
+         * Valid campaign goals.
+         */
+        const GOAL_ORDERS = 'orders';
+        const GOAL_AOV = 'aov';
+        const GOAL_CLEARANCE = 'clearance';
+        const GOAL_LAUNCH = 'launch';
+        /**
+         * Get the CREATE TABLE SQL.
+         *
+         * @return string
+         */
+        public function get_schema(): string
+        {
+        }
+        /**
+         * Get valid campaign goals.
+         *
+         * @return array<string, string>
+         */
+        public static function get_valid_goals(): array
+        {
+        }
+        /**
+         * Get the currently active campaign (if any).
+         *
+         * @return object|null Campaign object or null.
+         */
+        public function get_active()
+        {
+        }
+        /**
+         * Check if a campaign is active for a specific date.
+         *
+         * @param string $date Date in Y-m-d format.
+         * @return object|null Active campaign or null.
+         */
+        public function get_active_for_date(string $date)
+        {
+        }
+        /**
+         * Create a new campaign.
+         *
+         * @param string      $name      Campaign name.
+         * @param string      $goal      Campaign goal (orders, aov, clearance, launch).
+         * @param string      $start_date Start date (Y-m-d).
+         * @param string|null $end_date   End date (Y-m-d) or null for ongoing.
+         * @return int|false Campaign ID or false.
+         */
+        public function create(string $name, string $goal, string $start_date, ?string $end_date = null)
+        {
+        }
+        /**
+         * End a campaign by setting its end date to today.
+         *
+         * @param int $campaign_id Campaign ID.
+         * @return int|false Rows affected or false.
+         */
+        public function end_campaign(int $campaign_id)
+        {
+        }
+        /**
+         * Get all campaigns, ordered by most recent first.
+         *
+         * @param int $limit Max campaigns to return.
+         * @return array<object>
+         */
+        public function get_all(int $limit = 50): array
+        {
+        }
+    }
+    class SystemState extends \EC_Sales_Pulse\Core\Database\Base
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Table name without prefix.
+         *
+         * @var string
+         */
+        protected $table_name = 'system_state';
+        /**
+         * Primary key column.
+         *
+         * @var string
+         */
+        protected $primary_key = 'state_key';
+        /**
+         * Known state keys.
+         */
+        const KEY_LAST_SNAPSHOT_DATE = 'last_snapshot_date';
+        const KEY_BACKFILL_START = 'backfill_start';
+        const KEY_BACKFILL_CURSOR = 'backfill_cursor';
+        const KEY_BACKFILL_COMPLETE = 'backfill_complete';
+        const KEY_DB_VERSION = 'db_version';
+        const KEY_PLUGIN_VERSION = 'plugin_version';
+        const KEY_LAST_DIGEST_SENT_DATE = 'last_digest_sent_date';
+        const KEY_LAST_DIGEST_SENT_AT = 'last_digest_sent_at';
+        /**
+         * Get the CREATE TABLE SQL.
+         *
+         * @return string
+         */
+        public function get_schema(): string
+        {
+        }
+        /**
+         * Get a state value by key.
+         *
+         * @param string $key     State key.
+         * @param mixed  $default Default value if not found.
+         * @return mixed
+         */
+        public function get(string $key, $default = null)
+        {
+        }
+        /**
+         * Set a state value (insert or update).
+         *
+         * @param string $key   State key.
+         * @param string $value State value.
+         * @return bool
+         */
+        public function set(string $key, string $value): bool
+        {
+        }
+        /**
+         * Remove a state key.
+         *
+         * @param string $key State key.
+         * @return bool
+         */
+        public function remove(string $key): bool
+        {
+        }
+        /**
+         * Check if backfill is complete.
+         *
+         * @return bool
+         */
+        public function is_backfill_complete(): bool
+        {
+        }
+        /**
+         * Get the last snapshot date.
+         *
+         * @return string|null Date in Y-m-d format.
+         */
+        public function get_last_snapshot_date()
+        {
+        }
+        /**
+         * Set the last snapshot date.
+         *
+         * @param string $date Date in Y-m-d format.
+         * @return bool
+         */
+        public function set_last_snapshot_date(string $date): bool
+        {
+        }
+        /**
+         * Get the `updated_at` timestamp of the last-snapshot record.
+         *
+         * Used by the dashboard header to surface a LIVE vs STALE badge.
+         *
+         * @return string|null ISO8601-compatible MySQL datetime, or null if never set.
+         */
+        public function get_last_snapshot_timestamp()
+        {
+        }
+    }
+    class DigestHistory extends \EC_Sales_Pulse\Core\Database\Base
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Table name without prefix.
+         *
+         * @var string
+         */
+        protected $table_name = 'digest_history';
+        public function get_schema(): string
+        {
+        }
+        /**
+         * Record one send attempt.
+         *
+         * @param array<string, mixed> $data sent_at, recipient, status, error_text, is_test.
+         *
+         * @return int Insert id, or 0 on failure.
+         */
+        public function record(array $data): int
+        {
+        }
+        /**
+         * Count rows with a given status in a date range.
+         *
+         * @param string $status  'sent' | 'failed' | 'skipped'.
+         * @param string $from    Inclusive ISO datetime.
+         * @param string $to      Exclusive ISO datetime.
+         *
+         * @return int
+         */
+        public function count_in_range(string $status, string $from, string $to): int
+        {
+        }
+        /**
+         * Total count for a given status across all time. Used by the all-time
+         * "Morning briefings delivered" stat in the free Impact tab.
+         *
+         * @param string $status 'sent' | 'failed' | 'skipped'.
+         *
+         * @return int
+         */
+        public function count_total(string $status = 'sent'): int
+        {
+        }
+        /**
+         * Delete rows older than N days. Free plugin retention is bounded by
+         * the Pro plugin's impact_retention_days when available, otherwise a
+         * conservative 730 days (two years).
+         *
+         * @param int $days Number of days to keep.
+         *
+         * @return int Rows deleted.
+         */
+        public function purge_older_than(int $days): int
+        {
+        }
+    }
+    class DailyStats extends \EC_Sales_Pulse\Core\Database\Base
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Table name without prefix.
+         *
+         * @var string
+         */
+        protected $table_name = 'daily_stats';
+        /**
+         * Primary key column.
+         *
+         * @var string
+         */
+        protected $primary_key = 'stat_date';
+        /**
+         * Get the CREATE TABLE SQL.
+         *
+         * @return string
+         */
+        public function get_schema(): string
+        {
+        }
+        /**
+         * Get snapshot for a specific date.
+         *
+         * @param string $date Date in Y-m-d format.
+         * @return object|null
+         */
+        public function get_by_date(string $date)
+        {
+        }
+        /**
+         * Get snapshots for a date range.
+         *
+         * @param string $start_date Start date (Y-m-d).
+         * @param string $end_date   End date (Y-m-d).
+         * @return array<object>
+         */
+        public function get_range(string $start_date, string $end_date): array
+        {
+        }
+        /**
+         * Get aggregated metrics for a date range (for weekly/monthly comparison).
+         *
+         * @param string $start_date Start date (Y-m-d).
+         * @param string $end_date   End date (Y-m-d).
+         * @return object|null Aggregated metrics.
+         */
+        public function get_aggregated(string $start_date, string $end_date)
+        {
+        }
+        /**
+         * Upsert a daily snapshot (insert or update if date exists).
+         *
+         * @param array<string, mixed> $data Snapshot data.
+         * @return int|false
+         */
+        public function upsert(array $data)
+        {
+        }
+        /**
+         * Get the most recent snapshot date.
+         *
+         * @return string|null Date in Y-m-d format, or null.
+         */
+        public function get_latest_date()
+        {
+        }
+        /**
+         * Get the oldest snapshot date.
+         *
+         * @return string|null Date in Y-m-d format, or null.
+         */
+        public function get_oldest_date()
+        {
+        }
+        /**
+         * Check if a snapshot exists for a given date.
+         *
+         * @param string $date Date in Y-m-d format.
+         * @return bool
+         */
+        public function has_snapshot(string $date): bool
+        {
+        }
+        /**
+         * Get paginated snapshots ordered by date descending.
+         *
+         * @param int $limit  Number of rows.
+         * @param int $offset Row offset.
+         * @return array<object>
+         */
+        public function get_paginated(int $limit, int $offset = 0): array
+        {
+        }
+        /**
+         * Get missing dates in a range (dates without snapshots).
+         *
+         * @param string $start_date Start date (Y-m-d).
+         * @param string $end_date   End date (Y-m-d).
+         * @return array<string> Array of date strings.
+         */
+        public function get_missing_dates(string $start_date, string $end_date): array
+        {
+        }
+    }
+    class Schema
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Current database schema version.
+         *
+         * @var int
+         */
+        const DB_VERSION = 2;
+        /**
+         * Create or update all plugin tables.
+         *
          * @return void
          */
-        public function submit_topic($request): void
+        public function install(): void
+        {
+        }
+        /**
+         * Check if schema needs update and run migrations.
+         *
+         * @return void
+         */
+        public function maybe_upgrade(): void
+        {
+        }
+        /**
+         * Check if all required tables exist.
+         *
+         * @return bool
+         */
+        public function tables_exist(): bool
+        {
+        }
+        /**
+         * Drop all plugin tables.
+         * Only call during uninstall, NOT deactivation.
+         *
+         * @return void
+         */
+        public function uninstall(): void
+        {
+        }
+        /**
+         * Get status of all tables (for data readiness check).
+         *
+         * @return array<string, array<string, mixed>>
+         */
+        public function get_tables_status(): array
         {
         }
     }
@@ -1344,68 +1835,777 @@ namespace EC_Sales_Pulse\Core\Models {
         }
     }
 }
-namespace EC_Sales_Pulse\Core {
-    /**
-     * Class CPTs.
-     */
-    class Routes
+namespace EC_Sales_Pulse\Core\Hooks {
+    class OrderHooks
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
         /**
-         * Constructor
-         *
-         * @since 1.0.0
+         * Constructor - register WooCommerce hooks.
          */
         public function __construct()
         {
         }
         /**
-         * Init Hooks.
+         * Handle new order creation.
+         *
+         * @param int            $order_id Order ID.
+         * @param \WC_Order|null $order    Order object.
+         */
+        public function on_order_created($order_id, $order = null): void
+        {
+        }
+        /**
+         * Handle order update.
+         *
+         * @param int            $order_id Order ID.
+         * @param \WC_Order|null $order    Order object.
+         */
+        public function on_order_updated($order_id, $order = null): void
+        {
+        }
+        /**
+         * Handle order status change.
+         *
+         * @param int       $order_id   Order ID.
+         * @param string    $old_status Old status.
+         * @param string    $new_status New status.
+         * @param \WC_Order $order      Order object.
+         */
+        public function on_status_changed($order_id, $old_status, $new_status, $order): void
+        {
+        }
+        /**
+         * Handle order refund.
+         * Marks the ORIGINAL order date dirty (not the refund date).
+         *
+         * @param int $order_id  Original order ID.
+         * @param int $refund_id Refund ID.
+         */
+        public function on_order_refunded($order_id, $refund_id): void
+        {
+        }
+    }
+}
+namespace EC_Sales_Pulse\Core\Controllers {
+    abstract class BaseController
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * REST namespace.
+         *
+         * @var string
+         */
+        protected $namespace = 'sales-pulse/v2';
+        /**
+         * Route base (override in each controller).
+         *
+         * @var string
+         */
+        protected $rest_base = '';
+        /**
+         * Constructor - hook into rest_api_init.
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Register controller routes. Must be implemented by each controller.
          *
          * @return void
-         * @since 1.0.0
          */
-        public function initialize_actions(): void
+        abstract public function register_routes(): void;
+        /**
+         * Permission check: manage_woocommerce capability.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return bool|\WP_Error
+         */
+        public function admin_permission_check($request)
         {
         }
         /**
-         * Return the rest response.
+         * Success response helper.
          *
-         * @param mixed $response The response.
-         * @param int   $status The status code.
-         * @return \WP_Error|\WP_REST_Response
+         * @param mixed $data    Response data.
+         * @param int   $status  HTTP status code.
+         * @return \WP_REST_Response
          */
-        public static function rest_response($response, $status = 200)
+        protected function success($data, int $status = 200): \WP_REST_Response
         {
         }
         /**
-         * Get SureDash routes.
+         * Error response helper.
          *
-         * @return array<string, array<string, array<int, callable>>>
+         * @param string $message Error message.
+         * @param int    $status  HTTP status code.
+         * @return \WP_REST_Response
          */
-        public function get_wc_sma_routes(): array
+        protected function error(string $message, int $status = 400): \WP_REST_Response
         {
         }
         /**
-         * Register REST API routes.
+         * Get sanitized date parameter from request.
          *
-         * @return void
+         * @param \WP_REST_Request $request Request object.
+         * @param string           $key     Parameter key.
+         * @param string           $default Default value.
+         * @return string Date in Y-m-d format.
          */
-        public function register_rest_routes(): void
+        protected function get_date_param(\WP_REST_Request $request, string $key, string $default = ''): string
         {
         }
         /**
-         * Register route.
+         * Get sanitized integer parameter from request.
          *
-         * @param string $method Method.
-         * @param string $route Route.
-         * @param array  $callback Callback.
-         * @param bool   $permission_callback Permission callback.
-         * @return void
-         * @since 0.0.2
-         * @phpstan-ignore-next-line
+         * @param \WP_REST_Request $request Request object.
+         * @param string           $key     Parameter key.
+         * @param int              $default Default value.
+         * @return int
          */
-        public function register_route($method, $route, $callback, $permission_callback = ''): void
+        protected function get_int_param(\WP_REST_Request $request, string $key, int $default = 0): int
+        {
+        }
+    }
+    class ImpactController extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    {
+        /**
+         * Route base.
+         *
+         * @var string
+         */
+        protected $rest_base = 'impact';
+        public function register_routes(): void
+        {
+        }
+        public function get_summary(): \WP_REST_Response
+        {
+        }
+    }
+    class DataReadiness extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    {
+        /**
+         * Route base.
+         *
+         * @var string
+         */
+        protected $rest_base = 'system';
+        /**
+         * Register routes.
+         */
+        public function register_routes(): void
+        {
+        }
+        /**
+         * Check data readiness - all prerequisites for dashboard to function.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function get_readiness(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * Manually trigger a snapshot for a specific date, or build an initial batch.
+         *
+         * - If `date` param is provided, builds that single date (existing behavior).
+         * - Otherwise, builds an initial batch of recent days for dashboard readiness.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function trigger_snapshot(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * Get backfill progress.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function get_backfill_status(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * Trigger a single backfill batch manually.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function trigger_backfill(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+    }
+    class CampaignsController extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    {
+        /**
+         * Route base.
+         *
+         * @var string
+         */
+        protected $rest_base = 'campaigns';
+        /**
+         * Register routes.
+         */
+        public function register_routes(): void
+        {
+        }
+        /**
+         * List all campaigns (most recent first).
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function get_campaigns(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * Create a new campaign.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function create_campaign(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * End a campaign early (set end_date to today).
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function end_campaign(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * Delete a campaign permanently.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function delete_campaign(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+    }
+    class Overview extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    {
+        /**
+         * Route base.
+         *
+         * @var string
+         */
+        protected $rest_base = 'overview';
+        /**
+         * Register routes.
+         */
+        public function register_routes(): void
+        {
+        }
+        /**
+         * Get overview / morning briefing data.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function get_overview(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * Get trend data for sparkline chart.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function get_trend(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+    }
+    class History extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    {
+        /**
+         * Route base.
+         *
+         * @var string
+         */
+        protected $rest_base = 'history';
+        /**
+         * Register routes.
+         */
+        public function register_routes(): void
+        {
+        }
+        /**
+         * Get paginated history of daily diagnoses.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function get_history(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+    }
+    class SettingsController extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    {
+        /**
+         * Route base.
+         *
+         * @var string
+         */
+        protected $rest_base = 'settings';
+        /**
+         * Option key for all plugin settings.
+         *
+         * @var string
+         */
+        const OPTION_KEY = 'salespulse_settings';
+        /**
+         * Default settings.
+         *
+         * @var array<string, mixed>
+         */
+        const DEFAULTS = [
+            'snapshot_hour' => 2,
+            // 0-23.
+            'snapshot_min' => 10,
+            // 0-59.
+            'email_enabled' => false,
+            'email_address' => '',
+            // Defaults to admin email.
+            'diagnosis_sensitivity' => 'balanced',
+            // 'calm' | 'balanced' | 'vigilant'.
+            'last_digest_error' => null,
+        ];
+        /**
+         * Allowed values for the diagnosis_sensitivity setting.
+         *
+         * @var string[]
+         */
+        const SENSITIVITY_VALUES = ['calm', 'balanced', 'vigilant'];
+        /**
+         * Register routes.
+         */
+        public function register_routes(): void
+        {
+        }
+        /**
+         * Get current settings.
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function get_settings(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * Update settings (partial update - only provided keys are changed).
+         *
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function update_settings(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * Get all settings merged with defaults.
+         *
+         * @return array<string, mixed>
+         */
+        public static function get_all(): array
+        {
+        }
+        /**
+         * Get a single setting value.
+         *
+         * @param string $key     Setting key.
+         * @param mixed  $default Default value.
+         * @return mixed
+         */
+        public static function get(string $key, $default = null)
+        {
+        }
+    }
+    class DigestController extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    {
+        /**
+         * Route base.
+         *
+         * @var string
+         */
+        protected $rest_base = 'system/digest';
+        /**
+         * Register routes.
+         */
+        public function register_routes(): void
+        {
+        }
+        /**
+         * Send a one-off test digest.
+         *
+         * @param \WP_REST_Request $request Request object.
+         */
+        public function send_test(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+    }
+}
+namespace EC_Sales_Pulse\Core\Services {
+    class SnapshotBuilder
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Build and store a snapshot for a specific date.
+         *
+         * @param string $date Date in Y-m-d format.
+         * @return bool True on success, false on failure.
+         */
+        public function build_snapshot(string $date): bool
+        {
+        }
+        /**
+         * Build yesterday's snapshot (primary nightly operation).
+         *
+         * @return bool
+         */
+        public function build_yesterday(): bool
+        {
+        }
+        /**
+         * Process and repair all dirty dates.
+         *
+         * @param int $max_dates Maximum dirty dates to process per run.
+         * @return int Number of dates repaired.
+         */
+        public function repair_dirty_dates(int $max_dates = 5): int
+        {
+        }
+        /**
+         * Run the full nightly snapshot process.
+         * Step 1: Build yesterday.
+         * Step 2: Repair dirty dates.
+         *
+         * @return array<string, mixed> Summary of operations.
+         */
+        public function run_nightly(): array
+        {
+        }
+        /**
+         * Backfill historical snapshots (reverse chronological).
+         * Processes a limited batch per call to avoid timeouts.
+         *
+         * @param int $batch_size Number of days to process per batch.
+         * @return array<string, mixed> Backfill progress info.
+         */
+        public function run_backfill(int $batch_size = 3): array
+        {
+        }
+        /**
+         * Build snapshots for the last N days (for initial setup).
+         * Skips dates that already have snapshots.
+         *
+         * @param int $days Number of days to build (from yesterday going backwards).
+         * @return array<string, int> Summary with days_requested and days_built.
+         */
+        public function build_initial_batch(int $days = 14): array
+        {
+        }
+        /**
+         * Check if yesterday's snapshot exists (for cron fallback).
+         *
+         * @return bool
+         */
+        public function has_yesterday_snapshot(): bool
+        {
+        }
+    }
+    class DataCollector
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Constructor.
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Check if WooCommerce Analytics tables exist and are usable.
+         *
+         * @return bool
+         */
+        public function are_analytics_tables_available(): bool
+        {
+        }
+        /**
+         * Get the oldest order date in WooCommerce.
+         *
+         * @return string|null Date in Y-m-d format, or null if no orders.
+         */
+        public function get_oldest_order_date()
+        {
+        }
+        /**
+         * Get the total number of valid orders in WooCommerce.
+         *
+         * @return int
+         */
+        public function get_total_order_count(): int
+        {
+        }
+        /**
+         * Collect all metrics for a single day.
+         * This is the primary method called by SnapshotBuilder.
+         *
+         * @param string $date Date in Y-m-d format.
+         * @return array<string, mixed> Structured metrics array ready for daily_stats table.
+         */
+        public function collect_day_metrics(string $date): array
+        {
+        }
+    }
+    class DigestEmail extends \WC_Email
+    {
+        /**
+         * Payload assembled by DigestMailer; available to templates as `$email->payload`.
+         *
+         * @var array<string, mixed>
+         */
+        public $payload = [];
+        public function __construct()
+        {
+        }
+        /**
+         * Triggered by DigestMailer. Renders templates and sends in one call.
+         *
+         * @param string               $recipient Validated recipient address.
+         * @param string               $subject   Final subject line.
+         * @param array<string, mixed> $payload   Data payload for the templates.
+         */
+        public function trigger_digest(string $recipient, string $subject, array $payload): bool
+        {
+        }
+        public function get_from_name()
+        {
+        }
+        public function get_from_address()
+        {
+        }
+        public function get_content_html()
+        {
+        }
+        public function get_content_plain()
+        {
+        }
+        /**
+         * No editable fields. Render a notice instead with a deep link to our Settings page.
+         */
+        public function init_form_fields()
+        {
+        }
+    }
+    class DiagnosisEngine
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Minimum revenue change percentage to trigger diagnosis (base; scaled by sensitivity).
+         *
+         * @var float
+         */
+        const CHANGE_THRESHOLD = 5.0;
+        /**
+         * Absolute floor: anything below this is treated as "no revenue" rather
+         * than a real signal. Used by the new-store / dead-store edge cases.
+         *
+         * @var float
+         */
+        const MIN_REVENUE_THRESHOLD = 1.0;
+        /**
+         * Below this revenue, comparisons are statistically meaningless even
+         * when both days have orders. STRATEGY.md Section 6: "Suppress strong
+         * diagnosis, mark 'low sample size'." A jump from $7 to $76 is a
+         * one-order-vs-one-order spike, not a trend.
+         *
+         * @var float
+         */
+        const LOW_SAMPLE_REVENUE_THRESHOLD = 50.0;
+        /**
+         * Below this order count on either side, the diagnosis is downgraded to
+         * "low sample size" regardless of the dollar swing. Three orders is the
+         * minimum where a primary-factor decomposition starts to mean something.
+         *
+         * @var int
+         */
+        const MIN_ORDERS_FOR_CONFIDENCE = 3;
+        /**
+         * Multipliers applied to CHANGE_THRESHOLD for each sensitivity level.
+         *
+         * Calm    - larger threshold, only flag major shifts.
+         * Balanced - base threshold (5%).
+         * Vigilant - tighter threshold, surface smaller movements.
+         *
+         * @var array<string, float>
+         */
+        const SENSITIVITY_MULTIPLIERS = ['calm' => 1.5, 'balanced' => 1.0, 'vigilant' => 0.6];
+        /**
+         * Run full diagnosis comparing current vs previous period.
+         *
+         * @param object $current     Current period metrics (from daily_stats or aggregated).
+         * @param object $previous    Previous period metrics.
+         * @param string $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
+         * @return array<string, mixed> Diagnosis result.
+         */
+        public function diagnose($current, $previous, string $sensitivity = 'balanced'): array
+        {
+        }
+        /**
+         * Get human-readable confidence label.
+         *
+         * @param float $confidence Confidence score (0-1).
+         * @return string
+         */
+        public function get_confidence_label(float $confidence): string
+        {
+        }
+    }
+    class DigestMailer
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Constructor - listens for the nightly snapshot completion event.
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Decide whether to send today's nightly digest, and dispatch if so.
+         *
+         * Gates: snapshot built, toggle on, valid recipient, not already sent today.
+         *
+         * @param array<string, mixed> $summary Snapshot summary from SnapshotBuilder::run_nightly().
+         */
+        public function maybe_send_nightly($summary): void
+        {
+        }
+        /**
+         * Send the digest immediately.
+         *
+         * @param string|null $override_recipient Optional recipient to use instead of the stored email_address.
+         * @param bool        $is_test            When true, bypass the once-per-day idempotency guard.
+         * @return array{sent:bool, recipient:string, reason:?string}
+         */
+        public function send(?string $override_recipient = null, bool $is_test = false): array
+        {
+        }
+        /**
+         * Build the data payload used by both subject composer and templates.
+         *
+         * @return array<string, mixed>
+         */
+        public function build_payload(): array
+        {
+        }
+        /**
+         * Compose the subject line. Daily-first signal preference; falls back to 7d, then 30d.
+         *
+         * @param array<string, mixed> $payload Output of build_payload().
+         */
+        public function compose_subject(array $payload): string
+        {
+        }
+    }
+    class ImpactSummary
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Build the keyed stat payload consumed by the free Impact tab.
+         *
+         * @return array<string, mixed>
+         */
+        public function build(): array
+        {
+        }
+    }
+    class ActionEngine
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Constructor - register scenarios.
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Get action recommendation from diagnosis result.
+         *
+         * @param array<string, mixed> $diagnosis Diagnosis result from DiagnosisEngine.
+         * @param object|null          $campaign  Active campaign (if any).
+         * @return array<string, string> Action recommendation.
+         */
+        public function recommend(array $diagnosis, $campaign = null): array
+        {
+        }
+    }
+}
+namespace EC_Sales_Pulse\Core\Cron {
+    class CronManager
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Hook names.
+         */
+        const HOOK_NIGHTLY = 'salespulse_nightly_snapshot';
+        const HOOK_BACKFILL = 'salespulse_backfill_runner';
+        /**
+         * Constructor - register cron hooks and schedules.
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Add custom cron schedules.
+         *
+         * @param array<string, array<string, mixed>> $schedules Existing schedules.
+         * @return array<string, array<string, mixed>>
+         */
+        public function add_cron_schedules(array $schedules): array
+        {
+        }
+        /**
+         * Schedule all cron jobs if not already scheduled.
+         */
+        public function schedule_jobs(): void
+        {
+        }
+        /**
+         * Run the nightly snapshot job.
+         * Builds yesterday's snapshot and repairs dirty dates.
+         */
+        public function run_nightly_snapshot(): void
+        {
+        }
+        /**
+         * Run the backfill job.
+         * Processes a batch of historical dates.
+         */
+        public function run_backfill(): void
+        {
+        }
+        /**
+         * Fallback: build yesterday + day-before-yesterday on admin visit if missing.
+         * Ensures the daily view has the minimum 2 snapshots needed for comparison.
+         * Only runs once per hour using a transient guard.
+         */
+        public function maybe_fallback_snapshot(): void
+        {
+        }
+        /**
+         * Unschedule the backfill runner.
+         */
+        public function unschedule_backfill(): void
+        {
+        }
+        /**
+         * Unschedule all plugin cron jobs.
+         * Called on plugin deactivation.
+         */
+        public static function unschedule_all(): void
         {
         }
     }
@@ -1475,6 +2675,14 @@ namespace EC_Sales_Pulse\Admin {
         {
         }
         /**
+         * Check if the current page is a plugin page.
+         *
+         * @since x.x.x
+         */
+        public function is_plugin_page(): bool
+        {
+        }
+        /**
          *  Initialize Admin Setup.
          *
          * @since x.x.x
@@ -1485,17 +2693,15 @@ namespace EC_Sales_Pulse\Admin {
         /**
          * Add submenu to admin menu.
          *
-         * @since x.x.x
-         */
-        public function register_plugin_menus(): void
-        {
-        }
-        /**
-         * Add the CSS to design the main side-bar menu of the plugin.
+         * v2 Navigation:
+         * - Overview (default - morning briefing)
+         * - History (daily explanation list)
+         * - Campaigns (start/stop active campaigns)
+         * - Settings (timezone, revenue basis, email digest)
          *
          * @since x.x.x
          */
-        public function admin_menu_css(): void
+        public function register_plugin_menus(): void
         {
         }
         /**
@@ -1625,17 +2831,20 @@ namespace {
     {
     }
     /**
-     * Get the Router instance.
-     *
-     * @return Router
-     */
-    function wc_sma_route()
-    {
-    }
-    /**
      * Set constants
      */
     \define('EC_Sales_Pulse_VER', '0.0.1');
     \define('EC_Sales_Pulse_FILE', __FILE__);
     \define('EC_Sales_Pulse_PRO_MINIMUM_VER', '0.0.1');
+    /**
+     * Format a metric_card value.
+     *
+     * @param mixed  $value
+     * @param string $format currency|number|decimal
+     * @param string $symbol Currency symbol.
+     */
+    $fmt_value = static function ($value, string $format, string $symbol): string {
+        $value = (float) $value;
+        return number_format_i18n($value, 0);
+    };
 }

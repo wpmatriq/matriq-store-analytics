@@ -1,5 +1,5 @@
 {
-	"name": "web-empire/wc-smart-analytics",
+	"name": "imnavanath/sales-pulse",
 	"description": "WP Smart Analytics is a WordPress plugin that helps you understand your site traffic and visitors.",
 	"extra": {
 	},
@@ -28,8 +28,8 @@
 		"insights:fix": "./vendor/bin/phpinsights analyse --fix --no-interaction",
 		"phpstan": "vendor/bin/phpstan --memory-limit=2048M analyse",
 		"gen-baseline": "vendor/bin/phpstan --memory-limit=2048M analyse --generate-baseline",
-		"gen-stubs": "vendor/bin/generate-stubs artifact/phpstan/wc-smart-analytics/ --out=tests/php/stubs/wc-smart-analytics-stubs.php && rm -rf artifact/phpstan",
-		"update-stubs": "rm -f tests/php/stubs/wc-smart-analytics-stubs.php && bash bin/build-folder-phpstan.sh && composer gen-stubs"
+		"gen-stubs": "vendor/bin/generate-stubs artifact/phpstan/sales-pulse/ --out=tests/php/stubs/sales-pulse-stubs.php && rm -rf artifact/phpstan",
+		"update-stubs": "rm -f tests/php/stubs/sales-pulse-stubs.php && bash bin/build-folder-phpstan.sh && composer gen-stubs"
 	},
 	"config": {
 		"allow-plugins": {

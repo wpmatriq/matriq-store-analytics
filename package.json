@@ -1,5 +1,5 @@
 {
-	"name": "wc-smart-analytics",
+	"name": "sales-pulse",
 	"version": "0.0.1",
 	"description": "WP Smart Analytics is a WordPress plugin that helps you understand your site traffic and visitors.",
 	"volta": {
@@ -13,13 +13,13 @@
 		"portal",
 		"dashboard"
 	],
-	"homepage": "https://github.com/brainstormforce/wc-smart-analytics#readme",
+	"homepage": "https://github.com/brainstormforce/sales-pulse#readme",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/brainstormforce/wc-smart-analytics.git"
+		"url": "git+https://github.com/brainstormforce/sales-pulse.git"
 	},
 	"bugs": {
-		"url": "https://github.com/brainstormforce/wc-smart-analytics/issues"
+		"url": "https://github.com/brainstormforce/sales-pulse/issues"
 	},
 	"engines": {
 		"npm": ">=9.5.0 <10.4.0",
@@ -105,7 +105,7 @@
 		"@wordpress/env": "^4.9.0",
 		"@wordpress/eslint-plugin": "^22.17.0",
 		"@wordpress/i18n": "^4.2.4",
-		"@wordpress/scripts": "^30.14.1",
+		"@wordpress/scripts": "^30.27.0",
 		"autoprefixer": "^10.4.21",
 		"eslint": "^8.57.1",
 		"eslint-plugin-jest": "^28.14.0",
@@ -126,8 +126,8 @@
 	"scripts": {
 		"start": "wp-scripts start",
 		"build": "wp-scripts build",
-		"makepot": "wp i18n make-pot . --skip-audit --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/wc-sma-app.js' languages/wc-smart-analytics.pot",
-		"php-makepot": "php -d memory_limit=1024M $(which wp) i18n make-pot wp-content/plugins/wc-smart-analytics wp-content/plugins/wc-smart-analytics/languages/wc-smart-analytics.pot --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/wc-sma-app.js'",
+		"makepot": "wp i18n make-pot . --skip-audit --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/wc-sma-app.js' languages/sales-pulse.pot",
+		"php-makepot": "php -d memory_limit=1024M $(which wp) i18n make-pot wp-content/plugins/sales-pulse wp-content/plugins/sales-pulse/languages/sales-pulse.pot --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/wc-sma-app.js'",
 		"pretty": "prettier --check .",
 		"pretty:fix": "prettier --write .",
 		"lint-js": "wp-scripts lint-js",
