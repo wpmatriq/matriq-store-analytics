@@ -1231,7 +1231,7 @@ namespace EC_Sales_Pulse\Core\Database {
          * Get a single row by primary key.
          *
          * @param mixed $id Primary key value.
-         * @return object|null Row object or null.
+         * @return \stdClass|null Row object or null.
          */
         public function find($id)
         {
@@ -1242,7 +1242,7 @@ namespace EC_Sales_Pulse\Core\Database {
          * @param string $order_by Column to order by.
          * @param string $order    ASC or DESC.
          * @param int    $limit    Max rows to return. 0 = unlimited.
-         * @return array<object>
+         * @return array<int, \stdClass>
          */
         public function all(string $order_by = '', string $order = 'ASC', int $limit = 0): array
         {
@@ -1314,7 +1314,7 @@ namespace EC_Sales_Pulse\Core\Database {
          * Get dirty dates still pending repair.
          *
          * @param int $limit Max dates to return.
-         * @return array<object>
+         * @return array<int, \stdClass>
          */
         public function get_pending(int $limit = 10): array
         {
@@ -1393,7 +1393,7 @@ namespace EC_Sales_Pulse\Core\Database {
         /**
          * Get the currently active campaign (if any).
          *
-         * @return object|null Campaign object or null.
+         * @return \stdClass|null Campaign object or null.
          */
         public function get_active()
         {
@@ -1402,7 +1402,7 @@ namespace EC_Sales_Pulse\Core\Database {
          * Check if a campaign is active for a specific date.
          *
          * @param string $date Date in Y-m-d format.
-         * @return object|null Active campaign or null.
+         * @return \stdClass|null Active campaign or null.
          */
         public function get_active_for_date(string $date)
         {
@@ -1432,7 +1432,7 @@ namespace EC_Sales_Pulse\Core\Database {
          * Get all campaigns, ordered by most recent first.
          *
          * @param int $limit Max campaigns to return.
-         * @return array<object>
+         * @return array<int, \stdClass>
          */
         public function get_all(int $limit = 50): array
         {
@@ -1632,7 +1632,7 @@ namespace EC_Sales_Pulse\Core\Database {
          *
          * @param string $start_date Start date (Y-m-d).
          * @param string $end_date   End date (Y-m-d).
-         * @return array<object>
+         * @return array<int, \stdClass>
          */
         public function get_range(string $start_date, string $end_date): array
         {
@@ -1642,7 +1642,7 @@ namespace EC_Sales_Pulse\Core\Database {
          *
          * @param string $start_date Start date (Y-m-d).
          * @param string $end_date   End date (Y-m-d).
-         * @return object|null Aggregated metrics.
+         * @return \stdClass|null Aggregated metrics.
          */
         public function get_aggregated(string $start_date, string $end_date)
         {
@@ -1686,7 +1686,7 @@ namespace EC_Sales_Pulse\Core\Database {
          *
          * @param int $limit  Number of rows.
          * @param int $offset Row offset.
-         * @return array<object>
+         * @return array<int, \stdClass>
          */
         public function get_paginated(int $limit, int $offset = 0): array
         {

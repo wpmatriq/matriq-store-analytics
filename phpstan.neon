@@ -43,6 +43,29 @@ parameters:
 #    autoload_directories:
 #        - %currentWorkingDirectory%/inc/
 	ignoreErrors:
+		# `new static()` in the Get_Instance trait. Every consumer is a
+		# singleton with a parameterless constructor, so the trait's
+		# behaviour is safe by construction; PHPStan cannot prove this
+		# globally without per-class @phpstan-consistent-constructor.
+		-
+			identifier: new.static
+			path: inc/traits/get-instance.php
+
+		# wpdb::prepare() with `{$table}` interpolation. `$table` always
+		# comes from a Base-class instance method, never from user input.
+		# PHPStan can't prove static-ness of an interpolated string, but
+		# WordPress' SQL injection surface is the placeholders, not the
+		# table name segment.
+		-
+			message: '#expects literal-string, non-falsy-string given\.$#'
+			path: core/database/*.php
+		-
+			message: '#expects literal-string, non-falsy-string given\.$#'
+			path: core/services/*.php
+		-
+			message: '#expects literal-string, non-falsy-string given\.$#'
+			path: core/controllers/*.php
+
 		# Uses func_get_args()
 		# - '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'
 		# - '#^Function do_action invoked with [3456] parameters, 1-2 required\.$#'
