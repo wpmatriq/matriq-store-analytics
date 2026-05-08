@@ -43,8 +43,8 @@ class ActionEngine {
 	/**
 	 * Get action recommendation from diagnosis result.
 	 *
-	 * @param array<string, mixed>                       $diagnosis Diagnosis result from DiagnosisEngine.
-	 * @param \stdClass|array<string, mixed>|null        $campaign  Active campaign (if any).
+	 * @param array<string, mixed>                $diagnosis Diagnosis result from DiagnosisEngine.
+	 * @param \stdClass|array<string, mixed>|null $campaign  Active campaign (if any).
 	 * @return array<string, string> Action recommendation.
 	 */
 	public function recommend( array $diagnosis, $campaign = null ): array {
