@@ -141,18 +141,20 @@ abstract class Base {
 	 * Get a single row by primary key.
 	 *
 	 * @param mixed $id Primary key value.
-	 * @return object|null Row object or null.
+	 * @return \stdClass|null Row object or null.
 	 */
 	public function find( $id ) {
 		$table = $this->get_table_name();
 		$key   = $this->primary_key;
 
-		return $this->wpdb->get_row(
+		$row = $this->wpdb->get_row(
 			$this->wpdb->prepare(
 				"SELECT * FROM `{$table}` WHERE `{$key}` = %s LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$id
 			)
 		);
+
+		return $row instanceof \stdClass ? $row : null;
 	}
 
 	/**
@@ -161,7 +163,7 @@ abstract class Base {
 	 * @param string $order_by Column to order by.
 	 * @param string $order    ASC or DESC.
 	 * @param int    $limit    Max rows to return. 0 = unlimited.
-	 * @return array<object>
+	 * @return array<int, \stdClass>
 	 */
 	public function all( string $order_by = '', string $order = 'ASC', int $limit = 0 ): array {
 		$table = $this->get_table_name();

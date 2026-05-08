@@ -182,7 +182,7 @@ class History extends BaseController {
 	 * `ORDER BY id DESC LIMIT 1` semantics).
 	 *
 	 * @param array<object> $campaigns Raw rows from Campaigns::get_all.
-	 * @return array<object>
+	 * @return array<int, \stdClass>
 	 */
 	private function index_campaigns( array $campaigns ): array {
 		usort(
@@ -198,7 +198,7 @@ class History extends BaseController {
 	 *
 	 * @param array<object> $campaigns Sorted descending by id.
 	 * @param string        $date      Y-m-d.
-	 * @return object|null
+	 * @return \stdClass|null
 	 */
 	private function campaign_for_date( array $campaigns, string $date ) {
 		foreach ( $campaigns as $campaign ) {

@@ -76,7 +76,7 @@ class Campaigns extends Base {
 	/**
 	 * Get the currently active campaign (if any).
 	 *
-	 * @return object|null Campaign object or null.
+	 * @return \stdClass|null Campaign object or null.
 	 */
 	public function get_active() {
 		$table = $this->get_table_name();
@@ -99,7 +99,7 @@ class Campaigns extends Base {
 	 * Check if a campaign is active for a specific date.
 	 *
 	 * @param string $date Date in Y-m-d format.
-	 * @return object|null Active campaign or null.
+	 * @return \stdClass|null Active campaign or null.
 	 */
 	public function get_active_for_date( string $date ) {
 		$table = $this->get_table_name();
@@ -160,7 +160,7 @@ class Campaigns extends Base {
 	 * Get all campaigns, ordered by most recent first.
 	 *
 	 * @param int $limit Max campaigns to return.
-	 * @return array<object>
+	 * @return array<int, \stdClass>
 	 */
 	public function get_all( int $limit = 50 ): array {
 		return $this->all( 'created_at', 'DESC', $limit );

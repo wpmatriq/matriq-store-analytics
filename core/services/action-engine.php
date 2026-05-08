@@ -176,7 +176,7 @@ class ActionEngine {
 	 * Adjust recommendation tone when a campaign is active.
 	 *
 	 * @param array<string, string> $scenario Matched scenario.
-	 * @param object                $campaign Active campaign.
+	 * @param \stdClass                $campaign Active campaign.
 	 * @param string                $direction Change direction.
 	 * @return array<string, string> Adjusted scenario.
 	 */

@@ -88,8 +88,8 @@ class DiagnosisEngine {
 	/**
 	 * Run full diagnosis comparing current vs previous period.
 	 *
-	 * @param object $current     Current period metrics (from daily_stats or aggregated).
-	 * @param object $previous    Previous period metrics.
+	 * @param \stdClass $current     Current period metrics (from daily_stats or aggregated).
+	 * @param \stdClass $previous    Previous period metrics.
 	 * @param string $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
 	 * @return array<string, mixed> Diagnosis result.
 	 */

@@ -69,7 +69,7 @@ class DailyStats extends Base {
 	 * Get snapshot for a specific date.
 	 *
 	 * @param string $date Date in Y-m-d format.
-	 * @return object|null
+	 * @return \stdClass|null
 	 */
 	public function get_by_date( string $date ) {
 		return $this->find( $date );
@@ -80,7 +80,7 @@ class DailyStats extends Base {
 	 *
 	 * @param string $start_date Start date (Y-m-d).
 	 * @param string $end_date   End date (Y-m-d).
-	 * @return array<object>
+	 * @return array<int, \stdClass>
 	 */
 	public function get_range( string $start_date, string $end_date ): array {
 		$table = $this->get_table_name();
@@ -99,7 +99,7 @@ class DailyStats extends Base {
 	 *
 	 * @param string $start_date Start date (Y-m-d).
 	 * @param string $end_date   End date (Y-m-d).
-	 * @return object|null Aggregated metrics.
+	 * @return \stdClass|null Aggregated metrics.
 	 */
 	public function get_aggregated( string $start_date, string $end_date ) {
 		$table = $this->get_table_name();
@@ -183,7 +183,7 @@ class DailyStats extends Base {
 	 *
 	 * @param int $limit  Number of rows.
 	 * @param int $offset Row offset.
-	 * @return array<object>
+	 * @return array<int, \stdClass>
 	 */
 	public function get_paginated( int $limit, int $offset = 0 ): array {
 		$table = $this->get_table_name();

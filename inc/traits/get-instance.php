@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Trait Get_Instance.
  *
+ * @phpstan-consistent-constructor
  * @since x.x.x
  */
 trait Get_Instance {

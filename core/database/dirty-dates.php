@@ -91,7 +91,7 @@ class DirtyDates extends Base {
 	 * Get dirty dates still pending repair.
 	 *
 	 * @param int $limit Max dates to return.
-	 * @return array<object>
+	 * @return array<int, \stdClass>
 	 */
 	public function get_pending( int $limit = 10 ): array {
 		$table = $this->get_table_name();
