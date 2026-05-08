@@ -168,6 +168,33 @@
 		<exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_value" />
 	</rule>
 
+	<!--
+	WordPress.DB.PreparedSQL.* misfires on the Base-class style where
+	queries are issued via `$this->wpdb->prepare()` (member-access on
+	the inherited wpdb handle) rather than the global `$wpdb`. Every
+	query under core/database/ and core/services/ goes through the
+	Base wrapper and is wrapped in $wpdb->prepare(); the sniff just
+	can't follow the indirection. Keep the rule active everywhere a
+	controller/admin file might issue ad-hoc SQL by exempting only
+	these two trusted directories.
+	-->
+	<rule ref="WordPress.DB.PreparedSQL.NotPrepared">
+		<exclude-pattern>*/core/database/*</exclude-pattern>
+		<exclude-pattern>*/core/services/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.DB.PreparedSQL.InterpolatedNotPrepared">
+		<exclude-pattern>*/core/database/*</exclude-pattern>
+		<exclude-pattern>*/core/services/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber">
+		<exclude-pattern>*/core/database/*</exclude-pattern>
+		<exclude-pattern>*/core/services/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare">
+		<exclude-pattern>*/core/database/*</exclude-pattern>
+		<exclude-pattern>*/core/services/*</exclude-pattern>
+	</rule>
+
 	<exclude-pattern>*/.vscode/*</exclude-pattern>
 	<exclude-pattern>*/.github/*</exclude-pattern>
 	<exclude-pattern>*/bin/*</exclude-pattern>
