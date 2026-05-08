@@ -18,7 +18,8 @@
 		"wp-phpunit/wp-phpunit": "^6.0",
 		"bamarni/composer-bin-plugin": "^1.8",
 		"nunomaduro/phpinsights": "^2.11",
-		"pheromone/phpcs-security-audit": "^2.0"
+		"pheromone/phpcs-security-audit": "^2.0",
+		"php-stubs/woocommerce-stubs": "^10.7"
 	},
 	"scripts": {
 		"format": "vendor/bin/phpcbf",

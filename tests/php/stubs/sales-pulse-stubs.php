@@ -126,14 +126,14 @@ namespace EC_Sales_Pulse\Inc\Traits {
         /**
          * Instance object.
          *
-         * @var object Class Instance.
+         * @var static|null
          */
-        private static $instance = null;
+        protected static $instance = null;
         /**
-         * Initiator
+         * Initiator.
          *
          * @since x.x.x
-         * @return object initialized object of class.
+         * @return static Initialized instance of the using class.
          */
         public static function get_instance()
         {
@@ -2381,10 +2381,10 @@ namespace EC_Sales_Pulse\Core\Services {
         public function trigger_digest(string $recipient, string $subject, array $payload): bool
         {
         }
-        public function get_from_name()
+        public function get_from_name($from_name = '')
         {
         }
-        public function get_from_address()
+        public function get_from_address($from_email = '')
         {
         }
         public function get_content_html()

@@ -85,9 +85,10 @@ class DigestEmail extends \WC_Email {
 	/**
 	 * From-name override applied to the digest email.
 	 *
+	 * @param string $from_name Default WC value (unused; we always provide our own name).
 	 * @return string
 	 */
-	public function get_from_name() {
+	public function get_from_name( $from_name = '' ) {
 		return apply_filters( 'salespulse_digest_from_name', 'Sales Pulse', $this );
 	}
 
@@ -95,9 +96,10 @@ class DigestEmail extends \WC_Email {
 	 * From-address override applied to the digest email. Defaults to the
 	 * site admin_email option; overridable via the salespulse filter.
 	 *
+	 * @param string $from_email Default WC value (unused; we always provide our own address).
 	 * @return string
 	 */
-	public function get_from_address() {
+	public function get_from_address( $from_email = '' ) {
 		$default = (string) get_option( 'admin_email', '' );
 		return apply_filters( 'salespulse_digest_from_address', $default, $this );
 	}

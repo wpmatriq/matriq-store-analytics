@@ -19,15 +19,19 @@ trait Get_Instance {
 	/**
 	 * Instance object.
 	 *
-	 * @var object Class Instance.
+	 * Protected (not private) so `static::$instance` late-binding works
+	 * correctly with subclassing. Pro extends some of these singletons
+	 * via subclass + factory swap.
+	 *
+	 * @var static|null
 	 */
-	private static $instance = null;
+	protected static $instance = null;
 
 	/**
-	 * Initiator
+	 * Initiator.
 	 *
 	 * @since x.x.x
-	 * @return object initialized object of class.
+	 * @return static Initialized instance of the using class.
 	 */
 	public static function get_instance() {
 		if ( null === static::$instance || ! ( static::$instance instanceof static ) ) {
