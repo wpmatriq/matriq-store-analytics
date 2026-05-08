@@ -47,7 +47,7 @@ class DigestEmail extends \WC_Email {
 		);
 		$this->heading        = __( 'Your morning briefing', 'sales-pulse' );
 
-		$this->template_base  = EC_Sales_Pulse_DIR;
+		$this->template_base  = EC_SALES_PULSE_DIR;
 		$this->template_html  = 'templates/email/digest-html.php';
 		$this->template_plain = 'templates/email/digest-text.php';
 

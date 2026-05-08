@@ -98,13 +98,13 @@ class Menu {
 	 * @since x.x.x
 	 */
 	public function register_plugin_menus(): void {
-		if ( ! current_user_can( EC_Sales_Pulse_CAPABILITY ) ) {
+		if ( ! current_user_can( EC_SALES_PULSE_CAPABILITY ) ) {
 			return;
 		}
 
 		global $submenu;
 		$parent_slug   = self::PAGE_ID;
-		$capability    = EC_Sales_Pulse_CAPABILITY;
+		$capability    = EC_SALES_PULSE_CAPABILITY;
 		$menu_priority = apply_filters( self::PAGE_ID . '_menu_priority', 40 );
 
 		add_menu_page(
@@ -229,28 +229,28 @@ class Menu {
 					'ajax_url'          => admin_url( 'admin-ajax.php' ),
 					'rest_url'          => esc_url_raw( rest_url( 'sales-pulse/v2/' ) ),
 					'rest_nonce'        => wp_create_nonce( 'wp_rest' ),
-					'version'           => EC_Sales_Pulse_VER,
+					'version'           => EC_SALES_PULSE_VER,
 					'update_nonce'      => wp_create_nonce( 'wc_sma_update_admin_setting' ),
 					'home_slug'         => self::PAGE_ID,
 					'settings'          => Settings::get_wc_sma_settings(),
 					'last_snapshot_at'  => $last_snapshot_at,
 					'currency'          => function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD',
 					'pro_available'     => wc_sma_is_pro_active(),
-					'pro_version'       => wc_sma_is_pro_active() ? EC_Sales_Pulse_PRO_VER : 0,
-					'upgrade_link'      => EC_Sales_Pulse_UPGRADE_LINK,
+					'pro_version'       => wc_sma_is_pro_active() ? EC_SALES_PULSE_PRO_VER : 0,
+					'upgrade_link'      => EC_SALES_PULSE_UPGRADE_LINK,
 					'is_user_onboarded' => get_option( 'suredash_onboarding_completed', false ) === 'yes' || get_option( '__wc_sma_onboarding_skipped' ) === 'yes' ? true : false,
 				]
 			);
 
 			$handle            = 'wc_sma_admin_scripts';
-			$build_path        = EC_Sales_Pulse_URL . 'assets/build/';
-			$script_asset_path = EC_Sales_Pulse_DIR . 'assets/build/wc-sma-app.asset.php';
+			$build_path        = EC_SALES_PULSE_URL . 'assets/build/';
+			$script_asset_path = EC_SALES_PULSE_DIR . 'assets/build/wc-sma-app.asset.php';
 
 			$script_info = file_exists( $script_asset_path )
 			? include $script_asset_path
 			: [
 				'dependencies' => [],
-				'version'      => EC_Sales_Pulse_VER,
+				'version'      => EC_SALES_PULSE_VER,
 			];
 
 			$script_dep = $script_info['dependencies'];
@@ -259,22 +259,22 @@ class Menu {
 				$handle,
 				$build_path . 'wc-sma-app.js',
 				$script_dep,
-				EC_Sales_Pulse_VER,
+				EC_SALES_PULSE_VER,
 				true
 			);
 
 			wp_localize_script( $handle, 'wc_sma_admin_data', $localized_data );
 
-			wp_set_script_translations( $handle, 'sales-pulse', EC_Sales_Pulse_DIR . 'languages' );
+			wp_set_script_translations( $handle, 'sales-pulse', EC_SALES_PULSE_DIR . 'languages' );
 
 			wp_enqueue_style(
 				'wc-sma-font',
-				esc_url( EC_Sales_Pulse_CSS_ASSETS_FOLDER . ( is_rtl() ? 'font-rtl' : 'font' ) . EC_Sales_Pulse_CSS_SUFFIX ),
+				esc_url( EC_SALES_PULSE_CSS_ASSETS_FOLDER . ( is_rtl() ? 'font-rtl' : 'font' ) . EC_SALES_PULSE_CSS_SUFFIX ),
 				[],
 				$script_info['version']
 			);
 
-			wp_enqueue_style( $handle, esc_url( is_rtl() ? $build_path . 'wc-sma-app-rtl.css' : $build_path . 'wc-sma-app.css' ), [ 'wc-sma-font' ], EC_Sales_Pulse_VER );
+			wp_enqueue_style( $handle, esc_url( is_rtl() ? $build_path . 'wc-sma-app-rtl.css' : $build_path . 'wc-sma-app.css' ), [ 'wc-sma-font' ], EC_SALES_PULSE_VER );
 		}
 	}
 

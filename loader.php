@@ -56,10 +56,10 @@ class WC_SMA_Loader {
 		add_action( 'admin_init', [ $this, 'activation_redirect' ] );
 
 		// Activation hook.
-		register_activation_hook( EC_Sales_Pulse_FILE, [ $this, 'activation_actions' ] );
+		register_activation_hook( EC_SALES_PULSE_FILE, [ $this, 'activation_actions' ] );
 
 		// Deactivation hook.
-		register_deactivation_hook( EC_Sales_Pulse_FILE, [ $this, 'deactivation_actions' ] );
+		register_deactivation_hook( EC_SALES_PULSE_FILE, [ $this, 'deactivation_actions' ] );
 
 		add_action( 'plugins_loaded', [ $this, 'load_plugin' ], 99 );
 
@@ -155,7 +155,7 @@ class WC_SMA_Loader {
 			)
 		);
 
-		$file = EC_Sales_Pulse_DIR . $filename . '.php';
+		$file = EC_SALES_PULSE_DIR . $filename . '.php';
 
 		// if the file readable, include it.
 		if ( is_readable( $file ) ) {
@@ -180,7 +180,7 @@ class WC_SMA_Loader {
 			return;
 		}
 
-		$do_redirect = apply_filters( 'EC_Sales_Pulse_activation_redirection', get_option( '__wc_sma_do_redirect' ) );
+		$do_redirect = apply_filters( 'salespulse_activation_redirection', get_option( '__wc_sma_do_redirect' ) );
 
 		if ( $do_redirect ) {
 
@@ -217,27 +217,27 @@ class WC_SMA_Loader {
 	 * @return void
 	 */
 	public function define_constants(): void {
-		define( 'EC_Sales_Pulse_UPGRADE_LINK', '#' );
-		define( 'EC_Sales_Pulse_TABLET_BREAKPOINT', '1024' );
-		define( 'EC_Sales_Pulse_MOBILE_BREAKPOINT', '768' );
+		define( 'EC_SALES_PULSE_UPGRADE_LINK', '#' );
+		define( 'EC_SALES_PULSE_TABLET_BREAKPOINT', '1024' );
+		define( 'EC_SALES_PULSE_MOBILE_BREAKPOINT', '768' );
 
-		define( 'EC_Sales_Pulse_BASE', plugin_basename( EC_Sales_Pulse_FILE ) );
-		define( 'EC_Sales_Pulse_DIR', plugin_dir_path( EC_Sales_Pulse_FILE ) );
-		define( 'EC_Sales_Pulse_URL', plugins_url( '/', EC_Sales_Pulse_FILE ) );
+		define( 'EC_SALES_PULSE_BASE', plugin_basename( EC_SALES_PULSE_FILE ) );
+		define( 'EC_SALES_PULSE_DIR', plugin_dir_path( EC_SALES_PULSE_FILE ) );
+		define( 'EC_SALES_PULSE_URL', plugins_url( '/', EC_SALES_PULSE_FILE ) );
 
-		define( 'EC_Sales_Pulse_SETTINGS', 'wc_sma_settings' );
-		define( 'EC_Sales_Pulse_CAPABILITY', 'manage_options' );
+		define( 'EC_SALES_PULSE_SETTINGS', 'wc_sma_settings' );
+		define( 'EC_SALES_PULSE_CAPABILITY', 'manage_options' );
 
-		! defined( 'EC_Sales_Pulse_DEVELOPMENT_MODE' ) && define( 'EC_Sales_Pulse_DEVELOPMENT_MODE', false );
+		! defined( 'EC_SALES_PULSE_DEVELOPMENT_MODE' ) && define( 'EC_SALES_PULSE_DEVELOPMENT_MODE', false );
 
-		$css_suffix = EC_Sales_Pulse_DEVELOPMENT_MODE ? '.css' : '.min.css';
-		$js_suffix  = EC_Sales_Pulse_DEVELOPMENT_MODE ? '.js' : '.min.js';
+		$css_suffix = EC_SALES_PULSE_DEVELOPMENT_MODE ? '.css' : '.min.css';
+		$js_suffix  = EC_SALES_PULSE_DEVELOPMENT_MODE ? '.js' : '.min.js';
 
-		define( 'EC_Sales_Pulse_CSS_SUFFIX', $css_suffix );
-		define( 'EC_Sales_Pulse_JS_SUFFIX', $js_suffix );
+		define( 'EC_SALES_PULSE_CSS_SUFFIX', $css_suffix );
+		define( 'EC_SALES_PULSE_JS_SUFFIX', $js_suffix );
 
-		define( 'EC_Sales_Pulse_CSS_ASSETS_FOLDER', EC_Sales_Pulse_DEVELOPMENT_MODE ? EC_Sales_Pulse_URL . 'assets/css/unminified/' : EC_Sales_Pulse_URL . 'assets/css/minified/' );
-		define( 'EC_Sales_Pulse_JS_ASSETS_FOLDER', EC_Sales_Pulse_DEVELOPMENT_MODE ? EC_Sales_Pulse_URL . 'assets/js/unminified/' : EC_Sales_Pulse_URL . 'assets/js/minified/' );
+		define( 'EC_SALES_PULSE_CSS_ASSETS_FOLDER', EC_SALES_PULSE_DEVELOPMENT_MODE ? EC_SALES_PULSE_URL . 'assets/css/unminified/' : EC_SALES_PULSE_URL . 'assets/css/minified/' );
+		define( 'EC_SALES_PULSE_JS_ASSETS_FOLDER', EC_SALES_PULSE_DEVELOPMENT_MODE ? EC_SALES_PULSE_URL . 'assets/js/unminified/' : EC_SALES_PULSE_URL . 'assets/js/minified/' );
 
 		// Include required functions.
 		require_once 'inc/functions/functions.php';
@@ -338,7 +338,7 @@ class WC_SMA_Loader {
 		 *
 		 * @since x.x.x
 		 */
-		do_action( 'EC_Sales_Pulse_init' );
+		do_action( 'salespulse_init' );
 	}
 
 	/**
@@ -350,7 +350,7 @@ class WC_SMA_Loader {
 	 * @since x.x.x
 	 */
 	public function add_meta_links( $links, $file ) {
-		if ( $file === EC_Sales_Pulse_BASE ) {
+		if ( $file === EC_SALES_PULSE_BASE ) {
 			$stars = '';
 			for ( $indx = 0; $indx < 5; $indx++ ) {
 				$stars .= '<span class="dashicons dashicons-star-filled" style="color: #ffb900; font-size: 16px; width: 16px; height: 16px; line-height: 1.2;" aria-hidden="true"></span>';

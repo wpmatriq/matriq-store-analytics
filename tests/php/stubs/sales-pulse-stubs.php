@@ -2833,9 +2833,9 @@ namespace {
     /**
      * Set constants
      */
-    \define('EC_Sales_Pulse_VER', '0.0.1');
-    \define('EC_Sales_Pulse_FILE', __FILE__);
-    \define('EC_Sales_Pulse_PRO_MINIMUM_VER', '0.0.1');
+    \define('EC_SALES_PULSE_VER', '0.0.1');
+    \define('EC_SALES_PULSE_FILE', __FILE__);
+    \define('EC_SALES_PULSE_PRO_MINIMUM_VER', '0.0.1');
     /**
      * Format a metric_card value.
      *

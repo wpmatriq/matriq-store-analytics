@@ -20,7 +20,7 @@ use EC_Sales_Pulse\Inc\Services\Query;
  * @since x.x.x
  */
 function wc_sma_is_pro_active() {
-	return defined( 'EC_Sales_Pulse_PRO_VER' );
+	return defined( 'EC_SALES_PULSE_PRO_VER' );
 }
 
 /**

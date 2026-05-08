@@ -50,7 +50,7 @@ class Notices {
 			return;
 		}
 
-		if ( ! defined( 'EC_Sales_Pulse_PRO_VER' ) || ! defined( 'EC_Sales_Pulse_PRO_PRODUCT' ) ) {
+		if ( ! defined( 'EC_SALES_PULSE_PRO_VER' ) || ! defined( 'EC_SALES_PULSE_PRO_PRODUCT' ) ) {
 			return;
 		}
 	}

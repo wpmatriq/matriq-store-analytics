@@ -301,7 +301,7 @@ class DigestMailer {
 	 * Plain wp_mail fallback when WooCommerce isn't available.
 	 */
 	private function dispatch_via_wp_mail( string $recipient, string $subject, array $payload ): bool {
-		$html_template = EC_Sales_Pulse_DIR . 'templates/email/digest-html.php';
+		$html_template = EC_SALES_PULSE_DIR . 'templates/email/digest-html.php';
 
 		if ( ! is_readable( $html_template ) ) {
 			return false;

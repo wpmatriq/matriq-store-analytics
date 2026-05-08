@@ -24,7 +24,7 @@ class Maintenance {
 	 *  Constructor
 	 */
 	public function __construct() {
-		add_action( 'EC_Sales_Pulse_update_before', self::class . '::manage_backward' );
+		add_action( 'salespulse_update_before', self::class . '::manage_backward' );
 
 		if ( is_admin() ) {
 			add_action( 'admin_init', self::class . '::init' );
@@ -40,25 +40,25 @@ class Maintenance {
 	 * @return void
 	 */
 	public static function init(): void {
-		do_action( 'EC_Sales_Pulse_update_before' );
+		do_action( 'salespulse_update_before' );
 
 		// Get auto saved version number.
 		$saved_version = get_option( 'wc_sma_saved_version', '' );
 
 		// Update auto saved version number.
 		if ( ! $saved_version ) {
-			update_option( 'wc_sma_saved_version', EC_Sales_Pulse_VER );
+			update_option( 'wc_sma_saved_version', EC_SALES_PULSE_VER );
 		}
 
 		// If equals then return.
-		if ( version_compare( strval( $saved_version ), EC_Sales_Pulse_VER, '=' ) ) {
+		if ( version_compare( strval( $saved_version ), EC_SALES_PULSE_VER, '=' ) ) {
 			return;
 		}
 
 		// Update auto saved version number.
-		update_option( 'wc_sma_saved_version', EC_Sales_Pulse_VER );
+		update_option( 'wc_sma_saved_version', EC_SALES_PULSE_VER );
 
-		do_action( 'EC_Sales_Pulse_update_after' );
+		do_action( 'salespulse_update_after' );
 
 		// Finally flush rewrite rules.
 		delete_option( 'rewrite_rules' );

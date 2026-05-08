@@ -58,7 +58,7 @@ class Schema {
 		// Store the current DB version.
 		$state = SystemState::get_instance();
 		$state->set( SystemState::KEY_DB_VERSION, (string) self::DB_VERSION );
-		$state->set( SystemState::KEY_PLUGIN_VERSION, EC_Sales_Pulse_VER );
+		$state->set( SystemState::KEY_PLUGIN_VERSION, EC_SALES_PULSE_VER );
 	}
 
 	/**

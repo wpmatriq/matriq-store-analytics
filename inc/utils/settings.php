@@ -110,7 +110,7 @@ class Settings {
 	 * @since x.x.x
 	 */
 	public static function update_wc_sma_settings( $settings ): void {
-		update_option( EC_Sales_Pulse_SETTINGS, $settings );
+		update_option( EC_SALES_PULSE_SETTINGS, $settings );
 
 		// Flush the rewrite rules.
 		flush_rewrite_rules();
@@ -124,7 +124,7 @@ class Settings {
 	 */
 	public static function get_settings() {
 		// Adjust this option key to match your plugin's saved settings.
-		return get_option( EC_Sales_Pulse_SETTINGS, [] );
+		return get_option( EC_SALES_PULSE_SETTINGS, [] );
 	}
 
 	/**
