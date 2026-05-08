@@ -98,8 +98,11 @@ class ImpactSummary {
 		if ( $day_before_revenue <= 0 ) {
 			return [
 				'date'     => $yesterday,
-				/* translators: %s: yesterday revenue */
-				'headline' => sprintf( __( 'Yesterday earned %s. No comparable activity the day before.', 'sales-pulse' ), $this->format_currency( $yesterday_revenue ) ),
+				'headline' => sprintf(
+					/* translators: %s: yesterday revenue. */
+					__( 'Yesterday earned %s. No comparable activity the day before.', 'sales-pulse' ),
+					$this->format_currency( $yesterday_revenue )
+				),
 			];
 		}
 
@@ -108,8 +111,8 @@ class ImpactSummary {
 
 		return [
 			'date'     => $yesterday,
-			/* translators: 1: yesterday revenue, 2: direction (up/down), 3: percent change */
 			'headline' => sprintf(
+				/* translators: 1: yesterday revenue, 2: direction (up/down), 3: percent change. */
 				__( 'Yesterday earned %1$s, %2$s %3$s%% vs the day before.', 'sales-pulse' ),
 				$this->format_currency( $yesterday_revenue ),
 				$direction,

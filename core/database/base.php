@@ -92,7 +92,7 @@ abstract class Base {
 	 * @return int|false Insert ID on success, false on failure.
 	 */
 	public function insert( array $data, array $format = [] ) {
-		$result = $this->wpdb->insert( $this->get_table_name(), $data, $format ?: null );
+		$result = $this->wpdb->insert( $this->get_table_name(), $data, empty( $format ) ? null : $format );
 		return $result !== false ? $this->wpdb->insert_id : false;
 	}
 
@@ -110,8 +110,8 @@ abstract class Base {
 			$this->get_table_name(),
 			$data,
 			$where,
-			$format ?: null,
-			$where_format ?: null
+			empty( $format ) ? null : $format,
+			empty( $where_format ) ? null : $where_format
 		);
 	}
 
@@ -123,7 +123,7 @@ abstract class Base {
 	 * @return int|false Rows affected or false on error.
 	 */
 	public function replace( array $data, array $format = [] ) {
-		return $this->wpdb->replace( $this->get_table_name(), $data, $format ?: null );
+		return $this->wpdb->replace( $this->get_table_name(), $data, empty( $format ) ? null : $format );
 	}
 
 	/**
@@ -134,7 +134,7 @@ abstract class Base {
 	 * @return int|false Number of rows deleted, or false on error.
 	 */
 	public function delete( array $where, array $where_format = [] ) {
-		return $this->wpdb->delete( $this->get_table_name(), $where, $where_format ?: null );
+		return $this->wpdb->delete( $this->get_table_name(), $where, empty( $where_format ) ? null : $where_format );
 	}
 
 	/**

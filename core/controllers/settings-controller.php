@@ -45,7 +45,7 @@ class SettingsController extends BaseController {
 		'snapshot_min'          => 10,             // 0-59.
 		'email_enabled'         => false,
 		'email_address'         => '',             // Defaults to admin email.
-		'diagnosis_sensitivity' => 'balanced',     // 'calm' | 'balanced' | 'vigilant'.
+		'diagnosis_sensitivity' => 'balanced',     // One of calm, balanced, vigilant.
 		'last_digest_error'     => null,           // string|null - last failure reason, cleared on success.
 	];
 

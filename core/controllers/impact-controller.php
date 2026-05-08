@@ -31,6 +31,11 @@ class ImpactController extends BaseController {
 	 */
 	protected $rest_base = 'impact';
 
+	/**
+	 * Register the free Impact REST routes.
+	 *
+	 * @return void
+	 */
 	public function register_routes(): void {
 		register_rest_route(
 			$this->namespace,
@@ -43,6 +48,12 @@ class ImpactController extends BaseController {
 		);
 	}
 
+	/**
+	 * GET /sales-pulse/v2/impact/summary - returns the data-foundation stats
+	 * payload assembled by ImpactSummary.
+	 *
+	 * @return \WP_REST_Response
+	 */
 	public function get_summary(): \WP_REST_Response {
 		return $this->success( ImpactSummary::get_instance()->build() );
 	}

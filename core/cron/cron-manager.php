@@ -37,7 +37,7 @@ class CronManager {
 	 */
 	public function __construct() {
 		// Register custom cron interval.
-		add_filter( 'cron_schedules', [ $this, 'add_cron_schedules' ] );
+		add_filter( 'cron_schedules', [ $this, 'add_cron_schedules' ] ); // phpcs:ignore WordPress.WP.CronInterval.CronSchedulesInterval -- 5-minute backfill cadence is intentional and gated by a row-budget cap.
 
 		// Cron action handlers.
 		add_action( self::HOOK_NIGHTLY, [ $this, 'run_nightly_snapshot' ] );

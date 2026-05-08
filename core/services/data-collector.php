@@ -67,7 +67,7 @@ class DataCollector {
 			"SELECT MIN(DATE(date_created)) FROM `{$table}` WHERE parent_id = 0" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		);
 
-		return $date ?: null;
+		return $date ? $date : null;
 	}
 
 	/**
@@ -151,7 +151,7 @@ class DataCollector {
 			)
 		);
 
-		return $result ?: (object) [
+		return $result ? $result : (object) [
 			'orders'         => 0,
 			'revenue'        => 0,
 			'items_sold'     => 0,
@@ -187,7 +187,7 @@ class DataCollector {
 			)
 		);
 
-		return $result ?: (object) [
+		return $result ? $result : (object) [
 			'new_customers'       => 0,
 			'returning_customers' => 0,
 		];
@@ -216,7 +216,7 @@ class DataCollector {
 			)
 		);
 
-		return $result ?: (object) [ 'refund_total' => 0 ];
+		return $result ? $result : (object) [ 'refund_total' => 0 ];
 	}
 
 	/**

@@ -89,11 +89,10 @@ class Menu {
 	/**
 	 * Add submenu to admin menu.
 	 *
-	 * v2 Navigation:
-	 * - Overview (default - morning briefing)
-	 * - History (daily explanation list)
-	 * - Campaigns (start/stop active campaigns)
-	 * - Settings (timezone, revenue basis, email digest)
+	 * V2 navigation: Overview (default morning briefing), History (daily
+	 * explanation list), Campaigns (start/stop active campaigns), Impact
+	 * (data foundation stats), Settings (timezone, revenue basis, email
+	 * digest).
 	 *
 	 * @since x.x.x
 	 */

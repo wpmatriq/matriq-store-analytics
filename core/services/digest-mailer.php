@@ -268,6 +268,12 @@ class DigestMailer {
 
 	/**
 	 * Send via WC_Email subclass when WooCommerce is available.
+	 *
+	 * @param string               $recipient Recipient email address.
+	 * @param string               $subject   Subject line.
+	 * @param array<string, mixed> $payload   Pre-composed payload from build_payload().
+	 *
+	 * @return bool True when the WC mailer accepted the message.
 	 */
 	private function dispatch_via_wc_email( string $recipient, string $subject, array $payload ): bool {
 		if ( ! class_exists( '\\WC_Email' ) || ! function_exists( 'WC' ) ) {
@@ -299,6 +305,12 @@ class DigestMailer {
 
 	/**
 	 * Plain wp_mail fallback when WooCommerce isn't available.
+	 *
+	 * @param string               $recipient Recipient email address.
+	 * @param string               $subject   Subject line.
+	 * @param array<string, mixed> $payload   Pre-composed payload from build_payload().
+	 *
+	 * @return bool True when wp_mail() accepted the message.
 	 */
 	private function dispatch_via_wp_mail( string $recipient, string $subject, array $payload ): bool {
 		$html_template = EC_SALES_PULSE_DIR . 'templates/email/digest-html.php';
@@ -326,24 +338,46 @@ class DigestMailer {
 		return (bool) wp_mail( $recipient, wp_specialchars_decode( $subject ), $html, $headers );
 	}
 
-	// ---- Idempotency / state helpers --------------------------------------
+	/* ---- Idempotency / state helpers -------------------------------------- */
 
+	/**
+	 * Has the digest already been sent today (in site timezone)?
+	 *
+	 * @return bool
+	 */
 	private function is_send_allowed_today(): bool {
 		$today = ( new \DateTime( 'now', wp_timezone() ) )->format( 'Y-m-d' );
 		$last  = (string) SystemState::get_instance()->get( SystemState::KEY_LAST_DIGEST_SENT_DATE, '' );
 		return $last !== $today;
 	}
 
+	/**
+	 * Stamp today's date as the last successful digest send.
+	 *
+	 * @return void
+	 */
 	private function mark_sent_today(): void {
 		$today = ( new \DateTime( 'now', wp_timezone() ) )->format( 'Y-m-d' );
 		SystemState::get_instance()->set( SystemState::KEY_LAST_DIGEST_SENT_DATE, $today );
 	}
 
+	/**
+	 * Stamp the precise timestamp of the last successful send (ISO-8601).
+	 *
+	 * @return void
+	 */
 	private function record_sent_at(): void {
 		$now = ( new \DateTime( 'now', wp_timezone() ) )->format( \DateTime::ATOM );
 		SystemState::get_instance()->set( SystemState::KEY_LAST_DIGEST_SENT_AT, $now );
 	}
 
+	/**
+	 * Persist the most recent send error so the Settings UI can surface it.
+	 *
+	 * @param string $reason Human-readable error description.
+	 *
+	 * @return void
+	 */
 	private function record_error( string $reason ): void {
 		$saved = get_option( SettingsController::OPTION_KEY, [] );
 		if ( ! is_array( $saved ) ) {
@@ -355,9 +389,14 @@ class DigestMailer {
 			$reason
 		);
 		update_option( SettingsController::OPTION_KEY, $saved );
-		error_log( '[Sales Pulse] Digest send failed: ' . $reason );
+		error_log( '[Sales Pulse] Digest send failed: ' . $reason ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 	}
 
+	/**
+	 * Clear any persisted send-error after a successful send.
+	 *
+	 * @return void
+	 */
 	private function clear_error(): void {
 		$saved = get_option( SettingsController::OPTION_KEY, [] );
 		if ( is_array( $saved ) && array_key_exists( 'last_digest_error', $saved ) ) {
@@ -366,11 +405,15 @@ class DigestMailer {
 		}
 	}
 
-	// ---- Data helpers (mirror Overview controller dispatch logic) ---------
+	/* ---- Data helpers (mirror Overview controller dispatch logic) --------- */
 
 	/**
-	 * @param int $offset 0 = yesterday, 1 = day-before-yesterday.
-	 * @return array<string, mixed>|null
+	 * Look up the daily snapshot for an offset relative to today.
+	 *
+	 * @param DailyStats $stats  DailyStats handle.
+	 * @param int        $offset 0 = yesterday, 1 = day-before-yesterday.
+	 *
+	 * @return array<string, mixed>|null Snapshot row as an array, or null when missing.
 	 */
 	private function daily_metrics( DailyStats $stats, int $offset ) {
 		$days_ago = $offset + 1;
@@ -380,8 +423,13 @@ class DigestMailer {
 	}
 
 	/**
-	 * @param int $offset 0 = current window, 1 = previous window.
-	 * @return array<string, mixed>|null
+	 * Aggregate metrics across a rolling window.
+	 *
+	 * @param DailyStats $stats  DailyStats handle.
+	 * @param int        $offset 0 = current window, 1 = previous window.
+	 * @param int        $days   Window length in days.
+	 *
+	 * @return array<string, mixed>|null Aggregated metrics, or null when no data.
 	 */
 	private function rolling_metrics( DailyStats $stats, int $offset, int $days ) {
 		$shift        = $offset * $days;
@@ -398,9 +446,10 @@ class DigestMailer {
 	/**
 	 * Mirrors Overview::build_metric_cards() so the email matches the dashboard.
 	 *
-	 * @param array<string, mixed>|null $current
-	 * @param array<string, mixed>|null $previous
-	 * @return array<int, array<string, mixed>>
+	 * @param array<string, mixed>|null $current  Current-period metrics row.
+	 * @param array<string, mixed>|null $previous Prior-period metrics row.
+	 *
+	 * @return array<int, array<string, mixed>> KPI card definitions ready for templating.
 	 */
 	private function build_metric_cards( $current, $previous ): array {
 		$current  = $current ? (array) $current : [];
@@ -448,13 +497,27 @@ class DigestMailer {
 		return $cards;
 	}
 
-	// ---- Subject helpers --------------------------------------------------
+	/* ---- Subject helpers -------------------------------------------------- */
 
+	/**
+	 * Format the absolute revenue-change percent for the subject line.
+	 *
+	 * @param array<string, mixed> $diagnosis Diagnosis result.
+	 *
+	 * @return string
+	 */
 	private function format_change_pct( array $diagnosis ): string {
 		$pct = (float) ( $diagnosis['revenue_change_percent'] ?? 0 );
 		return number_format_i18n( abs( $pct ), abs( $pct ) >= 10 ? 0 : 1 );
 	}
 
+	/**
+	 * Map a diagnosis primary-factor key to a translated label.
+	 *
+	 * @param array<string, mixed> $diagnosis Diagnosis result.
+	 *
+	 * @return string
+	 */
 	private function primary_factor_label( array $diagnosis ): string {
 		$factor = (string) ( $diagnosis['primary_factor'] ?? 'none' );
 		switch ( $factor ) {
@@ -469,6 +532,13 @@ class DigestMailer {
 		}
 	}
 
+	/**
+	 * Format an ISO date as a short "Mon J" string in the site timezone.
+	 *
+	 * @param string $iso_date Y-m-d date string.
+	 *
+	 * @return string
+	 */
 	private function friendly_date( string $iso_date ): string {
 		try {
 			$d = new \DateTime( $iso_date, wp_timezone() );

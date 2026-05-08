@@ -37,6 +37,9 @@ class DigestEmail extends \WC_Email {
 	 */
 	public $payload = [];
 
+	/**
+	 * Wire up the WC_Email metadata used by the WC mailer registry.
+	 */
 	public function __construct() {
 		$this->id             = 'salespulse_morning_digest';
 		$this->customer_email = false;
@@ -79,26 +82,47 @@ class DigestEmail extends \WC_Email {
 		);
 	}
 
+	/**
+	 * From-name override applied to the digest email.
+	 *
+	 * @return string
+	 */
 	public function get_from_name() {
 		return apply_filters( 'salespulse_digest_from_name', 'Sales Pulse', $this );
 	}
 
+	/**
+	 * From-address override applied to the digest email. Defaults to the
+	 * site admin_email option; overridable via the salespulse filter.
+	 *
+	 * @return string
+	 */
 	public function get_from_address() {
 		$default = (string) get_option( 'admin_email', '' );
 		return apply_filters( 'salespulse_digest_from_address', $default, $this );
 	}
 
+	/**
+	 * Render the HTML template into a string.
+	 *
+	 * @return string
+	 */
 	public function get_content_html() {
 		ob_start();
-		// Templates use `$email` (this object) and `$email->payload`.
-		$email = $this;
+		// Bind $email so the included template can read $email->payload.
+		$email = $this; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- consumed by included template.
 		include $this->template_base . $this->template_html;
 		return (string) ob_get_clean();
 	}
 
+	/**
+	 * Render the plain-text template into a string.
+	 *
+	 * @return string
+	 */
 	public function get_content_plain() {
 		ob_start();
-		$email = $this;
+		$email = $this; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- consumed by included template.
 		include $this->template_base . $this->template_plain;
 		return (string) ob_get_clean();
 	}

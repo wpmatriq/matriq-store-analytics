@@ -102,7 +102,7 @@ class Schema {
 		foreach ( $this->table_models as $model_class ) {
 			$model = $model_class::get_instance();
 			$table = $model->get_table_name();
-			$wpdb->query( "DROP TABLE IF EXISTS `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "DROP TABLE IF EXISTS `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange -- intentional uninstall path; table name is plugin-controlled.
 		}
 	}
 

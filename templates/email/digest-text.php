@@ -2,6 +2,8 @@
 /**
  * Sales Pulse: Morning Digest - plain-text body.
  *
+ * @package EC_Sales_Pulse\Templates
+ *
  * @var \EC_Sales_Pulse\Core\Services\DigestEmail $email
  */
 
@@ -52,12 +54,18 @@ $sections = [
 	'monthly' => __( 'LAST 30 DAYS', 'sales-pulse' ),
 ];
 
-echo strtoupper( __( 'Sales Pulse - Morning briefing', 'sales-pulse' ) ) . "\n";
-echo str_repeat( '=', 60 ) . "\n";
-echo $friendly_date . "\n";
-echo $site_name . "\n";
+echo esc_html( strtoupper( __( 'Sales Pulse - Morning briefing', 'sales-pulse' ) ) ) . "\n";
+echo esc_html( str_repeat( '=', 60 ) ) . "\n";
+echo esc_html( $friendly_date ) . "\n";
+echo esc_html( $site_name ) . "\n";
 if ( $campaign && ! empty( $campaign['name'] ) ) {
-	echo sprintf( __( 'Campaign: %s', 'sales-pulse' ), $campaign['name'] ) . "\n";
+	echo esc_html(
+		sprintf(
+			/* translators: %s: campaign name. */
+			__( 'Campaign: %s', 'sales-pulse' ),
+			$campaign['name']
+		)
+	) . "\n";
 }
 echo "\n";
 
@@ -79,19 +87,19 @@ foreach ( $sections as $key => $label ) {
 	$ai_offline   = ( $key === 'daily' ) && ! empty( $diagnosis['ai_offline'] );
 	$ai_action    = ( $key === 'daily' ) ? (string) ( $rec['ai_text'] ?? '' ) : '';
 
-	echo $label . "\n";
-	echo str_repeat( '-', 60 ) . "\n";
-	echo $fmt_pct( $pct ) . '   ' . $headline . "\n";
+	echo esc_html( $label ) . "\n";
+	echo esc_html( str_repeat( '-', 60 ) ) . "\n";
+	echo esc_html( $fmt_pct( $pct ) . '   ' . $headline ) . "\n";
 	if ( $sub_cause !== '' ) {
-		echo $sub_cause . "\n";
+		echo esc_html( $sub_cause ) . "\n";
 	}
 	echo "\n";
 
 	if ( $ai_paragraph !== '' ) {
-		echo __( 'COPILOT · WHY THIS HAPPENED', 'sales-pulse' ) . "\n";
-		echo '  ' . $ai_paragraph . "\n\n";
+		echo esc_html__( 'COPILOT · WHY THIS HAPPENED', 'sales-pulse' ) . "\n";
+		echo '  ' . esc_html( $ai_paragraph ) . "\n\n";
 	} elseif ( $ai_offline ) {
-		echo '  ' . __( '(AI insights paused)', 'sales-pulse' ) . "\n\n";
+		echo '  ' . esc_html__( '(AI insights paused)', 'sales-pulse' ) . "\n\n";
 	}
 
 	if ( $cards ) {
@@ -99,24 +107,30 @@ foreach ( $sections as $key => $label ) {
 			$lbl    = (string) ( $card['label'] ?? '' );
 			$val    = $fmt_value( $card['current'] ?? 0, (string) ( $card['format'] ?? 'number' ), $currency_symbol );
 			$change = $fmt_pct( (float) ( $card['change'] ?? 0 ) );
-			echo sprintf( "  %-18s %15s   (%s)\n", $lbl, $val, $change );
+			echo esc_html( sprintf( '  %-18s %15s   (%s)', $lbl, $val, $change ) ) . "\n";
 		}
 		echo "\n";
 	}
 
 	if ( $rec_text !== '' ) {
-		echo __( 'Suggested action:', 'sales-pulse' ) . "\n";
-		echo '  ' . $rec_text . "\n\n";
+		echo esc_html__( 'Suggested action:', 'sales-pulse' ) . "\n";
+		echo '  ' . esc_html( $rec_text ) . "\n\n";
 	}
 
 	if ( $ai_action !== '' ) {
-		echo __( 'COPILOT · AI alternative', 'sales-pulse' ) . "\n";
-		echo '  ' . $ai_action . "\n\n";
+		echo esc_html__( 'COPILOT · AI alternative', 'sales-pulse' ) . "\n";
+		echo '  ' . esc_html( $ai_action ) . "\n\n";
 	}
 }
 
-echo str_repeat( '=', 60 ) . "\n";
-echo __( 'Open Sales Pulse dashboard:', 'sales-pulse' ) . "\n";
-echo $dashboard_url . "\n\n";
-echo sprintf( __( 'Sent by Sales Pulse on behalf of %s.', 'sales-pulse' ), $site_name ) . "\n";
-echo __( 'Manage your morning digest in Sales Pulse Settings.', 'sales-pulse' ) . "\n";
+echo esc_html( str_repeat( '=', 60 ) ) . "\n";
+echo esc_html__( 'Open Sales Pulse dashboard:', 'sales-pulse' ) . "\n";
+echo esc_url( $dashboard_url ) . "\n\n";
+echo esc_html(
+	sprintf(
+		/* translators: %s: site name. */
+		__( 'Sent by Sales Pulse on behalf of %s.', 'sales-pulse' ),
+		$site_name
+	)
+) . "\n";
+echo esc_html__( 'Manage your morning digest in Sales Pulse Settings.', 'sales-pulse' ) . "\n";

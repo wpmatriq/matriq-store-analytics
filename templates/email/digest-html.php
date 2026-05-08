@@ -7,6 +7,8 @@
  * Inline CSS only. No remote resources. Self-contained so the wp_mail()
  * fallback path renders correctly when WooCommerce isn't active.
  *
+ * @package EC_Sales_Pulse\Templates
+ *
  * @var \EC_Sales_Pulse\Core\Services\DigestEmail $email
  */
 
@@ -61,7 +63,7 @@ $fmt_pct = static function ( $value ): string {
 $pct_color = static function ( $value ): string {
 	$value = (float) $value;
 	if ( abs( $value ) < 0.05 ) {
-		return '#6b7280'; // muted
+		return '#6b7280'; // muted.
 	}
 	return $value > 0 ? '#0f9d58' : '#d93025';
 };

@@ -32,6 +32,11 @@ class DigestHistory extends Base {
 	 */
 	protected $table_name = 'digest_history';
 
+	/**
+	 * CREATE TABLE SQL for the digest_history table.
+	 *
+	 * @return string
+	 */
 	public function get_schema(): string {
 		$table   = $this->get_table_name();
 		$charset = $this->get_charset_collate();
