@@ -19,7 +19,6 @@ namespace EC_Sales_Pulse\Core\Services;
 
 use EC_Sales_Pulse\Core\Database\Campaigns;
 use EC_Sales_Pulse\Core\Database\DailyStats;
-use EC_Sales_Pulse\Core\Database\DigestHistory;
 use EC_Sales_Pulse\Core\Database\DirtyDates;
 use EC_Sales_Pulse\Core\Database\SystemState;
 use EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -41,16 +40,15 @@ class ImpactSummary {
 	 * @return array<string, mixed>
 	 */
 	public function build(): array {
-		$daily_stats    = DailyStats::get_instance();
-		$dirty_dates    = DirtyDates::get_instance();
-		$campaigns      = Campaigns::get_instance();
-		$digest_history = DigestHistory::get_instance();
-		$system_state   = SystemState::get_instance();
+		$daily_stats  = DailyStats::get_instance();
+		$dirty_dates  = DirtyDates::get_instance();
+		$campaigns    = Campaigns::get_instance();
+		$system_state = SystemState::get_instance();
 
 		$days_of_data      = (int) $daily_stats->count();
 		$order_edits       = (int) $dirty_dates->count_resolved();
 		$campaigns_tracked = (int) $campaigns->count();
-		$briefings_sent    = (int) $digest_history->count_total( 'sent' );
+		$briefings_sent    = (int) ( $system_state->get( SystemState::KEY_DIGEST_SENT_TOTAL, '0' ) ?? 0 );
 		$last_snapshot_at  = (string) $system_state->get( SystemState::KEY_LAST_SNAPSHOT_DATE, '' );
 
 		return [

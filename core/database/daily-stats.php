@@ -59,9 +59,7 @@ class DailyStats extends Base {
 			refund_total DECIMAL(14,2) NOT NULL DEFAULT 0,
 			created_at DATETIME NOT NULL,
 			updated_at DATETIME DEFAULT NULL,
-			PRIMARY KEY (stat_date),
-			KEY revenue_idx (revenue),
-			KEY orders_idx (orders)
+			PRIMARY KEY (stat_date)
 		) {$charset};";
 	}
 

@@ -37,6 +37,23 @@ class SystemState extends Base {
 	public const KEY_LAST_DIGEST_SENT_AT   = 'last_digest_sent_at';
 
 	/**
+	 * Counters that replaced the `digest_history` table in v2 of the free
+	 * schema. The table stored 1 row per send attempt purely to power the
+	 * Free Impact tile's all-time "morning briefings delivered" count -
+	 * incrementing two keys does the same job in 1/10th the storage.
+	 */
+	public const KEY_DIGEST_SENT_TOTAL   = 'digest_sent_total';
+	public const KEY_DIGEST_FAILED_TOTAL = 'digest_failed_total';
+	public const KEY_DIGEST_LAST_ERROR   = 'digest_last_error';
+
+	/**
+	 * Counter that replaced the `dirty_dates.resolved_at` count read in v3
+	 * of the free schema. Powers the Free Impact "edits caught and repaired"
+	 * tile without keeping a per-edit row forever.
+	 */
+	public const KEY_REPAIRED_TOTAL = 'repaired_total';
+
+	/**
 	 * Table name without prefix.
 	 *
 	 * @var string
@@ -108,6 +125,21 @@ class SystemState extends Base {
 		);
 
 		return $result !== false;
+	}
+
+	/**
+	 * Increment an integer counter stored under `$key`. Treats a missing or
+	 * non-numeric existing value as 0. Returns the new total.
+	 *
+	 * @param string $key  Counter key.
+	 * @param int    $step Amount to add (default 1).
+	 * @return int
+	 */
+	public function increment( string $key, int $step = 1 ): int {
+		$current = (int) ( $this->get( $key, '0' ) ?? 0 );
+		$next    = $current + $step;
+		$this->set( $key, (string) $next );
+		return $next;
 	}
 
 	/**

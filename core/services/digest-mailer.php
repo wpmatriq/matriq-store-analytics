@@ -15,7 +15,6 @@ namespace EC_Sales_Pulse\Core\Services;
 use EC_Sales_Pulse\Core\Controllers\SettingsController;
 use EC_Sales_Pulse\Core\Database\Campaigns;
 use EC_Sales_Pulse\Core\Database\DailyStats;
-use EC_Sales_Pulse\Core\Database\DigestHistory;
 use EC_Sales_Pulse\Core\Database\SystemState;
 use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
@@ -230,23 +229,40 @@ class DigestMailer {
 	}
 
 	/**
-	 * Append one row to the digest_history table for every send attempt.
+	 * Increment the relevant `system_state` counter for every send attempt.
+	 * Replaces the v1 `digest_history` table - the only consumer was an
+	 * all-time sent-count tile, and counters power that without paying for
+	 * a per-send row.
 	 *
-	 * @param string      $recipient  Recipient email (may be empty if invalid).
+	 * Test sends are tracked separately on neither counter; they don't
+	 * count toward the Free Impact tile.
+	 *
+	 * @param string      $recipient  Recipient email (may be empty if invalid). Unused; kept for signature stability.
 	 * @param string      $status     'sent' | 'failed' | 'skipped'.
-	 * @param string|null $error_text Optional error description.
+	 * @param string|null $error_text Optional error description (persisted only on failure).
 	 * @param bool        $is_test    True when invoked from the test-send button.
 	 */
 	private function log_history( string $recipient, string $status, ?string $error_text, bool $is_test ): void {
-		DigestHistory::get_instance()->record(
-			[
-				'sent_at'    => current_time( 'mysql' ),
-				'recipient'  => $recipient,
-				'status'     => $status,
-				'error_text' => $error_text,
-				'is_test'    => $is_test ? 1 : 0,
-			]
-		);
+		unset( $recipient );
+
+		if ( $is_test ) {
+			return;
+		}
+
+		$state = SystemState::get_instance();
+		if ( $status === 'sent' ) {
+			$state->increment( SystemState::KEY_DIGEST_SENT_TOTAL );
+			return;
+		}
+
+		if ( $status === 'failed' ) {
+			$state->increment( SystemState::KEY_DIGEST_FAILED_TOTAL );
+			if ( $error_text !== null && $error_text !== '' ) {
+				$state->set( SystemState::KEY_DIGEST_LAST_ERROR, $error_text );
+			}
+		}
+		// 'skipped' is intentionally not counted - it's the "nothing to send"
+		// branch and would inflate the failure count.
 	}
 
 	/**
