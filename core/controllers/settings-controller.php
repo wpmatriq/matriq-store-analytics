@@ -20,7 +20,6 @@ defined( 'ABSPATH' ) || exit;
  * `sales-pulse/v2/settings` namespace.
  */
 class SettingsController extends BaseController {
-
 	/**
 	 * Option key for all plugin settings.
 	 */

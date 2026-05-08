@@ -389,7 +389,14 @@ class DigestMailer {
 			$reason
 		);
 		update_option( SettingsController::OPTION_KEY, $saved );
-		error_log( '[Sales Pulse] Digest send failed: ' . $reason ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+
+		// Mirror to PHP error log only when WP_DEBUG_LOG is on so production
+		// hosts don't get noise; the persisted Settings entry is the
+		// authoritative surface for the merchant either way.
+		if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log, Generic.PHP.ForbiddenFunctions.Found
+			error_log( '[Sales Pulse] Digest send failed: ' . $reason );
+		}
 	}
 
 	/**

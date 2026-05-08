@@ -167,9 +167,8 @@ class DataCollector {
 	 * @return object
 	 */
 	private function get_customer_metrics( string $start, string $end ) {
-		$order_table    = $this->wpdb->prefix . 'wc_order_stats';
-		$customer_table = $this->wpdb->prefix . 'wc_customer_lookup';
-		$statuses       = $this->get_status_placeholders();
+		$order_table = $this->wpdb->prefix . 'wc_order_stats';
+		$statuses    = $this->get_status_placeholders();
 
 		// A customer is "new" if this order's date matches their first order date.
 		$result = $this->wpdb->get_row(
