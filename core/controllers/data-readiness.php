@@ -30,7 +30,6 @@ defined( 'ABSPATH' ) || exit;
  * plus a manual snapshot trigger for admin-side troubleshooting.
  */
 class DataReadiness extends BaseController {
-
 	/**
 	 * Route base.
 	 *
@@ -170,7 +169,7 @@ class DataReadiness extends BaseController {
 				[
 					'date'    => $date,
 					'success' => $result,
-				] 
+				]
 			);
 		}
 
@@ -196,7 +195,7 @@ class DataReadiness extends BaseController {
 				'cursor'         => $state->get( SystemState::KEY_BACKFILL_CURSOR ),
 				'start'          => $state->get( SystemState::KEY_BACKFILL_START ),
 				'snapshot_count' => DailyStats::get_instance()->count(),
-			] 
+			]
 		);
 	}
 

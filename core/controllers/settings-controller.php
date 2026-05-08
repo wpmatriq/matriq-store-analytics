@@ -22,25 +22,14 @@ defined( 'ABSPATH' ) || exit;
 class SettingsController extends BaseController {
 
 	/**
-	 * Route base.
-	 *
-	 * @var string
-	 */
-	protected $rest_base = 'settings';
-
-	/**
 	 * Option key for all plugin settings.
-	 *
-	 * @var string
 	 */
-	const OPTION_KEY = 'salespulse_settings';
+	public const OPTION_KEY = 'salespulse_settings';
 
 	/**
 	 * Default settings.
-	 *
-	 * @var array<string, mixed>
 	 */
-	const DEFAULTS = [
+	public const DEFAULTS = [
 		'snapshot_hour'         => 2,              // 0-23.
 		'snapshot_min'          => 10,             // 0-59.
 		'email_enabled'         => false,
@@ -51,10 +40,14 @@ class SettingsController extends BaseController {
 
 	/**
 	 * Allowed values for the diagnosis_sensitivity setting.
-	 *
-	 * @var string[]
 	 */
-	const SENSITIVITY_VALUES = [ 'calm', 'balanced', 'vigilant' ];
+	public const SENSITIVITY_VALUES = [ 'calm', 'balanced', 'vigilant' ];
+	/**
+	 * Route base.
+	 *
+	 * @var string
+	 */
+	protected $rest_base = 'settings';
 
 	/**
 	 * Register routes.

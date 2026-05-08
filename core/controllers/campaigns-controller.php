@@ -20,7 +20,6 @@ defined( 'ABSPATH' ) || exit;
  * change `daily_stats` numbers.
  */
 class CampaignsController extends BaseController {
-
 	/**
 	 * Route base.
 	 *
@@ -213,7 +212,7 @@ class CampaignsController extends BaseController {
 			[
 				'id'    => $id,
 				'ended' => true,
-			] 
+			]
 		);
 	}
 
@@ -239,7 +238,7 @@ class CampaignsController extends BaseController {
 			[
 				'id'      => $id,
 				'deleted' => true,
-			] 
+			]
 		);
 	}
 }

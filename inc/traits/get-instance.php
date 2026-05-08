@@ -35,7 +35,7 @@ trait Get_Instance {
 	 * @return static Initialized instance of the using class.
 	 */
 	public static function get_instance() {
-		if ( null === static::$instance || ! ( static::$instance instanceof static ) ) {
+		if ( static::$instance === null || ! ( static::$instance instanceof static ) ) {
 			static::$instance = new static();
 		}
 		return static::$instance;

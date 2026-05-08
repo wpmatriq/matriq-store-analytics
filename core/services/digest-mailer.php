@@ -68,7 +68,7 @@ class DigestMailer {
 	 * @return array{sent:bool, recipient:string, reason:?string}
 	 */
 	public function send( ?string $override_recipient = null, bool $is_test = false ): array {
-		$recipient = ( $override_recipient !== null && $override_recipient !== '' )
+		$recipient = $override_recipient !== null && $override_recipient !== ''
 			? $override_recipient
 			: (string) SettingsController::get( 'email_address', '' );
 
@@ -127,26 +127,6 @@ class DigestMailer {
 			'recipient' => $recipient,
 			'reason'    => $reason,
 		];
-	}
-
-	/**
-	 * Append one row to the digest_history table for every send attempt.
-	 *
-	 * @param string      $recipient  Recipient email (may be empty if invalid).
-	 * @param string      $status     'sent' | 'failed' | 'skipped'.
-	 * @param string|null $error_text Optional error description.
-	 * @param bool        $is_test    True when invoked from the test-send button.
-	 */
-	private function log_history( string $recipient, string $status, ?string $error_text, bool $is_test ): void {
-		DigestHistory::get_instance()->record(
-			[
-				'sent_at'    => current_time( 'mysql' ),
-				'recipient'  => $recipient,
-				'status'     => $status,
-				'error_text' => $error_text,
-				'is_test'    => $is_test ? 1 : 0,
-			]
-		);
 	}
 
 	/**
@@ -211,23 +191,6 @@ class DigestMailer {
 	}
 
 	/**
-	 * Run one section build with the period announced via the standard
-	 * `salespulse_overview_period_resolved` action so premium extensions
-	 * (e.g. Store Copilot) can scope per-window enrichment correctly.
-	 *
-	 * @param string                                                                               $period      Window name.
-	 * @param callable(array<string,mixed>|null,array<string,mixed>|null,bool):array<string,mixed> $builder     The closure built in build_payload().
-	 * @param array<string, mixed>|null                                                            $current     Current-period metrics.
-	 * @param array<string, mixed>|null                                                            $previous    Previous-period metrics.
-	 * @param bool                                                                                 $is_daily    Whether this is the daily-window build.
-	 * @return array<string, mixed>
-	 */
-	private function run_section( string $period, callable $builder, $current, $previous, bool $is_daily ): array {
-		do_action( 'salespulse_overview_period_resolved', $period );
-		return $builder( $current, $previous, $is_daily );
-	}
-
-	/**
 	 * Compose the subject line. Daily-first signal preference; falls back to 7d, then 30d.
 	 *
 	 * @param array<string, mixed> $payload Output of build_payload().
@@ -264,6 +227,43 @@ class DigestMailer {
 		$date = $payload['meta']['date'] ?? gmdate( 'Y-m-d' );
 		/* translators: %s: friendly date like "May 1". */
 		return sprintf( __( 'Sales Pulse: Steady morning, no alarms - %s', 'sales-pulse' ), $this->friendly_date( $date ) );
+	}
+
+	/**
+	 * Append one row to the digest_history table for every send attempt.
+	 *
+	 * @param string      $recipient  Recipient email (may be empty if invalid).
+	 * @param string      $status     'sent' | 'failed' | 'skipped'.
+	 * @param string|null $error_text Optional error description.
+	 * @param bool        $is_test    True when invoked from the test-send button.
+	 */
+	private function log_history( string $recipient, string $status, ?string $error_text, bool $is_test ): void {
+		DigestHistory::get_instance()->record(
+			[
+				'sent_at'    => current_time( 'mysql' ),
+				'recipient'  => $recipient,
+				'status'     => $status,
+				'error_text' => $error_text,
+				'is_test'    => $is_test ? 1 : 0,
+			]
+		);
+	}
+
+	/**
+	 * Run one section build with the period announced via the standard
+	 * `salespulse_overview_period_resolved` action so premium extensions
+	 * (e.g. Store Copilot) can scope per-window enrichment correctly.
+	 *
+	 * @param string                                                                               $period      Window name.
+	 * @param callable(array<string,mixed>|null,array<string,mixed>|null,bool):array<string,mixed> $builder     The closure built in build_payload().
+	 * @param array<string, mixed>|null                                                            $current     Current-period metrics.
+	 * @param array<string, mixed>|null                                                            $previous    Previous-period metrics.
+	 * @param bool                                                                                 $is_daily    Whether this is the daily-window build.
+	 * @return array<string, mixed>
+	 */
+	private function run_section( string $period, callable $builder, $current, $previous, bool $is_daily ): array {
+		do_action( 'salespulse_overview_period_resolved', $period );
+		return $builder( $current, $previous, $is_daily );
 	}
 
 	/**
@@ -482,7 +482,7 @@ class DigestMailer {
 		foreach ( $metrics as $metric ) {
 			$curr_val = (float) ( $current[ $metric['key'] ] ?? 0 );
 			$prev_val = (float) ( $previous[ $metric['key'] ] ?? 0 );
-			$change   = $prev_val > 0 ? round( ( ( $curr_val - $prev_val ) / $prev_val ) * 100, 1 ) : 0;
+			$change   = $prev_val > 0 ? round( ( $curr_val - $prev_val ) / $prev_val * 100, 1 ) : 0;
 
 			$cards[] = [
 				'key'      => $metric['key'],

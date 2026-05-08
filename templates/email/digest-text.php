@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Guard against include paths that don't seed `$email` (some WC admin preview flows re-render templates without the parent context).
-$payload = ( isset( $email ) && is_object( $email ) && isset( $email->payload ) ) ? (array) $email->payload : [];
+$payload = isset( $email ) && is_object( $email ) && isset( $email->payload ) ? (array) $email->payload : [];
 $meta    = isset( $payload['meta'] ) ? (array) $payload['meta'] : [];
 
 $site_name       = (string) ( $meta['site_name'] ?? get_bloginfo( 'name' ) );
@@ -83,9 +83,9 @@ foreach ( $sections as $key => $label ) {
 	$sub_cause = (string) ( $diagnosis['confidence_label'] ?? '' );
 	$rec_text  = (string) ( $rec['recommendation'] ?? '' );
 	// Phase 2: Pro AI fields are emitted only on the daily window.
-	$ai_paragraph = ( $key === 'daily' ) ? (string) ( $diagnosis['ai_paragraph'] ?? '' ) : '';
+	$ai_paragraph = $key === 'daily' ? (string) ( $diagnosis['ai_paragraph'] ?? '' ) : '';
 	$ai_offline   = ( $key === 'daily' ) && ! empty( $diagnosis['ai_offline'] );
-	$ai_action    = ( $key === 'daily' ) ? (string) ( $rec['ai_text'] ?? '' ) : '';
+	$ai_action    = $key === 'daily' ? (string) ( $rec['ai_text'] ?? '' ) : '';
 
 	echo esc_html( $label ) . "\n";
 	echo esc_html( str_repeat( '-', 60 ) ) . "\n";

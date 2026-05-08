@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Guard against include paths that don't seed `$email` (some WC admin preview flows re-render templates without the parent context).
-$payload = ( isset( $email ) && is_object( $email ) && isset( $email->payload ) ) ? (array) $email->payload : [];
+$payload = isset( $email ) && is_object( $email ) && isset( $email->payload ) ? (array) $email->payload : [];
 $meta    = isset( $payload['meta'] ) ? (array) $payload['meta'] : [];
 
 $site_name       = (string) ( $meta['site_name'] ?? get_bloginfo( 'name' ) );
@@ -101,7 +101,7 @@ $sections = [
 						<div style="margin-top:4px;font-size:13px;color:#7c8093;">
 							<?php echo esc_html( $site_name ); ?>
 						</div>
-						<?php if ( $campaign && ! empty( $campaign['name'] ) ) : ?>
+						<?php if ( $campaign && ! empty( $campaign['name'] ) ) { ?>
 							<div style="margin-top:14px;display:inline-block;background:#fff5e6;color:#a05a00;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;">
 								<?php
 								echo esc_html(
@@ -113,12 +113,12 @@ $sections = [
 								);
 								?>
 							</div>
-						<?php endif; ?>
+						<?php } ?>
 					</td>
 				</tr>
 
 				<?php
-				foreach ( $sections as $key => $label ) :
+				foreach ( $sections as $key => $label ) {
 					$section = isset( $payload[ $key ] ) ? (array) $payload[ $key ] : [];
 					if ( ! $section ) {
 						continue;
@@ -132,9 +132,9 @@ $sections = [
 					$rec_text  = (string) ( $rec['recommendation'] ?? '' );
 					// Phase 2: Pro plugin enriches the daily section with an AI paragraph
 					// and a tailored action via filters; render them only on the daily window.
-					$ai_paragraph = ( $key === 'daily' ) ? (string) ( $diagnosis['ai_paragraph'] ?? '' ) : '';
+					$ai_paragraph = $key === 'daily' ? (string) ( $diagnosis['ai_paragraph'] ?? '' ) : '';
 					$ai_offline   = ( $key === 'daily' ) && ! empty( $diagnosis['ai_offline'] );
-					$ai_action    = ( $key === 'daily' ) ? (string) ( $rec['ai_text'] ?? '' ) : '';
+					$ai_action    = $key === 'daily' ? (string) ( $rec['ai_text'] ?? '' ) : '';
 					?>
 					<tr>
 						<td style="padding:24px 32px;border-bottom:1px solid #ece9e0;">
@@ -150,21 +150,21 @@ $sections = [
 										</span>
 									</td>
 									<td style="vertical-align:baseline;padding-left:14px;">
-										<?php if ( $headline !== '' ) : ?>
+										<?php if ( $headline !== '' ) { ?>
 											<div style="font-size:15px;font-weight:500;color:#1a1d2e;line-height:1.4;">
 												<?php echo esc_html( $headline ); ?>
 											</div>
-										<?php endif; ?>
-										<?php if ( $sub_cause !== '' ) : ?>
+										<?php } ?>
+										<?php if ( $sub_cause !== '' ) { ?>
 											<div style="margin-top:2px;font-size:12px;color:#7c8093;">
 												<?php echo esc_html( $sub_cause ); ?>
 											</div>
-										<?php endif; ?>
+										<?php } ?>
 									</td>
 								</tr>
 							</table>
 
-							<?php if ( $ai_paragraph !== '' ) : ?>
+							<?php if ( $ai_paragraph !== '' ) { ?>
 								<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;">
 									<tr>
 										<td style="border-left:3px solid #6366f1;padding:10px 0 10px 14px;background:transparent;">
@@ -177,17 +177,17 @@ $sections = [
 										</td>
 									</tr>
 								</table>
-							<?php elseif ( $ai_offline ) : ?>
+							<?php } elseif ( $ai_offline ) { ?>
 								<div style="margin-top:14px;display:inline-block;font-size:11px;color:#7c8093;background:#f7f5f0;border:1px solid #ece9e0;border-radius:999px;padding:4px 10px;">
 									<?php echo esc_html__( 'AI insights paused', 'sales-pulse' ); ?>
 								</div>
-							<?php endif; ?>
+							<?php } ?>
 
-							<?php if ( $cards ) : ?>
+							<?php if ( $cards ) { ?>
 								<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;border-collapse:separate;border-spacing:8px 0;">
 									<tr>
 										<?php
-										foreach ( $cards as $card ) :
+										foreach ( $cards as $card ) {
 											$card_value  = $fmt_value( $card['current'] ?? 0, (string) ( $card['format'] ?? 'number' ), $currency_symbol );
 											$card_change = (float) ( $card['change'] ?? 0 );
 											?>
@@ -202,12 +202,12 @@ $sections = [
 													<?php echo esc_html( $fmt_pct( $card_change ) ); ?>
 												</div>
 											</td>
-										<?php endforeach; ?>
+										<?php } ?>
 									</tr>
 								</table>
-							<?php endif; ?>
+							<?php } ?>
 
-							<?php if ( $rec_text !== '' ) : ?>
+							<?php if ( $rec_text !== '' ) { ?>
 								<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;">
 									<tr>
 										<td style="border-left:3px solid #0f9d58;padding:8px 0 8px 14px;background:transparent;">
@@ -220,9 +220,9 @@ $sections = [
 										</td>
 									</tr>
 								</table>
-							<?php endif; ?>
+							<?php } ?>
 
-							<?php if ( $ai_action !== '' ) : ?>
+							<?php if ( $ai_action !== '' ) { ?>
 								<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:14px;">
 									<tr>
 										<td style="border-left:3px solid #6366f1;padding:8px 0 8px 14px;background:transparent;">
@@ -235,10 +235,10 @@ $sections = [
 										</td>
 									</tr>
 								</table>
-							<?php endif; ?>
+							<?php } ?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
+				<?php } ?>
 
 				<!-- CTA -->
 				<tr>

@@ -11,7 +11,6 @@
 
 namespace EC_Sales_Pulse\Core\Controllers;
 
-use EC_Sales_Pulse\Core\Controllers\SettingsController;
 use EC_Sales_Pulse\Core\Database\Campaigns;
 use EC_Sales_Pulse\Core\Database\DailyStats;
 use EC_Sales_Pulse\Core\Services\ActionEngine;
@@ -24,7 +23,6 @@ defined( 'ABSPATH' ) || exit;
  * with diagnoses so the merchant can scrub backwards through time.
  */
 class History extends BaseController {
-
 	/**
 	 * Route base.
 	 *
@@ -87,7 +85,7 @@ class History extends BaseController {
 					'total'       => $total,
 					'total_pages' => $total_pages,
 					'page'        => $page,
-				] 
+				]
 			);
 		}
 
@@ -148,7 +146,7 @@ class History extends BaseController {
 				'total'       => $total,
 				'total_pages' => $total_pages,
 				'page'        => $page,
-			] 
+			]
 		);
 	}
 

@@ -46,4 +46,3 @@ function wc_sma_clean_data( $var ) {
 function wc_sma_query() {
 	return Query::init(); // @phpstan-ignore-line
 }
-

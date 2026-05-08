@@ -20,7 +20,6 @@ defined( 'ABSPATH' ) || exit;
  * helpers so subclasses focus on schema and domain queries.
  */
 abstract class Base {
-
 	/**
 	 * Table name without prefix.
 	 *

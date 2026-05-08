@@ -29,8 +29,8 @@ class CronManager {
 	/**
 	 * Hook names.
 	 */
-	const HOOK_NIGHTLY  = 'salespulse_nightly_snapshot';
-	const HOOK_BACKFILL = 'salespulse_backfill_runner';
+	public const HOOK_NIGHTLY  = 'salespulse_nightly_snapshot';
+	public const HOOK_BACKFILL = 'salespulse_backfill_runner';
 
 	/**
 	 * Constructor - register cron hooks and schedules.

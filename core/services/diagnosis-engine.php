@@ -31,37 +31,29 @@ class DiagnosisEngine {
 
 	/**
 	 * Minimum revenue change percentage to trigger diagnosis (base; scaled by sensitivity).
-	 *
-	 * @var float
 	 */
-	const CHANGE_THRESHOLD = 5.0;
+	public const CHANGE_THRESHOLD = 5.0;
 
 	/**
 	 * Absolute floor: anything below this is treated as "no revenue" rather
 	 * than a real signal. Used by the new-store / dead-store edge cases.
-	 *
-	 * @var float
 	 */
-	const MIN_REVENUE_THRESHOLD = 1.0;
+	public const MIN_REVENUE_THRESHOLD = 1.0;
 
 	/**
 	 * Below this revenue, comparisons are statistically meaningless even
 	 * when both days have orders. STRATEGY.md Section 6: "Suppress strong
 	 * diagnosis, mark 'low sample size'." A jump from $7 to $76 is a
 	 * one-order-vs-one-order spike, not a trend.
-	 *
-	 * @var float
 	 */
-	const LOW_SAMPLE_REVENUE_THRESHOLD = 50.0;
+	public const LOW_SAMPLE_REVENUE_THRESHOLD = 50.0;
 
 	/**
 	 * Below this order count on either side, the diagnosis is downgraded to
 	 * "low sample size" regardless of the dollar swing. Three orders is the
 	 * minimum where a primary-factor decomposition starts to mean something.
-	 *
-	 * @var int
 	 */
-	const MIN_ORDERS_FOR_CONFIDENCE = 3;
+	public const MIN_ORDERS_FOR_CONFIDENCE = 3;
 
 	/**
 	 * Multipliers applied to CHANGE_THRESHOLD for each sensitivity level.
@@ -69,10 +61,8 @@ class DiagnosisEngine {
 	 * Calm    - larger threshold, only flag major shifts.
 	 * Balanced - base threshold (5%).
 	 * Vigilant - tighter threshold, surface smaller movements.
-	 *
-	 * @var array<string, float>
 	 */
-	const SENSITIVITY_MULTIPLIERS = [
+	public const SENSITIVITY_MULTIPLIERS = [
 		'calm'     => 1.5,
 		'balanced' => 1.0,
 		'vigilant' => 0.6,
@@ -110,6 +100,22 @@ class DiagnosisEngine {
 		 * @param string               $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
 		 */
 		return apply_filters( 'salespulse_diagnosis_result', $diagnosis, $current, $previous, $sensitivity );
+	}
+
+	/**
+	 * Get human-readable confidence label.
+	 *
+	 * @param float $confidence Confidence score (0-1).
+	 * @return string
+	 */
+	public function get_confidence_label( float $confidence ): string {
+		if ( $confidence >= 0.6 ) {
+			return __( 'Clear cause identified.', 'sales-pulse' );
+		}
+		if ( $confidence >= 0.4 ) {
+			return __( 'Likely cause detected.', 'sales-pulse' );
+		}
+		return __( 'No strong single cause.', 'sales-pulse' );
 	}
 
 	/**
@@ -261,12 +267,12 @@ class DiagnosisEngine {
 		$aov0 = $previous['avg_order_value'];
 
 		// Level 1: Orders vs AOV (midpoint decomposition).
-		$orders_impact = ( $o1 - $o0 ) * ( ( $aov1 + $aov0 ) / 2 );
-		$aov_impact    = ( $aov1 - $aov0 ) * ( ( $o1 + $o0 ) / 2 );
+		$orders_impact = ( $o1 - $o0 ) * ( $aov1 + $aov0 ) / 2;
+		$aov_impact    = ( $aov1 - $aov0 ) * ( $o1 + $o0 ) / 2;
 
 		// Level 2: Break AOV into items-per-order vs price.
-		$items_impact = ( $i1 - $i0 ) * ( ( $p1 + $p0 ) / 2 ) * ( ( $o1 + $o0 ) / 2 );
-		$price_impact = ( $p1 - $p0 ) * ( ( $i1 + $i0 ) / 2 ) * ( ( $o1 + $o0 ) / 2 );
+		$items_impact = ( $i1 - $i0 ) * ( $p1 + $p0 ) / 2 * ( $o1 + $o0 ) / 2;
+		$price_impact = ( $p1 - $p0 ) * ( $i1 + $i0 ) / 2 * ( $o1 + $o0 ) / 2;
 
 		return [
 			'orders_impact' => $orders_impact,
@@ -368,22 +374,6 @@ class DiagnosisEngine {
 	}
 
 	/**
-	 * Get human-readable confidence label.
-	 *
-	 * @param float $confidence Confidence score (0-1).
-	 * @return string
-	 */
-	public function get_confidence_label( float $confidence ): string {
-		if ( $confidence >= 0.6 ) {
-			return __( 'Clear cause identified.', 'sales-pulse' );
-		}
-		if ( $confidence >= 0.4 ) {
-			return __( 'Likely cause detected.', 'sales-pulse' );
-		}
-		return __( 'No strong single cause.', 'sales-pulse' );
-	}
-
-	/**
 	 * Compose the headline sentence.
 	 *
 	 * @param string               $direction  Direction (growth, decline, stable).
@@ -478,7 +468,7 @@ class DiagnosisEngine {
 		if ( abs( $old ) < 0.01 ) {
 			return $new > 0 ? 100 : 0;
 		}
-		return ( ( $new - $old ) / $old ) * 100;
+		return ( $new - $old ) / $old * 100;
 	}
 
 	/**

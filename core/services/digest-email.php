@@ -29,7 +29,6 @@ if ( ! class_exists( '\\WC_Email' ) ) {
  * via the standard WC Settings → Emails surface.
  */
 class DigestEmail extends \WC_Email {
-
 	/**
 	 * Payload assembled by DigestMailer; available to templates as `$email->payload`.
 	 *
@@ -134,7 +133,7 @@ class DigestEmail extends \WC_Email {
 	 *
 	 * @return void
 	 */
-	public function init_form_fields() {
+	public function init_form_fields(): void {
 		$settings_url = admin_url( 'admin.php?page=sales-pulse&tab=settings' );
 
 		$this->form_fields = [

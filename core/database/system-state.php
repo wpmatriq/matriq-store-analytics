@@ -25,6 +25,18 @@ class SystemState extends Base {
 	use Get_Instance;
 
 	/**
+	 * Known state keys.
+	 */
+	public const KEY_LAST_SNAPSHOT_DATE    = 'last_snapshot_date';
+	public const KEY_BACKFILL_START        = 'backfill_start';
+	public const KEY_BACKFILL_CURSOR       = 'backfill_cursor';
+	public const KEY_BACKFILL_COMPLETE     = 'backfill_complete';
+	public const KEY_DB_VERSION            = 'db_version';
+	public const KEY_PLUGIN_VERSION        = 'plugin_version';
+	public const KEY_LAST_DIGEST_SENT_DATE = 'last_digest_sent_date';
+	public const KEY_LAST_DIGEST_SENT_AT   = 'last_digest_sent_at';
+
+	/**
 	 * Table name without prefix.
 	 *
 	 * @var string
@@ -37,18 +49,6 @@ class SystemState extends Base {
 	 * @var string
 	 */
 	protected $primary_key = 'state_key';
-
-	/**
-	 * Known state keys.
-	 */
-	const KEY_LAST_SNAPSHOT_DATE    = 'last_snapshot_date';
-	const KEY_BACKFILL_START        = 'backfill_start';
-	const KEY_BACKFILL_CURSOR       = 'backfill_cursor';
-	const KEY_BACKFILL_COMPLETE     = 'backfill_complete';
-	const KEY_DB_VERSION            = 'db_version';
-	const KEY_PLUGIN_VERSION        = 'plugin_version';
-	const KEY_LAST_DIGEST_SENT_DATE = 'last_digest_sent_date';
-	const KEY_LAST_DIGEST_SENT_AT   = 'last_digest_sent_at';
 
 	/**
 	 * Get the CREATE TABLE SQL.
@@ -104,7 +104,7 @@ class SystemState extends Base {
 				'state_key'   => $key,
 				'state_value' => $value,
 				'updated_at'  => current_time( 'mysql' ),
-			] 
+			]
 		);
 
 		return $result !== false;

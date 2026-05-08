@@ -181,7 +181,7 @@ class ActionEngine {
 	 * @return array<string, string> Adjusted scenario.
 	 */
 	private function apply_campaign_context( array $scenario, $campaign, string $direction ): array {
-		if ( null === $campaign ) {
+		if ( $campaign === null ) {
 			return $scenario;
 		}
 

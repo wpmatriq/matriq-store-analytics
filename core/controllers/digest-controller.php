@@ -21,7 +21,6 @@ defined( 'ABSPATH' ) || exit;
  * before the daily cron fires.
  */
 class DigestController extends BaseController {
-
 	/**
 	 * Route base.
 	 *

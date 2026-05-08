@@ -193,7 +193,7 @@ class SnapshotBuilder {
 			}
 
 			// Time guard - stop before hitting 15 seconds.
-			if ( ( microtime( true ) - $start ) > $max_time ) {
+			if ( microtime( true ) - $start > $max_time ) {
 				break;
 			}
 

@@ -106,7 +106,7 @@ class ImpactSummary {
 			];
 		}
 
-		$delta_pct = ( ( $yesterday_revenue - $day_before_revenue ) / $day_before_revenue ) * 100;
+		$delta_pct = ( $yesterday_revenue - $day_before_revenue ) / $day_before_revenue * 100;
 		$direction = $delta_pct >= 0 ? __( 'up', 'sales-pulse' ) : __( 'down', 'sales-pulse' );
 
 		return [

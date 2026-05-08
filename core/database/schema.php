@@ -24,10 +24,8 @@ class Schema {
 
 	/**
 	 * Current database schema version.
-	 *
-	 * @var int
 	 */
-	const DB_VERSION = 2;
+	public const DB_VERSION = 2;
 
 	/**
 	 * All table model class names.

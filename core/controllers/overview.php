@@ -16,7 +16,6 @@
 
 namespace EC_Sales_Pulse\Core\Controllers;
 
-use EC_Sales_Pulse\Core\Controllers\SettingsController;
 use EC_Sales_Pulse\Core\Database\Campaigns;
 use EC_Sales_Pulse\Core\Database\DailyStats;
 use EC_Sales_Pulse\Core\Services\ActionEngine;
@@ -32,7 +31,6 @@ defined( 'ABSPATH' ) || exit;
  * data to the same payload.
  */
 class Overview extends BaseController {
-
 	/**
 	 * Route base.
 	 *
@@ -196,7 +194,7 @@ class Overview extends BaseController {
 				'start' => $start,
 				'end'   => $end,
 				'trend' => $trend,
-			] 
+			]
 		);
 	}
 
@@ -310,7 +308,7 @@ class Overview extends BaseController {
 		foreach ( $metrics as $metric ) {
 			$curr_val = (float) ( $current[ $metric['key'] ] ?? 0 );
 			$prev_val = (float) ( $previous[ $metric['key'] ] ?? 0 );
-			$change   = $prev_val > 0 ? round( ( ( $curr_val - $prev_val ) / $prev_val ) * 100, 1 ) : 0;
+			$change   = $prev_val > 0 ? round( ( $curr_val - $prev_val ) / $prev_val * 100, 1 ) : 0;
 
 			$cards[] = [
 				'key'      => $metric['key'],

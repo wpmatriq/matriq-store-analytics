@@ -23,19 +23,19 @@ class Campaigns extends Base {
 	use Get_Instance;
 
 	/**
+	 * Valid campaign goals.
+	 */
+	public const GOAL_ORDERS    = 'orders';
+	public const GOAL_AOV       = 'aov';
+	public const GOAL_CLEARANCE = 'clearance';
+	public const GOAL_LAUNCH    = 'launch';
+
+	/**
 	 * Table name without prefix.
 	 *
 	 * @var string
 	 */
 	protected $table_name = 'campaigns';
-
-	/**
-	 * Valid campaign goals.
-	 */
-	const GOAL_ORDERS    = 'orders';
-	const GOAL_AOV       = 'aov';
-	const GOAL_CLEARANCE = 'clearance';
-	const GOAL_LAUNCH    = 'launch';
 
 	/**
 	 * Get the CREATE TABLE SQL.
@@ -139,7 +139,7 @@ class Campaigns extends Base {
 				'start_date' => $start_date,
 				'end_date'   => $end_date,
 				'created_at' => current_time( 'mysql' ),
-			] 
+			]
 		);
 	}
 

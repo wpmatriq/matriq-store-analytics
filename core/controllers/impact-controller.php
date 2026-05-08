@@ -23,7 +23,6 @@ defined( 'ABSPATH' ) || exit;
  * and instead mounts its richer endpoints under `copilot/impact/*`.
  */
 class ImpactController extends BaseController {
-
 	/**
 	 * Route base.
 	 *
