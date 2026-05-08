@@ -119,12 +119,17 @@ namespace EC_Sales_Pulse\Inc\Traits {
     /**
      * Trait Get_Instance.
      *
+     * @phpstan-consistent-constructor
      * @since x.x.x
      */
     trait Get_Instance
     {
         /**
          * Instance object.
+         *
+         * Protected (not private) so `static::$instance` late-binding works
+         * correctly with subclassing. Pro extends some of these singletons
+         * via subclass + factory swap.
          *
          * @var static|null
          */
@@ -1130,6 +1135,82 @@ namespace EC_Sales_Pulse\Inc\Services {
     }
 }
 namespace EC_Sales_Pulse\Core\Database {
+    /**
+     * Option-backed persistence for the dirty-dates repair queue. Public API
+     * mirrors the table-era model so callers (`OrderHooks`, `SnapshotBuilder`,
+     * `ImpactSummary`) work unchanged.
+     *
+     * @phpstan-consistent-constructor
+     */
+    class DirtyDates
+    {
+        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * `wp_options` row that holds the pending date set as a `[ date => reason ]`
+         * map. Non-autoloaded - hooked path only.
+         */
+        public const OPTION_KEY = 'salespulse_dirty_dates';
+        /**
+         * Returns an empty string. Retained so anything that asks the model for
+         * its CREATE TABLE statement (Schema iterator, accidental typing) gets a
+         * no-op instead of a fatal.
+         *
+         * @return string
+         */
+        public function get_schema(): string
+        {
+        }
+        /**
+         * Mark a date as dirty so the nightly rebuilder picks it up. Idempotent:
+         * a date already in the set keeps its earlier `detected_at` to satisfy
+         * "first time we noticed" semantics; reason is overwritten with the
+         * latest signal.
+         *
+         * @param string $date   YYYY-MM-DD.
+         * @param string $reason Why it's dirty (order_update | refund | status_change).
+         * @return bool True on successful persist.
+         */
+        public function mark_dirty(string $date, string $reason = 'order_update'): bool
+        {
+        }
+        /**
+         * Pending dates in detection order, capped at `$limit`. Returned as
+         * stdClass casts so callers can read `$row->stat_date` / `->reason` /
+         * `->detected_at` as before.
+         *
+         * @param int $limit Max rows to return.
+         * @return array<int, \stdClass>
+         */
+        public function get_pending(int $limit = 10): array
+        {
+        }
+        /**
+         * Drain a single date from the pending set + increment the repaired
+         * counter so the Free Impact tile reflects the repair.
+         *
+         * @param string $date YYYY-MM-DD.
+         * @return bool True if the date was previously in the set.
+         */
+        public function mark_resolved(string $date): bool
+        {
+        }
+        /**
+         * Count of all-time repaired edits. Reads the `system_state` counter
+         * that replaces the v2-era `WHERE resolved_at IS NOT NULL` table scan.
+         *
+         * @return int
+         */
+        public function count_resolved(): int
+        {
+        }
+    }
+    /**
+     * Shared base for every Sales Pulse / Store Copilot DB table model.
+     *
+     * Concrete subclasses declare a table name and prefix; this class supplies
+     * the wpdb connection, charset_collate, and standard insert/update/delete
+     * helpers so subclasses focus on schema and domain queries.
+     */
     abstract class Base
     {
         /**
@@ -1273,107 +1354,27 @@ namespace EC_Sales_Pulse\Core\Database {
         {
         }
     }
-    class DirtyDates extends \EC_Sales_Pulse\Core\Database\Base
-    {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
-        /**
-         * Table name without prefix.
-         *
-         * @var string
-         */
-        protected $table_name = 'dirty_dates';
-        /**
-         * Primary key column.
-         *
-         * @var string
-         */
-        protected $primary_key = 'stat_date';
-        /**
-         * Get the CREATE TABLE SQL.
-         *
-         * @return string
-         */
-        public function get_schema(): string
-        {
-        }
-        /**
-         * Mark a date as dirty (needs rebuild).
-         *
-         * Idempotent on the (stat_date) primary key: an already-pending row stays
-         * pending; an already-resolved row is reopened so the next nightly run
-         * picks it up and the audit trail advances.
-         *
-         * @param string $date   Date in Y-m-d format.
-         * @param string $reason Reason for marking dirty (order_update, refund, status_change).
-         * @return bool
-         */
-        public function mark_dirty(string $date, string $reason = 'order_update'): bool
-        {
-        }
-        /**
-         * Get dirty dates still pending repair.
-         *
-         * @param int $limit Max dates to return.
-         * @return array<int, \stdClass>
-         */
-        public function get_pending(int $limit = 10): array
-        {
-        }
-        /**
-         * Mark a date as repaired.
-         *
-         * The row is kept (with resolved_at stamped) so the Impact dashboard can
-         * count repaired dates as a free-plugin "data foundation" stat.
-         *
-         * @param string $date Date in Y-m-d format.
-         * @return bool
-         */
-        public function mark_resolved(string $date): bool
-        {
-        }
-        /**
-         * Count dates ever repaired in a date range. Used by the Impact summary.
-         *
-         * @param string $from Inclusive ISO datetime (resolved_at >=).
-         * @param string $to   Exclusive ISO datetime (resolved_at <).
-         * @return int
-         */
-        public function count_resolved_in_range(string $from, string $to): int
-        {
-        }
-        /**
-         * Total count of repaired dates (for "all-time" stats).
-         *
-         * @return int
-         */
-        public function count_resolved(): int
-        {
-        }
-        /**
-         * Clear all dirty dates. Reserved for uninstall paths.
-         *
-         * @return bool
-         */
-        public function clear_all(): bool
-        {
-        }
-    }
+    /**
+     * `campaigns` table model. Stores merchant-tagged date windows that adjust
+     * the diagnosis tone but never the underlying numbers (a Black Friday sale
+     * shouldn't read as an "anomalous spike", for example).
+     */
     class Campaigns extends \EC_Sales_Pulse\Core\Database\Base
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Valid campaign goals.
+         */
+        public const GOAL_ORDERS = 'orders';
+        public const GOAL_AOV = 'aov';
+        public const GOAL_CLEARANCE = 'clearance';
+        public const GOAL_LAUNCH = 'launch';
         /**
          * Table name without prefix.
          *
          * @var string
          */
         protected $table_name = 'campaigns';
-        /**
-         * Valid campaign goals.
-         */
-        const GOAL_ORDERS = 'orders';
-        const GOAL_AOV = 'aov';
-        const GOAL_CLEARANCE = 'clearance';
-        const GOAL_LAUNCH = 'launch';
         /**
          * Get the CREATE TABLE SQL.
          *
@@ -1438,9 +1439,42 @@ namespace EC_Sales_Pulse\Core\Database {
         {
         }
     }
+    /**
+     * Plugin-level key/value state store.
+     *
+     * Tracks one-shot markers like the last snapshot date, last digest send
+     * timestamp, db_version, backfill cursor, and similar bookkeeping that
+     * doesn't fit a per-day table.
+     */
     class SystemState extends \EC_Sales_Pulse\Core\Database\Base
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        /**
+         * Known state keys.
+         */
+        public const KEY_LAST_SNAPSHOT_DATE = 'last_snapshot_date';
+        public const KEY_BACKFILL_START = 'backfill_start';
+        public const KEY_BACKFILL_CURSOR = 'backfill_cursor';
+        public const KEY_BACKFILL_COMPLETE = 'backfill_complete';
+        public const KEY_DB_VERSION = 'db_version';
+        public const KEY_PLUGIN_VERSION = 'plugin_version';
+        public const KEY_LAST_DIGEST_SENT_DATE = 'last_digest_sent_date';
+        public const KEY_LAST_DIGEST_SENT_AT = 'last_digest_sent_at';
+        /**
+         * Counters that replaced the `digest_history` table in v2 of the free
+         * schema. The table stored 1 row per send attempt purely to power the
+         * Free Impact tile's all-time "morning briefings delivered" count -
+         * incrementing two keys does the same job in 1/10th the storage.
+         */
+        public const KEY_DIGEST_SENT_TOTAL = 'digest_sent_total';
+        public const KEY_DIGEST_FAILED_TOTAL = 'digest_failed_total';
+        public const KEY_DIGEST_LAST_ERROR = 'digest_last_error';
+        /**
+         * Counter that replaced the `dirty_dates.resolved_at` count read in v3
+         * of the free schema. Powers the Free Impact "edits caught and repaired"
+         * tile without keeping a per-edit row forever.
+         */
+        public const KEY_REPAIRED_TOTAL = 'repaired_total';
         /**
          * Table name without prefix.
          *
@@ -1453,17 +1487,6 @@ namespace EC_Sales_Pulse\Core\Database {
          * @var string
          */
         protected $primary_key = 'state_key';
-        /**
-         * Known state keys.
-         */
-        const KEY_LAST_SNAPSHOT_DATE = 'last_snapshot_date';
-        const KEY_BACKFILL_START = 'backfill_start';
-        const KEY_BACKFILL_CURSOR = 'backfill_cursor';
-        const KEY_BACKFILL_COMPLETE = 'backfill_complete';
-        const KEY_DB_VERSION = 'db_version';
-        const KEY_PLUGIN_VERSION = 'plugin_version';
-        const KEY_LAST_DIGEST_SENT_DATE = 'last_digest_sent_date';
-        const KEY_LAST_DIGEST_SENT_AT = 'last_digest_sent_at';
         /**
          * Get the CREATE TABLE SQL.
          *
@@ -1490,6 +1513,17 @@ namespace EC_Sales_Pulse\Core\Database {
          * @return bool
          */
         public function set(string $key, string $value): bool
+        {
+        }
+        /**
+         * Increment an integer counter stored under `$key`. Treats a missing or
+         * non-numeric existing value as 0. Returns the new total.
+         *
+         * @param string $key  Counter key.
+         * @param int    $step Amount to add (default 1).
+         * @return int
+         */
+        public function increment(string $key, int $step = 1): int
         {
         }
         /**
@@ -1537,64 +1571,11 @@ namespace EC_Sales_Pulse\Core\Database {
         {
         }
     }
-    class DigestHistory extends \EC_Sales_Pulse\Core\Database\Base
-    {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
-        /**
-         * Table name without prefix.
-         *
-         * @var string
-         */
-        protected $table_name = 'digest_history';
-        public function get_schema(): string
-        {
-        }
-        /**
-         * Record one send attempt.
-         *
-         * @param array<string, mixed> $data sent_at, recipient, status, error_text, is_test.
-         *
-         * @return int Insert id, or 0 on failure.
-         */
-        public function record(array $data): int
-        {
-        }
-        /**
-         * Count rows with a given status in a date range.
-         *
-         * @param string $status  'sent' | 'failed' | 'skipped'.
-         * @param string $from    Inclusive ISO datetime.
-         * @param string $to      Exclusive ISO datetime.
-         *
-         * @return int
-         */
-        public function count_in_range(string $status, string $from, string $to): int
-        {
-        }
-        /**
-         * Total count for a given status across all time. Used by the all-time
-         * "Morning briefings delivered" stat in the free Impact tab.
-         *
-         * @param string $status 'sent' | 'failed' | 'skipped'.
-         *
-         * @return int
-         */
-        public function count_total(string $status = 'sent'): int
-        {
-        }
-        /**
-         * Delete rows older than N days. Free plugin retention is bounded by
-         * the Pro plugin's impact_retention_days when available, otherwise a
-         * conservative 730 days (two years).
-         *
-         * @param int $days Number of days to keep.
-         *
-         * @return int Rows deleted.
-         */
-        public function purge_older_than(int $days): int
-        {
-        }
-    }
+    /**
+     * `daily_stats` table model. One row per day with the rolled-up store
+     * metrics (revenue, orders, items, AOV, refunds, new-vs-returning) that
+     * every diagnosis, comparison, and chart reads from.
+     */
     class DailyStats extends \EC_Sales_Pulse\Core\Database\Base
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -1622,7 +1603,7 @@ namespace EC_Sales_Pulse\Core\Database {
          * Get snapshot for a specific date.
          *
          * @param string $date Date in Y-m-d format.
-         * @return object|null
+         * @return \stdClass|null
          */
         public function get_by_date(string $date)
         {
@@ -1702,15 +1683,25 @@ namespace EC_Sales_Pulse\Core\Database {
         {
         }
     }
+    /**
+     * Plugin schema manager. Owns DB_VERSION + the list of table model classes,
+     * runs `dbDelta()` for each one on install/upgrade, and stamps the version
+     * in `system_state`.
+     */
     class Schema
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
         /**
          * Current database schema version.
          *
-         * @var int
+         * Bumps:
+         *   v3 - drops `digest_history` (replaced by two `system_state` counters
+         *        and a last-error key) and `dirty_dates` (replaced by an
+         *        option-backed set + repaired counter). Both tables existed
+         *        purely to power one all-time count tile each on the Free
+         *        Impact dashboard, which counters do at 1/10th the storage.
          */
-        const DB_VERSION = 2;
+        public const DB_VERSION = 3;
         /**
          * Create or update all plugin tables.
          *
@@ -1721,6 +1712,10 @@ namespace EC_Sales_Pulse\Core\Database {
         }
         /**
          * Check if schema needs update and run migrations.
+         *
+         * Pre-install hooks run version-targeted migrations (e.g. seeding the
+         * v3 digest-sent counter from the soon-to-be-dropped table) before
+         * dbDelta + the table drops.
          *
          * @return void
          */
@@ -1836,6 +1831,13 @@ namespace EC_Sales_Pulse\Core\Models {
     }
 }
 namespace EC_Sales_Pulse\Core\Hooks {
+    /**
+     * WooCommerce order-event listener.
+     *
+     * Marks affected dates as dirty when orders are created, updated, status-changed
+     * or refunded. Aggregation and snapshot rebuild happen later in the nightly cron;
+     * this class only writes lightweight `dirty_dates` rows.
+     */
     class OrderHooks
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -1887,6 +1889,13 @@ namespace EC_Sales_Pulse\Core\Hooks {
     }
 }
 namespace EC_Sales_Pulse\Core\Controllers {
+    /**
+     * Shared base for every Sales Pulse REST controller.
+     *
+     * Centralises the `sales-pulse/v2` namespace, the `manage_woocommerce`
+     * permission check, and the success/error response envelope so subclasses
+     * only need to declare a `rest_base` and register their routes.
+     */
     abstract class BaseController
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -1966,6 +1975,11 @@ namespace EC_Sales_Pulse\Core\Controllers {
         {
         }
     }
+    /**
+     * REST controller for the free Impact tab. Exposes a single read-only
+     * `summary` endpoint backed by ImpactSummary; Pro overrides nothing here
+     * and instead mounts its richer endpoints under `copilot/impact/*`.
+     */
     class ImpactController extends \EC_Sales_Pulse\Core\Controllers\BaseController
     {
         /**
@@ -1974,13 +1988,29 @@ namespace EC_Sales_Pulse\Core\Controllers {
          * @var string
          */
         protected $rest_base = 'impact';
+        /**
+         * Register the free Impact REST routes.
+         *
+         * @return void
+         */
         public function register_routes(): void
         {
         }
+        /**
+         * GET /sales-pulse/v2/impact/summary - returns the data-foundation stats
+         * payload assembled by ImpactSummary.
+         *
+         * @return \WP_REST_Response
+         */
         public function get_summary(): \WP_REST_Response
         {
         }
     }
+    /**
+     * Data-readiness REST controller. Surfaces a "is the dashboard ready to
+     * render" probe (WC active, analytics tables present, snapshots have run)
+     * plus a manual snapshot trigger for admin-side troubleshooting.
+     */
     class DataReadiness extends \EC_Sales_Pulse\Core\Controllers\BaseController
     {
         /**
@@ -2035,6 +2065,11 @@ namespace EC_Sales_Pulse\Core\Controllers {
         {
         }
     }
+    /**
+     * REST controller for tagging, listing, and ending campaigns. Mounted at
+     * `sales-pulse/v2/campaigns/*`. Campaigns colour the diagnosis but never
+     * change `daily_stats` numbers.
+     */
     class CampaignsController extends \EC_Sales_Pulse\Core\Controllers\BaseController
     {
         /**
@@ -2086,6 +2121,13 @@ namespace EC_Sales_Pulse\Core\Controllers {
         {
         }
     }
+    /**
+     * REST controller for the morning-briefing Overview page. Composes the
+     * KPI cards, diagnosis, and suggested action for a given period
+     * (daily / weekly / monthly) into one response. Filterable via
+     * `salespulse_overview_response` so Pro can append forecast + anomaly
+     * data to the same payload.
+     */
     class Overview extends \EC_Sales_Pulse\Core\Controllers\BaseController
     {
         /**
@@ -2119,6 +2161,10 @@ namespace EC_Sales_Pulse\Core\Controllers {
         {
         }
     }
+    /**
+     * REST controller for the History tab. Returns paginated daily snapshots
+     * with diagnoses so the merchant can scrub backwards through time.
+     */
     class History extends \EC_Sales_Pulse\Core\Controllers\BaseController
     {
         /**
@@ -2143,26 +2189,21 @@ namespace EC_Sales_Pulse\Core\Controllers {
         {
         }
     }
+    /**
+     * REST controller for the Settings page. Reads/writes the `salespulse_settings`
+     * option (digest schedule, recipient, sensitivity, etc.) under the
+     * `sales-pulse/v2/settings` namespace.
+     */
     class SettingsController extends \EC_Sales_Pulse\Core\Controllers\BaseController
     {
         /**
-         * Route base.
-         *
-         * @var string
-         */
-        protected $rest_base = 'settings';
-        /**
          * Option key for all plugin settings.
-         *
-         * @var string
          */
-        const OPTION_KEY = 'salespulse_settings';
+        public const OPTION_KEY = 'salespulse_settings';
         /**
          * Default settings.
-         *
-         * @var array<string, mixed>
          */
-        const DEFAULTS = [
+        public const DEFAULTS = [
             'snapshot_hour' => 2,
             // 0-23.
             'snapshot_min' => 10,
@@ -2171,15 +2212,19 @@ namespace EC_Sales_Pulse\Core\Controllers {
             'email_address' => '',
             // Defaults to admin email.
             'diagnosis_sensitivity' => 'balanced',
-            // 'calm' | 'balanced' | 'vigilant'.
+            // One of calm, balanced, vigilant.
             'last_digest_error' => null,
         ];
         /**
          * Allowed values for the diagnosis_sensitivity setting.
-         *
-         * @var string[]
          */
-        const SENSITIVITY_VALUES = ['calm', 'balanced', 'vigilant'];
+        public const SENSITIVITY_VALUES = ['calm', 'balanced', 'vigilant'];
+        /**
+         * Route base.
+         *
+         * @var string
+         */
+        protected $rest_base = 'settings';
         /**
          * Register routes.
          */
@@ -2223,6 +2268,11 @@ namespace EC_Sales_Pulse\Core\Controllers {
         {
         }
     }
+    /**
+     * REST controller for the morning-briefing email digest. Surfaces a
+     * "send test" endpoint for the Settings UI to verify mail configuration
+     * before the daily cron fires.
+     */
     class DigestController extends \EC_Sales_Pulse\Core\Controllers\BaseController
     {
         /**
@@ -2248,6 +2298,13 @@ namespace EC_Sales_Pulse\Core\Controllers {
     }
 }
 namespace EC_Sales_Pulse\Core\Services {
+    /**
+     * Nightly daily-stats snapshot builder.
+     *
+     * Builds a `daily_stats` row from `wc_order_stats` for a given date and
+     * processes the dirty-dates queue so any post-edit corrections are
+     * reflected in the next morning's briefing.
+     */
     class SnapshotBuilder
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -2316,6 +2373,11 @@ namespace EC_Sales_Pulse\Core\Services {
         {
         }
     }
+    /**
+     * Reads aggregate metrics from WooCommerce analytics tables for a given
+     * date and returns them in the shape `daily_stats` expects. Wraps the WC
+     * query so the SnapshotBuilder stays free of WC-table SQL.
+     */
     class DataCollector
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -2360,6 +2422,11 @@ namespace EC_Sales_Pulse\Core\Services {
         {
         }
     }
+    /**
+     * WC_Email subclass for the morning-briefing digest. Hooked into the
+     * WooCommerce email manager so merchants can configure subject/template
+     * via the standard WC Settings → Emails surface.
+     */
     class DigestEmail extends \WC_Email
     {
         /**
@@ -2368,6 +2435,9 @@ namespace EC_Sales_Pulse\Core\Services {
          * @var array<string, mixed>
          */
         public $payload = [];
+        /**
+         * Wire up the WC_Email metadata used by the WC mailer registry.
+         */
         public function __construct()
         {
         }
@@ -2381,74 +2451,98 @@ namespace EC_Sales_Pulse\Core\Services {
         public function trigger_digest(string $recipient, string $subject, array $payload): bool
         {
         }
+        /**
+         * From-name override applied to the digest email.
+         *
+         * @param string $from_name Default WC value (unused; we always provide our own name).
+         * @return string
+         */
         public function get_from_name($from_name = '')
         {
         }
+        /**
+         * From-address override applied to the digest email. Defaults to the
+         * site admin_email option; overridable via the salespulse filter.
+         *
+         * @param string $from_email Default WC value (unused; we always provide our own address).
+         * @return string
+         */
         public function get_from_address($from_email = '')
         {
         }
+        /**
+         * Render the HTML template into a string.
+         *
+         * @return string
+         */
         public function get_content_html()
         {
         }
+        /**
+         * Render the plain-text template into a string.
+         *
+         * @return string
+         */
         public function get_content_plain()
         {
         }
         /**
          * No editable fields. Render a notice instead with a deep link to our Settings page.
+         *
+         * @return void
          */
-        public function init_form_fields()
+        public function init_form_fields(): void
         {
         }
     }
+    /**
+     * Deterministic revenue diagnosis.
+     *
+     * Compares a current period to a prior period, decomposes the revenue
+     * delta into orders and AOV factors, weighs them against a sensitivity
+     * threshold, and returns a "What changed and why" verdict. The output is
+     * filterable via `salespulse_diagnosis_result` so Pro can layer LLM
+     * explanations on top.
+     */
     class DiagnosisEngine
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
         /**
          * Minimum revenue change percentage to trigger diagnosis (base; scaled by sensitivity).
-         *
-         * @var float
          */
-        const CHANGE_THRESHOLD = 5.0;
+        public const CHANGE_THRESHOLD = 5.0;
         /**
          * Absolute floor: anything below this is treated as "no revenue" rather
          * than a real signal. Used by the new-store / dead-store edge cases.
-         *
-         * @var float
          */
-        const MIN_REVENUE_THRESHOLD = 1.0;
+        public const MIN_REVENUE_THRESHOLD = 1.0;
         /**
          * Below this revenue, comparisons are statistically meaningless even
          * when both days have orders. STRATEGY.md Section 6: "Suppress strong
          * diagnosis, mark 'low sample size'." A jump from $7 to $76 is a
          * one-order-vs-one-order spike, not a trend.
-         *
-         * @var float
          */
-        const LOW_SAMPLE_REVENUE_THRESHOLD = 50.0;
+        public const LOW_SAMPLE_REVENUE_THRESHOLD = 50.0;
         /**
          * Below this order count on either side, the diagnosis is downgraded to
          * "low sample size" regardless of the dollar swing. Three orders is the
          * minimum where a primary-factor decomposition starts to mean something.
-         *
-         * @var int
          */
-        const MIN_ORDERS_FOR_CONFIDENCE = 3;
+        public const MIN_ORDERS_FOR_CONFIDENCE = 3;
         /**
          * Multipliers applied to CHANGE_THRESHOLD for each sensitivity level.
          *
          * Calm    - larger threshold, only flag major shifts.
          * Balanced - base threshold (5%).
          * Vigilant - tighter threshold, surface smaller movements.
-         *
-         * @var array<string, float>
          */
-        const SENSITIVITY_MULTIPLIERS = ['calm' => 1.5, 'balanced' => 1.0, 'vigilant' => 0.6];
+        public const SENSITIVITY_MULTIPLIERS = ['calm' => 1.5, 'balanced' => 1.0, 'vigilant' => 0.6];
         /**
          * Run full diagnosis comparing current vs previous period.
          *
-         * @param object $current     Current period metrics (from daily_stats or aggregated).
-         * @param object $previous    Previous period metrics.
-         * @param string $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
+         * @param \stdClass|array<string, mixed>|null $current     Current period metrics (from daily_stats or aggregated).
+         * @param \stdClass|array<string, mixed>|null $previous    Previous period metrics.
+         * @param string                              $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
          * @return array<string, mixed> Diagnosis result.
          */
         public function diagnose($current, $previous, string $sensitivity = 'balanced'): array
@@ -2464,6 +2558,12 @@ namespace EC_Sales_Pulse\Core\Services {
         {
         }
     }
+    /**
+     * Builds and sends the morning-briefing digest email. Composes the
+     * payload from yesterday's snapshot, dispatches via WC_Email when
+     * available (and falls back to wp_mail), and logs every send into
+     * `digest_history` with `sent`/`failed`/`skipped` status.
+     */
     class DigestMailer
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -2510,6 +2610,12 @@ namespace EC_Sales_Pulse\Core\Services {
         {
         }
     }
+    /**
+     * Read-only stat builder for the free Impact tab. Composes the six
+     * data-foundation numbers (days of trustworthy data, order edits caught
+     * & repaired, campaigns tracked, briefings delivered, latest refresh,
+     * yesterday at a glance) without touching any AI surface.
+     */
     class ImpactSummary
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -2522,6 +2628,14 @@ namespace EC_Sales_Pulse\Core\Services {
         {
         }
     }
+    /**
+     * Deterministic action recommender.
+     *
+     * Given a diagnosis + optional active campaign, picks one of a curated
+     * set of action scenarios (winback, AOV-booster, abandonment-recovery,
+     * etc.) and returns the merchant-facing recommendation. No AI calls;
+     * the Pro plugin extends this to layer LLM-tailored copy on top.
+     */
     class ActionEngine
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
@@ -2534,8 +2648,8 @@ namespace EC_Sales_Pulse\Core\Services {
         /**
          * Get action recommendation from diagnosis result.
          *
-         * @param array<string, mixed> $diagnosis Diagnosis result from DiagnosisEngine.
-         * @param object|null          $campaign  Active campaign (if any).
+         * @param array<string, mixed>                $diagnosis Diagnosis result from DiagnosisEngine.
+         * @param \stdClass|array<string, mixed>|null $campaign  Active campaign (if any).
          * @return array<string, string> Action recommendation.
          */
         public function recommend(array $diagnosis, $campaign = null): array
@@ -2544,14 +2658,19 @@ namespace EC_Sales_Pulse\Core\Services {
     }
 }
 namespace EC_Sales_Pulse\Core\Cron {
+    /**
+     * Cron registration + dispatch. Schedules the nightly snapshot at 02:10
+     * site-time and the digest send at the merchant's configured hour, and
+     * fires the corresponding services when WP triggers the event.
+     */
     class CronManager
     {
         use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
         /**
          * Hook names.
          */
-        const HOOK_NIGHTLY = 'salespulse_nightly_snapshot';
-        const HOOK_BACKFILL = 'salespulse_backfill_runner';
+        public const HOOK_NIGHTLY = 'salespulse_nightly_snapshot';
+        public const HOOK_BACKFILL = 'salespulse_backfill_runner';
         /**
          * Constructor - register cron hooks and schedules.
          */
@@ -2693,11 +2812,10 @@ namespace EC_Sales_Pulse\Admin {
         /**
          * Add submenu to admin menu.
          *
-         * v2 Navigation:
-         * - Overview (default - morning briefing)
-         * - History (daily explanation list)
-         * - Campaigns (start/stop active campaigns)
-         * - Settings (timezone, revenue basis, email digest)
+         * V2 navigation: Overview (default morning briefing), History (daily
+         * explanation list), Campaigns (start/stop active campaigns), Impact
+         * (data foundation stats), Settings (timezone, revenue basis, email
+         * digest).
          *
          * @since x.x.x
          */

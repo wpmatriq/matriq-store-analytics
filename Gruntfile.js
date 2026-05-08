@@ -110,8 +110,8 @@ module.exports = function ( grunt ) {
 				overwrite: true,
 				replacements: [
 					{
-						from: /EC_Sales_Pulse_VER', '.*?'/g,
-						to: "EC_Sales_Pulse_VER', '<%= pkg.version %>'",
+						from: /EC_SALES_PULSE_VER', '.*?'/g,
+						to: "EC_SALES_PULSE_VER', '<%= pkg.version %>'",
 					},
 				],
 			},
