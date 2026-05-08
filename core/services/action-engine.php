@@ -43,8 +43,8 @@ class ActionEngine {
 	/**
 	 * Get action recommendation from diagnosis result.
 	 *
-	 * @param array<string, mixed> $diagnosis Diagnosis result from DiagnosisEngine.
-	 * @param object|null          $campaign  Active campaign (if any).
+	 * @param array<string, mixed>                       $diagnosis Diagnosis result from DiagnosisEngine.
+	 * @param \stdClass|array<string, mixed>|null        $campaign  Active campaign (if any).
 	 * @return array<string, string> Action recommendation.
 	 */
 	public function recommend( array $diagnosis, $campaign = null ): array {
@@ -82,9 +82,9 @@ class ActionEngine {
 		 *
 		 * @since x.x.x
 		 *
-		 * @param array<string, mixed> $scenario  The matched recommendation scenario.
-		 * @param array<string, mixed> $diagnosis The diagnosis the recommendation reacts to.
-		 * @param object|null          $campaign  Active campaign (if any).
+		 * @param array<string, mixed>                $scenario  The matched recommendation scenario.
+		 * @param array<string, mixed>                $diagnosis The diagnosis the recommendation reacts to.
+		 * @param \stdClass|array<string, mixed>|null $campaign  Active campaign (if any).
 		 */
 		return apply_filters( 'salespulse_action_recommendation', $scenario, $diagnosis, $campaign );
 	}
@@ -175,13 +175,18 @@ class ActionEngine {
 	/**
 	 * Adjust recommendation tone when a campaign is active.
 	 *
-	 * @param array<string, string> $scenario Matched scenario.
-	 * @param \stdClass                $campaign Active campaign.
-	 * @param string                $direction Change direction.
+	 * @param array<string, string>               $scenario  Matched scenario.
+	 * @param \stdClass|array<string, mixed>|null $campaign  Active campaign.
+	 * @param string                              $direction Change direction.
 	 * @return array<string, string> Adjusted scenario.
 	 */
 	private function apply_campaign_context( array $scenario, $campaign, string $direction ): array {
-		$goal = $campaign->goal ?? '';
+		if ( null === $campaign ) {
+			return $scenario;
+		}
+
+		$campaign_arr = is_array( $campaign ) ? $campaign : (array) $campaign;
+		$goal         = $campaign_arr['goal'] ?? '';
 
 		// Suppression rules: during campaigns, suppress false alarms.
 		$suppress_map = [
@@ -194,7 +199,7 @@ class ActionEngine {
 		$suppressed = $suppress_map[ $goal ] ?? [];
 
 		if ( in_array( $scenario['scenario'], $suppressed, true ) ) {
-			$campaign_name              = esc_html( $campaign->name ?? '' );
+			$campaign_name              = esc_html( (string) ( $campaign_arr['name'] ?? '' ) );
 			$scenario['recommendation'] = sprintf(
 				/* translators: %1$s: campaign name, %2$s: original recommendation */
 				__( 'During your campaign "%1$s": This pattern is expected and not a concern. %2$s', 'sales-pulse' ),

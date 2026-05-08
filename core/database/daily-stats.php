@@ -85,13 +85,15 @@ class DailyStats extends Base {
 	public function get_range( string $start_date, string $end_date ): array {
 		$table = $this->get_table_name();
 
-		return $this->wpdb->get_results(
+		$rows = $this->wpdb->get_results(
 			$this->wpdb->prepare(
 				"SELECT * FROM `{$table}` WHERE stat_date BETWEEN %s AND %s ORDER BY stat_date ASC", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$start_date,
 				$end_date
 			)
 		);
+
+		return is_array( $rows ) ? $rows : [];
 	}
 
 	/**
@@ -188,13 +190,15 @@ class DailyStats extends Base {
 	public function get_paginated( int $limit, int $offset = 0 ): array {
 		$table = $this->get_table_name();
 
-		return $this->wpdb->get_results(
+		$rows = $this->wpdb->get_results(
 			$this->wpdb->prepare(
 				"SELECT * FROM `{$table}` ORDER BY stat_date DESC LIMIT %d OFFSET %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$limit,
 				$offset
 			)
 		);
+
+		return is_array( $rows ) ? $rows : [];
 	}
 
 	/**

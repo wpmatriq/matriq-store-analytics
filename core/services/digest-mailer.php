@@ -541,8 +541,9 @@ class DigestMailer {
 	 */
 	private function friendly_date( string $iso_date ): string {
 		try {
-			$d = new \DateTime( $iso_date, wp_timezone() );
-			return wp_date( 'M j', $d->getTimestamp() );
+			$d         = new \DateTime( $iso_date, wp_timezone() );
+			$formatted = wp_date( 'M j', $d->getTimestamp() );
+			return is_string( $formatted ) ? $formatted : $iso_date;
 		} catch ( \Exception $e ) {
 			return $iso_date;
 		}

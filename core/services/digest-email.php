@@ -131,6 +131,8 @@ class DigestEmail extends \WC_Email {
 
 	/**
 	 * No editable fields. Render a notice instead with a deep link to our Settings page.
+	 *
+	 * @return void
 	 */
 	public function init_form_fields() {
 		$settings_url = admin_url( 'admin.php?page=sales-pulse&tab=settings' );

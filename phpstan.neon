@@ -51,6 +51,19 @@ parameters:
 			identifier: new.static
 			path: inc/traits/get-instance.php
 
+		# Schema iterates a list of class strings, each of which extends
+		# Base AND uses the Get_Instance trait. PHPStan can't intersect
+		# those constraints — list-of-class-string doesn't propagate the
+		# trait method.
+		-
+			message: '#^Call to an undefined static method EC_Sales_Pulse\\Core\\Database\\Base::get_instance\(\)\.$#'
+			path: core/database/schema.php
+			reportUnmatched: false
+		-
+			message: '#^Parameter \#1 \$objectOrClass of class ReflectionClass constructor expects class-string<T of object>\|T of object, string given\.$#'
+			path: core/database/schema.php
+			reportUnmatched: false
+
 		# wpdb::prepare() with `{$table}` interpolation. `$table` always
 		# comes from a Base-class instance method, never from user input.
 		# PHPStan can't prove static-ness of an interpolated string, but
@@ -59,12 +72,15 @@ parameters:
 		-
 			message: '#expects literal-string, non-falsy-string given\.$#'
 			path: core/database/*.php
+			reportUnmatched: false
 		-
 			message: '#expects literal-string, non-falsy-string given\.$#'
 			path: core/services/*.php
+			reportUnmatched: false
 		-
 			message: '#expects literal-string, non-falsy-string given\.$#'
 			path: core/controllers/*.php
+			reportUnmatched: false
 
 		# Uses func_get_args()
 		# - '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'

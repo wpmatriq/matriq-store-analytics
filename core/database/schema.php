@@ -32,7 +32,11 @@ class Schema {
 	/**
 	 * All table model class names.
 	 *
-	 * @var array<string>
+	 * Each entry is a class extending Base AND using the Get_Instance trait,
+	 * which is why we can call ::get_instance() on them. PHPStan can't
+	 * intersect those constraints, so we leave it as a string list.
+	 *
+	 * @var array<int, string>
 	 */
 	private $table_models = [
 		DailyStats::class,

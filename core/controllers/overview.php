@@ -275,8 +275,8 @@ class Overview extends BaseController {
 	/**
 	 * Build metric cards with current, previous, and change values.
 	 *
-	 * @param array|null $current  Current period metrics.
-	 * @param array|null $previous Previous period metrics.
+	 * @param array<string, mixed>|null $current  Current period metrics.
+	 * @param array<string, mixed>|null $previous Previous period metrics.
 	 * @return array<int, array<string, mixed>>
 	 */
 	private function build_metric_cards( $current, $previous ): array {

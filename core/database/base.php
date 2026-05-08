@@ -178,7 +178,8 @@ abstract class Base {
 			$sql .= $this->wpdb->prepare( ' LIMIT %d', $limit );
 		}
 
-		return $this->wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$rows = $this->wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return is_array( $rows ) ? $rows : [];
 	}
 
 	/**

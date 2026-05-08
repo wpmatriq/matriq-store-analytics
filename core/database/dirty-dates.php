@@ -70,19 +70,23 @@ class DirtyDates extends Base {
 	public function mark_dirty( string $date, string $reason = 'order_update' ): bool {
 		$table = $this->get_table_name();
 
-		$result = $this->wpdb->query(
-			$this->wpdb->prepare(
-				"INSERT INTO `{$table}` (stat_date, reason, detected_at, resolved_at)
-				 VALUES (%s, %s, %s, NULL)
-				 ON DUPLICATE KEY UPDATE
-					reason = VALUES(reason),
-					detected_at = VALUES(detected_at),
-					resolved_at = NULL", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$date,
-				$reason,
-				current_time( 'mysql' )
-			)
+		$sql = $this->wpdb->prepare(
+			"INSERT INTO `{$table}` (stat_date, reason, detected_at, resolved_at)
+			 VALUES (%s, %s, %s, NULL)
+			 ON DUPLICATE KEY UPDATE
+				reason = VALUES(reason),
+				detected_at = VALUES(detected_at),
+				resolved_at = NULL", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$date,
+			$reason,
+			current_time( 'mysql' )
 		);
+
+		if ( ! is_string( $sql ) ) {
+			return false;
+		}
+
+		$result = $this->wpdb->query( $sql );
 
 		return $result !== false;
 	}
@@ -96,12 +100,14 @@ class DirtyDates extends Base {
 	public function get_pending( int $limit = 10 ): array {
 		$table = $this->get_table_name();
 
-		return $this->wpdb->get_results(
+		$rows = $this->wpdb->get_results(
 			$this->wpdb->prepare(
 				"SELECT * FROM `{$table}` WHERE resolved_at IS NULL ORDER BY stat_date DESC LIMIT %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$limit
 			)
 		);
+
+		return is_array( $rows ) ? $rows : [];
 	}
 
 	/**

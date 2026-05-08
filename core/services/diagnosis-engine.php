@@ -88,9 +88,9 @@ class DiagnosisEngine {
 	/**
 	 * Run full diagnosis comparing current vs previous period.
 	 *
-	 * @param \stdClass $current     Current period metrics (from daily_stats or aggregated).
-	 * @param \stdClass $previous    Previous period metrics.
-	 * @param string $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
+	 * @param \stdClass|array<string, mixed>|null $current     Current period metrics (from daily_stats or aggregated).
+	 * @param \stdClass|array<string, mixed>|null $previous    Previous period metrics.
+	 * @param string                              $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
 	 * @return array<string, mixed> Diagnosis result.
 	 */
 	public function diagnose( $current, $previous, string $sensitivity = 'balanced' ): array {
@@ -443,7 +443,7 @@ class DiagnosisEngine {
 	/**
 	 * Normalize metrics from object to array with floats.
 	 *
-	 * @param object|array|null $metrics Raw metrics.
+	 * @param \stdClass|array<string, mixed>|null $metrics Raw metrics.
 	 * @return array<string, float>|null Normalized array or null.
 	 */
 	private function normalize_metrics( $metrics ) {

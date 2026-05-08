@@ -133,13 +133,17 @@ class DigestHistory extends Base {
 		$table  = $this->get_table_name();
 		$cutoff = ( new \DateTime( "-{$days} days", wp_timezone() ) )->format( 'Y-m-d H:i:s' );
 
-		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		return (int) $this->wpdb->query(
-			$this->wpdb->prepare(
-				"DELETE FROM `{$table}` WHERE sent_at < %s",
-				$cutoff
-			)
+		$sql = $this->wpdb->prepare(
+			"DELETE FROM `{$table}` WHERE sent_at < %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$cutoff
 		);
+
+		if ( ! is_string( $sql ) ) {
+			return 0;
+		}
+
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+		return (int) $this->wpdb->query( $sql );
 		// phpcs:enable
 	}
 }

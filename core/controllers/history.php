@@ -105,7 +105,8 @@ class History extends BaseController {
 		// per-row lookups. Same shape as the per-row method; just keyed by date.
 		$prev_dates = [];
 		foreach ( $rows as $row ) {
-			$prev_dates[] = gmdate( 'Y-m-d', strtotime( $row->stat_date . ' -1 day' ) );
+			$ts           = strtotime( $row->stat_date . ' -1 day' );
+			$prev_dates[] = $ts ? gmdate( 'Y-m-d', $ts ) : '';
 		}
 		$prev_by_date = $this->fetch_prev_rows_by_date( $daily_stats, $prev_dates );
 
@@ -119,7 +120,8 @@ class History extends BaseController {
 
 		$items = [];
 		foreach ( $rows as $row ) {
-			$prev_date = gmdate( 'Y-m-d', strtotime( $row->stat_date . ' -1 day' ) );
+			$prev_ts   = strtotime( $row->stat_date . ' -1 day' );
+			$prev_date = $prev_ts ? gmdate( 'Y-m-d', $prev_ts ) : '';
 			$prev_row  = $prev_by_date[ $prev_date ] ?? null;
 
 			$diagnosis      = $diagnosis_engine->diagnose( $row, $prev_row, $sensitivity );
@@ -155,7 +157,7 @@ class History extends BaseController {
 	 *
 	 * @param DailyStats    $daily_stats Database accessor.
 	 * @param array<string> $dates       Y-m-d dates to fetch.
-	 * @return array<string, object>
+	 * @return array<string, \stdClass>
 	 */
 	private function fetch_prev_rows_by_date( DailyStats $daily_stats, array $dates ): array {
 		$dates = array_values( array_unique( array_filter( $dates ) ) );
@@ -181,7 +183,7 @@ class History extends BaseController {
 	 * most-recently-created active campaign (matches the per-row query's
 	 * `ORDER BY id DESC LIMIT 1` semantics).
 	 *
-	 * @param array<object> $campaigns Raw rows from Campaigns::get_all.
+	 * @param array<int, \stdClass> $campaigns Raw rows from Campaigns::get_all.
 	 * @return array<int, \stdClass>
 	 */
 	private function index_campaigns( array $campaigns ): array {
@@ -196,8 +198,8 @@ class History extends BaseController {
 	 * Find the active campaign for a date in the pre-fetched list. Mirrors
 	 * `Campaigns::get_active_for_date()` semantics but in PHP.
 	 *
-	 * @param array<object> $campaigns Sorted descending by id.
-	 * @param string        $date      Y-m-d.
+	 * @param array<int, \stdClass> $campaigns Sorted descending by id.
+	 * @param string                $date      Y-m-d.
 	 * @return \stdClass|null
 	 */
 	private function campaign_for_date( array $campaigns, string $date ) {
