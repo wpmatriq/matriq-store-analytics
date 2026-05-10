@@ -18,7 +18,7 @@ import OverviewPage from '@DashboardApp/pages/Overview/OverviewPage';
 import HistoryPage from '@DashboardApp/pages/History/HistoryPage';
 import CampaignsPage from '@DashboardApp/pages/Campaigns/CampaignsPage';
 import ImpactPage from '@DashboardApp/pages/Impact/ImpactPage';
-import SettingsPage from '@DashboardApp/pages/Settings/SettingsPage';
+import SettingsRouter from '@DashboardApp/pages/Settings/SettingsRouter';
 
 const BUILT_IN_TABS = [ 'overview', 'history', 'campaigns', 'settings' ];
 
@@ -28,6 +28,7 @@ if ( typeof window !== 'undefined' ) {
 	window.salesPulse = window.salesPulse || {};
 	window.salesPulse.tabs = window.salesPulse.tabs || {};
 	window.salesPulse.slots = window.salesPulse.slots || {};
+	window.salesPulse.settingsSubtabs = window.salesPulse.settingsSubtabs || {};
 
 	if ( typeof window.salesPulse.registerTab !== 'function' ) {
 		window.salesPulse.registerTab = function ( entry ) {
@@ -42,6 +43,34 @@ if ( typeof window !== 'undefined' ) {
 				label: entry.label || entry.id,
 				component: entry.component,
 			};
+			return true;
+		};
+	}
+
+	// Settings sub-tab registry (Option C). Pro bundles register additional
+	// sub-tabs (AI / Privacy / Alerts / Licence) here; the free shell renders
+	// `general` flat when this registry is empty so no Pro = no sub-tab strip.
+	// `weight` controls render order (lower = earlier); `id` is the URL slug
+	// surfaced via the `?stab=` query param.
+	if ( typeof window.salesPulse.registerSettingsSubtab !== 'function' ) {
+		window.salesPulse.registerSettingsSubtab = function ( entry ) {
+			if ( ! entry || ! entry.id || ! entry.component ) {
+				return false;
+			}
+			if ( entry.id === 'general' ) {
+				return false; // `general` is reserved for the free sections.
+			}
+			window.salesPulse.settingsSubtabs[ entry.id ] = {
+				id: entry.id,
+				label: entry.label || entry.id,
+				component: entry.component,
+				weight: typeof entry.weight === 'number' ? entry.weight : 0,
+			};
+			window.dispatchEvent(
+				new CustomEvent( 'salespulse:settings-subtab-registered', {
+					detail: { id: entry.id },
+				} )
+			);
 			return true;
 		};
 	}
@@ -89,11 +118,28 @@ const queryClient = new QueryClient( {
 /**
  * Read the active tab from the URL query string.
  *
+ * Legacy `?tab=copilot` URLs (Phase 5.x) are silently rewritten to
+ * `?tab=settings&stab=ai` so existing bookmarks and chat-drawer deep-links
+ * continue to land on the right surface after the Copilot tab was merged
+ * into Settings (Option C).
+ *
  * @return {string} Current tab slug (overview, history, campaigns, settings, or a registered tab).
  */
 function getActiveTab() {
 	const params = new URLSearchParams( window.location.search );
-	return params.get( 'tab' ) || 'overview';
+	const requested = params.get( 'tab' );
+
+	if ( requested === 'copilot' && typeof window !== 'undefined' && window.history?.replaceState ) {
+		const url = new URL( window.location.href );
+		url.searchParams.set( 'tab', 'settings' );
+		if ( ! url.searchParams.get( 'stab' ) ) {
+			url.searchParams.set( 'stab', 'copilot' );
+		}
+		window.history.replaceState( {}, '', url.toString() );
+		return 'settings';
+	}
+
+	return requested || 'overview';
 }
 
 /**
@@ -110,7 +156,7 @@ function PageRouter( { tab } ) {
 		case 'campaigns':
 			return <CampaignsPage />;
 		case 'settings':
-			return <SettingsPage />;
+			return <SettingsRouter />;
 		case 'overview':
 			return <OverviewPage />;
 		case 'impact': {

@@ -117,6 +117,13 @@ class Menu {
 		);
 
 		$default_submenus = [
+			'impact'    => [
+				'page_title' => __( 'Impact', 'sales-pulse' ),
+				'menu_title' => __( 'Impact', 'sales-pulse' ),
+				'capability' => $capability,
+				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=impact',
+				'callback'   => null,
+			],
 			'history'   => [
 				'page_title' => __( 'History', 'sales-pulse' ),
 				'menu_title' => __( 'History', 'sales-pulse' ),
@@ -129,13 +136,6 @@ class Menu {
 				'menu_title' => __( 'Campaigns', 'sales-pulse' ),
 				'capability' => $capability,
 				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=campaigns',
-				'callback'   => null,
-			],
-			'impact'    => [
-				'page_title' => __( 'Impact', 'sales-pulse' ),
-				'menu_title' => __( 'Impact', 'sales-pulse' ),
-				'capability' => $capability,
-				'menu_slug'  => 'admin.php?page=' . self::PAGE_ID . '&tab=impact',
 				'callback'   => null,
 			],
 			'settings'  => [
