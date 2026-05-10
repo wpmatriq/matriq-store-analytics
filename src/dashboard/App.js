@@ -19,6 +19,10 @@ import HistoryPage from '@DashboardApp/pages/History/HistoryPage';
 import CampaignsPage from '@DashboardApp/pages/Campaigns/CampaignsPage';
 import ImpactPage from '@DashboardApp/pages/Impact/ImpactPage';
 import SettingsRouter from '@DashboardApp/pages/Settings/SettingsRouter';
+import {
+	CopilotUpgradeDrawer,
+	CopilotUpgradeTrigger,
+} from '@Components/CopilotUpgrade';
 
 const BUILT_IN_TABS = [ 'overview', 'history', 'campaigns', 'settings' ];
 
@@ -103,6 +107,23 @@ if ( typeof window !== 'undefined' ) {
 			return true;
 		};
 	}
+
+	// Free-side "Ask Copilot" trigger + upgrade drawer. Both components
+	// self-gate on Pro presence, so when Store Copilot is installed and
+	// active these registrations stay in the slot list but render null —
+	// Pro's ChatTrigger/ChatDrawer take over the same slot positions.
+	// Registering here means free merchants see the chip immediately on
+	// first paint, with no Pro-bundle dependency.
+	window.salesPulse.registerSlot( 'header-action', {
+		id: 'sales-pulse-copilot-upgrade-trigger',
+		component: CopilotUpgradeTrigger,
+		weight: 10,
+	} );
+	window.salesPulse.registerSlot( 'app-overlay', {
+		id: 'sales-pulse-copilot-upgrade-drawer',
+		component: CopilotUpgradeDrawer,
+		weight: 0,
+	} );
 }
 
 const queryClient = new QueryClient( {
