@@ -16,20 +16,31 @@ import { PluginSlot } from '@Components/PluginSlot';
 const STALE_THRESHOLD_MS = 26 * 60 * 60 * 1000;
 
 function getTabs() {
-	const builtIn = [
+	// Insight + operational arc: Overview (morning glance) → Impact (did
+	// Copilot earn me money) → History (scrub backwards) → Campaigns
+	// (mark what's running). Settings is held back so it always renders
+	// after Pro's registered tabs (Analytics, Copilot), per the universal
+	// admin convention of Settings-last.
+	//
+	// Final order:
+	//   Pro inactive → Overview · Impact · History · Campaigns · Settings
+	//   Pro active   → Overview · Impact · History · Campaigns · Analytics · Copilot · Settings
+	const primary = [
 		{ slug: 'overview', label: __( 'Overview', 'sales-pulse' ), href: 'admin.php?page=sales-pulse' },
+		{ slug: 'impact', label: __( 'Impact', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=impact' },
 		{ slug: 'history', label: __( 'History', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=history' },
 		{ slug: 'campaigns', label: __( 'Campaigns', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=campaigns' },
-		{ slug: 'impact', label: __( 'Impact', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=impact' },
-		{ slug: 'settings', label: __( 'Settings', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=settings' },
 	];
+	const settings = { slug: 'settings', label: __( 'Settings', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=settings' };
 
-	const builtInSlugs = builtIn.map( ( t ) => t.slug );
+	const builtInSlugs = [ ...primary.map( ( t ) => t.slug ), settings.slug ];
 
 	// Tabs registered by premium extensions via `window.salesPulse.registerTab`.
 	// Skip any whose slug already exists as a built-in: Pro uses registerTab
 	// for "soft built-ins" (e.g. impact) only to override the rendered
-	// component in PageRouter, never to add a duplicate nav entry.
+	// component in PageRouter, never to add a duplicate nav entry. Insertion
+	// order is preserved (Object.values), so Pro's `analytics`/`copilot`
+	// land here in the order Pro registered them.
 	const registered = Object.values( window?.salesPulse?.tabs || {} )
 		.filter( ( entry ) => builtInSlugs.indexOf( entry.id ) === -1 )
 		.map( ( entry ) => ( {
@@ -38,7 +49,7 @@ function getTabs() {
 			href: `admin.php?page=sales-pulse&tab=${ entry.id }`,
 		} ) );
 
-	return [ ...builtIn, ...registered ];
+	return [ ...primary, ...registered, settings ];
 }
 
 function useLiveState() {
