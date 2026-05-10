@@ -118,28 +118,11 @@ const queryClient = new QueryClient( {
 /**
  * Read the active tab from the URL query string.
  *
- * Legacy `?tab=copilot` URLs (Phase 5.x) are silently rewritten to
- * `?tab=settings&stab=ai` so existing bookmarks and chat-drawer deep-links
- * continue to land on the right surface after the Copilot tab was merged
- * into Settings (Option C).
- *
  * @return {string} Current tab slug (overview, history, campaigns, settings, or a registered tab).
  */
 function getActiveTab() {
 	const params = new URLSearchParams( window.location.search );
-	const requested = params.get( 'tab' );
-
-	if ( requested === 'copilot' && typeof window !== 'undefined' && window.history?.replaceState ) {
-		const url = new URL( window.location.href );
-		url.searchParams.set( 'tab', 'settings' );
-		if ( ! url.searchParams.get( 'stab' ) ) {
-			url.searchParams.set( 'stab', 'copilot' );
-		}
-		window.history.replaceState( {}, '', url.toString() );
-		return 'settings';
-	}
-
-	return requested || 'overview';
+	return params.get( 'tab' ) || 'overview';
 }
 
 /**
