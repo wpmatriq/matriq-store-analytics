@@ -8,6 +8,9 @@
 	<!-- PHP 5.6 and higher. -->
 	<config name="testVersion" value="7.4-"/>
 
+	<!-- Minimum supported WP version (matches readme.txt "Requires at least"). Unlocks %i placeholder, etc. -->
+	<config name="minimum_wp_version" value="6.7"/>
+
 	<!--
 	Prevent errors caused by WordPress Coding Standards not supporting PHP 8.0+.
 	See https://github.com/WordPress/WordPress-Coding-Standards/issues/2035
@@ -195,6 +198,11 @@
 		<exclude-pattern>*/core/services/*</exclude-pattern>
 	</rule>
 
+	<!-- WPCS 2.3 doesn't yet know about the %i identifier placeholder, added in WP 6.2. Our minimum WP is 6.7. -->
+	<rule ref="WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder">
+		<severity>0</severity>
+	</rule>
+
 	<exclude-pattern>*/.vscode/*</exclude-pattern>
 	<exclude-pattern>*/.github/*</exclude-pattern>
 	<exclude-pattern>*/bin/*</exclude-pattern>
@@ -211,5 +219,4 @@
 	<exclude-pattern>assets/build/*</exclude-pattern>
 	<exclude-pattern>assets/fonts/*</exclude-pattern>
 	<exclude-pattern>phpinsights.php</exclude-pattern>
-	<exclude-pattern>inc/services/query.php</exclude-pattern>
 </ruleset>

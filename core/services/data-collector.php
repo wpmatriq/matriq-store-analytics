@@ -52,8 +52,7 @@ class DataCollector {
 	 */
 	public function are_analytics_tables_available(): bool {
 		$table = $this->wpdb->prefix . 'wc_order_stats';
-		// WC core table; SHOW TABLES is a metadata query that can't be cached.
-		return $this->wpdb->get_var( $this->wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table; // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+		return $this->wpdb->get_var( $this->wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table; // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 	}
 
 	/**
@@ -62,11 +61,11 @@ class DataCollector {
 	 * @return string|null Date in Y-m-d format, or null if no orders.
 	 */
 	public function get_oldest_order_date() {
-		$table = $this->wpdb->prefix . 'wc_order_stats';
-
-		// WC core table; nightly snapshot is the only reader.
 		$date = $this->wpdb->get_var(
-			"SELECT MIN(DATE(date_created)) FROM `{$table}` WHERE parent_id = 0" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+			$this->wpdb->prepare(
+				'SELECT MIN(DATE(date_created)) FROM %i WHERE parent_id = 0',
+				$this->wpdb->prefix . 'wc_order_stats'
+			)
 		);
 
 		return $date ? $date : null;
@@ -78,13 +77,11 @@ class DataCollector {
 	 * @return int
 	 */
 	public function get_total_order_count(): int {
-		$table    = $this->wpdb->prefix . 'wc_order_stats';
-		$statuses = $this->get_status_placeholders();
-
-		// Placeholders are %s repeated to match valid_statuses count; sniff cannot resolve dynamic placeholder counts.
+		// IN(%s, %s, %s, %s) tracks the four entries in $valid_statuses; update both sides together.
 		return (int) $this->wpdb->get_var(
 			$this->wpdb->prepare(
-				"SELECT COUNT(*) FROM `{$table}` WHERE parent_id = 0 AND status IN ({$statuses})", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+				'SELECT COUNT(*) FROM %i WHERE parent_id = 0 AND status IN (%s, %s, %s, %s)',
+				$this->wpdb->prefix . 'wc_order_stats',
 				...$this->valid_statuses
 			)
 		);
@@ -134,21 +131,19 @@ class DataCollector {
 	 * @return object
 	 */
 	private function get_revenue_metrics( string $start, string $end ) {
-		$table    = $this->wpdb->prefix . 'wc_order_stats';
-		$statuses = $this->get_status_placeholders();
-
-		// Placeholders are %s repeated to match valid_statuses count; sniff cannot resolve dynamic placeholder counts.
+		// IN(%s, %s, %s, %s) tracks the four entries in $valid_statuses; update both sides together.
 		$result = $this->wpdb->get_row(
 			$this->wpdb->prepare(
-				"SELECT
+				'SELECT
 					COUNT(DISTINCT order_id) as orders,
 					COALESCE(SUM(net_total), 0) as revenue,
 					COALESCE(SUM(num_items_sold), 0) as items_sold,
 					COALESCE(SUM(total_sales - net_total), 0) as discount_total
-				FROM `{$table}`
+				FROM %i
 				WHERE date_created BETWEEN %s AND %s
 				AND parent_id = 0
-				AND status IN ({$statuses})", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+				AND status IN (%s, %s, %s, %s)',
+				$this->wpdb->prefix . 'wc_order_stats',
 				$start,
 				$end,
 				...$this->valid_statuses
@@ -171,20 +166,18 @@ class DataCollector {
 	 * @return object
 	 */
 	private function get_customer_metrics( string $start, string $end ) {
-		$order_table = $this->wpdb->prefix . 'wc_order_stats';
-		$statuses    = $this->get_status_placeholders();
-
 		// A customer is "new" if this order's date matches their first order date.
-		// Placeholders are %s repeated to match valid_statuses count; sniff cannot resolve dynamic placeholder counts.
+		// IN(%s, %s, %s, %s) tracks the four entries in $valid_statuses; update both sides together.
 		$result = $this->wpdb->get_row(
 			$this->wpdb->prepare(
-				"SELECT
+				'SELECT
 					COALESCE(SUM(CASE WHEN os.returning_customer = 0 THEN 1 ELSE 0 END), 0) as new_customers,
 					COALESCE(SUM(CASE WHEN os.returning_customer = 1 THEN 1 ELSE 0 END), 0) as returning_customers
-				FROM `{$order_table}` os
+				FROM %i os
 				WHERE os.date_created BETWEEN %s AND %s
 				AND os.parent_id = 0
-				AND os.status IN ({$statuses})", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+				AND os.status IN (%s, %s, %s, %s)',
+				$this->wpdb->prefix . 'wc_order_stats',
 				$start,
 				$end,
 				...$this->valid_statuses
@@ -206,30 +199,19 @@ class DataCollector {
 	 * @return object
 	 */
 	private function get_refund_metrics( string $start, string $end ) {
-		$table = $this->wpdb->prefix . 'wc_order_stats';
-
-		// WC core table; nightly snapshot is the only reader.
 		$result = $this->wpdb->get_row(
 			$this->wpdb->prepare(
-				"SELECT
+				'SELECT
 					COALESCE(ABS(SUM(net_total)), 0) as refund_total
-				FROM `{$table}`
+				FROM %i
 				WHERE date_created BETWEEN %s AND %s
-				AND parent_id > 0", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+				AND parent_id > 0',
+				$this->wpdb->prefix . 'wc_order_stats',
 				$start,
 				$end
 			)
 		);
 
 		return $result ? $result : (object) [ 'refund_total' => 0 ];
-	}
-
-	/**
-	 * Generate SQL placeholders for valid statuses.
-	 *
-	 * @return string Comma-separated %s placeholders.
-	 */
-	private function get_status_placeholders(): string {
-		return implode( ', ', array_fill( 0, count( $this->valid_statuses ), '%s' ) );
 	}
 }

@@ -92,16 +92,14 @@ class SystemState extends Base {
 	 * @return mixed
 	 */
 	public function get( string $key, $default = null ) {
-		$table = $this->get_table_name();
-
 		if ( ! $this->table_exists() ) {
 			return $default;
 		}
 
-		// Table is plugin-controlled via Base::get_table_name().
 		$value = $this->wpdb->get_var(
 			$this->wpdb->prepare(
-				"SELECT state_value FROM `{$table}` WHERE state_key = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+				'SELECT state_value FROM %i WHERE state_key = %s',
+				$this->get_table_name(),
 				$key
 			)
 		);
@@ -190,16 +188,14 @@ class SystemState extends Base {
 	 * @return string|null ISO8601-compatible MySQL datetime, or null if never set.
 	 */
 	public function get_last_snapshot_timestamp() {
-		$table = $this->get_table_name();
-
 		if ( ! $this->table_exists() ) {
 			return null;
 		}
 
-		// Table is plugin-controlled via Base::get_table_name().
 		$value = $this->wpdb->get_var(
 			$this->wpdb->prepare(
-				"SELECT updated_at FROM `{$table}` WHERE state_key = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+				'SELECT updated_at FROM %i WHERE state_key = %s',
+				$this->get_table_name(),
 				self::KEY_LAST_SNAPSHOT_DATE
 			)
 		);
