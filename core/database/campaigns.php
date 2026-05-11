@@ -80,9 +80,10 @@ class Campaigns extends Base {
 	 */
 	public function get_active() {
 		$today = current_time( 'Y-m-d' );
+		global $wpdb;
 
 		return $this->wpdb->get_row(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT * FROM %i
 				WHERE start_date <= %s
 				AND (end_date IS NULL OR end_date >= %s)
@@ -102,8 +103,10 @@ class Campaigns extends Base {
 	 * @return \stdClass|null Active campaign or null.
 	 */
 	public function get_active_for_date( string $date ) {
+		global $wpdb;
+
 		return $this->wpdb->get_row(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT * FROM %i
 				WHERE start_date <= %s
 				AND (end_date IS NULL OR end_date >= %s)

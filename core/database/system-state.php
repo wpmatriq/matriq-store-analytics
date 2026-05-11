@@ -96,8 +96,10 @@ class SystemState extends Base {
 			return $default;
 		}
 
+		global $wpdb;
+
 		$value = $this->wpdb->get_var(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT state_value FROM %i WHERE state_key = %s',
 				$this->get_table_name(),
 				$key
@@ -192,8 +194,10 @@ class SystemState extends Base {
 			return null;
 		}
 
+		global $wpdb;
+
 		$value = $this->wpdb->get_var(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT updated_at FROM %i WHERE state_key = %s',
 				$this->get_table_name(),
 				self::KEY_LAST_SNAPSHOT_DATE

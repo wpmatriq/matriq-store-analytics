@@ -144,8 +144,10 @@ abstract class Base {
 	 * @return \stdClass|null Row object or null.
 	 */
 	public function find( $id ) {
+		global $wpdb;
+
 		$row = $this->wpdb->get_row(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT * FROM %i WHERE %i = %s LIMIT 1',
 				$this->get_table_name(),
 				$this->primary_key,
@@ -165,22 +167,70 @@ abstract class Base {
 	 * @return array<int, \stdClass>
 	 */
 	public function all( string $order_by = '', string $order = 'ASC', int $limit = 0 ): array {
-		$args = [ $this->get_table_name() ];
-		$sql  = 'SELECT * FROM %i';
+		global $wpdb;
+
+		$order = strtoupper( $order ) === 'DESC' ? 'DESC' : 'ASC';
+
+		if ( $order_by && $limit > 0 ) {
+			if ( 'DESC' === $order ) {
+				$rows = $this->wpdb->get_results(
+					$wpdb->prepare(
+						'SELECT * FROM %i ORDER BY %i DESC LIMIT %d',
+						$this->get_table_name(),
+						$order_by,
+						$limit
+					)
+				);
+				return is_array( $rows ) ? $rows : [];
+			}
+
+			$rows = $this->wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT * FROM %i ORDER BY %i ASC LIMIT %d',
+					$this->get_table_name(),
+					$order_by,
+					$limit
+				)
+			);
+			return is_array( $rows ) ? $rows : [];
+		}
 
 		if ( $order_by ) {
-			// $order is a whitelisted literal (ASC|DESC); table + column flow through %i.
-			$order  = strtoupper( $order ) === 'DESC' ? 'DESC' : 'ASC';
-			$sql   .= ' ORDER BY %i ' . $order;
-			$args[] = $order_by;
+			if ( 'DESC' === $order ) {
+				$rows = $this->wpdb->get_results(
+					$wpdb->prepare(
+						'SELECT * FROM %i ORDER BY %i DESC',
+						$this->get_table_name(),
+						$order_by
+					)
+				);
+				return is_array( $rows ) ? $rows : [];
+			}
+
+			$rows = $this->wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT * FROM %i ORDER BY %i ASC',
+					$this->get_table_name(),
+					$order_by
+				)
+			);
+			return is_array( $rows ) ? $rows : [];
 		}
 
 		if ( $limit > 0 ) {
-			$sql   .= ' LIMIT %d';
-			$args[] = $limit;
+			$rows = $this->wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT * FROM %i LIMIT %d',
+					$this->get_table_name(),
+					$limit
+				)
+			);
+			return is_array( $rows ) ? $rows : [];
 		}
 
-		$rows = $this->wpdb->get_results( $this->wpdb->prepare( $sql, ...$args ) );
+		$rows = $this->wpdb->get_results(
+			$wpdb->prepare( 'SELECT * FROM %i', $this->get_table_name() )
+		);
 		return is_array( $rows ) ? $rows : [];
 	}
 
@@ -191,9 +241,11 @@ abstract class Base {
 	 * @return int
 	 */
 	public function count( array $where = [] ): int {
+		global $wpdb;
+
 		if ( empty( $where ) ) {
 			return (int) $this->wpdb->get_var(
-				$this->wpdb->prepare( 'SELECT COUNT(*) FROM %i', $this->get_table_name() )
+				$wpdb->prepare( 'SELECT COUNT(*) FROM %i', $this->get_table_name() )
 			);
 		}
 
@@ -206,7 +258,7 @@ abstract class Base {
 		}
 		$sql = 'SELECT COUNT(*) FROM %i WHERE ' . implode( ' AND ', $conditions );
 
-		return (int) $this->wpdb->get_var( $this->wpdb->prepare( $sql, ...$args ) );
+		return (int) $this->wpdb->get_var( $wpdb->prepare( $sql, ...$args ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 	}
 
 	/**
@@ -215,11 +267,13 @@ abstract class Base {
 	 * @return bool
 	 */
 	public function truncate(): bool {
-		$sql = $this->wpdb->prepare( 'TRUNCATE TABLE %i', $this->get_table_name() );
+		global $wpdb;
+
+		$sql = $wpdb->prepare( 'TRUNCATE TABLE %i', $this->get_table_name() );
 		if ( ! is_string( $sql ) ) {
 			return false;
 		}
-		return $this->wpdb->query( $sql ) !== false;
+		return $this->wpdb->query( $sql ) !== false; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	/**

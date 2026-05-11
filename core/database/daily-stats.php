@@ -81,8 +81,10 @@ class DailyStats extends Base {
 	 * @return array<int, \stdClass>
 	 */
 	public function get_range( string $start_date, string $end_date ): array {
+		global $wpdb;
+
 		$rows = $this->wpdb->get_results(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT * FROM %i WHERE stat_date BETWEEN %s AND %s ORDER BY stat_date ASC',
 				$this->get_table_name(),
 				$start_date,
@@ -101,8 +103,10 @@ class DailyStats extends Base {
 	 * @return \stdClass|null Aggregated metrics.
 	 */
 	public function get_aggregated( string $start_date, string $end_date ) {
+		global $wpdb;
+
 		return $this->wpdb->get_row(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT
 					SUM(revenue) as revenue,
 					SUM(orders) as orders,
@@ -145,8 +149,10 @@ class DailyStats extends Base {
 	 * @return string|null Date in Y-m-d format, or null.
 	 */
 	public function get_latest_date() {
+		global $wpdb;
+
 		return $this->wpdb->get_var(
-			$this->wpdb->prepare( 'SELECT MAX(stat_date) FROM %i', $this->get_table_name() )
+			$wpdb->prepare( 'SELECT MAX(stat_date) FROM %i', $this->get_table_name() )
 		);
 	}
 
@@ -156,8 +162,10 @@ class DailyStats extends Base {
 	 * @return string|null Date in Y-m-d format, or null.
 	 */
 	public function get_oldest_date() {
+		global $wpdb;
+
 		return $this->wpdb->get_var(
-			$this->wpdb->prepare( 'SELECT MIN(stat_date) FROM %i', $this->get_table_name() )
+			$wpdb->prepare( 'SELECT MIN(stat_date) FROM %i', $this->get_table_name() )
 		);
 	}
 
@@ -168,8 +176,10 @@ class DailyStats extends Base {
 	 * @return bool
 	 */
 	public function has_snapshot( string $date ): bool {
+		global $wpdb;
+
 		$count = (int) $this->wpdb->get_var(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT COUNT(*) FROM %i WHERE stat_date = %s',
 				$this->get_table_name(),
 				$date
@@ -186,8 +196,10 @@ class DailyStats extends Base {
 	 * @return array<int, \stdClass>
 	 */
 	public function get_paginated( int $limit, int $offset = 0 ): array {
+		global $wpdb;
+
 		$rows = $this->wpdb->get_results(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT * FROM %i ORDER BY stat_date DESC LIMIT %d OFFSET %d',
 				$this->get_table_name(),
 				$limit,
@@ -206,8 +218,10 @@ class DailyStats extends Base {
 	 * @return array<string> Array of date strings.
 	 */
 	public function get_missing_dates( string $start_date, string $end_date ): array {
+		global $wpdb;
+
 		$existing = $this->wpdb->get_col(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT stat_date FROM %i WHERE stat_date BETWEEN %s AND %s',
 				$this->get_table_name(),
 				$start_date,

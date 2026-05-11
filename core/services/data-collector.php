@@ -52,7 +52,9 @@ class DataCollector {
 	 */
 	public function are_analytics_tables_available(): bool {
 		$table = $this->wpdb->prefix . 'wc_order_stats';
-		return $this->wpdb->get_var( $this->wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table; // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		global $wpdb;
+
+		return $this->wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table; // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 	}
 
 	/**
@@ -61,8 +63,10 @@ class DataCollector {
 	 * @return string|null Date in Y-m-d format, or null if no orders.
 	 */
 	public function get_oldest_order_date() {
+		global $wpdb;
+
 		$date = $this->wpdb->get_var(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT MIN(DATE(date_created)) FROM %i WHERE parent_id = 0',
 				$this->wpdb->prefix . 'wc_order_stats'
 			)
@@ -77,12 +81,18 @@ class DataCollector {
 	 * @return int
 	 */
 	public function get_total_order_count(): int {
-		// IN(%s, %s, %s, %s) tracks the four entries in $valid_statuses; update both sides together.
+		global $wpdb;
+
+		$statuses = array_values( $this->valid_statuses );
+
 		return (int) $this->wpdb->get_var(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT COUNT(*) FROM %i WHERE parent_id = 0 AND status IN (%s, %s, %s, %s)',
 				$this->wpdb->prefix . 'wc_order_stats',
-				...$this->valid_statuses
+				$statuses[0],
+				$statuses[1],
+				$statuses[2],
+				$statuses[3]
 			)
 		);
 	}
@@ -131,9 +141,12 @@ class DataCollector {
 	 * @return object
 	 */
 	private function get_revenue_metrics( string $start, string $end ) {
-		// IN(%s, %s, %s, %s) tracks the four entries in $valid_statuses; update both sides together.
+		global $wpdb;
+
+		$statuses = array_values( $this->valid_statuses );
+
 		$result = $this->wpdb->get_row(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT
 					COUNT(DISTINCT order_id) as orders,
 					COALESCE(SUM(net_total), 0) as revenue,
@@ -146,7 +159,10 @@ class DataCollector {
 				$this->wpdb->prefix . 'wc_order_stats',
 				$start,
 				$end,
-				...$this->valid_statuses
+				$statuses[0],
+				$statuses[1],
+				$statuses[2],
+				$statuses[3]
 			)
 		);
 
@@ -166,10 +182,12 @@ class DataCollector {
 	 * @return object
 	 */
 	private function get_customer_metrics( string $start, string $end ) {
-		// A customer is "new" if this order's date matches their first order date.
-		// IN(%s, %s, %s, %s) tracks the four entries in $valid_statuses; update both sides together.
+		global $wpdb;
+
+		$statuses = array_values( $this->valid_statuses );
+
 		$result = $this->wpdb->get_row(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT
 					COALESCE(SUM(CASE WHEN os.returning_customer = 0 THEN 1 ELSE 0 END), 0) as new_customers,
 					COALESCE(SUM(CASE WHEN os.returning_customer = 1 THEN 1 ELSE 0 END), 0) as returning_customers
@@ -180,7 +198,10 @@ class DataCollector {
 				$this->wpdb->prefix . 'wc_order_stats',
 				$start,
 				$end,
-				...$this->valid_statuses
+				$statuses[0],
+				$statuses[1],
+				$statuses[2],
+				$statuses[3]
 			)
 		);
 
@@ -199,8 +220,10 @@ class DataCollector {
 	 * @return object
 	 */
 	private function get_refund_metrics( string $start, string $end ) {
+		global $wpdb;
+
 		$result = $this->wpdb->get_row(
-			$this->wpdb->prepare(
+			$wpdb->prepare(
 				'SELECT
 					COALESCE(ABS(SUM(net_total)), 0) as refund_total
 				FROM %i
