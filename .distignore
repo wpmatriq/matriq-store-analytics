@@ -39,6 +39,9 @@ multisite.xml.dist
 phpcs.xml
 phpcs.xml.dist
 README.md
+STRATEGY.md
+CLAUDE.md
+GUIDE.md
 tests
 vendor
 node_modules

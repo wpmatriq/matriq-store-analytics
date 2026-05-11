@@ -82,13 +82,14 @@ class Campaigns extends Base {
 		$table = $this->get_table_name();
 		$today = current_time( 'Y-m-d' );
 
+		// Table is plugin-controlled via Base::get_table_name().
 		return $this->wpdb->get_row(
 			$this->wpdb->prepare(
 				"SELECT * FROM `{$table}`
 				WHERE start_date <= %s
 				AND (end_date IS NULL OR end_date >= %s)
 				ORDER BY id DESC
-				LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$today,
 				$today
 			)
@@ -104,13 +105,14 @@ class Campaigns extends Base {
 	public function get_active_for_date( string $date ) {
 		$table = $this->get_table_name();
 
+		// Table is plugin-controlled via Base::get_table_name().
 		return $this->wpdb->get_row(
 			$this->wpdb->prepare(
 				"SELECT * FROM `{$table}`
 				WHERE start_date <= %s
 				AND (end_date IS NULL OR end_date >= %s)
 				ORDER BY id DESC
-				LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$date,
 				$date
 			)

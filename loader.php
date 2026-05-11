@@ -8,6 +8,8 @@
 
 namespace EC_Sales_Pulse;
 
+defined( 'ABSPATH' ) || exit;
+
 use EC_Sales_Pulse\Admin\API;
 use EC_Sales_Pulse\Admin\Menu;
 use EC_Sales_Pulse\Admin\Notices;

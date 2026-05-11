@@ -72,7 +72,8 @@ abstract class Base {
 	 */
 	public function table_exists(): bool {
 		$table = $this->get_table_name();
-		return $this->wpdb->get_var( $this->wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table;
+		// Table name is plugin-controlled via Base::get_table_name(); SHOW TABLES is a metadata query that can't be cached.
+		return $this->wpdb->get_var( $this->wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table; // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter, WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	/**
@@ -146,9 +147,10 @@ abstract class Base {
 		$table = $this->get_table_name();
 		$key   = $this->primary_key;
 
+		// Table + primary key are plugin-controlled; interpolation is safe.
 		$row = $this->wpdb->get_row(
 			$this->wpdb->prepare(
-				"SELECT * FROM `{$table}` WHERE `{$key}` = %s LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT * FROM `{$table}` WHERE `{$key}` = %s LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$id
 			)
 		);
@@ -177,7 +179,7 @@ abstract class Base {
 			$sql .= $this->wpdb->prepare( ' LIMIT %d', $limit );
 		}
 
-		$rows = $this->wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$rows = $this->wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		return is_array( $rows ) ? $rows : [];
 	}
 
@@ -202,7 +204,7 @@ abstract class Base {
 			$sql  = $this->wpdb->prepare( $sql, ...$values ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
 
-		return (int) $this->wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return (int) $this->wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 	}
 
 	/**
@@ -212,7 +214,7 @@ abstract class Base {
 	 */
 	public function truncate(): bool {
 		$table = $this->get_table_name();
-		return $this->wpdb->query( "TRUNCATE TABLE `{$table}`" ) !== false; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $this->wpdb->query( "TRUNCATE TABLE `{$table}`" ) !== false; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 	}
 
 	/**

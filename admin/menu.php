@@ -104,7 +104,7 @@ class Menu {
 		global $submenu;
 		$parent_slug   = self::PAGE_ID;
 		$capability    = EC_SALES_PULSE_CAPABILITY;
-		$menu_priority = apply_filters( self::PAGE_ID . '_menu_priority', 40 );
+		$menu_priority = apply_filters( 'salespulse_menu_priority', 40 );
 
 		add_menu_page(
 			'Sales Pulse',
@@ -222,7 +222,7 @@ class Menu {
 			}
 
 			$localized_data = apply_filters(
-				'portal_localized_admin_data',
+				'salespulse_localized_admin_data',
 				[
 					'dashboard_url'     => admin_url( 'admin.php?page=' . self::PAGE_ID ),
 					'ajax_url'          => admin_url( 'admin-ajax.php' ),

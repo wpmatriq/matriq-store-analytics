@@ -2,6 +2,12 @@
 /**
  * Sales Pulse: Morning Digest - plain-text body.
  *
+ * Locally-scoped variables ($payload, $meta, $section, etc.) are template-only.
+ * The PrefixAllGlobals sniff false-flags them because templates run in WC's
+ * Email scope; they are not global.
+ *
+ * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+ *
  * @package EC_Sales_Pulse\Templates
  *
  * @var \EC_Sales_Pulse\Core\Services\DigestEmail $email

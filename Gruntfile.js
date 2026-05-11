@@ -53,10 +53,10 @@ module.exports = function ( grunt ) {
 					'!STRATEGY.md',
 					'!CLAUDE.md',
 					'!GUIDE.md',
-					'!src/**',
 					'!jsconfig.json',
 					'!playwright.config.ts',
 					'!wp-env.json',
+					// '!src/**',
 
 				],
 				dest: 'sales-pulse/',

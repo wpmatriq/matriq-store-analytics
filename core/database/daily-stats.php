@@ -83,9 +83,10 @@ class DailyStats extends Base {
 	public function get_range( string $start_date, string $end_date ): array {
 		$table = $this->get_table_name();
 
+		// Table is plugin-controlled via Base::get_table_name().
 		$rows = $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"SELECT * FROM `{$table}` WHERE stat_date BETWEEN %s AND %s ORDER BY stat_date ASC", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT * FROM `{$table}` WHERE stat_date BETWEEN %s AND %s ORDER BY stat_date ASC", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$start_date,
 				$end_date
 			)
@@ -104,6 +105,7 @@ class DailyStats extends Base {
 	public function get_aggregated( string $start_date, string $end_date ) {
 		$table = $this->get_table_name();
 
+		// Table is plugin-controlled via Base::get_table_name().
 		return $this->wpdb->get_row(
 			$this->wpdb->prepare(
 				"SELECT
@@ -118,7 +120,7 @@ class DailyStats extends Base {
 					CASE WHEN SUM(orders) > 0 THEN SUM(items_sold) / SUM(orders) ELSE 0 END as items_per_order,
 					CASE WHEN SUM(items_sold) > 0 THEN SUM(revenue) / SUM(items_sold) ELSE 0 END as avg_item_price
 				FROM `{$table}`
-				WHERE stat_date BETWEEN %s AND %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				WHERE stat_date BETWEEN %s AND %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$start_date,
 				$end_date
 			)
@@ -148,7 +150,8 @@ class DailyStats extends Base {
 	 */
 	public function get_latest_date() {
 		$table = $this->get_table_name();
-		return $this->wpdb->get_var( "SELECT MAX(stat_date) FROM `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// Table is plugin-controlled via Base::get_table_name().
+		return $this->wpdb->get_var( "SELECT MAX(stat_date) FROM `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 	}
 
 	/**
@@ -158,7 +161,8 @@ class DailyStats extends Base {
 	 */
 	public function get_oldest_date() {
 		$table = $this->get_table_name();
-		return $this->wpdb->get_var( "SELECT MIN(stat_date) FROM `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// Table is plugin-controlled via Base::get_table_name().
+		return $this->wpdb->get_var( "SELECT MIN(stat_date) FROM `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 	}
 
 	/**
@@ -169,9 +173,10 @@ class DailyStats extends Base {
 	 */
 	public function has_snapshot( string $date ): bool {
 		$table = $this->get_table_name();
+		// Table is plugin-controlled via Base::get_table_name().
 		$count = (int) $this->wpdb->get_var(
 			$this->wpdb->prepare(
-				"SELECT COUNT(*) FROM `{$table}` WHERE stat_date = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT COUNT(*) FROM `{$table}` WHERE stat_date = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$date
 			)
 		);
@@ -188,9 +193,10 @@ class DailyStats extends Base {
 	public function get_paginated( int $limit, int $offset = 0 ): array {
 		$table = $this->get_table_name();
 
+		// Table is plugin-controlled via Base::get_table_name().
 		$rows = $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"SELECT * FROM `{$table}` ORDER BY stat_date DESC LIMIT %d OFFSET %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT * FROM `{$table}` ORDER BY stat_date DESC LIMIT %d OFFSET %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$limit,
 				$offset
 			)
@@ -209,9 +215,10 @@ class DailyStats extends Base {
 	public function get_missing_dates( string $start_date, string $end_date ): array {
 		$table = $this->get_table_name();
 
+		// Table is plugin-controlled via Base::get_table_name().
 		$existing = $this->wpdb->get_col(
 			$this->wpdb->prepare(
-				"SELECT stat_date FROM `{$table}` WHERE stat_date BETWEEN %s AND %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT stat_date FROM `{$table}` WHERE stat_date BETWEEN %s AND %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$start_date,
 				$end_date
 			)

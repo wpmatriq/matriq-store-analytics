@@ -8,6 +8,8 @@
 
 namespace EC_Sales_Pulse\Admin;
 
+defined( 'ABSPATH' ) || exit;
+
 use EC_Sales_Pulse\Inc\Traits\Get_Instance;
 
 /**

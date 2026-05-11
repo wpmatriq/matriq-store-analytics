@@ -11,8 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use EC_Sales_Pulse\Inc\Services\Query;
-
 /**
  * Check if pro version is active.
  *
@@ -36,13 +34,4 @@ function wc_sma_clean_data( $var ) {
 		return array_map( 'wc_sma_clean_data', $var );
 	}
 	return is_scalar( $var ) ? sanitize_text_field( (string) $var ) : $var;
-}
-
-/**
- * Get the ORM query instance.
- *
- * @return Query
- */
-function wc_sma_query() {
-	return Query::init(); // @phpstan-ignore-line
 }

@@ -98,9 +98,10 @@ class SystemState extends Base {
 			return $default;
 		}
 
+		// Table is plugin-controlled via Base::get_table_name().
 		$value = $this->wpdb->get_var(
 			$this->wpdb->prepare(
-				"SELECT state_value FROM `{$table}` WHERE state_key = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT state_value FROM `{$table}` WHERE state_key = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$key
 			)
 		);
@@ -195,9 +196,10 @@ class SystemState extends Base {
 			return null;
 		}
 
+		// Table is plugin-controlled via Base::get_table_name().
 		$value = $this->wpdb->get_var(
 			$this->wpdb->prepare(
-				"SELECT updated_at FROM `{$table}` WHERE state_key = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT updated_at FROM `{$table}` WHERE state_key = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				self::KEY_LAST_SNAPSHOT_DATE
 			)
 		);

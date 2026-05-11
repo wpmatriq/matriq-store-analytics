@@ -52,7 +52,8 @@ class DataCollector {
 	 */
 	public function are_analytics_tables_available(): bool {
 		$table = $this->wpdb->prefix . 'wc_order_stats';
-		return $this->wpdb->get_var( $this->wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table;
+		// WC core table; SHOW TABLES is a metadata query that can't be cached.
+		return $this->wpdb->get_var( $this->wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table; // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 	}
 
 	/**
@@ -63,8 +64,9 @@ class DataCollector {
 	public function get_oldest_order_date() {
 		$table = $this->wpdb->prefix . 'wc_order_stats';
 
+		// WC core table; nightly snapshot is the only reader.
 		$date = $this->wpdb->get_var(
-			"SELECT MIN(DATE(date_created)) FROM `{$table}` WHERE parent_id = 0" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			"SELECT MIN(DATE(date_created)) FROM `{$table}` WHERE parent_id = 0" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		);
 
 		return $date ? $date : null;
@@ -79,9 +81,10 @@ class DataCollector {
 		$table    = $this->wpdb->prefix . 'wc_order_stats';
 		$statuses = $this->get_status_placeholders();
 
+		// Placeholders are %s repeated to match valid_statuses count; sniff cannot resolve dynamic placeholder counts.
 		return (int) $this->wpdb->get_var(
 			$this->wpdb->prepare(
-				"SELECT COUNT(*) FROM `{$table}` WHERE parent_id = 0 AND status IN ({$statuses})", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT COUNT(*) FROM `{$table}` WHERE parent_id = 0 AND status IN ({$statuses})", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				...$this->valid_statuses
 			)
 		);
@@ -134,6 +137,7 @@ class DataCollector {
 		$table    = $this->wpdb->prefix . 'wc_order_stats';
 		$statuses = $this->get_status_placeholders();
 
+		// Placeholders are %s repeated to match valid_statuses count; sniff cannot resolve dynamic placeholder counts.
 		$result = $this->wpdb->get_row(
 			$this->wpdb->prepare(
 				"SELECT
@@ -144,7 +148,7 @@ class DataCollector {
 				FROM `{$table}`
 				WHERE date_created BETWEEN %s AND %s
 				AND parent_id = 0
-				AND status IN ({$statuses})", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				AND status IN ({$statuses})", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$start,
 				$end,
 				...$this->valid_statuses
@@ -171,6 +175,7 @@ class DataCollector {
 		$statuses    = $this->get_status_placeholders();
 
 		// A customer is "new" if this order's date matches their first order date.
+		// Placeholders are %s repeated to match valid_statuses count; sniff cannot resolve dynamic placeholder counts.
 		$result = $this->wpdb->get_row(
 			$this->wpdb->prepare(
 				"SELECT
@@ -179,7 +184,7 @@ class DataCollector {
 				FROM `{$order_table}` os
 				WHERE os.date_created BETWEEN %s AND %s
 				AND os.parent_id = 0
-				AND os.status IN ({$statuses})", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				AND os.status IN ({$statuses})", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$start,
 				$end,
 				...$this->valid_statuses
@@ -203,13 +208,14 @@ class DataCollector {
 	private function get_refund_metrics( string $start, string $end ) {
 		$table = $this->wpdb->prefix . 'wc_order_stats';
 
+		// WC core table; nightly snapshot is the only reader.
 		$result = $this->wpdb->get_row(
 			$this->wpdb->prepare(
 				"SELECT
 					COALESCE(ABS(SUM(net_total)), 0) as refund_total
 				FROM `{$table}`
 				WHERE date_created BETWEEN %s AND %s
-				AND parent_id > 0", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				AND parent_id > 0", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 				$start,
 				$end
 			)
