@@ -210,7 +210,7 @@ function DrawerBody( { onClose } ) {
 					href={ PRO_PRODUCT_URL }
 					target="_blank"
 					rel="noopener noreferrer"
-					className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border-0 bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground no-underline shadow-sm transition-all hover:text-primary-foreground hover:shadow-md focus:text-primary-foreground focus-visible:text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
+					className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border-0 bg-primary py-3 text-sm font-semibold text-primary-foreground no-underline shadow-sm transition-all hover:text-primary-foreground hover:shadow-md focus:text-primary-foreground focus-visible:text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 				>
 					<BarChart3 className="h-4 w-4" />
 					{ __( 'Upgrade to Store Copilot', 'sales-pulse' ) }

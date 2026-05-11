@@ -103,7 +103,6 @@ function StatsGrid( { data } ) {
 			hint: data.latest_date
 				? `${ __( 'Most recent snapshot date', 'sales-pulse' ) }: ${ data.latest_date }`
 				: __( 'Run a manual snapshot from Settings to seed this.', 'sales-pulse' ),
-			isText: true,
 		},
 		{
 			icon: Calendar,

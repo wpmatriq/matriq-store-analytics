@@ -1,14 +1,15 @@
 <?php
 /**
  * Plugin Name: Sales Pulse
- * Plugin URI: matriq.in
  * Description: Sales Pulse is a WordPress plugin that helps you to deep dive into your E-Commerce business.
+ * Plugin URI: https://matriq.in
  * Author: Matriq
- * Author URI: matriq.in
+ * Author URI: https://matriq.in
  * Version: 0.0.1
- * License: GPL v2
+ * License: GPLv2 or later
+ * Requires at least: 6.7
+ * Requires PHP: 7.4
  * Text Domain: sales-pulse
- * Domain Path: /languages
  *
  * @package EC_Sales_Pulse
  */
