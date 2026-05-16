@@ -31,7 +31,7 @@ const EASE = [ 0.16, 1, 0.3, 1 ];
 
 // Placeholder product URL. Hooked through `matriq_msa_pro_product_url` so
 // the marketing team can override at the PHP layer when the page exists.
-const PRO_PRODUCT_URL = 'https://wpsalespulse.com/copilot';
+const PRO_PRODUCT_URL = 'https://matriq.in/';
 
 export default function ImpactPage() {
 	const { data, isLoading, isError, refetch } = useImpactSummary();

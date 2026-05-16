@@ -149,9 +149,11 @@ class Loader {
 
 		$class_to_load = $class;
 
+		$namespace_pattern = preg_quote( __NAMESPACE__, '/' );
+
 		$filename = strtolower(
 			preg_replace( // phpcs:ignore Generic.PHP.ForbiddenFunctions.FoundWithAlternative
-				[ '/^' . __NAMESPACE__ . '\\\/', '/([a-z])([A-Z])/', '/_/', '/\\\/' ],
+				[ '/^' . $namespace_pattern . '\\\/', '/([a-z])([A-Z])/', '/_/', '/\\\/' ],
 				[ '', '$1-$2', '-', DIRECTORY_SEPARATOR ],
 				$class_to_load
 			)

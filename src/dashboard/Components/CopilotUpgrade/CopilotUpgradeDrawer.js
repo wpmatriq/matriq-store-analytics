@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 import { isProActive } from './proActive';
 
-const PRO_PRODUCT_URL = 'https://wpsalespulse.com/copilot';
+const PRO_PRODUCT_URL = 'https://matriq.in/';
 const EASE = [ 0.16, 1, 0.3, 1 ];
 
 const FEATURES = [
