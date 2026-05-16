@@ -34,7 +34,7 @@
 		"insights:fix": "./vendor/bin/phpinsights analyse --fix --no-interaction",
 		"phpstan": "vendor/bin/phpstan --memory-limit=2048M analyse",
 		"gen-baseline": "vendor/bin/phpstan --memory-limit=2048M analyse --generate-baseline",
-		"gen-stubs": "vendor/bin/generate-stubs artifact/phpstan/matriq-store-analytics/ --out=tests/php/stubs/matriq-store-analytics-stubs.php && rm -rf artifact/phpstan",
+		"gen-stubs": "php bin/gen-stubs-bootstrap.php artifact/phpstan/matriq-store-analytics/ --out=tests/php/stubs/matriq-store-analytics-stubs.php && rm -rf artifact/phpstan",
 		"update-stubs": "rm -f tests/php/stubs/matriq-store-analytics-stubs.php && bash bin/build-folder-phpstan.sh && composer gen-stubs"
 	},
 	"config": {

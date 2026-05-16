@@ -4,14 +4,14 @@ namespace Matriq\MSA {
     /**
      * Loader
      *
-     * @since x.x.x
+     * @since 0.0.2
      */
     class Loader
     {
         /**
          * Constructor
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function __construct()
         {
@@ -25,7 +25,7 @@ namespace Matriq\MSA {
          * @param string $version      Version.
          *
          * @return bool
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function suppress_translation_error($status, $function_name, $message, $version)
         {
@@ -37,7 +37,7 @@ namespace Matriq\MSA {
          * @param string $message The error message.
          * @param string $version The version.
          * @return void
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function prevent_qm_collection($function_name, $message, $version): void
         {
@@ -45,7 +45,7 @@ namespace Matriq\MSA {
         /**
          * Initiator
          *
-         * @since x.x.x
+         * @since 0.0.2
          * @return object initialized object of class.
          */
         public static function get_instance()
@@ -63,7 +63,7 @@ namespace Matriq\MSA {
          * Activation Reset
          *
          * @return void
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function activation_redirect(): void
         {
@@ -71,7 +71,7 @@ namespace Matriq\MSA {
         /**
          * Define the constants which will be used throughout the plugin.
          *
-         * @since x.x.x
+         * @since 0.0.2
          * @return void
          */
         public function define_constants(): void
@@ -80,7 +80,7 @@ namespace Matriq\MSA {
         /**
          * Plugin Activation actions.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function activation_actions(): void
         {
@@ -88,7 +88,7 @@ namespace Matriq\MSA {
         /**
          * Plugin Deactivation actions.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function deactivation_actions(): void
         {
@@ -96,7 +96,7 @@ namespace Matriq\MSA {
         /**
          * Enqueue required classes after plugins loaded.
          *
-         * @since x.x.x
+         * @since 0.0.2
          * @return void
          */
         public function load_plugin(): void
@@ -108,7 +108,7 @@ namespace Matriq\MSA {
          * @param array<int,string> $links Array of plugin meta links.
          * @param string            $file Plugin file path.
          * @return array<int,string> Modified plugin meta links.
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function add_meta_links($links, $file)
         {
@@ -120,7 +120,7 @@ namespace Matriq\MSA\Inc\Traits {
      * Trait Get_Instance.
      *
      * @phpstan-consistent-constructor
-     * @since x.x.x
+     * @since 0.0.2
      */
     trait Get_Instance
     {
@@ -137,7 +137,7 @@ namespace Matriq\MSA\Inc\Traits {
         /**
          * Initiator.
          *
-         * @since x.x.x
+         * @since 0.0.2
          * @return static Initialized instance of the using class.
          */
         public static function get_instance()
@@ -147,7 +147,7 @@ namespace Matriq\MSA\Inc\Traits {
     /**
      * Trait Get_Instance.
      *
-     * @since x.x.x
+     * @since 0.0.2
      */
     trait API_Base
     {
@@ -160,7 +160,7 @@ namespace Matriq\MSA\Inc\Traits {
         /**
          * Constructor
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function __construct()
         {
@@ -177,7 +177,7 @@ namespace Matriq\MSA\Inc\Traits {
     /**
      * Trait Ajax.
      *
-     * @since x.x.x
+     * @since 0.0.2
      */
     trait Rest_Errors
     {
@@ -186,13 +186,13 @@ namespace Matriq\MSA\Inc\Traits {
          *
          * @access private
          * @var array<string, string> Errors strings.
-         * @since x.x.x
+         * @since 0.0.2
          */
         public $errors = [];
         /**
          * Creates an array of default ajax action related error messages.
          *
-         * @since x.x.x
+         * @since 0.0.2
          * @return void
          */
         public function set_rest_event_errors(): void
@@ -203,7 +203,7 @@ namespace Matriq\MSA\Inc\Traits {
          *
          * @param string $type Message type.
          * @return string
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function get_rest_event_error($type)
         {
@@ -228,7 +228,7 @@ namespace Matriq\MSA\Inc\Utils {
         /**
          * Init
          *
-         * @since x.x.x
+         * @since 0.0.2
          * @return void
          */
         public static function init(): void
@@ -237,7 +237,7 @@ namespace Matriq\MSA\Inc\Utils {
         /**
          * Manage backward compatibility.
          *
-         * @since x.x.x
+         * @since 0.0.2
          * @return void
          */
         public static function manage_backward(): void
@@ -254,7 +254,7 @@ namespace Matriq\MSA\Inc\Utils {
         /**
          * Cache the DB options
          *
-         * @since x.x.x
+         * @since 0.0.2
          * @access public
          * @var array<string, mixed>
          */
@@ -263,7 +263,7 @@ namespace Matriq\MSA\Inc\Utils {
          * Returns all default portal settings.
          *
          * @return array<string, array<string, mixed>>
-         * @since x.x.x
+         * @since 0.0.2
          */
         public static function get_settings_dataset()
         {
@@ -275,7 +275,7 @@ namespace Matriq\MSA\Inc\Utils {
          * @param  mixed  $default Option default value if option is not available.
          * @return mixed   Returns the option value
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public static function get_default_option($key, $default = false)
         {
@@ -284,7 +284,7 @@ namespace Matriq\MSA\Inc\Utils {
          * As per the settings dataset, return the default settings.
          *
          * @return array<string, mixed>
-         * @since x.x.x
+         * @since 0.0.2
          */
         public static function get_default_settings()
         {
@@ -295,7 +295,7 @@ namespace Matriq\MSA\Inc\Utils {
          * @param bool $use_cache Whether to use cached settings.
          *
          * @return array<string, mixed>
-         * @since x.x.x
+         * @since 0.0.2
          */
         public static function get_settings($use_cache = true)
         {
@@ -305,18 +305,19 @@ namespace Matriq\MSA\Inc\Utils {
          *
          * @param array<string, mixed> $settings The settings to update.
          * @return void
-         * @since x.x.x
+         * @since 0.0.2
          */
         public static function update_settings($settings): void
         {
         }
         /**
-         * Decrypt the keys of the settings array.
+         * Raw DB fetch of the stored settings array. Use get_settings() for the
+         * cached + defaults-merged view.
          *
          * @return array<string, mixed>
-         * @since x.x.x
+         * @since 0.0.2
          */
-        public static function get_settings()
+        public static function get_stored_settings()
         {
         }
         /**
@@ -324,7 +325,7 @@ namespace Matriq\MSA\Inc\Utils {
          *
          * @param string $key The setting key.
          * @return string
-         * @since x.x.x
+         * @since 0.0.2
          */
         public static function get_setting_type($key)
         {
@@ -354,7 +355,7 @@ namespace Matriq\MSA\Inc\Utils {
         {
         }
         /**
-         * Settings sanitizer for wc_sma settings.
+         * Settings sanitizer for matriq_msa settings.
          *
          * @access public
          *
@@ -380,7 +381,7 @@ namespace Matriq\MSA\Inc\Utils {
          * @param  mixed  $default Option default value if option is not available.
          * @return mixed   Returns the option value
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public static function get_option($key, $default = false)
         {
@@ -392,7 +393,7 @@ namespace Matriq\MSA\Inc\Utils {
          * @param  mixed  $value    Option value to update.
          * @return string           Return the option value
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public static function update_option($key, $value = true)
         {
@@ -406,730 +407,6 @@ namespace Matriq\MSA\Inc\Utils {
          * @since 1.0.0
          */
         public static function delete_option($key)
-        {
-        }
-    }
-}
-namespace Matriq\MSA\Inc\Services {
-    class Query
-    {
-        /**
-         * @var string
-         */
-        protected $id;
-        /**
-         * @var array<mixed>
-         */
-        protected $select = [];
-        /**
-         * @var string
-         */
-        protected $from = null;
-        /**
-         * @var array<mixed>
-         */
-        protected $join = [];
-        /**
-         * @var array<mixed>
-         */
-        protected $where = [];
-        /**
-         * @var array<mixed>
-         */
-        protected $order = [];
-        /**
-         * @var array<mixed>
-         */
-        protected $group = [];
-        /**
-         * @var string
-         */
-        protected $having = null;
-        /**
-         * @var int
-         */
-        protected $limit = null;
-        /**
-         * @var int
-         */
-        protected $offset = 0;
-        /**
-         * Static constructor.
-         *
-         * @since x.x.x
-         *
-         * @param string $id
-         *
-         * @return object
-         */
-        public static function init($id = null)
-        {
-        }
-        /**
-         * Adds select statement.
-         *
-         * @param string $statement
-         *
-         * @return $this
-         * @since x.x.x
-         */
-        public function select($statement)
-        {
-        }
-        /**
-         * Adds from statement.
-         *
-         * @param string $name
-         * @param bool   $add_prefix
-         *
-         * @since x.x.x
-         *
-         * @return Query
-         */
-        public function table($name, $add_prefix = true)
-        {
-        }
-        /**
-         * Adds from statement.
-         *
-         * @param string $from
-         * @param bool   $add_prefix Should DB prefix be added.
-         *
-         * @return Query this for chaining.
-         * @global object $wpdb
-         *
-         * @since x.x.x
-         */
-        public function from($from, $add_prefix = true)
-        {
-        }
-        /**
-         * Adds search statement.
-         *
-         * @param string       $search
-         * @param array<mixed> $columns
-         * @param string       $joint
-         *
-         * @since x.x.x
-         *
-         * @return Query
-         */
-        public function search($search, $columns, $joint = 'AND')
-        {
-        }
-        /**
-         * Create a where statement.
-         *
-         *     ->where('name', 'sultan')
-         *     ->where('age', '>', 18)
-         *     ->where('name', 'in', array('ayaan', 'ayaash', 'anaan'))
-         *        ->where(function($q){
-         *       $q->where('ID', '>', 21);
-         * })
-         *
-         * @param string $column The SQL column
-         * @param mixed  $param1 Operator or value depending if $param2 isset.
-         * @param mixed  $param2 The value if $param1 is an operator.
-         * @param string $joint the where type ( and, or )
-         *
-         * @return Query The current query builder.
-         */
-        public function where($column, $param1 = null, $param2 = null, $joint = 'and')
-        {
-        }
-        /**
-         * Create a where statement with matching parameters.
-         *
-         *   ->matchWhere('name', 'sultan')
-         *   ->matchWhere('age', 18)
-         *
-         * @param string $column The SQL column
-         * @param mixed  $param1
-         * @param bool   $is_numeric
-         *
-         * @return Query The current query builder.
-         * @since 0.0.2
-         */
-        public function matchWhere($column, $param1, $is_numeric = false)
-        {
-        }
-        /**
-         * Create an or where statement
-         *
-         * This is the same as the normal where just with a fixed type
-         *
-         * @param string $column The SQL column
-         * @param mixed  $param1
-         * @param mixed  $param2
-         *
-         * @return Query The current query builder.
-         */
-        public function orWhere($column, $param1 = null, $param2 = null)
-        {
-        }
-        /**
-         * Create an and where statement
-         *
-         * This is the same as the normal where just with a fixed type
-         *
-         * @param string $column The SQL column
-         * @param mixed  $param1
-         * @param mixed  $param2
-         *
-         * @return Query The current query builder.
-         */
-        public function andWhere($column, $param1 = null, $param2 = null)
-        {
-        }
-        /**
-         * Creates a where in statement
-         *
-         *     ->whereIn('id', [42, 38, 12])
-         *
-         * @param string       $column
-         * @param array<mixed> $options
-         *
-         * @return Query The current query builder.
-         */
-        public function whereIn($column, array $options = [])
-        {
-        }
-        /**
-         * Creates a where not in statement
-         *
-         *     ->whereNotIn('id', [42, 38, 12])
-         *
-         * @param string       $column
-         * @param array<mixed> $options
-         *
-         * @return Query The current query builder.
-         */
-        public function whereNotIn($column, array $options = [])
-        {
-        }
-        /**
-         * Creates a where something is null statement
-         *
-         *     ->whereNull('modified_at')
-         *
-         * @param string $column
-         *
-         * @return Query The current query builder.
-         */
-        public function whereNull($column)
-        {
-        }
-        /**
-         * Creates a where something is not null statement
-         *
-         *     ->whereNotNull('created_at')
-         *
-         * @param string $column
-         *
-         * @return Query The current query builder.
-         */
-        public function whereNotNull($column)
-        {
-        }
-        /**
-         * Creates a or where something is null statement
-         *
-         *     ->orWhereNull('modified_at')
-         *
-         * @param string $column
-         *
-         * @return Query The current query builder.
-         */
-        public function orWhereNull($column)
-        {
-        }
-        /**
-         * Creates a or where something is not null statement
-         *
-         *     ->orWhereNotNull('modified_at')
-         *
-         * @param string $column
-         *
-         * @return Query The current query builder.
-         */
-        public function orWhereNotNull($column)
-        {
-        }
-        /**
-         * Creates a where between statement
-         *
-         *     ->whereBetween('user_id', 1, 2000)
-         *
-         * @param string $column
-         * @param mixed  $min
-         * @param mixed  $max
-         *
-         * @return Query The current query builder.
-         */
-        public function whereBetween($column, $min, $max)
-        {
-        }
-        /**
-         * Creates a where not between statement
-         *
-         *     ->whereNotBetween('user_id', 1, 2000)
-         *
-         * @param string $column
-         * @param mixed  $min
-         * @param mixed  $max
-         *
-         * @return Query The current query builder.
-         */
-        public function whereNotBetween($column, $min, $max)
-        {
-        }
-        /**
-         * Creates a where date between statement
-         *
-         *     ->whereDateBetween('date', '2014-02-01', '2014-02-28')
-         *
-         * @param string $column
-         * @param string $start
-         * @param string $end
-         *
-         * @return Query The current query builder.
-         */
-        public function whereDateBetween($column, $start, $end)
-        {
-        }
-        /**
-         * @param string $query
-         * @param string $joint
-         *
-         * @since 1.0.1
-         *
-         * @return Query
-         */
-        public function whereRaw($query, $joint = 'AND')
-        {
-        }
-        /**
-         * Add a join statement to the current query
-         *
-         *     ->join('avatars', 'users.id', '=', 'avatars.user_id')
-         *
-         * @param array<mixed>|string $table The table to join. (can contain an alias definition.)
-         * @param string              $localKey
-         * @param string              $operator The operator (=, !=, <, > etc.)
-         * @param string              $referenceKey
-         * @param string              $type The join type (inner, left, right, outer)
-         * @param string              $joint The join AND or Or
-         * @param bool                $add_prefix Add table prefix or not
-         *
-         * @return Query The current query builder.
-         */
-        public function join($table, $localKey, $operator = null, $referenceKey = null, $type = 'left', $joint = 'AND', $add_prefix = true)
-        {
-        }
-        /**
-         * Left join same as join with special type
-         *
-         * @param array<mixed>|string $table The table to join. (can contain an alias definition.)
-         * @param string              $localKey
-         * @param string              $operator The operator (=, !=, <, > etc.)
-         * @param string              $referenceKey
-         *
-         * @return Query The current query builder.
-         */
-        public function leftJoin($table, $localKey, $operator = null, $referenceKey = null)
-        {
-        }
-        /**
-         * Alias of the `join` method with join type right.
-         *
-         * @param array<mixed>|string $table The table to join. (can contain an alias definition.)
-         * @param string              $localKey
-         * @param string              $operator The operator (=, !=, <, > etc.)
-         * @param string              $referenceKey
-         *
-         * @return Query The current query builder.
-         */
-        public function rightJoin($table, $localKey, $operator = null, $referenceKey = null)
-        {
-        }
-        /**
-         * Alias of the `join` method with join type inner.
-         *
-         * @param array<mixed>|string $table The table to join. (can contain an alias definition.)
-         * @param string              $localKey
-         * @param string              $operator The operator (=, !=, <, > etc.)
-         * @param string              $referenceKey
-         *
-         * @return Query The current query builder.
-         */
-        public function innerJoin($table, $localKey, $operator = null, $referenceKey = null)
-        {
-        }
-        /**
-         * Alias of the `join` method with join type outer.
-         *
-         * @param array<mixed>|string $table The table to join. (can contain an alias definition.)
-         * @param string              $localKey
-         * @param string              $operator The operator (=, !=, <, > etc.)
-         * @param string              $referenceKey
-         *
-         * @return Query The current query builder.
-         */
-        public function outerJoin($table, $localKey, $operator = null, $referenceKey = null)
-        {
-        }
-        /**
-         * @param string $query
-         * @param string $joint
-         *
-         * @since 1.0.1
-         *
-         * @return Query
-         */
-        public function joinRaw($query, $joint = 'AND')
-        {
-        }
-        /**
-         * Adds group by statement.
-         *     ->groupBy('category')
-         *     ->gorupBy(['category', 'price'])
-         *
-         * @param string $field
-         *
-         * @return Query this for chaining.
-         * @since x.x.x
-         */
-        public function group_by($field)
-        {
-        }
-        /**
-         * Adds having statement.
-         *
-         *  ->group_by('user.id')
-         *  ->having('count(user.id)>1')
-         *
-         * @param string $statement
-         *
-         * @return Query this for chaining.
-         * @since x.x.x
-         */
-        public function having($statement)
-        {
-        }
-        /**
-         * Adds order by statement.
-         *
-         *     ->order_by('created_at')
-         *     ->order_by('modified_at', 'desc')
-         *
-         * @param string $key
-         * @param string $direction
-         *
-         * @return Query this for chaining.
-         *
-         * @since x.x.x
-         */
-        public function order_by($key, $direction = 'ASC')
-        {
-        }
-        /**
-         * Set the query limit
-         *
-         *     // limit(<limit>)
-         *     ->limit(20)
-         *
-         *     // limit(<offset>, <limit>)
-         *     ->limit(60, 20)
-         *
-         * @param int $limit
-         * @param int $limit2
-         *
-         * @return Query The current query builder.
-         */
-        public function limit($limit, $limit2 = null)
-        {
-        }
-        /**
-         * Adds offset statement.
-         *
-         * ->offset(20)
-         *
-         * @param int $offset
-         *
-         * @return Query this for chaining.
-         */
-        public function offset($offset)
-        {
-        }
-        /**
-         * Create a query limit based on a page and a page size
-         *
-         * // page(<page>, <size>)
-         *  ->page(2, 20)
-         *
-         * @param int $page
-         * @param int $size
-         *
-         * @return Query The current query builder.
-         * @since x.x.x
-         */
-        public function page($page, $size = 20)
-        {
-        }
-        /**
-         * Find something, means select one item by key
-         *
-         * ->find('navanathb@bsf.io', 'email')
-         *
-         * @param int    $id
-         * @param string $key
-         *
-         * @return mixed
-         */
-        public function find($id, $key = 'id')
-        {
-        }
-        /**
-         * Get the first result ordered by the given key.
-         *
-         * @param string $key By what should the first item be selected? Default is: 'id'
-         *
-         * @return mixed The first result.
-         */
-        public function first($key = 'id')
-        {
-        }
-        /**
-         * Get the last result by key
-         *
-         * @param string $key
-         *
-         * @return mixed the last result.
-         */
-        public function last($key = 'id')
-        {
-        }
-        /**
-         * Pluck item.
-         * ->find('post_title')
-         *
-         * @return mixed
-         * @since 1.0.1
-         */
-        public function pluck()
-        {
-        }
-        /**
-         * Returns results from builder statements.
-         *
-         * @param mixed    $output WPDB output type.
-         * @param callable $row_map Function callable to filter or map results to.
-         * @param bool     $calc_rows Flag that indicates to SQL if rows should be calculated or not.
-         *
-         * @since x.x.x
-         *
-         * @global object $wpdb
-         *
-         * @return mixed
-         */
-        public function get($output = OBJECT, $row_map = null, $calc_rows = false)
-        {
-        }
-        /**
-         * Sets the limit to 1, executes and returns the first result using get.
-         *
-         * @param string $output
-         *
-         * @return mixed The single result.
-         */
-        public function one($output = OBJECT)
-        {
-        }
-        /**
-         * Just return the number of results
-         *
-         * @param string|int $column
-         *
-         * @return int
-         */
-        public function count($column = 1)
-        {
-        }
-        /**
-         * Just get a single value from the result
-         *
-         * @param int  $column The index of the column.
-         * @param bool $calc_rows Flag that indicates to SQL if rows should be calculated or not.
-         *
-         * @return array<mixed> The columns value
-         */
-        public function column($column = 0, $calc_rows = false)
-        {
-        }
-        /**
-         * Returns a value.
-         *
-         * @param int $x Column of value to return. Indexed from 0.
-         * @param int $y Row of value to return. Indexed from 0.
-         *
-         * @return mixed
-         * @global object $wpdb
-         *
-         * @since x.x.x
-         */
-        public function value($x = 0, $y = 0)
-        {
-        }
-        /**
-         * Update or insert.
-         *
-         * @param array<mixed> $data
-         *
-         * @return bool|int
-         */
-        public function updateOrInsert($data)
-        {
-        }
-        /**
-         * Find or insert.
-         *
-         * @param array<mixed> $data
-         *
-         * @return bool|int
-         */
-        public function findOrInsert($data)
-        {
-        }
-        /**
-         * Get max value.
-         *
-         * @param string $column
-         *
-         * @return int
-         * @since 1.0.1
-         */
-        public function max($column)
-        {
-        }
-        /**
-         * Get min value.
-         *
-         * @param string $column
-         *
-         * @return int
-         * @since 1.0.1
-         */
-        public function min($column)
-        {
-        }
-        /**
-         * Get avg value.
-         *
-         * @param string $column
-         *
-         * @return int
-         * @since 1.0.1
-         */
-        public function avg($column)
-        {
-        }
-        /**
-         * Get sum value.
-         *
-         * @param string $column
-         *
-         * @return int
-         * @since 1.0.1
-         */
-        public function sum($column)
-        {
-        }
-        /**
-         * Returns flag indicating if query has been executed.
-         *
-         * @param string $sql
-         *
-         * @return bool
-         * @since x.x.x
-         *
-         * @global object $wpdb
-         */
-        public function query($sql = '')
-        {
-        }
-        /**
-         * Returns query from builder statements.
-         *
-         * @return string
-         * @since x.x.x
-         */
-        public function toSql()
-        {
-        }
-        /**
-         * Returns found rows in last query, if SQL_CALC_FOUND_ROWS is used and is supported.
-         *
-         * @return array<mixed>
-         * @global object $wpdb
-         *
-         * @since x.x.x
-         */
-        public function rows_found()
-        {
-        }
-        /**
-         * Returns flag indicating if delete query has been executed.
-         *
-         * @return bool
-         * @global object $wpdb
-         *
-         * @since x.x.x
-         */
-        public function delete()
-        {
-        }
-        /**
-         * Update
-         *
-         * @return bool
-         * @global object $wpdb
-         *
-         * @param array<mixed> $data
-         *
-         * @since x.x.x
-         */
-        public function update($data)
-        {
-        }
-        /**
-         * Insert data.
-         *
-         * @param array<mixed> $data
-         * @param array<mixed> $format
-         *
-         * @return bool|int
-         * @since 1.0.1
-         */
-        public function insert($data, $format = [])
-        {
-        }
-        /**
-         * Return a cloned object from current builder.
-         *
-         * @return Query
-         * @since x.x.x
-         */
-        public function copy()
-        {
-        }
-        /**
-         * Builds query's where statement.
-         *
-         * @param string &$query
-         *
-         * @since x.x.x
-         */
-        public function _query_where(&$query): void
         {
         }
     }
@@ -1222,9 +499,12 @@ namespace Matriq\MSA\Core\Database {
         /**
          * Table prefix.
          *
+         * Kept as `salespulse_` (not the new `matriq_msa_` code prefix) so existing
+         * installs do not lose their `wp_salespulse_*` tables on rename.
+         *
          * @var string
          */
-        protected $prefix = 'matriq_msa_';
+        protected $prefix = 'salespulse_';
         /**
          * Primary key column.
          *
@@ -2462,7 +1742,7 @@ namespace Matriq\MSA\Core\Services {
         }
         /**
          * From-address override applied to the digest email. Defaults to the
-         * site admin_email option; overridable via the salespulse filter.
+         * site admin_email option; overridable via the matriq_msa filter.
          *
          * @param string $from_email Default WC value (unused; we always provide our own address).
          * @return string
@@ -2733,7 +2013,7 @@ namespace Matriq\MSA\Admin {
     /**
      * Notices
      *
-     * @since x.x.x
+     * @since 0.0.2
      */
     class Notices
     {
@@ -2741,7 +2021,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Constructor
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function __construct()
         {
@@ -2757,7 +2037,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Display admin notice if premium incompatible version is activated.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function minimum_pro_version_requirement(): void
         {
@@ -2766,7 +2046,7 @@ namespace Matriq\MSA\Admin {
     /**
      * Menu
      *
-     * @since x.x.x
+     * @since 0.0.2
      */
     class Menu
     {
@@ -2778,7 +2058,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Constructor
          *
-         * @since x.x.x
+         * @since 0.0.2
          *
          * @return void
          */
@@ -2788,7 +2068,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Function to load the admin area actions.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function initialize_hooks(): void
         {
@@ -2796,7 +2076,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Check if the current page is a plugin page.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function is_plugin_page(): bool
         {
@@ -2804,7 +2084,7 @@ namespace Matriq\MSA\Admin {
         /**
          *  Initialize Admin Setup.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function settings_admin_scripts(): void
         {
@@ -2817,7 +2097,7 @@ namespace Matriq\MSA\Admin {
          * (data foundation stats), Settings (timezone, revenue basis, email
          * digest).
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function register_plugin_menus(): void
         {
@@ -2825,7 +2105,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Renders the WC SMA screen canvas.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function render_main_page(): void
         {
@@ -2833,7 +2113,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Enqueue the Admin's build files for plugin to work.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function app_build_scripts(): void
         {
@@ -2841,7 +2121,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Get plugin status
          *
-         * @since x.x.x
+         * @since 0.0.2
          *
          * @param  string $plugin_init_file plugin init file.
          * @return string
@@ -2853,7 +2133,7 @@ namespace Matriq\MSA\Admin {
     /**
      * API
      *
-     * @since x.x.x
+     * @since 0.0.2
      */
     class API
     {
@@ -2868,7 +2148,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Constructor
          *
-         * @since x.x.x
+         * @since 0.0.2
          *
          * @return void
          */
@@ -2878,7 +2158,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Register API routes.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function register_routes(): void
         {
@@ -2888,7 +2168,7 @@ namespace Matriq\MSA\Admin {
          *
          * @return array<string, mixed> $updated_option defaults + set DB option data.
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public function get_admin_settings(): array
         {
@@ -2896,7 +2176,7 @@ namespace Matriq\MSA\Admin {
         /**
          * Check whether a given request has permission to read notes.
          *
-         * @since x.x.x
+         * @since 0.0.2
          *
          * @return bool|\WP_Error
          */
@@ -2912,7 +2192,7 @@ namespace Matriq\MSA\Admin {
          *
          * @return void             Return the option value based on provided key
          *
-         * @since x.x.x
+         * @since 0.0.2
          */
         public static function update_admin_settings_option(string $key, $value): void
         {
@@ -2924,7 +2204,7 @@ namespace {
      * Check if pro version is active.
      *
      * @return bool
-     * @since x.x.x
+     * @since 0.0.2
      */
     function matriq_msa_is_pro_active()
     {
@@ -2935,34 +2215,15 @@ namespace {
      * @param mixed $var Data to sanitize.
      * @return mixed
      *
-     * @since x.x.x
+     * @since 0.0.2
      */
     function matriq_msa_clean_data($var)
     {
     }
     /**
-     * Get the ORM query instance.
-     *
-     * @return Query
-     */
-    function matriq_msa_query()
-    {
-    }
-    /**
      * Set constants
      */
-    \define('MATRIQ_MSA_VER', '0.0.1');
+    \define('MATRIQ_MSA_VER', '0.0.2');
     \define('MATRIQ_MSA_FILE', __FILE__);
     \define('MATRIQ_MSA_PRO_MINIMUM_VER', '0.0.1');
-    /**
-     * Format a metric_card value.
-     *
-     * @param mixed  $value
-     * @param string $format currency|number|decimal
-     * @param string $symbol Currency symbol.
-     */
-    $fmt_value = static function ($value, string $format, string $symbol): string {
-        $value = (float) $value;
-        return number_format_i18n($value, 0);
-    };
 }
