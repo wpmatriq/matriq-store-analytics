@@ -107,8 +107,8 @@ class Menu {
 		$menu_priority = apply_filters( 'matriq_msa_menu_priority', 40 );
 
 		add_menu_page(
-			'Matriq Store Analytics',
-			'Matriq Store Analytics',
+			'Store Analytics',
+			'Store Analytics',
 			$capability,
 			$parent_slug,
 			[ $this, 'render_main_page' ],
