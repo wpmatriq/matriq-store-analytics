@@ -2,7 +2,7 @@
  * SettingsRouter - top-level shell for the Settings tab.
  *
  * Wraps the free `SettingsPage` (the "general" sub-tab) and any Pro-registered
- * sub-tabs from `window.salesPulse.settingsSubtabs`. When no Pro is active the
+ * sub-tabs from `window.matriqMSA.settingsSubtabs`. When no Pro is active the
  * registry is empty and we render `SettingsPage` flat - preserving the
  * existing free-only experience without introducing a sub-tab strip the user
  * has nowhere to navigate to.
@@ -20,14 +20,14 @@ import SettingsPage from './SettingsPage';
 
 /**
  * Sub-tab descriptor for the General (free) sub-tab. Pro-registered
- * sub-tabs come in via `window.salesPulse.settingsSubtabs` and are merged
+ * sub-tabs come in via `window.matriqMSA.settingsSubtabs` and are merged
  * after this entry, sorted by `weight`.
  *
  * @type {{id: string, label: string, weight: number, component: any}}
  */
 const GENERAL_SUBTAB = {
 	id: 'general',
-	label: __( 'General', 'sales-pulse' ),
+	label: __( 'General', 'matriq-store-analytics' ),
 	weight: 0,
 	component: SettingsPage,
 };
@@ -81,7 +81,7 @@ function snapshotSubtabs() {
 	if ( typeof window === 'undefined' ) {
 		return [ GENERAL_SUBTAB ];
 	}
-	const registered = Object.values( window.salesPulse?.settingsSubtabs || {} )
+	const registered = Object.values( window.matriqMSA?.settingsSubtabs || {} )
 		.filter( ( entry ) => entry && entry.id && entry.component )
 		.sort( ( a, b ) => ( a.weight || 0 ) - ( b.weight || 0 ) );
 	return [ GENERAL_SUBTAB, ...registered ];
@@ -95,7 +95,7 @@ function snapshotSubtabs() {
 export default function SettingsRouter() {
 	// Pro bundles often load AFTER the free shell mounts, so the registry
 	// can grow during the lifetime of this component. Re-read it whenever
-	// `salespulse:settings-subtab-registered` fires.
+	// `matriq_msa:settings-subtab-registered` fires.
 	const [ subtabs, setSubtabs ] = useState( () => snapshotSubtabs() );
 	const [ active, setActive ] = useState( () => readActiveSubtab( snapshotSubtabs() ) );
 
@@ -110,9 +110,9 @@ export default function SettingsRouter() {
 			// that just registered.
 			setActive( readActiveSubtab( next ) );
 		};
-		window.addEventListener( 'salespulse:settings-subtab-registered', handler );
+		window.addEventListener( 'matriq_msa:settings-subtab-registered', handler );
 		return () => {
-			window.removeEventListener( 'salespulse:settings-subtab-registered', handler );
+			window.removeEventListener( 'matriq_msa:settings-subtab-registered', handler );
 		};
 	}, [] );
 
@@ -133,7 +133,7 @@ export default function SettingsRouter() {
 		<div className="space-y-4">
 			<div
 				role="tablist"
-				aria-label={ __( 'Settings sections', 'sales-pulse' ) }
+				aria-label={ __( 'Settings sections', 'matriq-store-analytics' ) }
 				className="inline-flex items-center gap-1 rounded-full border border-solid border-border bg-card p-1 shadow-xs"
 			>
 				{ subtabs.map( ( tab ) => {

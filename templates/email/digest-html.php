@@ -1,6 +1,6 @@
 <?php
 /**
- * Sales Pulse: Morning Digest - HTML body.
+ * Matriq Store Analytics: Morning Digest - HTML body.
  *
  * Receives `$email` (the DigestEmail object). Read data via `$email->payload`.
  *
@@ -13,9 +13,9 @@
  *
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  *
- * @package EC_Sales_Pulse\Templates
+ * @package Matriq\MSA\Templates
  *
- * @var \EC_Sales_Pulse\Core\Services\DigestEmail $email
+ * @var \Matriq\MSA\Core\Services\DigestEmail $email
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -26,7 +26,7 @@ $meta    = isset( $payload['meta'] ) ? (array) $payload['meta'] : [];
 
 $site_name       = (string) ( $meta['site_name'] ?? get_bloginfo( 'name' ) );
 $currency_symbol = (string) ( $meta['currency_symbol'] ?? '$' );
-$dashboard_url   = (string) ( $meta['dashboard_url'] ?? admin_url( 'admin.php?page=sales-pulse' ) );
+$dashboard_url   = (string) ( $meta['dashboard_url'] ?? admin_url( 'admin.php?page=matriq-store-analytics' ) );
 $friendly_date   = '';
 if ( ! empty( $meta['date'] ) ) {
 	try {
@@ -75,9 +75,9 @@ $pct_color = static function ( $value ): string {
 };
 
 $sections = [
-	'daily'   => __( 'Yesterday', 'sales-pulse' ),
-	'weekly'  => __( 'Last 7 days', 'sales-pulse' ),
-	'monthly' => __( 'Last 30 days', 'sales-pulse' ),
+	'daily'   => __( 'Yesterday', 'matriq-store-analytics' ),
+	'weekly'  => __( 'Last 7 days', 'matriq-store-analytics' ),
+	'monthly' => __( 'Last 30 days', 'matriq-store-analytics' ),
 ];
 
 ?>
@@ -87,7 +87,7 @@ $sections = [
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title><?php echo esc_html__( 'Sales Pulse: Morning briefing', 'sales-pulse' ); ?></title>
+	<title><?php echo esc_html__( 'Matriq Store Analytics: Morning briefing', 'matriq-store-analytics' ); ?></title>
 </head>
 <body style="margin:0;padding:0;background:#f7f5f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#1a1d2e;-webkit-font-smoothing:antialiased;">
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f7f5f0;">
@@ -99,7 +99,7 @@ $sections = [
 				<tr>
 					<td style="padding:32px 32px 16px 32px;border-bottom:1px solid #ece9e0;">
 						<div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#7c8093;">
-							<?php echo esc_html__( 'Morning briefing', 'sales-pulse' ); ?>
+							<?php echo esc_html__( 'Morning briefing', 'matriq-store-analytics' ); ?>
 						</div>
 						<div style="margin-top:6px;font-size:24px;font-weight:600;letter-spacing:-0.01em;color:#1a1d2e;">
 							<?php echo esc_html( $friendly_date ); ?>
@@ -113,7 +113,7 @@ $sections = [
 								echo esc_html(
 									sprintf(
 										/* translators: %s: campaign name. */
-										__( 'Campaign: %s', 'sales-pulse' ),
+										__( 'Campaign: %s', 'matriq-store-analytics' ),
 										$campaign['name']
 									)
 								);
@@ -175,7 +175,7 @@ $sections = [
 									<tr>
 										<td style="border-left:3px solid #6366f1;padding:10px 0 10px 14px;background:transparent;">
 											<div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;">
-												✦ <?php echo esc_html__( 'Copilot · Why this happened', 'sales-pulse' ); ?>
+												✦ <?php echo esc_html__( 'Copilot · Why this happened', 'matriq-store-analytics' ); ?>
 											</div>
 											<div style="margin-top:6px;font-size:14px;color:#1a1d2e;line-height:1.55;">
 												<?php echo esc_html( $ai_paragraph ); ?>
@@ -185,7 +185,7 @@ $sections = [
 								</table>
 							<?php } elseif ( $ai_offline ) { ?>
 								<div style="margin-top:14px;display:inline-block;font-size:11px;color:#7c8093;background:#f7f5f0;border:1px solid #ece9e0;border-radius:999px;padding:4px 10px;">
-									<?php echo esc_html__( 'AI insights paused', 'sales-pulse' ); ?>
+									<?php echo esc_html__( 'AI insights paused', 'matriq-store-analytics' ); ?>
 								</div>
 							<?php } ?>
 
@@ -218,7 +218,7 @@ $sections = [
 									<tr>
 										<td style="border-left:3px solid #0f9d58;padding:8px 0 8px 14px;background:transparent;">
 											<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#0f9d58;">
-												<?php echo esc_html__( 'Suggested action', 'sales-pulse' ); ?>
+												<?php echo esc_html__( 'Suggested action', 'matriq-store-analytics' ); ?>
 											</div>
 											<div style="margin-top:4px;font-size:14px;color:#1a1d2e;line-height:1.5;">
 												<?php echo esc_html( $rec_text ); ?>
@@ -233,7 +233,7 @@ $sections = [
 									<tr>
 										<td style="border-left:3px solid #6366f1;padding:8px 0 8px 14px;background:transparent;">
 											<div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6366f1;">
-												✦ <?php echo esc_html__( 'Copilot · AI alternative', 'sales-pulse' ); ?>
+												✦ <?php echo esc_html__( 'Copilot · AI alternative', 'matriq-store-analytics' ); ?>
 											</div>
 											<div style="margin-top:4px;font-size:14px;color:#1a1d2e;line-height:1.5;">
 												<?php echo esc_html( $ai_action ); ?>
@@ -250,7 +250,7 @@ $sections = [
 				<tr>
 					<td align="center" style="padding:28px 32px 32px 32px;">
 						<a href="<?php echo esc_url( $dashboard_url ); ?>" style="display:inline-block;background:#1a1d2e;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 24px;border-radius:999px;">
-							<?php echo esc_html__( 'Open Sales Pulse dashboard', 'sales-pulse' ); ?>
+							<?php echo esc_html__( 'Open Matriq Store Analytics dashboard', 'matriq-store-analytics' ); ?>
 						</a>
 					</td>
 				</tr>
@@ -263,7 +263,7 @@ $sections = [
 							echo esc_html(
 								sprintf(
 									/* translators: %s: site name. */
-									__( 'Sent by Sales Pulse on behalf of %s.', 'sales-pulse' ),
+									__( 'Sent by Matriq Store Analytics on behalf of %s.', 'matriq-store-analytics' ),
 									$site_name
 								)
 							);
@@ -273,8 +273,8 @@ $sections = [
 							echo wp_kses(
 								sprintf(
 									/* translators: %s: settings page URL. */
-									__( 'Manage your morning digest in <a href="%s" style="color:#1a1d2e;">Sales Pulse Settings</a>.', 'sales-pulse' ),
-									esc_url( admin_url( 'admin.php?page=sales-pulse&tab=settings' ) )
+									__( 'Manage your morning digest in <a href="%s" style="color:#1a1d2e;">Matriq Store Analytics Settings</a>.', 'matriq-store-analytics' ),
+									esc_url( admin_url( 'admin.php?page=matriq-store-analytics&tab=settings' ) )
 								),
 								[
 									'a' => [

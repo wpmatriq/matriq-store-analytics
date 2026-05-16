@@ -18,12 +18,12 @@
  * order on it will mark it dirty again, and the cron rebuild is idempotent
  * either way.
  *
- * @package EC_Sales_Pulse\Core\Database
+ * @package Matriq\MSA\Core\Database
  */
 
-namespace EC_Sales_Pulse\Core\Database;
+namespace Matriq\MSA\Core\Database;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -41,7 +41,7 @@ class DirtyDates {
 	 * `wp_options` row that holds the pending date set as a `[ date => reason ]`
 	 * map. Non-autoloaded - hooked path only.
 	 */
-	public const OPTION_KEY = 'salespulse_dirty_dates';
+	public const OPTION_KEY = 'matriq_msa_dirty_dates';
 
 	/**
 	 * Returns an empty string. Retained so anything that asks the model for

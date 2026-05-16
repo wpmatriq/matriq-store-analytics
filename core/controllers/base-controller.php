@@ -2,22 +2,22 @@
 /**
  * Base REST Controller.
  *
- * Abstract base for all Sales Pulse v2 REST controllers.
+ * Abstract base for all Matriq Store Analytics v2 REST controllers.
  * Provides permission checks, response helpers, and parameter sanitizers.
  *
- * @package EC_Sales_Pulse\Core\Controllers
+ * @package Matriq\MSA\Core\Controllers
  */
 
-namespace EC_Sales_Pulse\Core\Controllers;
+namespace Matriq\MSA\Core\Controllers;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Shared base for every Sales Pulse REST controller.
+ * Shared base for every Matriq Store Analytics REST controller.
  *
- * Centralises the `sales-pulse/v2` namespace, the `manage_woocommerce`
+ * Centralises the `matriq-store-analytics/v2` namespace, the `manage_woocommerce`
  * permission check, and the success/error response envelope so subclasses
  * only need to declare a `rest_base` and register their routes.
  */
@@ -29,7 +29,7 @@ abstract class BaseController {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'sales-pulse/v2';
+	protected $namespace = 'matriq-store-analytics/v2';
 
 	/**
 	 * Route base (override in each controller).
@@ -62,7 +62,7 @@ abstract class BaseController {
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			return new \WP_Error(
 				'rest_forbidden',
-				__( 'You do not have permission to access this resource.', 'sales-pulse' ),
+				__( 'You do not have permission to access this resource.', 'matriq-store-analytics' ),
 				[ 'status' => 403 ]
 			);
 		}

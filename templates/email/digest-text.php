@@ -1,6 +1,6 @@
 <?php
 /**
- * Sales Pulse: Morning Digest - plain-text body.
+ * Matriq Store Analytics: Morning Digest - plain-text body.
  *
  * Locally-scoped variables ($payload, $meta, $section, etc.) are template-only.
  * The PrefixAllGlobals sniff false-flags them because templates run in WC's
@@ -8,9 +8,9 @@
  *
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  *
- * @package EC_Sales_Pulse\Templates
+ * @package Matriq\MSA\Templates
  *
- * @var \EC_Sales_Pulse\Core\Services\DigestEmail $email
+ * @var \Matriq\MSA\Core\Services\DigestEmail $email
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -21,7 +21,7 @@ $meta    = isset( $payload['meta'] ) ? (array) $payload['meta'] : [];
 
 $site_name       = (string) ( $meta['site_name'] ?? get_bloginfo( 'name' ) );
 $currency_symbol = (string) ( $meta['currency_symbol'] ?? '$' );
-$dashboard_url   = (string) ( $meta['dashboard_url'] ?? admin_url( 'admin.php?page=sales-pulse' ) );
+$dashboard_url   = (string) ( $meta['dashboard_url'] ?? admin_url( 'admin.php?page=matriq-store-analytics' ) );
 $friendly_date   = '';
 if ( ! empty( $meta['date'] ) ) {
 	try {
@@ -55,12 +55,12 @@ $fmt_pct = static function ( $value ): string {
 };
 
 $sections = [
-	'daily'   => __( 'YESTERDAY', 'sales-pulse' ),
-	'weekly'  => __( 'LAST 7 DAYS', 'sales-pulse' ),
-	'monthly' => __( 'LAST 30 DAYS', 'sales-pulse' ),
+	'daily'   => __( 'YESTERDAY', 'matriq-store-analytics' ),
+	'weekly'  => __( 'LAST 7 DAYS', 'matriq-store-analytics' ),
+	'monthly' => __( 'LAST 30 DAYS', 'matriq-store-analytics' ),
 ];
 
-echo esc_html( strtoupper( __( 'Sales Pulse - Morning briefing', 'sales-pulse' ) ) ) . "\n";
+echo esc_html( strtoupper( __( 'Matriq Store Analytics - Morning briefing', 'matriq-store-analytics' ) ) ) . "\n";
 echo esc_html( str_repeat( '=', 60 ) ) . "\n";
 echo esc_html( $friendly_date ) . "\n";
 echo esc_html( $site_name ) . "\n";
@@ -68,7 +68,7 @@ if ( $campaign && ! empty( $campaign['name'] ) ) {
 	echo esc_html(
 		sprintf(
 			/* translators: %s: campaign name. */
-			__( 'Campaign: %s', 'sales-pulse' ),
+			__( 'Campaign: %s', 'matriq-store-analytics' ),
 			$campaign['name']
 		)
 	) . "\n";
@@ -102,10 +102,10 @@ foreach ( $sections as $key => $label ) {
 	echo "\n";
 
 	if ( $ai_paragraph !== '' ) {
-		echo esc_html__( 'COPILOT · WHY THIS HAPPENED', 'sales-pulse' ) . "\n";
+		echo esc_html__( 'COPILOT · WHY THIS HAPPENED', 'matriq-store-analytics' ) . "\n";
 		echo '  ' . esc_html( $ai_paragraph ) . "\n\n";
 	} elseif ( $ai_offline ) {
-		echo '  ' . esc_html__( '(AI insights paused)', 'sales-pulse' ) . "\n\n";
+		echo '  ' . esc_html__( '(AI insights paused)', 'matriq-store-analytics' ) . "\n\n";
 	}
 
 	if ( $cards ) {
@@ -119,24 +119,24 @@ foreach ( $sections as $key => $label ) {
 	}
 
 	if ( $rec_text !== '' ) {
-		echo esc_html__( 'Suggested action:', 'sales-pulse' ) . "\n";
+		echo esc_html__( 'Suggested action:', 'matriq-store-analytics' ) . "\n";
 		echo '  ' . esc_html( $rec_text ) . "\n\n";
 	}
 
 	if ( $ai_action !== '' ) {
-		echo esc_html__( 'COPILOT · AI alternative', 'sales-pulse' ) . "\n";
+		echo esc_html__( 'COPILOT · AI alternative', 'matriq-store-analytics' ) . "\n";
 		echo '  ' . esc_html( $ai_action ) . "\n\n";
 	}
 }
 
 echo esc_html( str_repeat( '=', 60 ) ) . "\n";
-echo esc_html__( 'Open Sales Pulse dashboard:', 'sales-pulse' ) . "\n";
+echo esc_html__( 'Open Matriq Store Analytics dashboard:', 'matriq-store-analytics' ) . "\n";
 echo esc_url( $dashboard_url ) . "\n\n";
 echo esc_html(
 	sprintf(
 		/* translators: %s: site name. */
-		__( 'Sent by Sales Pulse on behalf of %s.', 'sales-pulse' ),
+		__( 'Sent by Matriq Store Analytics on behalf of %s.', 'matriq-store-analytics' ),
 		$site_name
 	)
 ) . "\n";
-echo esc_html__( 'Manage your morning digest in Sales Pulse Settings.', 'sales-pulse' ) . "\n";
+echo esc_html__( 'Manage your morning digest in Matriq Store Analytics Settings.', 'matriq-store-analytics' ) . "\n";

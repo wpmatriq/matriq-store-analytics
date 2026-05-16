@@ -27,29 +27,29 @@ import { ActionCardContent } from './ActionCardContent';
 const EASE = [ 0.16, 1, 0.3, 1 ];
 
 const PERIOD_OPTIONS = [
-	{ value: 'daily', label: __( 'Yesterday', 'sales-pulse' ) },
-	{ value: 'weekly', label: __( 'Last 7 days', 'sales-pulse' ) },
-	{ value: 'monthly', label: __( 'Last 30 days', 'sales-pulse' ) },
+	{ value: 'daily', label: __( 'Yesterday', 'matriq-store-analytics' ) },
+	{ value: 'weekly', label: __( 'Last 7 days', 'matriq-store-analytics' ) },
+	{ value: 'monthly', label: __( 'Last 30 days', 'matriq-store-analytics' ) },
 ];
 
 const PERIOD_TITLES = {
-	daily: __( 'Yesterday at a glance.', 'sales-pulse' ),
-	weekly: __( 'Last 7 days at a glance.', 'sales-pulse' ),
-	monthly: __( 'Last 30 days at a glance.', 'sales-pulse' ),
+	daily: __( 'Yesterday at a glance.', 'matriq-store-analytics' ),
+	weekly: __( 'Last 7 days at a glance.', 'matriq-store-analytics' ),
+	monthly: __( 'Last 30 days at a glance.', 'matriq-store-analytics' ),
 };
 
 const PERIOD_SUBTITLES = {
 	daily: __(
 		'Daily store insights: what changed, why it matters, and what to do next.',
-		'sales-pulse'
+		'matriq-store-analytics'
 	),
 	weekly: __(
 		'The last 7 days compared to the previous 7, what shifted across the week.',
-		'sales-pulse'
+		'matriq-store-analytics'
 	),
 	monthly: __(
 		'The last 30 days compared to the previous 30, your rolling monthly pulse.',
-		'sales-pulse'
+		'matriq-store-analytics'
 	),
 };
 
@@ -68,7 +68,7 @@ export default function OverviewPage() {
 	const recommendation = data?.recommendation;
 	const metricCards = data?.metric_cards;
 	const campaign = data?.campaign;
-	const currency = window.wc_sma_admin_data?.currency;
+	const currency = window.matriqMSAData?.currency;
 
 	const variant = useMemo( () => statusVariant( diagnosis?.severity ), [ diagnosis?.severity ] );
 	const hasImpact =
@@ -89,7 +89,7 @@ export default function OverviewPage() {
 			/>
 
 			<PageHeader
-				eyebrow={ __( 'Morning briefing', 'sales-pulse' ) }
+				eyebrow={ __( 'Morning briefing', 'matriq-store-analytics' ) }
 				title={ PERIOD_TITLES[ period ] }
 				subtitle={ PERIOD_SUBTITLES[ period ] }
 				actions={
@@ -97,7 +97,7 @@ export default function OverviewPage() {
 						value={ period }
 						options={ PERIOD_OPTIONS }
 						onChange={ setPeriod }
-						ariaLabel={ __( 'Comparison period', 'sales-pulse' ) }
+						ariaLabel={ __( 'Comparison period', 'matriq-store-analytics' ) }
 					/>
 				}
 			/>
@@ -105,14 +105,14 @@ export default function OverviewPage() {
 			{ error ? (
 				<InsightCard
 					icon={ <AlertTriangle className="h-4 w-4" /> }
-					title={ __( 'Could not load overview', 'sales-pulse' ) }
+					title={ __( 'Could not load overview', 'matriq-store-analytics' ) }
 					accent="warning"
 				>
 					<div className="flex flex-col items-start gap-4">
 						<p className="m-0 text-sm text-muted-foreground">
 							{ __(
 								'We hit an error fetching your diagnosis. Retry, or refresh the page.',
-								'sales-pulse'
+								'matriq-store-analytics'
 							) }
 						</p>
 						<button
@@ -120,7 +120,7 @@ export default function OverviewPage() {
 							onClick={ () => refetch() }
 							className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 						>
-							{ __( 'Retry', 'sales-pulse' ) }
+							{ __( 'Retry', 'matriq-store-analytics' ) }
 						</button>
 					</div>
 				</InsightCard>
@@ -150,11 +150,11 @@ export default function OverviewPage() {
 					<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 						<InsightCard
 							icon={ <BarChart3 className="h-4 w-4" /> }
-							title={ __( 'What changed', 'sales-pulse' ) }
-							emptyTitle={ __( 'No significant changes detected', 'sales-pulse' ) }
+							title={ __( 'What changed', 'matriq-store-analytics' ) }
+							emptyTitle={ __( 'No significant changes detected', 'matriq-store-analytics' ) }
 							emptyDescription={ __(
 								'Revenue factors remained stable across the comparison window.',
-								'sales-pulse'
+								'matriq-store-analytics'
 							) }
 							delay={ 0.1 }
 						>
@@ -165,12 +165,12 @@ export default function OverviewPage() {
 
 						<InsightCard
 							icon={ <Sparkles className="h-4 w-4" /> }
-							title={ __( 'Suggested action', 'sales-pulse' ) }
+							title={ __( 'Suggested action', 'matriq-store-analytics' ) }
 							accent="success"
-							emptyTitle={ __( 'No action needed right now', 'sales-pulse' ) }
+							emptyTitle={ __( 'No action needed right now', 'matriq-store-analytics' ) }
 							emptyDescription={ __(
 								"Store performance is stable. We'll surface recommendations as soon as something shifts.",
-								'sales-pulse'
+								'matriq-store-analytics'
 							) }
 							delay={ 0.15 }
 						>

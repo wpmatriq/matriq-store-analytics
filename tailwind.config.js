@@ -1,5 +1,5 @@
 /**
- * Tailwind configuration - Sales Pulse dashboard.
+ * Tailwind configuration - Matriq Store Analytics dashboard.
  *
  * Tokens are authored in SCSS (`src/dashboard/design-tokens.scss`) as OKLch
  * CSS variables. Tailwind theme values below reference `var(--*)` directly so
@@ -7,7 +7,7 @@
  *
  * `content` also scans Store Copilot's source so utility classes used only by
  * the Pro plugin's slot components (e.g. ChatTrigger, AnomalyBanner) end up
- * in the compiled CSS that loads on every Sales Pulse admin page. Pro reuses
+ * in the compiled CSS that loads on every Matriq Store Analytics admin page. Pro reuses
  * SP's stylesheet rather than shipping its own.
  */
 const fs = require( 'fs' );

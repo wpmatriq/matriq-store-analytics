@@ -9,6 +9,6 @@ import { STORE_NAME } from './constants';
 export const menuChange = ( tab ) => {
 	dispatch( STORE_NAME ).updateActiveTab( tab );
 	if ( wp?.hooks?.doAction ) {
-		wp.hooks.doAction( 'wc_sma_menu_change', tab );
+		wp.hooks.doAction( 'matriq_msa_menu_change', tab );
 	}
 };

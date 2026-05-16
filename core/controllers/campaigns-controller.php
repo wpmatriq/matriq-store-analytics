@@ -5,18 +5,18 @@
  * CRUD for campaign context layer.
  * Campaigns affect diagnosis tone (suppress false alarms during sales).
  *
- * @package EC_Sales_Pulse\Core\Controllers
+ * @package Matriq\MSA\Core\Controllers
  */
 
-namespace EC_Sales_Pulse\Core\Controllers;
+namespace Matriq\MSA\Core\Controllers;
 
-use EC_Sales_Pulse\Core\Database\Campaigns;
+use Matriq\MSA\Core\Database\Campaigns;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * REST controller for tagging, listing, and ending campaigns. Mounted at
- * `sales-pulse/v2/campaigns/*`. Campaigns colour the diagnosis but never
+ * `matriq-store-analytics/v2/campaigns/*`. Campaigns colour the diagnosis but never
  * change `daily_stats` numbers.
  */
 class CampaignsController extends BaseController {
@@ -154,24 +154,24 @@ class CampaignsController extends BaseController {
 
 		// Validate required fields.
 		if ( empty( $name ) || empty( $goal ) || empty( $start_date ) || empty( $end_date ) ) {
-			return $this->error( __( 'All fields are required.', 'sales-pulse' ) );
+			return $this->error( __( 'All fields are required.', 'matriq-store-analytics' ) );
 		}
 
 		// Validate goal.
 		if ( ! array_key_exists( $goal, Campaigns::get_valid_goals() ) ) {
-			return $this->error( __( 'Invalid campaign goal.', 'sales-pulse' ) );
+			return $this->error( __( 'Invalid campaign goal.', 'matriq-store-analytics' ) );
 		}
 
 		// Validate date order.
 		if ( $end_date < $start_date ) {
-			return $this->error( __( 'End date must be after start date.', 'sales-pulse' ) );
+			return $this->error( __( 'End date must be after start date.', 'matriq-store-analytics' ) );
 		}
 
 		$campaigns = Campaigns::get_instance();
 		$id        = $campaigns->create( $name, $goal, $start_date, $end_date );
 
 		if ( ! $id ) {
-			return $this->error( __( 'Failed to create campaign.', 'sales-pulse' ), 500 );
+			return $this->error( __( 'Failed to create campaign.', 'matriq-store-analytics' ), 500 );
 		}
 
 		return $this->success(
@@ -199,13 +199,13 @@ class CampaignsController extends BaseController {
 		$campaign  = $campaigns->find( $id );
 
 		if ( ! $campaign ) {
-			return $this->error( __( 'Campaign not found.', 'sales-pulse' ), 404 );
+			return $this->error( __( 'Campaign not found.', 'matriq-store-analytics' ), 404 );
 		}
 
 		$result = $campaigns->end_campaign( $id );
 
 		if ( ! $result ) {
-			return $this->error( __( 'Failed to end campaign.', 'sales-pulse' ), 500 );
+			return $this->error( __( 'Failed to end campaign.', 'matriq-store-analytics' ), 500 );
 		}
 
 		return $this->success(
@@ -229,7 +229,7 @@ class CampaignsController extends BaseController {
 		$campaign  = $campaigns->find( $id );
 
 		if ( ! $campaign ) {
-			return $this->error( __( 'Campaign not found.', 'sales-pulse' ), 404 );
+			return $this->error( __( 'Campaign not found.', 'matriq-store-analytics' ), 404 );
 		}
 
 		$campaigns->delete( [ 'id' => $id ] );

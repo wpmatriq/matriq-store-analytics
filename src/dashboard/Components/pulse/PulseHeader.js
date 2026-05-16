@@ -1,10 +1,10 @@
 /**
  * PulseHeader - sticky brand + nav header.
  *
- * Preserves sales-pulse tab-routing: each nav item is a plain <a> that
+ * Preserves matriq-store-analytics tab-routing: each nav item is a plain <a> that
  * triggers a full WordPress admin reload. `activeTab` is supplied by App.js.
  *
- * The "LIVE" badge reflects snapshot freshness - `wc_sma_admin_data.last_snapshot_at`
+ * The "LIVE" badge reflects snapshot freshness - `matriqMSAData.last_snapshot_at`
  * is an ISO8601 string set by the PHP boot. Missing/older than 26h → "Stale" variant.
  */
 import React from 'react';
@@ -26,34 +26,34 @@ function getTabs() {
 	//   Pro inactive → Overview · Impact · History · Campaigns · Settings
 	//   Pro active   → Overview · Impact · History · Campaigns · Analytics · Copilot · Settings
 	const primary = [
-		{ slug: 'overview', label: __( 'Overview', 'sales-pulse' ), href: 'admin.php?page=sales-pulse' },
-		{ slug: 'impact', label: __( 'Impact', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=impact' },
-		{ slug: 'history', label: __( 'History', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=history' },
-		{ slug: 'campaigns', label: __( 'Campaigns', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=campaigns' },
+		{ slug: 'overview', label: __( 'Overview', 'matriq-store-analytics' ), href: 'admin.php?page=matriq-store-analytics' },
+		{ slug: 'impact', label: __( 'Impact', 'matriq-store-analytics' ), href: 'admin.php?page=matriq-store-analytics&tab=impact' },
+		{ slug: 'history', label: __( 'History', 'matriq-store-analytics' ), href: 'admin.php?page=matriq-store-analytics&tab=history' },
+		{ slug: 'campaigns', label: __( 'Campaigns', 'matriq-store-analytics' ), href: 'admin.php?page=matriq-store-analytics&tab=campaigns' },
 	];
-	const settings = { slug: 'settings', label: __( 'Settings', 'sales-pulse' ), href: 'admin.php?page=sales-pulse&tab=settings' };
+	const settings = { slug: 'settings', label: __( 'Settings', 'matriq-store-analytics' ), href: 'admin.php?page=matriq-store-analytics&tab=settings' };
 
 	const builtInSlugs = [ ...primary.map( ( t ) => t.slug ), settings.slug ];
 
-	// Tabs registered by premium extensions via `window.salesPulse.registerTab`.
+	// Tabs registered by premium extensions via `window.matriqMSA.registerTab`.
 	// Skip any whose slug already exists as a built-in: Pro uses registerTab
 	// for "soft built-ins" (e.g. impact) only to override the rendered
 	// component in PageRouter, never to add a duplicate nav entry. Insertion
 	// order is preserved (Object.values), so Pro's `analytics`/`copilot`
 	// land here in the order Pro registered them.
-	const registered = Object.values( window?.salesPulse?.tabs || {} )
+	const registered = Object.values( window?.matriqMSA?.tabs || {} )
 		.filter( ( entry ) => builtInSlugs.indexOf( entry.id ) === -1 )
 		.map( ( entry ) => ( {
 			slug: entry.id,
 			label: entry.label || entry.id,
-			href: `admin.php?page=sales-pulse&tab=${ entry.id }`,
+			href: `admin.php?page=matriq-store-analytics&tab=${ entry.id }`,
 		} ) );
 
 	return [ ...primary, ...registered, settings ];
 }
 
 function useLiveState() {
-	const lastSnapshot = window.wc_sma_admin_data?.last_snapshot_at;
+	const lastSnapshot = window.matriqMSAData?.last_snapshot_at;
 	if ( ! lastSnapshot ) {
 		return 'stale';
 	}
@@ -63,7 +63,7 @@ function useLiveState() {
 
 export function PulseHeader( { activeTab = 'overview' } ) {
 	const tabs = getTabs();
-	const version = window.wc_sma_admin_data?.version || '';
+	const version = window.matriqMSAData?.version || '';
 	const liveState = useLiveState();
 
 	const liveClasses =
@@ -77,7 +77,7 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 		<header className="border-b border-solid border-border/70 bg-background/85 backdrop-blur-xl">
 			<div className="mx-auto flex max-w-[1280px] items-center justify-between gap-6 px-6 py-4 lg:px-10">
 				<a
-					href="admin.php?page=sales-pulse"
+					href="admin.php?page=matriq-store-analytics"
 					className="group flex items-center gap-2.5 no-underline"
 				>
 					<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-ink shadow-md">
@@ -85,17 +85,17 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 					</div>
 					<div className="flex flex-col leading-none">
 						<span className="font-display text-lg text-ink">
-							{ __( 'Sales Pulse', 'sales-pulse' ) }
+							{ __( 'Matriq Store Analytics', 'matriq-store-analytics' ) }
 						</span>
 						<span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-							{ __( 'Your Store Insights', 'sales-pulse' ) }
+							{ __( 'Your Store Insights', 'matriq-store-analytics' ) }
 						</span>
 					</div>
 				</a>
 
 				<div
 					role="tablist"
-					aria-label={ __( 'Dashboard sections', 'sales-pulse' ) }
+					aria-label={ __( 'Dashboard sections', 'matriq-store-analytics' ) }
 					className="hidden items-center gap-1 rounded-full border border-solid border-border/80 bg-surface/60 p-1 shadow-xs md:flex"
 				>
 					{ tabs.map( ( tab ) => {
@@ -132,8 +132,8 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 						/>
 						<span className="text-[10px] font-semibold uppercase tracking-wider">
 							{ liveState === 'live'
-								? __( 'Live', 'sales-pulse' )
-								: __( 'Stale', 'sales-pulse' ) }
+								? __( 'Live', 'matriq-store-analytics' )
+								: __( 'Stale', 'matriq-store-analytics' ) }
 						</span>
 					</div>
 					{ version && (
@@ -145,7 +145,7 @@ export function PulseHeader( { activeTab = 'overview' } ) {
 			</div>
 
 			<nav
-				aria-label={ __( 'Dashboard sections', 'sales-pulse' ) }
+				aria-label={ __( 'Dashboard sections', 'matriq-store-analytics' ) }
 				className="flex items-center gap-1 overflow-x-auto px-4 pb-3 md:hidden"
 			>
 				{ tabs.map( ( tab ) => {

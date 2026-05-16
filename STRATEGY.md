@@ -516,14 +516,14 @@ function mark_order_date_dirty($order_id) {
 
 | Hook Name | Schedule | Purpose |
 |-----------|----------|---------|
-| `salespulse_nightly_snapshot` | Daily at 02:10 AM | Build yesterday snapshot + repair dirty dates |
-| `salespulse_backfill_runner` | Every 5 min (during backfill only) | Process 1-3 missing historical days |
-| `salespulse_send_digest_email` | Daily at 08:00 AM | Send morning briefing email (if enabled) |
+| `matriq_msa_nightly_snapshot` | Daily at 02:10 AM | Build yesterday snapshot + repair dirty dates |
+| `matriq_msa_backfill_runner` | Every 5 min (during backfill only) | Process 1-3 missing historical days |
+| `matriq_msa_send_digest_email` | Daily at 08:00 AM | Send morning briefing email (if enabled) |
 
 ### Nightly Cron Flow
 
 ```
-salespulse_nightly_snapshot fires at 02:10 AM
+matriq_msa_nightly_snapshot fires at 02:10 AM
     |
     ├── Step 1: Build yesterday's snapshot
     |   └── Query WC analytics tables for yesterday
@@ -913,9 +913,9 @@ Review payment logs or recent checkout changes.
 ### Technical Implementation
 
 ```
-salespulse_nightly_snapshot fires → snapshot built
+matriq_msa_nightly_snapshot fires → snapshot built
     ↓
-salespulse_send_digest_email fires at 08:00 AM
+matriq_msa_send_digest_email fires at 08:00 AM
     ↓
 Read yesterday's snapshot + diagnosis output
     ↓
@@ -1185,14 +1185,14 @@ core/services/
 ### New REST Endpoints
 
 ```
-GET  /sales-pulse/v1/overview/       - Diagnosis + metrics for dashboard
-GET  /sales-pulse/v1/history/        - List of daily explanations
-POST /sales-pulse/v1/campaigns/      - Create campaign
-GET  /sales-pulse/v1/campaigns/      - List campaigns
-PUT  /sales-pulse/v1/campaigns/{id}  - End campaign
-GET  /sales-pulse/v1/settings/       - Get settings
-POST /sales-pulse/v1/settings/       - Update settings
-POST /sales-pulse/v1/snapshot/       - Manual snapshot trigger (admin)
+GET  /matriq-store-analytics/v1/overview/       - Diagnosis + metrics for dashboard
+GET  /matriq-store-analytics/v1/history/        - List of daily explanations
+POST /matriq-store-analytics/v1/campaigns/      - Create campaign
+GET  /matriq-store-analytics/v1/campaigns/      - List campaigns
+PUT  /matriq-store-analytics/v1/campaigns/{id}  - End campaign
+GET  /matriq-store-analytics/v1/settings/       - Get settings
+POST /matriq-store-analytics/v1/settings/       - Update settings
+POST /matriq-store-analytics/v1/snapshot/       - Manual snapshot trigger (admin)
 ```
 
 ### What Gets Removed (Phase 2, after v2 is stable)
@@ -1232,7 +1232,7 @@ POST /sales-pulse/v1/snapshot/       - Manual snapshot trigger (admin)
 |---|------|---------|
 | 1 | `DiagnosisEngine` class | Midpoint decomposition math + confidence scoring |
 | 2 | `ActionEngine` class | Rule-based recommendations from scenario mapping |
-| 3 | Nightly cron job | Register `salespulse_nightly_snapshot` at 02:10 AM |
+| 3 | Nightly cron job | Register `matriq_msa_nightly_snapshot` at 02:10 AM |
 | 4 | Dirty date hooks | Hook order create/update/status/refund → mark dates |
 | 5 | Simple admin page | Plain text diagnosis output on Overview page |
 | 6 | System state tracking | `last_snapshot_date`, `backfill_complete` |

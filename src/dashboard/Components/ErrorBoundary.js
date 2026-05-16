@@ -22,7 +22,7 @@ export default class ErrorBoundary extends React.Component {
 
 	componentDidCatch( error, info ) {
 		// eslint-disable-next-line no-console
-		console.error( 'Sales Pulse dashboard error:', error, info );
+		console.error( 'Matriq Store Analytics dashboard error:', error, info );
 	}
 
 	handleReload = () => {
@@ -37,14 +37,14 @@ export default class ErrorBoundary extends React.Component {
 		return (
 			<InsightCard
 				icon={ <AlertTriangle className="h-4 w-4" /> }
-				title={ __( 'Something went wrong', 'sales-pulse' ) }
+				title={ __( 'Something went wrong', 'matriq-store-analytics' ) }
 				accent="warning"
 			>
 				<div className="flex flex-col items-start gap-4">
 					<p className="m-0 text-sm text-muted-foreground">
 						{ __(
 							'The dashboard hit an unexpected error. Reload the page to try again.',
-							'sales-pulse'
+							'matriq-store-analytics'
 						) }
 					</p>
 					{ this.state.error?.message && (
@@ -58,7 +58,7 @@ export default class ErrorBoundary extends React.Component {
 						className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 					>
 						<RefreshCcw className="h-4 w-4" />
-						{ __( 'Reload dashboard', 'sales-pulse' ) }
+						{ __( 'Reload dashboard', 'matriq-store-analytics' ) }
 					</button>
 				</div>
 			</InsightCard>

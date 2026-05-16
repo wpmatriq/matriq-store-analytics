@@ -11,15 +11,15 @@
  *
  * Supports daily (yesterday vs day-before) and weekly (7d vs previous 7d) views.
  *
- * @package EC_Sales_Pulse\Core\Controllers
+ * @package Matriq\MSA\Core\Controllers
  */
 
-namespace EC_Sales_Pulse\Core\Controllers;
+namespace Matriq\MSA\Core\Controllers;
 
-use EC_Sales_Pulse\Core\Database\Campaigns;
-use EC_Sales_Pulse\Core\Database\DailyStats;
-use EC_Sales_Pulse\Core\Services\ActionEngine;
-use EC_Sales_Pulse\Core\Services\DiagnosisEngine;
+use Matriq\MSA\Core\Database\Campaigns;
+use Matriq\MSA\Core\Database\DailyStats;
+use Matriq\MSA\Core\Services\ActionEngine;
+use Matriq\MSA\Core\Services\DiagnosisEngine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -27,7 +27,7 @@ defined( 'ABSPATH' ) || exit;
  * REST controller for the morning-briefing Overview page. Composes the
  * KPI cards, diagnosis, and suggested action for a given period
  * (daily / weekly / monthly) into one response. Filterable via
- * `salespulse_overview_response` so Pro can append forecast + anomaly
+ * `matriq_msa_overview_response` so Pro can append forecast + anomaly
  * data to the same payload.
  */
 class Overview extends BaseController {
@@ -95,11 +95,11 @@ class Overview extends BaseController {
 		 * Premium extensions listen here to scope per-window behaviour
 		 * (e.g. only enrich diagnosis on the daily window).
 		 *
-		 * @since x.x.x
+		 * @since 0.0.2
 		 *
 		 * @param string $period One of `daily` | `weekly` | `monthly`.
 		 */
-		do_action( 'salespulse_overview_period_resolved', $period );
+		do_action( 'matriq_msa_overview_period_resolved', $period );
 
 		if ( $period === 'monthly' ) {
 			$current  = $this->get_rolling_metrics( $daily_stats, 0, 30 );
@@ -152,12 +152,12 @@ class Overview extends BaseController {
 		 * `pro_recommendations` so the Overview page can render Pro insights
 		 * inline without a second round-trip.
 		 *
-		 * @since x.x.x
+		 * @since 0.0.2
 		 *
 		 * @param array<string, mixed> $response The response payload.
 		 * @param string               $period   Period parameter (daily|weekly|monthly).
 		 */
-		$response = apply_filters( 'salespulse_overview_response', $response, $period );
+		$response = apply_filters( 'matriq_msa_overview_response', $response, $period );
 
 		return $this->success( $response );
 	}
@@ -284,22 +284,22 @@ class Overview extends BaseController {
 		$metrics = [
 			[
 				'key'    => 'revenue',
-				'label'  => __( 'Revenue', 'sales-pulse' ),
+				'label'  => __( 'Revenue', 'matriq-store-analytics' ),
 				'format' => 'currency',
 			],
 			[
 				'key'    => 'orders',
-				'label'  => __( 'Orders', 'sales-pulse' ),
+				'label'  => __( 'Orders', 'matriq-store-analytics' ),
 				'format' => 'number',
 			],
 			[
 				'key'    => 'avg_order_value',
-				'label'  => __( 'Avg Order Value', 'sales-pulse' ),
+				'label'  => __( 'Avg Order Value', 'matriq-store-analytics' ),
 				'format' => 'currency',
 			],
 			[
 				'key'    => 'items_per_order',
-				'label'  => __( 'Items per Order', 'sales-pulse' ),
+				'label'  => __( 'Items per Order', 'matriq-store-analytics' ),
 				'format' => 'decimal',
 			],
 		];

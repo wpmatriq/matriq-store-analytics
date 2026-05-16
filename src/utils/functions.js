@@ -7,7 +7,7 @@ export const activatePlugin = async ( plugin ) => {
 		formData.append( 'plugin_init', plugin?.init );
 		formData.append( 'plugin_slug', plugin?.slug );
 		const response = await wpApiFetch( {
-			path: '/wc-sma/v1/activate-plugin',
+			path: '/matriq-store-analytics/v1/activate-plugin',
 			method: 'POST',
 			body: formData,
 		} );
@@ -16,7 +16,7 @@ export const activatePlugin = async ( plugin ) => {
 			console.log(
 				sprintf(
 					/* translators: %s: Plugin name */
-					__( '%s Plugin Activated Successfully..!', 'sales-pulse' ),
+					__( '%s Plugin Activated Successfully..!', 'matriq-store-analytics' ),
 					plugin?.name
 				)
 			);
@@ -43,7 +43,7 @@ export const installPlugins = async ( pluginInstallList ) => {
 							/* translators: %s: Plugin name */
 							__(
 								'Installing %s plugin. Please wait..',
-								'sales-pulse'
+								'matriq-store-analytics'
 							),
 							plugin?.name
 						)
@@ -59,7 +59,7 @@ export const installPlugins = async ( pluginInstallList ) => {
 										/* translators: %s: Plugin name */
 										__(
 											`%s plugin Installed Successfully..`,
-											'sales-pulse'
+											'matriq-store-analytics'
 										),
 										plugin?.name
 									)

@@ -2,18 +2,18 @@
 /**
  * Free Impact REST controller (Phase 6.2).
  *
- *   GET /sales-pulse/v2/impact/summary
+ *   GET /matriq-store-analytics/v2/impact/summary
  *
  * Returns the data-foundation stats rendered by the free Impact tab.
  * Pro replaces this surface with attribution-driven numbers; the free
  * version stays focused on "your data foundation is solid."
  *
- * @package EC_Sales_Pulse\Core\Controllers
+ * @package Matriq\MSA\Core\Controllers
  */
 
-namespace EC_Sales_Pulse\Core\Controllers;
+namespace Matriq\MSA\Core\Controllers;
 
-use EC_Sales_Pulse\Core\Services\ImpactSummary;
+use Matriq\MSA\Core\Services\ImpactSummary;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -48,7 +48,7 @@ class ImpactController extends BaseController {
 	}
 
 	/**
-	 * GET /sales-pulse/v2/impact/summary - returns the data-foundation stats
+	 * GET /matriq-store-analytics/v2/impact/summary - returns the data-foundation stats
 	 * payload assembled by ImpactSummary.
 	 *
 	 * @return \WP_REST_Response

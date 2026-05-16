@@ -2,15 +2,15 @@
 /**
  * Daily Stats Database Model.
  *
- * Core brain of Sales Pulse - one row per day of store health.
+ * Core brain of Matriq Store Analytics - one row per day of store health.
  * Dashboard reads from this table only for instant performance.
  *
- * @package EC_Sales_Pulse\Core\Database
+ * @package Matriq\MSA\Core\Database
  */
 
-namespace EC_Sales_Pulse\Core\Database;
+namespace Matriq\MSA\Core\Database;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 

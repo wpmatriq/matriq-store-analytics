@@ -4,7 +4,7 @@ const path = require( 'path' );
 module.exports = {
 	...defaultConfig,
 	entry: {
-		'wc-sma-app': path.resolve(
+		'matriq-msa-app': path.resolve(
 			__dirname,
 			'src/dashboard/DashboardApp.js'
 		),

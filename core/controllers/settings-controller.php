@@ -5,25 +5,25 @@
  * Minimal settings: snapshot time, email digest toggle, diagnosis sensitivity.
  * Stored in wp_options (few keys, not worth a custom table).
  *
- * @package EC_Sales_Pulse\Core\Controllers
+ * @package Matriq\MSA\Core\Controllers
  */
 
-namespace EC_Sales_Pulse\Core\Controllers;
+namespace Matriq\MSA\Core\Controllers;
 
-use EC_Sales_Pulse\Core\Database\SystemState;
+use Matriq\MSA\Core\Database\SystemState;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * REST controller for the Settings page. Reads/writes the `salespulse_settings`
+ * REST controller for the Settings page. Reads/writes the `matriq_msa_settings`
  * option (digest schedule, recipient, sensitivity, etc.) under the
- * `sales-pulse/v2/settings` namespace.
+ * `matriq-store-analytics/v2/settings` namespace.
  */
 class SettingsController extends BaseController {
 	/**
 	 * Option key for all plugin settings.
 	 */
-	public const OPTION_KEY = 'salespulse_settings';
+	public const OPTION_KEY = 'matriq_msa_settings';
 
 	/**
 	 * Default settings.

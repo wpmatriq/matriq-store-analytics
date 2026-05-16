@@ -2,11 +2,11 @@
 /**
  * Sanitizer.
  *
- * @package EC_Sales_Pulse
- * @since x.x.x
+ * @package Matriq\MSA
+ * @since 0.0.2
  */
 
-namespace EC_Sales_Pulse\Inc\Utils;
+namespace Matriq\MSA\Inc\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -91,7 +91,7 @@ class Sanitizer {
 	}
 
 	/**
-	 * Settings sanitizer for wc_sma settings.
+	 * Settings sanitizer for matriq_msa settings.
 	 *
 	 * @access public
 	 *
@@ -114,7 +114,7 @@ class Sanitizer {
 						break;
 
 					case 'array':
-						$output[ $key ] = is_array( $value ) ? wc_sma_clean_data( $value ) : [];
+						$output[ $key ] = is_array( $value ) ? matriq_msa_clean_data( $value ) : [];
 						break;
 
 					case 'boolean':
@@ -136,7 +136,7 @@ class Sanitizer {
 						break;
 				}
 
-				do_action( "wc_sma_sanitize_setting_{$key}", $output[ $key ], $key );
+				do_action( "matriq_msa_sanitize_setting_{$key}", $output[ $key ], $key );
 			}
 		} else {
 			$output = sanitize_text_field( $dataset );
@@ -162,7 +162,7 @@ class Sanitizer {
 				return wp_kses_post( $value );
 
 			case 'array':
-				return is_array( $value ) ? wc_sma_clean_data( $value ) : [];
+				return is_array( $value ) ? matriq_msa_clean_data( $value ) : [];
 
 			case 'boolean':
 				return filter_var( $value, FILTER_VALIDATE_BOOLEAN );

@@ -6,15 +6,15 @@
  * Each entry shows the date, headline, direction, and severity -
  * building trust through a visible track record.
  *
- * @package EC_Sales_Pulse\Core\Controllers
+ * @package Matriq\MSA\Core\Controllers
  */
 
-namespace EC_Sales_Pulse\Core\Controllers;
+namespace Matriq\MSA\Core\Controllers;
 
-use EC_Sales_Pulse\Core\Database\Campaigns;
-use EC_Sales_Pulse\Core\Database\DailyStats;
-use EC_Sales_Pulse\Core\Services\ActionEngine;
-use EC_Sales_Pulse\Core\Services\DiagnosisEngine;
+use Matriq\MSA\Core\Database\Campaigns;
+use Matriq\MSA\Core\Database\DailyStats;
+use Matriq\MSA\Core\Services\ActionEngine;
+use Matriq\MSA\Core\Services\DiagnosisEngine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -97,7 +97,7 @@ class History extends BaseController {
 		 * @param string $context Diagnosis context. `history` is non-`daily`,
 		 *                        which is the existing skip signal.
 		 */
-		do_action( 'salespulse_overview_period_resolved', 'history' );
+		do_action( 'matriq_msa_overview_period_resolved', 'history' );
 
 		// Batch the previous-day rows in one IN-list query instead of N
 		// per-row lookups. Same shape as the per-row method; just keyed by date.

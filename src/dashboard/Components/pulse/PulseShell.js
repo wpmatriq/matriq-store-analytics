@@ -26,11 +26,11 @@ export function PulseShell( { activeTab = 'overview', children } ) {
 						<span>
 							{ __(
 								'Built for WooCommerce stores that take revenue seriously.',
-								'sales-pulse'
+								'matriq-store-analytics'
 							) }
 						</span>
 						<span className="font-mono">
-							{ `Sales Pulse · ${ new Date().getFullYear() }` }
+							{ `Matriq Store Analytics · ${ new Date().getFullYear() }` }
 						</span>
 					</div>
 				</footer>

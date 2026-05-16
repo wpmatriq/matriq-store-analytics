@@ -1,12 +1,12 @@
 <?php
 
-namespace EC_Sales_Pulse {
+namespace Matriq\MSA {
     /**
-     * WC_SMA_Loader
+     * Loader
      *
      * @since x.x.x
      */
-    class WC_SMA_Loader
+    class Loader
     {
         /**
          * Constructor
@@ -115,7 +115,7 @@ namespace EC_Sales_Pulse {
         }
     }
 }
-namespace EC_Sales_Pulse\Inc\Traits {
+namespace Matriq\MSA\Inc\Traits {
     /**
      * Trait Get_Instance.
      *
@@ -156,7 +156,7 @@ namespace EC_Sales_Pulse\Inc\Traits {
          *
          * @var string
          */
-        protected $namespace = 'sales-pulse/v1';
+        protected $namespace = 'matriq-store-analytics/v1';
         /**
          * Constructor
          *
@@ -210,15 +210,15 @@ namespace EC_Sales_Pulse\Inc\Traits {
         }
     }
 }
-namespace EC_Sales_Pulse\Inc\Utils {
+namespace Matriq\MSA\Inc\Utils {
     /**
      * Update Compatibility
      *
-     * @package EC_Sales_Pulse
+     * @package Matriq\MSA
      */
     class Maintenance
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          *  Constructor
          */
@@ -297,7 +297,7 @@ namespace EC_Sales_Pulse\Inc\Utils {
          * @return array<string, mixed>
          * @since x.x.x
          */
-        public static function get_wc_sma_settings($use_cache = true)
+        public static function get_settings($use_cache = true)
         {
         }
         /**
@@ -307,7 +307,7 @@ namespace EC_Sales_Pulse\Inc\Utils {
          * @return void
          * @since x.x.x
          */
-        public static function update_wc_sma_settings($settings): void
+        public static function update_settings($settings): void
         {
         }
         /**
@@ -410,7 +410,7 @@ namespace EC_Sales_Pulse\Inc\Utils {
         }
     }
 }
-namespace EC_Sales_Pulse\Inc\Services {
+namespace Matriq\MSA\Inc\Services {
     class Query
     {
         /**
@@ -1134,7 +1134,7 @@ namespace EC_Sales_Pulse\Inc\Services {
         }
     }
 }
-namespace EC_Sales_Pulse\Core\Database {
+namespace Matriq\MSA\Core\Database {
     /**
      * Option-backed persistence for the dirty-dates repair queue. Public API
      * mirrors the table-era model so callers (`OrderHooks`, `SnapshotBuilder`,
@@ -1144,12 +1144,12 @@ namespace EC_Sales_Pulse\Core\Database {
      */
     class DirtyDates
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * `wp_options` row that holds the pending date set as a `[ date => reason ]`
          * map. Non-autoloaded - hooked path only.
          */
-        public const OPTION_KEY = 'salespulse_dirty_dates';
+        public const OPTION_KEY = 'matriq_msa_dirty_dates';
         /**
          * Returns an empty string. Retained so anything that asks the model for
          * its CREATE TABLE statement (Schema iterator, accidental typing) gets a
@@ -1205,7 +1205,7 @@ namespace EC_Sales_Pulse\Core\Database {
         }
     }
     /**
-     * Shared base for every Sales Pulse / Store Copilot DB table model.
+     * Shared base for every Matriq Store Analytics / Store Copilot DB table model.
      *
      * Concrete subclasses declare a table name and prefix; this class supplies
      * the wpdb connection, charset_collate, and standard insert/update/delete
@@ -1224,7 +1224,7 @@ namespace EC_Sales_Pulse\Core\Database {
          *
          * @var string
          */
-        protected $prefix = 'salespulse_';
+        protected $prefix = 'matriq_msa_';
         /**
          * Primary key column.
          *
@@ -1359,9 +1359,9 @@ namespace EC_Sales_Pulse\Core\Database {
      * the diagnosis tone but never the underlying numbers (a Black Friday sale
      * shouldn't read as an "anomalous spike", for example).
      */
-    class Campaigns extends \EC_Sales_Pulse\Core\Database\Base
+    class Campaigns extends \Matriq\MSA\Core\Database\Base
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Valid campaign goals.
          */
@@ -1446,9 +1446,9 @@ namespace EC_Sales_Pulse\Core\Database {
      * timestamp, db_version, backfill cursor, and similar bookkeeping that
      * doesn't fit a per-day table.
      */
-    class SystemState extends \EC_Sales_Pulse\Core\Database\Base
+    class SystemState extends \Matriq\MSA\Core\Database\Base
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Known state keys.
          */
@@ -1576,9 +1576,9 @@ namespace EC_Sales_Pulse\Core\Database {
      * metrics (revenue, orders, items, AOV, refunds, new-vs-returning) that
      * every diagnosis, comparison, and chart reads from.
      */
-    class DailyStats extends \EC_Sales_Pulse\Core\Database\Base
+    class DailyStats extends \Matriq\MSA\Core\Database\Base
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Table name without prefix.
          *
@@ -1690,7 +1690,7 @@ namespace EC_Sales_Pulse\Core\Database {
      */
     class Schema
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Current database schema version.
          *
@@ -1749,7 +1749,7 @@ namespace EC_Sales_Pulse\Core\Database {
         }
     }
 }
-namespace EC_Sales_Pulse\Core\Models {
+namespace Matriq\MSA\Core\Models {
     /**
      * Class Query Model.
      */
@@ -1758,11 +1758,11 @@ namespace EC_Sales_Pulse\Core\Models {
         /**
          * Cache key.
          */
-        public const DB_CACHE_KEY = 'wc_sma_query_data';
+        public const DB_CACHE_KEY = 'matriq_msa_query_data';
         /**
          * Base models.
          */
-        public const BASE_MODEL = 'EC_Sales_Pulse\Core\Models\\';
+        public const BASE_MODEL = 'Matriq\MSA\Core\Models\\';
         /**
          * Get query data.
          *
@@ -1830,7 +1830,7 @@ namespace EC_Sales_Pulse\Core\Models {
         }
     }
 }
-namespace EC_Sales_Pulse\Core\Hooks {
+namespace Matriq\MSA\Core\Hooks {
     /**
      * WooCommerce order-event listener.
      *
@@ -1840,7 +1840,7 @@ namespace EC_Sales_Pulse\Core\Hooks {
      */
     class OrderHooks
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Constructor - register WooCommerce hooks.
          */
@@ -1888,23 +1888,23 @@ namespace EC_Sales_Pulse\Core\Hooks {
         }
     }
 }
-namespace EC_Sales_Pulse\Core\Controllers {
+namespace Matriq\MSA\Core\Controllers {
     /**
-     * Shared base for every Sales Pulse REST controller.
+     * Shared base for every Matriq Store Analytics REST controller.
      *
-     * Centralises the `sales-pulse/v2` namespace, the `manage_woocommerce`
+     * Centralises the `matriq-store-analytics/v2` namespace, the `manage_woocommerce`
      * permission check, and the success/error response envelope so subclasses
      * only need to declare a `rest_base` and register their routes.
      */
     abstract class BaseController
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * REST namespace.
          *
          * @var string
          */
-        protected $namespace = 'sales-pulse/v2';
+        protected $namespace = 'matriq-store-analytics/v2';
         /**
          * Route base (override in each controller).
          *
@@ -1980,7 +1980,7 @@ namespace EC_Sales_Pulse\Core\Controllers {
      * `summary` endpoint backed by ImpactSummary; Pro overrides nothing here
      * and instead mounts its richer endpoints under `copilot/impact/*`.
      */
-    class ImpactController extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    class ImpactController extends \Matriq\MSA\Core\Controllers\BaseController
     {
         /**
          * Route base.
@@ -1997,7 +1997,7 @@ namespace EC_Sales_Pulse\Core\Controllers {
         {
         }
         /**
-         * GET /sales-pulse/v2/impact/summary - returns the data-foundation stats
+         * GET /matriq-store-analytics/v2/impact/summary - returns the data-foundation stats
          * payload assembled by ImpactSummary.
          *
          * @return \WP_REST_Response
@@ -2011,7 +2011,7 @@ namespace EC_Sales_Pulse\Core\Controllers {
      * render" probe (WC active, analytics tables present, snapshots have run)
      * plus a manual snapshot trigger for admin-side troubleshooting.
      */
-    class DataReadiness extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    class DataReadiness extends \Matriq\MSA\Core\Controllers\BaseController
     {
         /**
          * Route base.
@@ -2067,10 +2067,10 @@ namespace EC_Sales_Pulse\Core\Controllers {
     }
     /**
      * REST controller for tagging, listing, and ending campaigns. Mounted at
-     * `sales-pulse/v2/campaigns/*`. Campaigns colour the diagnosis but never
+     * `matriq-store-analytics/v2/campaigns/*`. Campaigns colour the diagnosis but never
      * change `daily_stats` numbers.
      */
-    class CampaignsController extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    class CampaignsController extends \Matriq\MSA\Core\Controllers\BaseController
     {
         /**
          * Route base.
@@ -2125,10 +2125,10 @@ namespace EC_Sales_Pulse\Core\Controllers {
      * REST controller for the morning-briefing Overview page. Composes the
      * KPI cards, diagnosis, and suggested action for a given period
      * (daily / weekly / monthly) into one response. Filterable via
-     * `salespulse_overview_response` so Pro can append forecast + anomaly
+     * `matriq_msa_overview_response` so Pro can append forecast + anomaly
      * data to the same payload.
      */
-    class Overview extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    class Overview extends \Matriq\MSA\Core\Controllers\BaseController
     {
         /**
          * Route base.
@@ -2165,7 +2165,7 @@ namespace EC_Sales_Pulse\Core\Controllers {
      * REST controller for the History tab. Returns paginated daily snapshots
      * with diagnoses so the merchant can scrub backwards through time.
      */
-    class History extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    class History extends \Matriq\MSA\Core\Controllers\BaseController
     {
         /**
          * Route base.
@@ -2190,16 +2190,16 @@ namespace EC_Sales_Pulse\Core\Controllers {
         }
     }
     /**
-     * REST controller for the Settings page. Reads/writes the `salespulse_settings`
+     * REST controller for the Settings page. Reads/writes the `matriq_msa_settings`
      * option (digest schedule, recipient, sensitivity, etc.) under the
-     * `sales-pulse/v2/settings` namespace.
+     * `matriq-store-analytics/v2/settings` namespace.
      */
-    class SettingsController extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    class SettingsController extends \Matriq\MSA\Core\Controllers\BaseController
     {
         /**
          * Option key for all plugin settings.
          */
-        public const OPTION_KEY = 'salespulse_settings';
+        public const OPTION_KEY = 'matriq_msa_settings';
         /**
          * Default settings.
          */
@@ -2273,7 +2273,7 @@ namespace EC_Sales_Pulse\Core\Controllers {
      * "send test" endpoint for the Settings UI to verify mail configuration
      * before the daily cron fires.
      */
-    class DigestController extends \EC_Sales_Pulse\Core\Controllers\BaseController
+    class DigestController extends \Matriq\MSA\Core\Controllers\BaseController
     {
         /**
          * Route base.
@@ -2297,7 +2297,7 @@ namespace EC_Sales_Pulse\Core\Controllers {
         }
     }
 }
-namespace EC_Sales_Pulse\Core\Services {
+namespace Matriq\MSA\Core\Services {
     /**
      * Nightly daily-stats snapshot builder.
      *
@@ -2307,7 +2307,7 @@ namespace EC_Sales_Pulse\Core\Services {
      */
     class SnapshotBuilder
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Build and store a snapshot for a specific date.
          *
@@ -2380,7 +2380,7 @@ namespace EC_Sales_Pulse\Core\Services {
      */
     class DataCollector
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Constructor.
          */
@@ -2501,12 +2501,12 @@ namespace EC_Sales_Pulse\Core\Services {
      * Compares a current period to a prior period, decomposes the revenue
      * delta into orders and AOV factors, weighs them against a sensitivity
      * threshold, and returns a "What changed and why" verdict. The output is
-     * filterable via `salespulse_diagnosis_result` so Pro can layer LLM
+     * filterable via `matriq_msa_diagnosis_result` so Pro can layer LLM
      * explanations on top.
      */
     class DiagnosisEngine
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Minimum revenue change percentage to trigger diagnosis (base; scaled by sensitivity).
          */
@@ -2566,7 +2566,7 @@ namespace EC_Sales_Pulse\Core\Services {
      */
     class DigestMailer
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Constructor - listens for the nightly snapshot completion event.
          */
@@ -2618,7 +2618,7 @@ namespace EC_Sales_Pulse\Core\Services {
      */
     class ImpactSummary
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Build the keyed stat payload consumed by the free Impact tab.
          *
@@ -2638,7 +2638,7 @@ namespace EC_Sales_Pulse\Core\Services {
      */
     class ActionEngine
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Constructor - register scenarios.
          */
@@ -2657,7 +2657,7 @@ namespace EC_Sales_Pulse\Core\Services {
         }
     }
 }
-namespace EC_Sales_Pulse\Core\Cron {
+namespace Matriq\MSA\Core\Cron {
     /**
      * Cron registration + dispatch. Schedules the nightly snapshot at 02:10
      * site-time and the digest send at the merchant's configured hour, and
@@ -2665,12 +2665,12 @@ namespace EC_Sales_Pulse\Core\Cron {
      */
     class CronManager
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Hook names.
          */
-        public const HOOK_NIGHTLY = 'salespulse_nightly_snapshot';
-        public const HOOK_BACKFILL = 'salespulse_backfill_runner';
+        public const HOOK_NIGHTLY = 'matriq_msa_nightly_snapshot';
+        public const HOOK_BACKFILL = 'matriq_msa_backfill_runner';
         /**
          * Constructor - register cron hooks and schedules.
          */
@@ -2729,7 +2729,7 @@ namespace EC_Sales_Pulse\Core\Cron {
         }
     }
 }
-namespace EC_Sales_Pulse\Admin {
+namespace Matriq\MSA\Admin {
     /**
      * Notices
      *
@@ -2737,7 +2737,7 @@ namespace EC_Sales_Pulse\Admin {
      */
     class Notices
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Constructor
          *
@@ -2770,11 +2770,11 @@ namespace EC_Sales_Pulse\Admin {
      */
     class Menu
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
         /**
          * Settings page ID for Plugin settings.
          */
-        public const PAGE_ID = 'sales-pulse';
+        public const PAGE_ID = 'matriq-store-analytics';
         /**
          * Constructor
          *
@@ -2857,8 +2857,8 @@ namespace EC_Sales_Pulse\Admin {
      */
     class API
     {
-        use \EC_Sales_Pulse\Inc\Traits\Get_Instance;
-        use \EC_Sales_Pulse\Inc\Traits\API_Base;
+        use \Matriq\MSA\Inc\Traits\Get_Instance;
+        use \Matriq\MSA\Inc\Traits\API_Base;
         /**
          * Route base.
          *
@@ -2926,7 +2926,7 @@ namespace {
      * @return bool
      * @since x.x.x
      */
-    function wc_sma_is_pro_active()
+    function matriq_msa_is_pro_active()
     {
     }
     /**
@@ -2937,7 +2937,7 @@ namespace {
      *
      * @since x.x.x
      */
-    function wc_sma_clean_data($var)
+    function matriq_msa_clean_data($var)
     {
     }
     /**
@@ -2945,15 +2945,15 @@ namespace {
      *
      * @return Query
      */
-    function wc_sma_query()
+    function matriq_msa_query()
     {
     }
     /**
      * Set constants
      */
-    \define('EC_SALES_PULSE_VER', '0.0.1');
-    \define('EC_SALES_PULSE_FILE', __FILE__);
-    \define('EC_SALES_PULSE_PRO_MINIMUM_VER', '0.0.1');
+    \define('MATRIQ_MSA_VER', '0.0.1');
+    \define('MATRIQ_MSA_FILE', __FILE__);
+    \define('MATRIQ_MSA_PRO_MINIMUM_VER', '0.0.1');
     /**
      * Format a metric_card value.
      *

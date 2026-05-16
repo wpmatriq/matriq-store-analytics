@@ -2,20 +2,20 @@
 /**
  * Admin notices.
  *
- * @package EC_Sales_Pulse
- * @since x.x.x
+ * @package Matriq\MSA
+ * @since 0.0.2
  */
 
-namespace EC_Sales_Pulse\Admin;
+namespace Matriq\MSA\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 /**
  * Notices
  *
- * @since x.x.x
+ * @since 0.0.2
  */
 class Notices {
 	use Get_Instance;
@@ -23,7 +23,7 @@ class Notices {
 	/**
 	 * Constructor
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function __construct() {
 		add_action( 'admin_init', [ $this, 'minimum_pro_version_requirement' ] );
@@ -45,14 +45,14 @@ class Notices {
 	/**
 	 * Display admin notice if premium incompatible version is activated.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function minimum_pro_version_requirement(): void {
 		if ( ! $this->should_notice_be_visible() ) {
 			return;
 		}
 
-		if ( ! defined( 'EC_SALES_PULSE_PRO_VER' ) || ! defined( 'EC_SALES_PULSE_PRO_PRODUCT' ) ) {
+		if ( ! defined( 'MATRIQ_MSA_PRO_VER' ) || ! defined( 'MATRIQ_MSA_PRO_PRODUCT' ) ) {
 			return;
 		}
 	}

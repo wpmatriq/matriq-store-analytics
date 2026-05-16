@@ -1,25 +1,26 @@
 {
-	"name": "sales-pulse",
-	"version": "0.0.1",
-	"description": "WP Smart Analytics is a WordPress plugin that helps you understand your site traffic and visitors.",
+	"name": "matriq-store-analytics",
+	"version": "0.0.2",
+	"description": "Daily revenue diagnosis for WooCommerce. Explains why store revenue changed each day in plain language using deterministic math.",
 	"volta": {
 		"node": "18.15.0"
 	},
-	"author": "",
+	"author": "Matriq",
 	"license": "GPL-2.0-or-later",
 	"keywords": [
 		"wordpress",
-		"plugin",
-		"portal",
-		"dashboard"
+		"woocommerce",
+		"sales-analytics",
+		"revenue-reports",
+		"daily-digest"
 	],
-	"homepage": "https://github.com/brainstormforce/sales-pulse#readme",
+	"homepage": "https://github.com/matriq/matriq-store-analytics#readme",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/brainstormforce/sales-pulse.git"
+		"url": "git+https://github.com/matriq/matriq-store-analytics.git"
 	},
 	"bugs": {
-		"url": "https://github.com/brainstormforce/sales-pulse/issues"
+		"url": "https://github.com/matriq/matriq-store-analytics/issues"
 	},
 	"engines": {
 		"npm": ">=9.5.0 <10.4.0",
@@ -126,8 +127,8 @@
 	"scripts": {
 		"start": "wp-scripts start",
 		"build": "wp-scripts build",
-		"makepot": "wp i18n make-pot . --skip-audit --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/wc-sma-app.js' languages/sales-pulse.pot",
-		"php-makepot": "php -d memory_limit=1024M $(which wp) i18n make-pot wp-content/plugins/sales-pulse wp-content/plugins/sales-pulse/languages/sales-pulse.pot --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/wc-sma-app.js'",
+		"makepot": "wp i18n make-pot . --skip-audit --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/matriq-msa-app.js' languages/matriq-store-analytics.pot",
+		"php-makepot": "php -d memory_limit=1024M $(which wp) i18n make-pot wp-content/plugins/matriq-store-analytics wp-content/plugins/matriq-store-analytics/languages/matriq-store-analytics.pot --exclude='.dev,.github,.wordpress-org,docs,src,node_modules,tests,vendor,wordpress,artifact,.browserslistrc,postcss.config.js,tailwind.config.js,webpack.restriction.config.js,.eslintrc.js,.prettierrc.js,package.json,package-lock.json,*.json' --include='*.php,assets/build/matriq-msa-app.js'",
 		"pretty": "prettier --check .",
 		"pretty:fix": "prettier --write .",
 		"lint-js": "wp-scripts lint-js",

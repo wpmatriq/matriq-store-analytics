@@ -18,7 +18,7 @@ module.exports = {
 		'jsdoc/check-tag-names': [ 'error', { definedTags: [ 'jsx' ] } ],
 		'@wordpress/i18n-text-domain': [
 			'error',
-			{ allowedTextDomain: 'sales-pulse' },
+			{ allowedTextDomain: 'matriq-store-analytics' },
 		],
 	},
 	parserOptions: {
@@ -30,7 +30,7 @@ module.exports = {
 	globals: {
 		alert: true,
 		confirm: true,
-		wc_sma_admin_data: true,
+		matriqMSAData: true,
 		DOMParser: true,
 		updateItemCount: true,
 		jQuery: true,

@@ -1,17 +1,19 @@
 *** WC Smart Analytics Changelog ***
 
-Unreleased - version 0.0.1
+version 0.0.2
+* Add: Public extension surface for premium add-ons (Phase 0 of Store Copilot integration).
+  - Filter `matriq_msa_diagnosis_result` wraps `DiagnosisEngine::diagnose()` output for AI enrichment.
+  - Filter `matriq_msa_action_recommendation` wraps `ActionEngine::recommend()` output for tailored next-step copy.
+  - Filter `matriq_msa_overview_response` wraps the `/overview` REST payload so extensions can append fields.
+  - Filter `matriq_msa_admin_submenus` lets extensions register additional admin sub-tabs.
+  - Action `matriq_msa_data_collector_extra` fires after every per-day snapshot write so extensions can fan out per-product / per-customer collection sharing the same WC analytics read pass.
+  - JavaScript slot `window.matriqMSA.registerTab({ id, label, component })` lets extensions plug a React page into the dashboard. Built-in tabs cannot be overridden.
+
+version 0.0.1
 * Add: Two more named slots for premium extensions: `header-action` (in the dashboard header, for action triggers) and `app-overlay` (at the shell root, for portal-mounted overlays like a chat drawer).
 * Add: Two more named slots in OverviewPage for premium extensions: `overview-banner` (above the page header, for anomaly banners) and `overview-after-trend` (below the revenue trend chart, for forecasts).
 * Add: PluginSlot inline component slot system for premium extensions.
-  - New `<PluginSlot name>` component renders any components registered via `window.salesPulse.registerSlot(name, entry)`, in weight-ascending order.
+  - New `<PluginSlot name>` component renders any components registered via `window.matriqMSA.registerSlot(name, entry)`, in weight-ascending order.
   - Named slots in OverviewPage: `overview-banner`, `overview-after-hero`, `overview-action-extra`, `overview-after-trend`.
   - Email digest templates render `$diagnosis['ai_paragraph']` and `$recommendation['ai_text']` if set by a premium extension; otherwise unchanged.
-* Add: Public extension surface for premium add-ons (Phase 0 of Store Copilot integration).
-  - Filter `salespulse_diagnosis_result` wraps `DiagnosisEngine::diagnose()` output for AI enrichment.
-  - Filter `salespulse_action_recommendation` wraps `ActionEngine::recommend()` output for tailored next-step copy.
-  - Filter `salespulse_overview_response` wraps the `/overview` REST payload so extensions can append fields.
-  - Filter `salespulse_admin_submenus` lets extensions register additional admin sub-tabs.
-  - Action `salespulse_data_collector_extra` fires after every per-day snapshot write so extensions can fan out per-product / per-customer collection sharing the same WC analytics read pass.
-  - JavaScript slot `window.salesPulse.registerTab({ id, label, component })` lets extensions plug a React page into the dashboard. Built-in tabs cannot be overridden.
 * Initial Release.

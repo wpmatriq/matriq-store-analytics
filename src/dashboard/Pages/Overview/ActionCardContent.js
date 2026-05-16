@@ -34,7 +34,7 @@ export function ActionCardContent( { recommendation } ) {
 			</p>
 			{ scenario && scenario !== 'stable' && (
 				<p className="m-0 text-xs text-muted-foreground">
-					{ __( 'Pattern:', 'sales-pulse' ) }{ ' ' }
+					{ __( 'Pattern:', 'matriq-store-analytics' ) }{ ' ' }
 					<span className="font-mono">{ prettyScenario( scenario ) }</span>
 				</p>
 			) }

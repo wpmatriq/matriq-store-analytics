@@ -41,14 +41,14 @@ const PERIOD_CONFIG = {
 	weekly: {
 		days: 7,
 		labelFormat: 'weekday',
-		title: __( '7-Day Revenue Trend', 'sales-pulse' ),
-		subtitle: __( 'Daily net revenue across the week', 'sales-pulse' ),
+		title: __( '7-Day Revenue Trend', 'matriq-store-analytics' ),
+		subtitle: __( 'Daily net revenue across the week', 'matriq-store-analytics' ),
 	},
 	monthly: {
 		days: 30,
 		labelFormat: 'monthday',
-		title: __( '30-Day Revenue Trend', 'sales-pulse' ),
-		subtitle: __( 'Daily net revenue across the month', 'sales-pulse' ),
+		title: __( '30-Day Revenue Trend', 'matriq-store-analytics' ),
+		subtitle: __( 'Daily net revenue across the month', 'matriq-store-analytics' ),
 	},
 };
 
@@ -92,9 +92,9 @@ export function RevenueTrend( { trend = [], currency, period = 'weekly' } ) {
 					</div>
 				</div>
 				<div className="flex items-center gap-6">
-					<Stat label={ __( 'Total', 'sales-pulse' ) } value={ fmt( total ) } />
-					<Stat label={ __( 'Peak', 'sales-pulse' ) } value={ fmt( peak ) } />
-					<Stat label={ __( 'Avg', 'sales-pulse' ) } value={ fmt( avg ) } />
+					<Stat label={ __( 'Total', 'matriq-store-analytics' ) } value={ fmt( total ) } />
+					<Stat label={ __( 'Peak', 'matriq-store-analytics' ) } value={ fmt( peak ) } />
+					<Stat label={ __( 'Avg', 'matriq-store-analytics' ) } value={ fmt( avg ) } />
 				</div>
 			</header>
 
@@ -139,7 +139,7 @@ export function RevenueTrend( { trend = [], currency, period = 'weekly' } ) {
 								boxShadow: '0 8px 24px oklch(0.18 0.025 260 / 0.08)',
 							} }
 							labelStyle={ { color: 'oklch(0.5 0.02 260)', fontSize: '11px', fontWeight: 600 } }
-							formatter={ ( v ) => [ fmt( Number( v ) ), __( 'Revenue', 'sales-pulse' ) ] }
+							formatter={ ( v ) => [ fmt( Number( v ) ), __( 'Revenue', 'matriq-store-analytics' ) ] }
 						/>
 						<Area
 							type="monotone"

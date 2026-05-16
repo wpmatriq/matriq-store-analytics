@@ -1,5 +1,5 @@
 /**
- * Settings Page - tune how Sales Pulse interprets, schedules, and digests.
+ * Settings Page - tune how Matriq Store Analytics interprets, schedules, and digests.
  *
  * Sections:
  *   1. General - timezone (read-only), currency (read-only).
@@ -152,14 +152,14 @@ export default function SettingsPage() {
 		return (
 			<InsightCard
 				icon={ <AlertTriangle className="h-4 w-4" /> }
-				title={ __( 'Could not load settings', 'sales-pulse' ) }
+				title={ __( 'Could not load settings', 'matriq-store-analytics' ) }
 				accent="warning"
 			>
 				<div className="flex flex-col items-start gap-4">
 					<p className="m-0 text-sm text-muted-foreground">
 						{ __(
 							'We hit an error fetching your settings. Retry, or refresh the page.',
-							'sales-pulse'
+							'matriq-store-analytics'
 						) }
 					</p>
 					<button
@@ -167,7 +167,7 @@ export default function SettingsPage() {
 						onClick={ () => refetch() }
 						className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 					>
-						{ __( 'Retry', 'sales-pulse' ) }
+						{ __( 'Retry', 'matriq-store-analytics' ) }
 					</button>
 				</div>
 			</InsightCard>
@@ -182,11 +182,11 @@ export default function SettingsPage() {
 			className="space-y-6"
 		>
 			<PageHeader
-				eyebrow={ __( 'Configuration', 'sales-pulse' ) }
-				title={ __( 'Tune your pulse.', 'sales-pulse' ) }
+				eyebrow={ __( 'Configuration', 'matriq-store-analytics' ) }
+				title={ __( 'Tune your pulse.', 'matriq-store-analytics' ) }
 				subtitle={ __(
-					'Configure how Sales Pulse interprets your store data, when it runs, and where it sends digests.',
-					'sales-pulse'
+					'Configure how Matriq Store Analytics interprets your store data, when it runs, and where it sends digests.',
+					'matriq-store-analytics'
 				) }
 				actions={
 					<SaveButton
@@ -240,7 +240,7 @@ function SaveButton( { isDirty, pending, saved, onClick } ) {
 				) }
 			>
 				<CheckCircle2 className="h-3 w-3" />
-				{ __( 'Saved', 'sales-pulse' ) }
+				{ __( 'Saved', 'matriq-store-analytics' ) }
 			</motion.span>
 			<button
 				type="button"
@@ -254,12 +254,12 @@ function SaveButton( { isDirty, pending, saved, onClick } ) {
 				{ pending ? (
 					<>
 						<RefreshCw className="h-4 w-4 animate-spin" />
-						{ __( 'Saving…', 'sales-pulse' ) }
+						{ __( 'Saving…', 'matriq-store-analytics' ) }
 					</>
 				) : (
 					<>
 						<Save className="h-4 w-4" />
-						{ __( 'Save settings', 'sales-pulse' ) }
+						{ __( 'Save settings', 'matriq-store-analytics' ) }
 					</>
 				) }
 			</button>
@@ -276,20 +276,20 @@ function GeneralSection( { settings, delay } ) {
 	return (
 		<SettingSection
 			icon={ <Globe className="h-4 w-4" /> }
-			title={ __( 'General', 'sales-pulse' ) }
-			description={ __( 'Core data interpretation rules.', 'sales-pulse' ) }
+			title={ __( 'General', 'matriq-store-analytics' ) }
+			description={ __( 'Core data interpretation rules.', 'matriq-store-analytics' ) }
 			delay={ delay }
 		>
 			<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 				<ReadOnlyField
-					label={ __( 'Timezone', 'sales-pulse' ) }
+					label={ __( 'Timezone', 'matriq-store-analytics' ) }
 					value={ timezoneLabel }
-					hint={ __( 'Inherited from WordPress settings', 'sales-pulse' ) }
+					hint={ __( 'Inherited from WordPress settings', 'matriq-store-analytics' ) }
 				/>
 				<ReadOnlyField
-					label={ __( 'Currency', 'sales-pulse' ) }
+					label={ __( 'Currency', 'matriq-store-analytics' ) }
 					value={ currencyLabel }
-					hint={ __( 'Inherited from WooCommerce settings', 'sales-pulse' ) }
+					hint={ __( 'Inherited from WooCommerce settings', 'matriq-store-analytics' ) }
 				/>
 			</div>
 		</SettingSection>
@@ -316,17 +316,17 @@ function ScheduleSection( { form, onChange, delay } ) {
 	return (
 		<SettingSection
 			icon={ <Clock className="h-4 w-4" /> }
-			title={ __( 'Snapshot schedule', 'sales-pulse' ) }
+			title={ __( 'Snapshot schedule', 'matriq-store-analytics' ) }
 			description={ __(
 				'When the nightly diagnosis runs in your store timezone.',
-				'sales-pulse'
+				'matriq-store-analytics'
 			) }
 			delay={ delay }
 		>
 			<div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-muted/50 md:flex-row md:items-center">
 				<div>
 					<p className="m-0 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-						{ __( 'Runs daily at', 'sales-pulse' ) }
+						{ __( 'Runs daily at', 'matriq-store-analytics' ) }
 					</p>
 					<p className="m-0 mt-2 font-display text-5xl leading-none text-ink md:text-6xl">
 						{ clock.hh }
@@ -339,14 +339,14 @@ function ScheduleSection( { form, onChange, delay } ) {
 				</div>
 				<div className="grid grid-cols-2 gap-3">
 					<NumberInput
-						label={ __( 'Hour', 'sales-pulse' ) }
+						label={ __( 'Hour', 'matriq-store-analytics' ) }
 						min={ 0 }
 						max={ 23 }
 						value={ form.snapshot_hour ?? 2 }
 						onChange={ ( v ) => onChange( 'snapshot_hour', v ) }
 					/>
 					<NumberInput
-						label={ __( 'Minute', 'sales-pulse' ) }
+						label={ __( 'Minute', 'matriq-store-analytics' ) }
 						min={ 0 }
 						max={ 59 }
 						value={ form.snapshot_min ?? 10 }
@@ -357,7 +357,7 @@ function ScheduleSection( { form, onChange, delay } ) {
 			<p className="m-0 mt-3 text-xs text-muted-foreground">
 				{ __(
 					"Default 02:10 AM. Pick an off-peak window so snapshot calculations don't compete with checkout traffic.",
-					'sales-pulse'
+					'matriq-store-analytics'
 				) }
 			</p>
 		</SettingSection>
@@ -396,25 +396,25 @@ function formatRelative( iso ) {
 	}
 	const diffSec = Math.max( 0, ( Date.now() - then ) / 1000 );
 	if ( diffSec < 60 ) {
-		return __( 'just now', 'sales-pulse' );
+		return __( 'just now', 'matriq-store-analytics' );
 	}
 	if ( diffSec < 3600 ) {
 		const m = Math.round( diffSec / 60 );
 		return m === 1
-			? __( '1 minute ago', 'sales-pulse' )
+			? __( '1 minute ago', 'matriq-store-analytics' )
 			// translators: %d: minutes elapsed.
-			: `${ m } ${ __( 'minutes ago', 'sales-pulse' ) }`;
+			: `${ m } ${ __( 'minutes ago', 'matriq-store-analytics' ) }`;
 	}
 	if ( diffSec < 86400 ) {
 		const h = Math.round( diffSec / 3600 );
 		return h === 1
-			? __( '1 hour ago', 'sales-pulse' )
-			: `${ h } ${ __( 'hours ago', 'sales-pulse' ) }`;
+			? __( '1 hour ago', 'matriq-store-analytics' )
+			: `${ h } ${ __( 'hours ago', 'matriq-store-analytics' ) }`;
 	}
 	const d = Math.round( diffSec / 86400 );
 	return d === 1
-		? __( '1 day ago', 'sales-pulse' )
-		: `${ d } ${ __( 'days ago', 'sales-pulse' ) }`;
+		? __( '1 day ago', 'matriq-store-analytics' )
+		: `${ d } ${ __( 'days ago', 'matriq-store-analytics' ) }`;
 }
 
 function formatAbsolute( iso ) {
@@ -469,13 +469,13 @@ function EmailSection( { settings, form, onChange, delay } ) {
 			onSuccess: () => {
 				setTestFeedback( {
 					tone: 'success',
-					text: __( 'Test digest sent.', 'sales-pulse' ),
+					text: __( 'Test digest sent.', 'matriq-store-analytics' ),
 				} );
 			},
 			onError: ( err ) => {
 				const message =
 					err?.message ||
-					__( 'Could not send the test digest.', 'sales-pulse' );
+					__( 'Could not send the test digest.', 'matriq-store-analytics' );
 				setTestFeedback( { tone: 'error', text: message } );
 			},
 		} );
@@ -484,29 +484,29 @@ function EmailSection( { settings, form, onChange, delay } ) {
 	return (
 		<SettingSection
 			icon={ <Mail className="h-4 w-4" /> }
-			title={ __( 'Email digest', 'sales-pulse' ) }
+			title={ __( 'Email digest', 'matriq-store-analytics' ) }
 			description={ __(
 				'Get the morning briefing delivered straight to your inbox.',
-				'sales-pulse'
+				'matriq-store-analytics'
 			) }
 			delay={ delay }
 		>
 			<div className="flex items-center justify-between gap-4 rounded-xl border border-solid border-border bg-surface/60 px-4 py-3">
 				<div>
 					<p className="m-0 text-sm font-semibold text-foreground">
-						{ __( 'Enable email digest', 'sales-pulse' ) }
+						{ __( 'Enable email digest', 'matriq-store-analytics' ) }
 					</p>
 					<p className="m-0 mt-0.5 text-xs text-muted-foreground">
 						{ __(
 							'Sent each morning after the snapshot completes.',
-							'sales-pulse'
+							'matriq-store-analytics'
 						) }
 					</p>
 				</div>
 				<ToggleSwitch
 					checked={ enabled }
 					onChange={ ( v ) => onChange( 'email_enabled', v ) }
-					ariaLabel={ __( 'Enable email digest', 'sales-pulse' ) }
+					ariaLabel={ __( 'Enable email digest', 'matriq-store-analytics' ) }
 				/>
 			</div>
 
@@ -515,14 +515,14 @@ function EmailSection( { settings, form, onChange, delay } ) {
 					className="m-0 mt-2 text-xs text-destructive"
 					title={ lastError.iso ? formatAbsolute( lastError.iso ) : '' }
 				>
-					{ __( 'Last attempt failed:', 'sales-pulse' ) } { lastError.message }
+					{ __( 'Last attempt failed:', 'matriq-store-analytics' ) } { lastError.message }
 				</p>
 			) : lastSentAt ? (
 				<p
 					className="m-0 mt-2 text-xs text-muted-foreground"
 					title={ formatAbsolute( lastSentAt ) }
 				>
-					{ __( 'Last sent', 'sales-pulse' ) } { formatRelative( lastSentAt ) }
+					{ __( 'Last sent', 'matriq-store-analytics' ) } { formatRelative( lastSentAt ) }
 				</p>
 			) : null }
 
@@ -531,7 +531,7 @@ function EmailSection( { settings, form, onChange, delay } ) {
 					htmlFor="email-address"
 					className="text-sm font-semibold text-foreground"
 				>
-					{ __( 'Recipient email', 'sales-pulse' ) }
+					{ __( 'Recipient email', 'matriq-store-analytics' ) }
 				</label>
 				<input
 					id="email-address"
@@ -539,7 +539,7 @@ function EmailSection( { settings, form, onChange, delay } ) {
 					value={ form.email_address || '' }
 					disabled={ ! enabled }
 					onChange={ ( e ) => onChange( 'email_address', e.target.value ) }
-					placeholder={ __( 'admin@yourstore.com', 'sales-pulse' ) }
+					placeholder={ __( 'admin@yourstore.com', 'matriq-store-analytics' ) }
 					className={ classnames(
 						'block w-full rounded-xl border border-solid border-border bg-surface px-4 py-2.5 text-sm text-foreground shadow-xs transition-all placeholder:text-muted-foreground focus-visible:border-pulse focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse',
 						! enabled && 'cursor-not-allowed bg-muted/60 opacity-60'
@@ -560,8 +560,8 @@ function EmailSection( { settings, form, onChange, delay } ) {
 				>
 					<Mail className="h-3.5 w-3.5" />
 					{ sendTest.isPending
-						? __( 'Sending…', 'sales-pulse' )
-						: __( 'Send test digest', 'sales-pulse' ) }
+						? __( 'Sending…', 'matriq-store-analytics' )
+						: __( 'Send test digest', 'matriq-store-analytics' ) }
 				</button>
 				{ testFeedback ? (
 					<span
@@ -609,33 +609,33 @@ function SensitivitySection( { form, onChange, delay } ) {
 	const options = [
 		{
 			value: 'calm',
-			title: __( 'Calm', 'sales-pulse' ),
-			description: __( 'Only flag major shifts', 'sales-pulse' ),
+			title: __( 'Calm', 'matriq-store-analytics' ),
+			description: __( 'Only flag major shifts', 'matriq-store-analytics' ),
 		},
 		{
 			value: 'balanced',
-			title: __( 'Balanced', 'sales-pulse' ),
-			description: __( 'Recommended default', 'sales-pulse' ),
+			title: __( 'Balanced', 'matriq-store-analytics' ),
+			description: __( 'Recommended default', 'matriq-store-analytics' ),
 		},
 		{
 			value: 'vigilant',
-			title: __( 'Vigilant', 'sales-pulse' ),
-			description: __( 'Surface every anomaly', 'sales-pulse' ),
+			title: __( 'Vigilant', 'matriq-store-analytics' ),
+			description: __( 'Surface every anomaly', 'matriq-store-analytics' ),
 		},
 	];
 
 	return (
 		<SettingSection
 			icon={ <Sparkles className="h-4 w-4" /> }
-			title={ __( 'Diagnosis sensitivity', 'sales-pulse' ) }
+			title={ __( 'Diagnosis sensitivity', 'matriq-store-analytics' ) }
 			description={ __(
-				'How aggressively Sales Pulse flags anomalies.',
-				'sales-pulse'
+				'How aggressively Matriq Store Analytics flags anomalies.',
+				'matriq-store-analytics'
 			) }
 			delay={ delay }
 		>
 			<OptionCardGroup
-				label={ __( 'Diagnosis sensitivity', 'sales-pulse' ) }
+				label={ __( 'Diagnosis sensitivity', 'matriq-store-analytics' ) }
 				value={ form.diagnosis_sensitivity || 'balanced' }
 				onChange={ ( v ) => onChange( 'diagnosis_sensitivity', v ) }
 				options={ options }

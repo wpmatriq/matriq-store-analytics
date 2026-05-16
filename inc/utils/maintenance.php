@@ -2,20 +2,20 @@
 /**
  * Maintenance.
  *
- * @package EC_Sales_Pulse
- * @since x.x.x
+ * @package Matriq\MSA
+ * @since 0.0.2
  */
 
-namespace EC_Sales_Pulse\Inc\Utils;
+namespace Matriq\MSA\Inc\Utils;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Update Compatibility
  *
- * @package EC_Sales_Pulse
+ * @package Matriq\MSA
  */
 class Maintenance {
 	use Get_Instance;
@@ -24,7 +24,7 @@ class Maintenance {
 	 *  Constructor
 	 */
 	public function __construct() {
-		add_action( 'salespulse_update_before', self::class . '::manage_backward' );
+		add_action( 'matriq_msa_update_before', self::class . '::manage_backward' );
 
 		if ( is_admin() ) {
 			add_action( 'admin_init', self::class . '::init' );
@@ -36,29 +36,29 @@ class Maintenance {
 	/**
 	 * Init
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 * @return void
 	 */
 	public static function init(): void {
-		do_action( 'salespulse_update_before' );
+		do_action( 'matriq_msa_update_before' );
 
 		// Get auto saved version number.
-		$saved_version = get_option( 'wc_sma_saved_version', '' );
+		$saved_version = get_option( 'matriq_msa_saved_version', '' );
 
 		// Update auto saved version number.
 		if ( ! $saved_version ) {
-			update_option( 'wc_sma_saved_version', EC_SALES_PULSE_VER );
+			update_option( 'matriq_msa_saved_version', MATRIQ_MSA_VER );
 		}
 
 		// If equals then return.
-		if ( version_compare( strval( $saved_version ), EC_SALES_PULSE_VER, '=' ) ) {
+		if ( version_compare( strval( $saved_version ), MATRIQ_MSA_VER, '=' ) ) {
 			return;
 		}
 
 		// Update auto saved version number.
-		update_option( 'wc_sma_saved_version', EC_SALES_PULSE_VER );
+		update_option( 'matriq_msa_saved_version', MATRIQ_MSA_VER );
 
-		do_action( 'salespulse_update_after' );
+		do_action( 'matriq_msa_update_after' );
 
 		// Finally flush rewrite rules.
 		delete_option( 'rewrite_rules' );
@@ -67,7 +67,7 @@ class Maintenance {
 	/**
 	 * Manage backward compatibility.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 * @return void
 	 */
 	public static function manage_backward(): void {

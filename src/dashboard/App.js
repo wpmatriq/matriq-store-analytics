@@ -1,10 +1,10 @@
 /**
- * Sales Pulse v2 - App shell.
+ * Matriq Store Analytics v2 - App shell.
  *
  * Provides QueryClient, PulseShell layout, ErrorBoundary, ReadinessGate,
  * and tab-based routing driven by `?tab=` query parameter.
  *
- * Premium extensions register additional tabs via the `window.salesPulse.registerTab`
+ * Premium extensions register additional tabs via the `window.matriqMSA.registerTab`
  * slot exposed below. Built-in tabs (overview, history, campaigns, settings)
  * cannot be overridden.
  */
@@ -29,20 +29,20 @@ const BUILT_IN_TABS = [ 'overview', 'history', 'campaigns', 'settings' ];
 // Public extension slot. Defensively initialised so Pro bundles loading either
 // before or after this file can register without timing concerns.
 if ( typeof window !== 'undefined' ) {
-	window.salesPulse = window.salesPulse || {};
-	window.salesPulse.tabs = window.salesPulse.tabs || {};
-	window.salesPulse.slots = window.salesPulse.slots || {};
-	window.salesPulse.settingsSubtabs = window.salesPulse.settingsSubtabs || {};
+	window.matriqMSA = window.matriqMSA || {};
+	window.matriqMSA.tabs = window.matriqMSA.tabs || {};
+	window.matriqMSA.slots = window.matriqMSA.slots || {};
+	window.matriqMSA.settingsSubtabs = window.matriqMSA.settingsSubtabs || {};
 
-	if ( typeof window.salesPulse.registerTab !== 'function' ) {
-		window.salesPulse.registerTab = function ( entry ) {
+	if ( typeof window.matriqMSA.registerTab !== 'function' ) {
+		window.matriqMSA.registerTab = function ( entry ) {
 			if ( ! entry || ! entry.id || ! entry.component ) {
 				return false;
 			}
 			if ( BUILT_IN_TABS.indexOf( entry.id ) !== -1 ) {
 				return false;
 			}
-			window.salesPulse.tabs[ entry.id ] = {
+			window.matriqMSA.tabs[ entry.id ] = {
 				id: entry.id,
 				label: entry.label || entry.id,
 				component: entry.component,
@@ -56,22 +56,22 @@ if ( typeof window !== 'undefined' ) {
 	// `general` flat when this registry is empty so no Pro = no sub-tab strip.
 	// `weight` controls render order (lower = earlier); `id` is the URL slug
 	// surfaced via the `?stab=` query param.
-	if ( typeof window.salesPulse.registerSettingsSubtab !== 'function' ) {
-		window.salesPulse.registerSettingsSubtab = function ( entry ) {
+	if ( typeof window.matriqMSA.registerSettingsSubtab !== 'function' ) {
+		window.matriqMSA.registerSettingsSubtab = function ( entry ) {
 			if ( ! entry || ! entry.id || ! entry.component ) {
 				return false;
 			}
 			if ( entry.id === 'general' ) {
 				return false; // `general` is reserved for the free sections.
 			}
-			window.salesPulse.settingsSubtabs[ entry.id ] = {
+			window.matriqMSA.settingsSubtabs[ entry.id ] = {
 				id: entry.id,
 				label: entry.label || entry.id,
 				component: entry.component,
 				weight: typeof entry.weight === 'number' ? entry.weight : 0,
 			};
 			window.dispatchEvent(
-				new CustomEvent( 'salespulse:settings-subtab-registered', {
+				new CustomEvent( 'matriq_msa:settings-subtab-registered', {
 					detail: { id: entry.id },
 				} )
 			);
@@ -81,16 +81,16 @@ if ( typeof window !== 'undefined' ) {
 
 	// Inline component slot registry (Phase 0.1). Premium extensions register
 	// components into named slots that the host pages render via <PluginSlot>.
-	// A custom `salespulse:slot-registered` event fires after each successful
+	// A custom `matriq_msa:slot-registered` event fires after each successful
 	// registration so PluginSlot can re-render — Pro bundles often load AFTER
 	// the host shell has already mounted, so a one-shot read at first render
 	// would miss late registrations.
-	if ( typeof window.salesPulse.registerSlot !== 'function' ) {
-		window.salesPulse.registerSlot = function ( name, entry ) {
+	if ( typeof window.matriqMSA.registerSlot !== 'function' ) {
+		window.matriqMSA.registerSlot = function ( name, entry ) {
 			if ( ! name || ! entry || ! entry.id || ! entry.component ) {
 				return false;
 			}
-			const list = window.salesPulse.slots[ name ] = window.salesPulse.slots[ name ] || [];
+			const list = window.matriqMSA.slots[ name ] = window.matriqMSA.slots[ name ] || [];
 			if ( list.some( ( e ) => e.id === entry.id ) ) {
 				return false; // idempotent on re-register
 			}
@@ -102,7 +102,7 @@ if ( typeof window !== 'undefined' ) {
 			list.sort( ( a, b ) => a.weight - b.weight );
 
 			window.dispatchEvent(
-				new CustomEvent( 'salespulse:slot-registered', { detail: { name, id: entry.id } } )
+				new CustomEvent( 'matriq_msa:slot-registered', { detail: { name, id: entry.id } } )
 			);
 			return true;
 		};
@@ -114,13 +114,13 @@ if ( typeof window !== 'undefined' ) {
 	// Pro's ChatTrigger/ChatDrawer take over the same slot positions.
 	// Registering here means free merchants see the chip immediately on
 	// first paint, with no Pro-bundle dependency.
-	window.salesPulse.registerSlot( 'header-action', {
-		id: 'sales-pulse-copilot-upgrade-trigger',
+	window.matriqMSA.registerSlot( 'header-action', {
+		id: 'matriq-store-analytics-copilot-upgrade-trigger',
 		component: CopilotUpgradeTrigger,
 		weight: 10,
 	} );
-	window.salesPulse.registerSlot( 'app-overlay', {
-		id: 'sales-pulse-copilot-upgrade-drawer',
+	window.matriqMSA.registerSlot( 'app-overlay', {
+		id: 'matriq-store-analytics-copilot-upgrade-drawer',
 		component: CopilotUpgradeDrawer,
 		weight: 0,
 	} );
@@ -165,10 +165,10 @@ function PageRouter( { tab } ) {
 			return <OverviewPage />;
 		case 'impact': {
 			// "Soft built-in": Pro can register a richer Impact component via
-			// window.salesPulse.registerTab. When present, prefer it over the
+			// window.matriqMSA.registerTab. When present, prefer it over the
 			// free data-foundation surface so Pro merchants see attribution
 			// numbers instead.
-			const proImpact = window?.salesPulse?.tabs?.impact;
+			const proImpact = window?.matriqMSA?.tabs?.impact;
 			if ( proImpact && proImpact.component ) {
 				const ProComponent = proImpact.component;
 				return <ProComponent />;
@@ -176,7 +176,7 @@ function PageRouter( { tab } ) {
 			return <ImpactPage />;
 		}
 		default: {
-			const registered = window?.salesPulse?.tabs?.[ tab ];
+			const registered = window?.matriqMSA?.tabs?.[ tab ];
 			if ( registered && registered.component ) {
 				const Component = registered.component;
 				return <Component />;

@@ -2,11 +2,11 @@
 /**
  * Trait.
  *
- * @package EC_Sales_Pulse
- * @since x.x.x
+ * @package Matriq\MSA
+ * @since 0.0.2
  */
 
-namespace EC_Sales_Pulse\Inc\Traits;
+namespace Matriq\MSA\Inc\Traits;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  * Trait Get_Instance.
  *
  * @phpstan-consistent-constructor
- * @since x.x.x
+ * @since 0.0.2
  */
 trait Get_Instance {
 	/**
@@ -31,7 +31,7 @@ trait Get_Instance {
 	/**
 	 * Initiator.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 * @return static Initialized instance of the using class.
 	 */
 	public static function get_instance() {

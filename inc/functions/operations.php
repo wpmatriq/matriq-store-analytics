@@ -7,7 +7,7 @@
  * future home of any cross-cutting procedural utilities that don't
  * belong inside a class.
  *
- * @package EC_Sales_Pulse\Inc\Functions
+ * @package Matriq\MSA\Inc\Functions
  */
 
 defined( 'ABSPATH' ) || exit;

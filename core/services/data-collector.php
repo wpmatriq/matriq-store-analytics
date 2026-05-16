@@ -6,12 +6,12 @@
  * This is the ONLY class that touches WC data tables - all other services
  * read from our snapshot tables.
  *
- * @package EC_Sales_Pulse\Core\Services
+ * @package Matriq\MSA\Core\Services
  */
 
-namespace EC_Sales_Pulse\Core\Services;
+namespace Matriq\MSA\Core\Services;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 

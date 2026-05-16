@@ -18,23 +18,23 @@ function buildGoalOptions() {
 	return [
 		{
 			value: 'clearance',
-			title: __( 'Clearance Sale', 'sales-pulse' ),
-			description: __( 'Move existing inventory', 'sales-pulse' ),
+			title: __( 'Clearance Sale', 'matriq-store-analytics' ),
+			description: __( 'Move existing inventory', 'matriq-store-analytics' ),
 		},
 		{
 			value: 'launch',
-			title: __( 'Product Launch', 'sales-pulse' ),
-			description: __( 'Drive awareness for new SKUs', 'sales-pulse' ),
+			title: __( 'Product Launch', 'matriq-store-analytics' ),
+			description: __( 'Drive awareness for new SKUs', 'matriq-store-analytics' ),
 		},
 		{
 			value: 'orders',
-			title: __( 'Order Push', 'sales-pulse' ),
-			description: __( 'Flash sale or coupon-driven campaign', 'sales-pulse' ),
+			title: __( 'Order Push', 'matriq-store-analytics' ),
+			description: __( 'Flash sale or coupon-driven campaign', 'matriq-store-analytics' ),
 		},
 		{
 			value: 'aov',
-			title: __( 'AOV Boost', 'sales-pulse' ),
-			description: __( 'Bundles, upsells, or basket builders', 'sales-pulse' ),
+			title: __( 'AOV Boost', 'matriq-store-analytics' ),
+			description: __( 'Bundles, upsells, or basket builders', 'matriq-store-analytics' ),
 		},
 	];
 }
@@ -55,11 +55,11 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 		setError( '' );
 
 		if ( ! name.trim() || ! goal || ! startDate || ! endDate ) {
-			setError( __( 'All fields are required.', 'sales-pulse' ) );
+			setError( __( 'All fields are required.', 'matriq-store-analytics' ) );
 			return;
 		}
 		if ( endDate < startDate ) {
-			setError( __( 'End date must be after start date.', 'sales-pulse' ) );
+			setError( __( 'End date must be after start date.', 'matriq-store-analytics' ) );
 			return;
 		}
 
@@ -75,7 +75,7 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 				onError: ( err ) =>
 					setError(
 						err?.message ||
-							__( 'Failed to create campaign.', 'sales-pulse' )
+							__( 'Failed to create campaign.', 'matriq-store-analytics' )
 					),
 			}
 		);
@@ -101,12 +101,12 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 						</span>
 						<div>
 							<h3 className="m-0 font-display text-2xl leading-tight text-ink">
-								{ __( 'New campaign', 'sales-pulse' ) }
+								{ __( 'New campaign', 'matriq-store-analytics' ) }
 							</h3>
 							<p className="m-0 mt-1 text-sm text-muted-foreground">
 								{ __(
 									'Set the scope so we know when to dampen alerts.',
-									'sales-pulse'
+									'matriq-store-analytics'
 								) }
 							</p>
 						</div>
@@ -114,7 +114,7 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 					<button
 						type="button"
 						onClick={ onCancel }
-						aria-label={ __( 'Close form', 'sales-pulse' ) }
+						aria-label={ __( 'Close form', 'matriq-store-analytics' ) }
 						className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 					>
 						<X className="h-4 w-4" />
@@ -127,12 +127,12 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 						className="flex items-center gap-2 text-sm font-semibold text-foreground"
 					>
 						<Tag className="h-4 w-4" />
-						{ __( 'Campaign name', 'sales-pulse' ) }
+						{ __( 'Campaign name', 'matriq-store-analytics' ) }
 					</label>
 					<input
 						id="campaign-name"
 						type="text"
-						placeholder={ __( 'e.g. Summer Sale 2026', 'sales-pulse' ) }
+						placeholder={ __( 'e.g. Summer Sale 2026', 'matriq-store-analytics' ) }
 						value={ name }
 						onChange={ ( e ) => setName( e.target.value ) }
 						className="block w-full rounded-xl border border-solid border-border bg-surface px-4 py-2.5 text-sm text-foreground shadow-xs transition-all placeholder:text-muted-foreground focus-visible:border-pulse focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
@@ -142,10 +142,10 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 				<div className="space-y-2">
 					<span className="flex items-center gap-2 text-sm font-semibold text-foreground">
 						<Target className="h-4 w-4" />
-						{ __( 'Campaign goal', 'sales-pulse' ) }
+						{ __( 'Campaign goal', 'matriq-store-analytics' ) }
 					</span>
 					<OptionCardGroup
-						label={ __( 'Campaign goal', 'sales-pulse' ) }
+						label={ __( 'Campaign goal', 'matriq-store-analytics' ) }
 						value={ goal }
 						onChange={ setGoal }
 						options={ buildGoalOptions() }
@@ -156,13 +156,13 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<DateField
 						id="campaign-start"
-						label={ __( 'Start date', 'sales-pulse' ) }
+						label={ __( 'Start date', 'matriq-store-analytics' ) }
 						value={ startDate }
 						onChange={ setStartDate }
 					/>
 					<DateField
 						id="campaign-end"
-						label={ __( 'End date', 'sales-pulse' ) }
+						label={ __( 'End date', 'matriq-store-analytics' ) }
 						value={ endDate }
 						onChange={ setEndDate }
 						placeholder="dd/mm/yyyy"
@@ -180,15 +180,15 @@ export function CampaignForm( { onSuccess, onCancel } ) {
 						className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 					>
 						{ createCampaign.isPending
-							? __( 'Creating…', 'sales-pulse' )
-							: __( 'Create campaign', 'sales-pulse' ) }
+							? __( 'Creating…', 'matriq-store-analytics' )
+							: __( 'Create campaign', 'matriq-store-analytics' ) }
 					</button>
 					<button
 						type="button"
 						onClick={ onCancel }
 						className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-transparent px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 					>
-						{ __( 'Cancel', 'sales-pulse' ) }
+						{ __( 'Cancel', 'matriq-store-analytics' ) }
 					</button>
 				</div>
 			</div>

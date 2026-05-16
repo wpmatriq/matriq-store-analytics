@@ -7,15 +7,15 @@
  * WooCommerce -> Settings -> Emails for discoverability.
  *
  * The settings form on the WC tab is intentionally read-only - configuration
- * (toggle + recipient) lives in Sales Pulse Settings to keep a single source
+ * (toggle + recipient) lives in Matriq Store Analytics Settings to keep a single source
  * of truth.
  *
  * Triggered exclusively by DigestMailer; not wired to any WC action hook.
  *
- * @package EC_Sales_Pulse\Core\Services
+ * @package Matriq\MSA\Core\Services
  */
 
-namespace EC_Sales_Pulse\Core\Services;
+namespace Matriq\MSA\Core\Services;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -40,16 +40,16 @@ class DigestEmail extends \WC_Email {
 	 * Wire up the WC_Email metadata used by the WC mailer registry.
 	 */
 	public function __construct() {
-		$this->id             = 'salespulse_morning_digest';
+		$this->id             = 'matriq_msa_morning_digest';
 		$this->customer_email = false;
-		$this->title          = __( 'Sales Pulse: Morning digest', 'sales-pulse' );
+		$this->title          = __( 'Matriq Store Analytics: Morning digest', 'matriq-store-analytics' );
 		$this->description    = __(
-			'Daily morning briefing combining yesterday, last 7 days, and last 30 days insights. Configured in Sales Pulse Settings.',
-			'sales-pulse'
+			'Daily morning briefing combining yesterday, last 7 days, and last 30 days insights. Configured in Matriq Store Analytics Settings.',
+			'matriq-store-analytics'
 		);
-		$this->heading        = __( 'Your morning briefing', 'sales-pulse' );
+		$this->heading        = __( 'Your morning briefing', 'matriq-store-analytics' );
 
-		$this->template_base  = EC_SALES_PULSE_DIR;
+		$this->template_base  = MATRIQ_MSA_DIR;
 		$this->template_html  = 'templates/email/digest-html.php';
 		$this->template_plain = 'templates/email/digest-text.php';
 
@@ -88,19 +88,19 @@ class DigestEmail extends \WC_Email {
 	 * @return string
 	 */
 	public function get_from_name( $from_name = '' ) {
-		return apply_filters( 'salespulse_digest_from_name', 'Sales Pulse', $this );
+		return apply_filters( 'matriq_msa_digest_from_name', 'Matriq Store Analytics', $this );
 	}
 
 	/**
 	 * From-address override applied to the digest email. Defaults to the
-	 * site admin_email option; overridable via the salespulse filter.
+	 * site admin_email option; overridable via the matriq_msa filter.
 	 *
 	 * @param string $from_email Default WC value (unused; we always provide our own address).
 	 * @return string
 	 */
 	public function get_from_address( $from_email = '' ) {
 		$default = (string) get_option( 'admin_email', '' );
-		return apply_filters( 'salespulse_digest_from_address', $default, $this );
+		return apply_filters( 'matriq_msa_digest_from_address', $default, $this );
 	}
 
 	/**
@@ -134,17 +134,17 @@ class DigestEmail extends \WC_Email {
 	 * @return void
 	 */
 	public function init_form_fields(): void {
-		$settings_url = admin_url( 'admin.php?page=sales-pulse&tab=settings' );
+		$settings_url = admin_url( 'admin.php?page=matriq-store-analytics&tab=settings' );
 
 		$this->form_fields = [
 			'manage_link' => [
-				'title'       => __( 'Configuration', 'sales-pulse' ),
+				'title'       => __( 'Configuration', 'matriq-store-analytics' ),
 				'type'        => 'title',
 				'description' => sprintf(
-					/* translators: %s: link to Sales Pulse Settings page. */
+					/* translators: %s: link to Matriq Store Analytics Settings page. */
 					__(
-						'This email is configured in Sales Pulse Settings, not here. <a href="%s">Open Sales Pulse Settings</a>.',
-						'sales-pulse'
+						'This email is configured in Matriq Store Analytics Settings, not here. <a href="%s">Open Matriq Store Analytics Settings</a>.',
+						'matriq-store-analytics'
 					),
 					esc_url( $settings_url )
 				),

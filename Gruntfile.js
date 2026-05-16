@@ -48,7 +48,7 @@ module.exports = function ( grunt ) {
 					'!postcss.config.js',
 					'!.DS_Store',
 					'!phpinsights.php',
-					'!WC_SMA_ANALYSIS.md',
+					'!MATRIQ_MSA_ANALYSIS.md',
 					'!AGENTS.md',
 					'!STRATEGY.md',
 					'!CLAUDE.md',
@@ -59,24 +59,24 @@ module.exports = function ( grunt ) {
 					// '!src/**',
 
 				],
-				dest: 'sales-pulse/',
+				dest: 'matriq-store-analytics/',
 			},
 		},
 		compress: {
 			main: {
 				options: {
-					archive: 'sales-pulse-<%= pkg.version %>.zip',
+					archive: 'matriq-store-analytics-<%= pkg.version %>.zip',
 					mode: 'zip',
 				},
 				files: [
 					{
-						src: [ './sales-pulse/**' ],
+						src: [ './matriq-store-analytics/**' ],
 					},
 				],
 			},
 		},
 		clean: {
-			main: [ 'sales-pulse' ],
+			main: [ 'matriq-store-analytics' ],
 			zip: [ '*.zip' ],
 		},
 		bumpup: {
@@ -89,7 +89,7 @@ module.exports = function ( grunt ) {
 		},
 		replace: {
 			plugin_main: {
-				src: [ 'sales-pulse.php' ],
+				src: [ 'matriq-store-analytics.php' ],
 				overwrite: true,
 				replacements: [
 					{
@@ -109,12 +109,12 @@ module.exports = function ( grunt ) {
 				],
 			},
 			plugin_const: {
-				src: [ 'sales-pulse.php' ],
+				src: [ 'matriq-store-analytics.php' ],
 				overwrite: true,
 				replacements: [
 					{
-						from: /EC_SALES_PULSE_VER', '.*?'/g,
-						to: "EC_SALES_PULSE_VER', '<%= pkg.version %>'",
+						from: /MATRIQ_MSA_VER', '.*?'/g,
+						to: "MATRIQ_MSA_VER', '<%= pkg.version %>'",
 					},
 				],
 			},

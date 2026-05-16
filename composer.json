@@ -1,6 +1,11 @@
 {
-	"name": "imnavanath/sales-pulse",
-	"description": "WP Smart Analytics is a WordPress plugin that helps you understand your site traffic and visitors.",
+	"name": "matriq/matriq-store-analytics",
+	"description": "Daily revenue diagnosis for WooCommerce. Explains why store revenue changed each day in plain language using deterministic math.",
+	"autoload": {
+		"psr-4": {
+			"Matriq\\MSA\\": "."
+		}
+	},
 	"extra": {
 	},
 	"require-dev": {
@@ -29,8 +34,8 @@
 		"insights:fix": "./vendor/bin/phpinsights analyse --fix --no-interaction",
 		"phpstan": "vendor/bin/phpstan --memory-limit=2048M analyse",
 		"gen-baseline": "vendor/bin/phpstan --memory-limit=2048M analyse --generate-baseline",
-		"gen-stubs": "vendor/bin/generate-stubs artifact/phpstan/sales-pulse/ --out=tests/php/stubs/sales-pulse-stubs.php && rm -rf artifact/phpstan",
-		"update-stubs": "rm -f tests/php/stubs/sales-pulse-stubs.php && bash bin/build-folder-phpstan.sh && composer gen-stubs"
+		"gen-stubs": "vendor/bin/generate-stubs artifact/phpstan/matriq-store-analytics/ --out=tests/php/stubs/matriq-store-analytics-stubs.php && rm -rf artifact/phpstan",
+		"update-stubs": "rm -f tests/php/stubs/matriq-store-analytics-stubs.php && bash bin/build-folder-phpstan.sh && composer gen-stubs"
 	},
 	"config": {
 		"allow-plugins": {

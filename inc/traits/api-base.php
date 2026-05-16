@@ -2,18 +2,18 @@
 /**
  * Trait.
  *
- * @package EC_Sales_Pulse
- * @since x.x.x
+ * @package Matriq\MSA
+ * @since 0.0.2
  */
 
-namespace EC_Sales_Pulse\Inc\Traits;
+namespace Matriq\MSA\Inc\Traits;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Trait Get_Instance.
  *
- * @since x.x.x
+ * @since 0.0.2
  */
 trait API_Base {
 	/**
@@ -21,12 +21,12 @@ trait API_Base {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'sales-pulse/v1';
+	protected $namespace = 'matriq-store-analytics/v1';
 
 	/**
 	 * Constructor
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function __construct() {
 	}

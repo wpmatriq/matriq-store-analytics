@@ -3,7 +3,7 @@ import { dispatch } from '@wordpress/data';
 import { store } from '@Store/setup';
 
 const setInitialState = () => {
-	apiFetch( { path: '/sales-pulse/v1/dataset' } ).then( ( response ) => {
+	apiFetch( { path: '/matriq-store-analytics/v1/dataset' } ).then( ( response ) => {
 		response.isLoaded = true;
 		dispatch( store ).updateStoreData( response );
 
@@ -11,7 +11,7 @@ const setInitialState = () => {
 
 		// Fire custom event to load the data after 2 seconds.
 		setTimeout( () => {
-			const event = new Event( 'wc_sma_app_loaded' );
+			const event = new Event( 'matriq_msa_app_loaded' );
 			window.dispatchEvent( event );
 		}, 2000 );
 	} );

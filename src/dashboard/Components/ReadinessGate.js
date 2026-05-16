@@ -55,7 +55,7 @@ function LoadingState() {
 			<div className="space-y-3 text-center">
 				<RefreshCw className="mx-auto h-8 w-8 animate-spin text-muted-foreground" />
 				<p className="text-sm text-muted-foreground">
-					{ __( 'Checking data readiness…', 'sales-pulse' ) }
+					{ __( 'Checking data readiness…', 'matriq-store-analytics' ) }
 				</p>
 			</div>
 		</div>
@@ -74,10 +74,10 @@ function ErrorState() {
 				<AlertCircle className="h-6 w-6" />
 			</div>
 			<p className="mt-4 text-base font-medium text-foreground">
-				{ __( 'Could not check system status', 'sales-pulse' ) }
+				{ __( 'Could not check system status', 'matriq-store-analytics' ) }
 			</p>
 			<p className="mt-1 text-sm text-muted-foreground">
-				{ __( 'Refresh the page to try again.', 'sales-pulse' ) }
+				{ __( 'Refresh the page to try again.', 'matriq-store-analytics' ) }
 			</p>
 		</motion.div>
 	);
@@ -103,42 +103,42 @@ function SetupCard( { data, triggerSnapshot, triggerBackfill } ) {
 				<div className="relative">
 					<div className="mb-3 inline-flex items-center gap-2 rounded-full border border-solid border-border bg-surface/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
 						<span className="h-1.5 w-1.5 rounded-full bg-pulse" />
-						{ __( 'Setup', 'sales-pulse' ) }
+						{ __( 'Setup', 'matriq-store-analytics' ) }
 					</div>
 
 					<h2 className="m-0 flex items-center gap-3 font-display text-3xl leading-tight text-ink md:text-4xl">
 						<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-ink text-pulse shadow-md">
 							<Database className="h-5 w-5" strokeWidth={ 2.25 } />
 						</span>
-						{ __( 'Setting up Sales Pulse', 'sales-pulse' ) }
+						{ __( 'Setting up Matriq Store Analytics', 'matriq-store-analytics' ) }
 					</h2>
 
 					<p className="mt-3 max-w-md text-sm text-muted-foreground">
 						{ __(
 							'We\'ll run through your store data once before the dashboard unlocks. This usually takes a few seconds.',
-							'sales-pulse'
+							'matriq-store-analytics'
 						) }
 					</p>
 
 					<ul className="mt-6 space-y-3 p-0">
 						<CheckItem
-							label={ __( 'WooCommerce active', 'sales-pulse' ) }
+							label={ __( 'WooCommerce active', 'matriq-store-analytics' ) }
 							checked={ data?.woocommerce_active }
 						/>
 						<CheckItem
-							label={ __( 'Analytics tables available', 'sales-pulse' ) }
+							label={ __( 'Analytics tables available', 'matriq-store-analytics' ) }
 							checked={ data?.analytics_tables_exist }
 						/>
 						<CheckItem
-							label={ __( 'Orders found', 'sales-pulse' ) }
+							label={ __( 'Orders found', 'matriq-store-analytics' ) }
 							checked={ data?.orders_exist }
 						/>
 						<CheckItem
-							label={ __( 'Plugin tables created', 'sales-pulse' ) }
+							label={ __( 'Plugin tables created', 'matriq-store-analytics' ) }
 							checked={ data?.plugin_tables_exist }
 						/>
 						<CheckItem
-							label={ __( 'Snapshot data available', 'sales-pulse' ) }
+							label={ __( 'Snapshot data available', 'matriq-store-analytics' ) }
 							checked={ data?.dashboard_ready }
 						/>
 					</ul>
@@ -148,7 +148,7 @@ function SetupCard( { data, triggerSnapshot, triggerBackfill } ) {
 							<p className="m-0 text-sm text-muted-foreground">
 								{ __(
 									'Your store has orders ready to analyze.',
-									'sales-pulse'
+									'matriq-store-analytics'
 								) }
 							</p>
 							<button
@@ -162,10 +162,10 @@ function SetupCard( { data, triggerSnapshot, triggerBackfill } ) {
 								{ triggerSnapshot.isPending ? (
 									<>
 										<RefreshCw className="h-4 w-4 animate-spin" />
-										{ __( 'Analyzing your recent sales…', 'sales-pulse' ) }
+										{ __( 'Analyzing your recent sales…', 'matriq-store-analytics' ) }
 									</>
 								) : (
-									__( 'Analyze your store', 'sales-pulse' )
+									__( 'Analyze your store', 'matriq-store-analytics' )
 								) }
 							</button>
 						</div>
@@ -175,12 +175,12 @@ function SetupCard( { data, triggerSnapshot, triggerBackfill } ) {
 						<div className="mt-6 space-y-3">
 							<div className="flex items-center justify-between text-xs text-muted-foreground">
 								<span>
-									{ __( 'Backfilling historical data…', 'sales-pulse' ) }
+									{ __( 'Backfilling historical data…', 'matriq-store-analytics' ) }
 								</span>
 								<span className="font-mono">
 									{ sprintf(
 										/* translators: %d: number of days */
-										__( '%d days', 'sales-pulse' ),
+										__( '%d days', 'matriq-store-analytics' ),
 										data?.snapshot_count || 0
 									) }
 								</span>
@@ -199,8 +199,8 @@ function SetupCard( { data, triggerSnapshot, triggerBackfill } ) {
 								className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-solid border-border bg-surface px-4 py-1.5 text-xs font-medium text-foreground transition-all hover:border-border/80 hover:bg-surface-elevated disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 							>
 								{ triggerBackfill.isPending
-									? __( 'Processing…', 'sales-pulse' )
-									: __( 'Speed up backfill', 'sales-pulse' ) }
+									? __( 'Processing…', 'matriq-store-analytics' )
+									: __( 'Speed up backfill', 'matriq-store-analytics' ) }
 							</button>
 						</div>
 					) }

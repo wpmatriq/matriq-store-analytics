@@ -29,7 +29,7 @@ import { useImpactSummary } from '@DashboardApp/hooks/useImpact';
 
 const EASE = [ 0.16, 1, 0.3, 1 ];
 
-// Placeholder product URL. Hooked through `salespulse_pro_product_url` so
+// Placeholder product URL. Hooked through `matriq_msa_pro_product_url` so
 // the marketing team can override at the PHP layer when the page exists.
 const PRO_PRODUCT_URL = 'https://wpsalespulse.com/copilot';
 
@@ -44,11 +44,11 @@ export default function ImpactPage() {
 			className="space-y-6"
 		>
 			<PageHeader
-				eyebrow={ __( 'Impact', 'sales-pulse' ) }
-				title={ __( 'Your data foundation, day after day.', 'sales-pulse' ) }
+				eyebrow={ __( 'Impact', 'matriq-store-analytics' ) }
+				title={ __( 'Your data foundation, day after day.', 'matriq-store-analytics' ) }
 				subtitle={ __(
-					'Sales Pulse keeps your numbers trustworthy: clean snapshots, repaired drift, briefings on a steady cadence. The richer "what it earned" story unlocks with Store Copilot.',
-					'sales-pulse'
+					'Matriq Store Analytics keeps your numbers trustworthy: clean snapshots, repaired drift, briefings on a steady cadence. The richer "what it earned" story unlocks with Store Copilot.',
+					'matriq-store-analytics'
 				) }
 			/>
 
@@ -69,45 +69,45 @@ function StatsGrid( { data } ) {
 	const cards = [
 		{
 			icon: Database,
-			label: __( 'Days of trustworthy data', 'sales-pulse' ),
+			label: __( 'Days of trustworthy data', 'matriq-store-analytics' ),
 			value: data.days_of_data,
 			hint: data.oldest_date
-				? `${ __( 'Earliest snapshot', 'sales-pulse' ) }: ${ data.oldest_date }`
-				: __( 'Snapshots build daily once orders flow.', 'sales-pulse' ),
+				? `${ __( 'Earliest snapshot', 'matriq-store-analytics' ) }: ${ data.oldest_date }`
+				: __( 'Snapshots build daily once orders flow.', 'matriq-store-analytics' ),
 		},
 		{
 			icon: Wrench,
-			label: __( 'Order edits caught & repaired', 'sales-pulse' ),
+			label: __( 'Order edits caught & repaired', 'matriq-store-analytics' ),
 			value: data.order_edits,
-			hint: __( 'Edits, refunds, and status changes that triggered a snapshot rebuild.', 'sales-pulse' ),
+			hint: __( 'Edits, refunds, and status changes that triggered a snapshot rebuild.', 'matriq-store-analytics' ),
 		},
 		{
 			icon: Tag,
-			label: __( 'Campaigns tracked', 'sales-pulse' ),
+			label: __( 'Campaigns tracked', 'matriq-store-analytics' ),
 			value: data.campaigns_tracked,
-			hint: __( 'Tagged windows that adjust how the diagnosis reads your numbers.', 'sales-pulse' ),
+			hint: __( 'Tagged windows that adjust how the diagnosis reads your numbers.', 'matriq-store-analytics' ),
 		},
 	];
 
 	const extraCards = [
 		{
 			icon: Mail,
-			label: __( 'Morning briefings delivered', 'sales-pulse' ),
+			label: __( 'Morning briefings delivered', 'matriq-store-analytics' ),
 			value: data.briefings_sent,
-			hint: __( 'Each one a calm summary of what changed and why.', 'sales-pulse' ),
+			hint: __( 'Each one a calm summary of what changed and why.', 'matriq-store-analytics' ),
 		},
 		{
 			icon: RefreshCw,
-			label: __( 'Latest data refresh', 'sales-pulse' ),
+			label: __( 'Latest data refresh', 'matriq-store-analytics' ),
 			value: data.last_snapshot_at || '—',
 			hint: data.latest_date
-				? `${ __( 'Most recent snapshot date', 'sales-pulse' ) }: ${ data.latest_date }`
-				: __( 'Run a manual snapshot from Settings to seed this.', 'sales-pulse' ),
+				? `${ __( 'Most recent snapshot date', 'matriq-store-analytics' ) }: ${ data.latest_date }`
+				: __( 'Run a manual snapshot from Settings to seed this.', 'matriq-store-analytics' ),
 		},
 		{
 			icon: Calendar,
-			label: __( 'Yesterday at a glance', 'sales-pulse' ),
-			value: data.yesterday?.headline || __( 'Not enough recent data to compare.', 'sales-pulse' ),
+			label: __( 'Yesterday at a glance', 'matriq-store-analytics' ),
+			value: data.yesterday?.headline || __( 'Not enough recent data to compare.', 'matriq-store-analytics' ),
 			hint: data.yesterday?.date ? data.yesterday.date : '',
 			isText: true,
 		},
@@ -158,12 +158,12 @@ function UpgradeCard() {
 					<Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-pulse" strokeWidth={ 2 } />
 					<div className="min-w-0">
 						<h3 className="m-0 text-sm font-semibold text-foreground">
-							{ __( 'Pro shows revenue attributed, not just measured.', 'sales-pulse' ) }
+							{ __( 'Pro shows revenue attributed, not just measured.', 'matriq-store-analytics' ) }
 						</h3>
 						<p className="m-0 mt-1 text-sm text-muted-foreground">
 							{ __(
 								'Store Copilot tracks emails clicked and converted, coupons redeemed, and the orders Copilot earned for you, alongside the AI economics behind each number.',
-								'sales-pulse'
+								'matriq-store-analytics'
 							) }
 						</p>
 					</div>
@@ -175,7 +175,7 @@ function UpgradeCard() {
 					className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border-0 bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground no-underline shadow-sm transition-all hover:bg-primary hover:text-primary-foreground hover:shadow-md focus:text-primary-foreground focus-visible:text-primary-foreground"
 				>
 					<BookOpenCheck className="h-3.5 w-3.5" />
-					{ __( 'Learn more about Store Copilot', 'sales-pulse' ) }
+					{ __( 'Learn more about Store Copilot', 'matriq-store-analytics' ) }
 				</a>
 			</div>
 		</div>
@@ -202,14 +202,14 @@ function ImpactSkeleton() {
 function ErrorCard( { onRetry } ) {
 	return (
 		<div className="rounded-2xl border border-solid border-warning/30 bg-warning/10 p-4 text-sm text-foreground">
-			<p className="m-0">{ __( 'Could not load Impact data. Try again.', 'sales-pulse' ) }</p>
+			<p className="m-0">{ __( 'Could not load Impact data. Try again.', 'matriq-store-analytics' ) }</p>
 			<button
 				type="button"
 				onClick={ () => onRetry() }
 				className="mt-2 inline-flex cursor-pointer items-center gap-1 rounded-full border border-solid border-border bg-card px-3 py-1 text-xs font-medium text-foreground hover:bg-muted"
 			>
 				<Clock className="h-3 w-3" />
-				{ __( 'Retry', 'sales-pulse' ) }
+				{ __( 'Retry', 'matriq-store-analytics' ) }
 			</button>
 		</div>
 	);

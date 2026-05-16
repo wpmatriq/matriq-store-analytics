@@ -12,16 +12,16 @@
  * "trustworthy data foundation" story; Pro is the "what that foundation
  * earned" story.
  *
- * @package EC_Sales_Pulse\Core\Services
+ * @package Matriq\MSA\Core\Services
  */
 
-namespace EC_Sales_Pulse\Core\Services;
+namespace Matriq\MSA\Core\Services;
 
-use EC_Sales_Pulse\Core\Database\Campaigns;
-use EC_Sales_Pulse\Core\Database\DailyStats;
-use EC_Sales_Pulse\Core\Database\DirtyDates;
-use EC_Sales_Pulse\Core\Database\SystemState;
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Core\Database\Campaigns;
+use Matriq\MSA\Core\Database\DailyStats;
+use Matriq\MSA\Core\Database\DirtyDates;
+use Matriq\MSA\Core\Database\SystemState;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -98,20 +98,20 @@ class ImpactSummary {
 				'date'     => $yesterday,
 				'headline' => sprintf(
 					/* translators: %s: yesterday revenue. */
-					__( 'Yesterday earned %s. No comparable activity the day before.', 'sales-pulse' ),
+					__( 'Yesterday earned %s. No comparable activity the day before.', 'matriq-store-analytics' ),
 					$this->format_currency( $yesterday_revenue )
 				),
 			];
 		}
 
 		$delta_pct = ( $yesterday_revenue - $day_before_revenue ) / $day_before_revenue * 100;
-		$direction = $delta_pct >= 0 ? __( 'up', 'sales-pulse' ) : __( 'down', 'sales-pulse' );
+		$direction = $delta_pct >= 0 ? __( 'up', 'matriq-store-analytics' ) : __( 'down', 'matriq-store-analytics' );
 
 		return [
 			'date'     => $yesterday,
 			'headline' => sprintf(
 				/* translators: 1: yesterday revenue, 2: direction (up/down), 3: percent change. */
-				__( 'Yesterday earned %1$s, %2$s %3$s%% vs the day before.', 'sales-pulse' ),
+				__( 'Yesterday earned %1$s, %2$s %3$s%% vs the day before.', 'matriq-store-analytics' ),
 				$this->format_currency( $yesterday_revenue ),
 				$direction,
 				number_format( abs( $delta_pct ), 1 )

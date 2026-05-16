@@ -2,11 +2,11 @@
 /**
  * Settings.
  *
- * @package EC_Sales_Pulse
- * @since x.x.x
+ * @package Matriq\MSA
+ * @since 0.0.2
  */
 
-namespace EC_Sales_Pulse\Inc\Utils;
+namespace Matriq\MSA\Inc\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -19,7 +19,7 @@ class Settings {
 	/**
 	 * Cache the DB options
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 * @access public
 	 * @var array<string, mixed>
 	 */
@@ -29,11 +29,11 @@ class Settings {
 	 * Returns all default portal settings.
 	 *
 	 * @return array<string, array<string, mixed>>
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public static function get_settings_dataset() {
 		return apply_filters(
-			'wc_sma_settings_dataset',
+			'matriq_msa_settings_dataset',
 			[
 				'feeds_per_page' => [
 					'default' => 5,
@@ -50,7 +50,7 @@ class Settings {
 	 * @param  mixed  $default Option default value if option is not available.
 	 * @return mixed   Returns the option value
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public static function get_default_option( $key, $default = false ) {
 		$default_settings = self::get_default_settings();
@@ -66,7 +66,7 @@ class Settings {
 	 * As per the settings dataset, return the default settings.
 	 *
 	 * @return array<string, mixed>
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public static function get_default_settings() {
 		$settings_dataset = self::get_settings_dataset();
@@ -86,16 +86,16 @@ class Settings {
 	 * @param bool $use_cache Whether to use cached settings.
 	 *
 	 * @return array<string, mixed>
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
-	public static function get_wc_sma_settings( $use_cache = true ) {
+	public static function get_settings( $use_cache = true ) {
 		if ( $use_cache && ! empty( self::$dashboard_options ) ) {
 			return self::$dashboard_options;
 		}
 
-		$db_option = self::get_settings();
+		$db_option = self::get_stored_settings();
 
-		$defaults = apply_filters( 'wc_sma_dashboard_rest_options', self::get_default_settings() );
+		$defaults = apply_filters( 'matriq_msa_dashboard_rest_options', self::get_default_settings() );
 
 		self::$dashboard_options = wp_parse_args( $db_option, $defaults );
 
@@ -107,24 +107,24 @@ class Settings {
 	 *
 	 * @param array<string, mixed> $settings The settings to update.
 	 * @return void
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
-	public static function update_wc_sma_settings( $settings ): void {
-		update_option( EC_SALES_PULSE_SETTINGS, $settings );
+	public static function update_settings( $settings ): void {
+		update_option( MATRIQ_MSA_SETTINGS, $settings );
 
 		// Flush the rewrite rules.
 		flush_rewrite_rules();
 	}
 
 	/**
-	 * Decrypt the keys of the settings array.
+	 * Raw DB fetch of the stored settings array. Use get_settings() for the
+	 * cached + defaults-merged view.
 	 *
 	 * @return array<string, mixed>
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
-	public static function get_settings() {
-		// Adjust this option key to match your plugin's saved settings.
-		return get_option( EC_SALES_PULSE_SETTINGS, [] );
+	public static function get_stored_settings() {
+		return get_option( MATRIQ_MSA_SETTINGS, [] );
 	}
 
 	/**
@@ -132,7 +132,7 @@ class Settings {
 	 *
 	 * @param string $key The setting key.
 	 * @return string
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public static function get_setting_type( $key ) {
 		$settings_dataset = self::get_settings_dataset();

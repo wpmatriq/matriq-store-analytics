@@ -10,7 +10,7 @@
 		border-color: var( --border );
 	}
 
-	#wc-sma-main-page--wrapper {
+	#matriq-msa-main-page--wrapper {
 		background: var( --canvas );
 		color: var( --foreground );
 		font-family: var( --font-sans );
@@ -20,8 +20,8 @@
 	}
 }
 
-/* WordPress admin neutralizers scoped to the Sales Pulse app. */
-#wc-sma-main-page--wrapper {
+/* WordPress admin neutralizers scoped to the Matriq Store Analytics app. */
+#matriq-msa-main-page--wrapper {
 	button,
 	[role="button"] {
 		box-shadow: none !important;
@@ -58,7 +58,7 @@
 	height: 16px;
 	border-right: 1px solid var( --border );
 }
-.wc-sma-input {
+.matriq-msa-input {
 	border: 1px solid var( --input );
 }
 .portals-setting-content button:not( .wpsma-button-link ) {

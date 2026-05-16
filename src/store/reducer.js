@@ -11,7 +11,7 @@
 import { dispatch } from '@wordpress/data';
 
 const DEFAULT_STATE = {
-	admin_url: wc_sma_admin_data?.ajax_url || '',
+	admin_url: matriqMSAData?.ajax_url || '',
 	groups_count: '',
 	isSaving: false,
 	isProcessing: false,
@@ -23,7 +23,7 @@ const DEFAULT_STATE = {
 		subscribe_to_newsletter: 'on',
 		share_non_sensitive_data: 'on',
 		hidden_community: false,
-		user_email: wc_sma_admin_data?.email || '',
+		user_email: matriqMSAData?.email || '',
 	},
 	routes: {
 		home: {
@@ -40,7 +40,7 @@ const DEFAULT_STATE = {
 	activeSection: '',
 	activeSpace: {},
 	activeGroup: {},
-	settings: wc_sma_admin_data.settings || [],
+	settings: matriqMSAData.settings || [],
 	addSpaceModal: {
 		open: false,
 		category: 'create', // groupID
@@ -55,7 +55,7 @@ const DEFAULT_STATE = {
 		homegrid_spaces_count: 3,
 	},
 	notice: {
-		...( wc_sma_admin_data?.notice || [] ),
+		...( matriqMSAData?.notice || [] ),
 	},
 	iconPickerModal: false,
 	loading: false,
@@ -65,7 +65,7 @@ const DEFAULT_STATE = {
 
 const reducer = ( state = DEFAULT_STATE, action ) => {
 	const actionType = wp.hooks.applyFilters(
-		'wc_sma_dashboard/data_reducer_action',
+		'matriq_msa_dashboard/data_reducer_action',
 		action.type
 	);
 
@@ -104,7 +104,7 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 			const { page, tab, section, ...extraParams } = action.payload || {};
 
 			const orderedParams = [
-				[ 'page', page || wc_sma_admin_data.home_slug ],
+				[ 'page', page || matriqMSAData.home_slug ],
 				[ 'tab', tab || 'home' ],
 				...( section
 					? [ [ 'section', section ] ]

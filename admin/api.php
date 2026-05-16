@@ -5,22 +5,22 @@
  * This class will holds the code related to the managing of
  * posts of portals
  *
- * @package EC_Sales_Pulse
+ * @package Matriq\MSA
  *
- * @since x.x.x
+ * @since 0.0.2
  */
 
-namespace EC_Sales_Pulse\Admin;
+namespace Matriq\MSA\Admin;
 
-use EC_Sales_Pulse\Inc\Traits\API_Base;
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
-use EC_Sales_Pulse\Inc\Utils\Settings;
+use Matriq\MSA\Inc\Traits\API_Base;
+use Matriq\MSA\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Utils\Settings;
 
 defined( 'ABSPATH' ) || exit;
 /**
  * API
  *
- * @since x.x.x
+ * @since 0.0.2
  */
 class API {
 	use Get_Instance;
@@ -40,14 +40,14 @@ class API {
 	 *
 	 * @var string $option_name DB option name.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
-	private static string $option_name = 'wc_sma_admin_settings';
+	private static string $option_name = 'matriq_msa_admin_settings';
 
 	/**
 	 * Constructor
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 *
 	 * @return void
 	 */
@@ -58,7 +58,7 @@ class API {
 	/**
 	 * Register API routes.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function register_routes(): void {
 		register_rest_route(
@@ -80,16 +80,16 @@ class API {
 	 *
 	 * @return array<string, mixed> $updated_option defaults + set DB option data.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function get_admin_settings(): array {
-		return Settings::get_wc_sma_settings();
+		return Settings::get_settings();
 	}
 
 	/**
 	 * Check whether a given request has permission to read notes.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 *
 	 * @return bool|\WP_Error
 	 */
@@ -106,7 +106,7 @@ class API {
 	 *
 	 * @return void             Return the option value based on provided key
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public static function update_admin_settings_option( string $key, $value ): void {
 		$updated_settings = get_option( self::$option_name, [] );

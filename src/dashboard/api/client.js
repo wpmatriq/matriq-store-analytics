@@ -1,12 +1,12 @@
 /**
- * Sales Pulse v2 API Client.
+ * Matriq Store Analytics v2 API Client.
  *
  * Thin wrapper around @wordpress/api-fetch for v2 REST endpoints.
- * All endpoints use the `sales-pulse/v2` namespace.
+ * All endpoints use the `matriq-store-analytics/v2` namespace.
  */
 import apiFetch from '@wordpress/api-fetch';
 
-const API_NAMESPACE = '/sales-pulse/v2';
+const API_NAMESPACE = '/matriq-store-analytics/v2';
 
 /**
  * Generic GET request.

@@ -5,12 +5,12 @@
  * Stores manual campaign context set by merchants.
  * Affects diagnosis tone/interpretation, NOT the data itself.
  *
- * @package EC_Sales_Pulse\Core\Database
+ * @package Matriq\MSA\Core\Database
  */
 
-namespace EC_Sales_Pulse\Core\Database;
+namespace Matriq\MSA\Core\Database;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -66,10 +66,10 @@ class Campaigns extends Base {
 	 */
 	public static function get_valid_goals(): array {
 		return [
-			self::GOAL_ORDERS    => __( 'Increase Orders', 'sales-pulse' ),
-			self::GOAL_AOV       => __( 'Increase AOV', 'sales-pulse' ),
-			self::GOAL_CLEARANCE => __( 'Clearance / Liquidation', 'sales-pulse' ),
-			self::GOAL_LAUNCH    => __( 'New Product Launch', 'sales-pulse' ),
+			self::GOAL_ORDERS    => __( 'Increase Orders', 'matriq-store-analytics' ),
+			self::GOAL_AOV       => __( 'Increase AOV', 'matriq-store-analytics' ),
+			self::GOAL_CLEARANCE => __( 'Clearance / Liquidation', 'matriq-store-analytics' ),
+			self::GOAL_LAUNCH    => __( 'New Product Launch', 'matriq-store-analytics' ),
 		];
 	}
 

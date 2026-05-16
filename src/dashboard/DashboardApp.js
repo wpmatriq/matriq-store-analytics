@@ -1,5 +1,5 @@
 /**
- * Sales Pulse v2 - Dashboard entry point.
+ * Matriq Store Analytics v2 - Dashboard entry point.
  */
 import { mountComponent } from '@Utils/mountComponent';
 import App from './App';
@@ -8,6 +8,6 @@ import App from './App';
 import './MainApp.scss';
 
 // Mount the app.
-if ( document.getElementById( 'wc-sma-main-page--wrapper' ) ) {
-	mountComponent( '#wc-sma-main-page--wrapper', <App /> );
+if ( document.getElementById( 'matriq-msa-main-page--wrapper' ) ) {
+	mountComponent( '#matriq-msa-main-page--wrapper', <App /> );
 }

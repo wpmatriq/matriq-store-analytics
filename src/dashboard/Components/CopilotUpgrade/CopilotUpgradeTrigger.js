@@ -7,7 +7,7 @@
  * the chat surface. When Pro is active we return null so Pro's chip
  * takes over the same `header-action` slot.
  *
- * Click dispatches the `salespulse:copilot-upgrade-toggle` window event;
+ * Click dispatches the `matriq_msa:copilot-upgrade-toggle` window event;
  * CopilotUpgradeDrawer listens for it.
  */
 import React from 'react';
@@ -21,7 +21,7 @@ export function CopilotUpgradeTrigger() {
 	}
 
 	const handleClick = () => {
-		window.dispatchEvent( new CustomEvent( 'salespulse:copilot-upgrade-toggle' ) );
+		window.dispatchEvent( new CustomEvent( 'matriq_msa:copilot-upgrade-toggle' ) );
 	};
 
 	return (
@@ -29,10 +29,10 @@ export function CopilotUpgradeTrigger() {
 			type="button"
 			onClick={ handleClick }
 			className="hidden cursor-pointer items-center gap-1.5 rounded-full border border-solid border-border bg-card px-3 py-1 text-xs font-semibold text-foreground transition-all hover:border-pulse/50 hover:bg-pulse/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse lg:inline-flex"
-			aria-label={ __( 'Discover Copilot', 'sales-pulse' ) }
+			aria-label={ __( 'Discover Copilot', 'matriq-store-analytics' ) }
 		>
 			<Sparkles className="h-3.5 w-3.5 text-pulse" strokeWidth={ 2.25 } />
-			{ __( 'Ask Copilot', 'sales-pulse' ) }
+			{ __( 'Ask Copilot', 'matriq-store-analytics' ) }
 		</button>
 	);
 }

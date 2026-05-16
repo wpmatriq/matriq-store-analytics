@@ -2,14 +2,14 @@
  * PluginSlot - inline component slot for premium extensions.
  *
  * Renders any components registered into the named slot via
- * `window.salesPulse.registerSlot( name, { id, component, weight } )`.
+ * `window.matriqMSA.registerSlot( name, { id, component, weight } )`.
  *
  * Components registered into the same slot render in weight-ascending order
  * (lower weight = higher in the DOM). Each registered component receives
  * the `props` object passed to PluginSlot — typically the page's data so
  * the slot component can render its inline UI without making its own request.
  *
- * Subscribes to the `salespulse:slot-registered` window event so slots that
+ * Subscribes to the `matriq_msa:slot-registered` window event so slots that
  * mount inside otherwise-static parents (e.g. the header) re-render when a
  * Pro bundle loads after the SP shell has already painted.
  *
@@ -27,13 +27,13 @@ export function PluginSlot( { name, props } ) {
 				bump( ( v ) => v + 1 );
 			}
 		};
-		window.addEventListener( 'salespulse:slot-registered', onRegistered );
+		window.addEventListener( 'matriq_msa:slot-registered', onRegistered );
 		return () => {
-			window.removeEventListener( 'salespulse:slot-registered', onRegistered );
+			window.removeEventListener( 'matriq_msa:slot-registered', onRegistered );
 		};
 	}, [ name ] );
 
-	const entries = ( typeof window !== 'undefined' && window.salesPulse?.slots?.[ name ] ) || [];
+	const entries = ( typeof window !== 'undefined' && window.matriqMSA?.slots?.[ name ] ) || [];
 
 	if ( ! entries.length ) {
 		return null;

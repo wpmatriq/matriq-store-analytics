@@ -6,15 +6,15 @@
  * - Nightly snapshot (build yesterday + repair dirty dates)
  * - Backfill runner (progressive historical data fill)
  *
- * @package EC_Sales_Pulse\Core\Cron
+ * @package Matriq\MSA\Core\Cron
  */
 
-namespace EC_Sales_Pulse\Core\Cron;
+namespace Matriq\MSA\Core\Cron;
 
-use EC_Sales_Pulse\Core\Database\DailyStats;
-use EC_Sales_Pulse\Core\Database\SystemState;
-use EC_Sales_Pulse\Core\Services\SnapshotBuilder;
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Core\Database\DailyStats;
+use Matriq\MSA\Core\Database\SystemState;
+use Matriq\MSA\Core\Services\SnapshotBuilder;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -29,8 +29,8 @@ class CronManager {
 	/**
 	 * Hook names.
 	 */
-	public const HOOK_NIGHTLY  = 'salespulse_nightly_snapshot';
-	public const HOOK_BACKFILL = 'salespulse_backfill_runner';
+	public const HOOK_NIGHTLY  = 'matriq_msa_nightly_snapshot';
+	public const HOOK_BACKFILL = 'matriq_msa_backfill_runner';
 
 	/**
 	 * Constructor - register cron hooks and schedules.
@@ -57,9 +57,9 @@ class CronManager {
 	 * @return array<string, array<string, mixed>>
 	 */
 	public function add_cron_schedules( array $schedules ): array {
-		$schedules['salespulse_five_minutes'] = [
+		$schedules['matriq_msa_five_minutes'] = [
 			'interval' => 300,
-			'display'  => __( 'Every 5 Minutes (Sales Pulse)', 'sales-pulse' ),
+			'display'  => __( 'Every 5 Minutes (Matriq Store Analytics)', 'matriq-store-analytics' ),
 		];
 
 		return $schedules;
@@ -78,7 +78,7 @@ class CronManager {
 		// Backfill runner: every 5 minutes during active backfill.
 		$state = SystemState::get_instance();
 		if ( ! $state->is_backfill_complete() && ! wp_next_scheduled( self::HOOK_BACKFILL ) ) {
-			wp_schedule_event( time(), 'salespulse_five_minutes', self::HOOK_BACKFILL );
+			wp_schedule_event( time(), 'matriq_msa_five_minutes', self::HOOK_BACKFILL );
 		}
 	}
 
@@ -112,11 +112,11 @@ class CronManager {
 	 */
 	public function maybe_fallback_snapshot(): void {
 		// Only check once per hour to avoid repeated queries.
-		if ( get_transient( 'salespulse_fallback_checked' ) ) {
+		if ( get_transient( 'matriq_msa_fallback_checked' ) ) {
 			return;
 		}
 
-		set_transient( 'salespulse_fallback_checked', 1, HOUR_IN_SECONDS );
+		set_transient( 'matriq_msa_fallback_checked', 1, HOUR_IN_SECONDS );
 
 		$builder     = SnapshotBuilder::get_instance();
 		$daily_stats = DailyStats::get_instance();

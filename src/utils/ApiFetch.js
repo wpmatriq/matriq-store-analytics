@@ -6,7 +6,7 @@ export default async function ApiFetch(
 	setAjaxError
 ) {
 	apiFetch( {
-		url: wc_sma_admin_data?.ajax_url,
+		url: matriqMSAData?.ajax_url,
 		method: formMethod,
 		body: data,
 	} )

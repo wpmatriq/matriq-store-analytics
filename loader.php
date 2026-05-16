@@ -2,50 +2,50 @@
 /**
  * Plugin Loader.
  *
- * @package EC_Sales_Pulse
- * @since x.x.x
+ * @package Matriq\MSA
+ * @since 0.0.2
  */
 
-namespace EC_Sales_Pulse;
+namespace Matriq\MSA;
 
 defined( 'ABSPATH' ) || exit;
 
-use EC_Sales_Pulse\Admin\API;
-use EC_Sales_Pulse\Admin\Menu;
-use EC_Sales_Pulse\Admin\Notices;
-use EC_Sales_Pulse\Core\Controllers\CampaignsController;
-use EC_Sales_Pulse\Core\Controllers\DataReadiness;
-use EC_Sales_Pulse\Core\Controllers\DigestController;
-use EC_Sales_Pulse\Core\Controllers\History;
-use EC_Sales_Pulse\Core\Controllers\ImpactController;
-use EC_Sales_Pulse\Core\Controllers\Overview;
-use EC_Sales_Pulse\Core\Controllers\SettingsController;
-use EC_Sales_Pulse\Core\Cron\CronManager;
-use EC_Sales_Pulse\Core\Database\Schema;
-use EC_Sales_Pulse\Core\Hooks\OrderHooks;
-use EC_Sales_Pulse\Core\Services\DigestEmail;
-use EC_Sales_Pulse\Core\Services\DigestMailer;
-use EC_Sales_Pulse\Inc\Utils\Maintenance;
+use Matriq\MSA\Admin\API;
+use Matriq\MSA\Admin\Menu;
+use Matriq\MSA\Admin\Notices;
+use Matriq\MSA\Core\Controllers\CampaignsController;
+use Matriq\MSA\Core\Controllers\DataReadiness;
+use Matriq\MSA\Core\Controllers\DigestController;
+use Matriq\MSA\Core\Controllers\History;
+use Matriq\MSA\Core\Controllers\ImpactController;
+use Matriq\MSA\Core\Controllers\Overview;
+use Matriq\MSA\Core\Controllers\SettingsController;
+use Matriq\MSA\Core\Cron\CronManager;
+use Matriq\MSA\Core\Database\Schema;
+use Matriq\MSA\Core\Hooks\OrderHooks;
+use Matriq\MSA\Core\Services\DigestEmail;
+use Matriq\MSA\Core\Services\DigestMailer;
+use Matriq\MSA\Inc\Utils\Maintenance;
 
 /**
- * WC_SMA_Loader
+ * Loader
  *
- * @since x.x.x
+ * @since 0.0.2
  */
-class WC_SMA_Loader {
+class Loader {
 	/**
 	 * Instance
 	 *
 	 * @access private
 	 * @var object Class Instance.
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	private static $instance;
 
 	/**
 	 * Constructor
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function __construct() {
 		// Define the constants.
@@ -58,10 +58,10 @@ class WC_SMA_Loader {
 		add_action( 'admin_init', [ $this, 'activation_redirect' ] );
 
 		// Activation hook.
-		register_activation_hook( EC_SALES_PULSE_FILE, [ $this, 'activation_actions' ] );
+		register_activation_hook( MATRIQ_MSA_FILE, [ $this, 'activation_actions' ] );
 
 		// Deactivation hook.
-		register_deactivation_hook( EC_SALES_PULSE_FILE, [ $this, 'deactivation_actions' ] );
+		register_deactivation_hook( MATRIQ_MSA_FILE, [ $this, 'deactivation_actions' ] );
 
 		add_action( 'plugins_loaded', [ $this, 'load_plugin' ], 99 );
 
@@ -83,10 +83,10 @@ class WC_SMA_Loader {
 	 * @param string $version      Version.
 	 *
 	 * @return bool
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function suppress_translation_error( $status, $function_name, $message, $version ) {
-		if ( $function_name === '_load_textdomain_just_in_time' && strpos( $message, 'sales-pulse' ) !== false ) {
+		if ( $function_name === '_load_textdomain_just_in_time' && strpos( $message, 'matriq-store-analytics' ) !== false ) {
 			return false;
 		}
 		return $status;
@@ -99,10 +99,10 @@ class WC_SMA_Loader {
 	 * @param string $message The error message.
 	 * @param string $version The version.
 	 * @return void
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function prevent_qm_collection( $function_name, $message, $version ): void {
-		if ( $function_name === '_load_textdomain_just_in_time' && strpos( $message, 'sales-pulse' ) !== false ) {
+		if ( $function_name === '_load_textdomain_just_in_time' && strpos( $message, 'matriq-store-analytics' ) !== false ) {
 			// Remove Query Monitor's action temporarily.
 			if ( class_exists( '\QM_Collectors' ) ) {
 				$collector = \QM_Collectors::get( 'doing_it_wrong' );
@@ -127,7 +127,7 @@ class WC_SMA_Loader {
 	/**
 	 * Initiator
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 * @return object initialized object of class.
 	 */
 	public static function get_instance() {
@@ -157,7 +157,7 @@ class WC_SMA_Loader {
 			)
 		);
 
-		$file = EC_SALES_PULSE_DIR . $filename . '.php';
+		$file = MATRIQ_MSA_DIR . $filename . '.php';
 
 		// if the file readable, include it.
 		if ( is_readable( $file ) ) {
@@ -169,7 +169,7 @@ class WC_SMA_Loader {
 	 * Activation Reset
 	 *
 	 * @return void
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function activation_redirect(): void {
 		// Avoid redirection in case of WP_CLI calls.
@@ -182,14 +182,14 @@ class WC_SMA_Loader {
 			return;
 		}
 
-		$do_redirect = apply_filters( 'salespulse_activation_redirection', get_option( '__wc_sma_do_redirect' ) );
+		$do_redirect = apply_filters( 'matriq_msa_activation_redirection', get_option( 'matriq_msa_do_redirect' ) );
 
 		if ( $do_redirect ) {
 
-			update_option( '__wc_sma_do_redirect', false );
+			update_option( 'matriq_msa_do_redirect', false );
 
 			if ( ! is_multisite() ) {
-				$is_onboarding_completed = get_option( '__wc_sma_onboarding_completed' ) === 'yes' || get_option( '__wc_sma_onboarding_skipped' ) === 'yes';
+				$is_onboarding_completed = get_option( 'matriq_msa_onboarding_completed' ) === 'yes' || get_option( 'matriq_msa_onboarding_skipped' ) === 'yes';
 
 				if ( $is_onboarding_completed ) {
 					// Onboarding is completed, no need to redirect.
@@ -200,8 +200,8 @@ class WC_SMA_Loader {
 				wp_safe_redirect(
 					add_query_arg(
 						[
-							'page'                      => 'sales-pulse-onboarding',
-							'ec-sp-activation-redirect' => true,
+							'page' => 'matriq-store-analytics-onboarding',
+							'matriq-msa-activation-redirect' => true,
 						],
 						admin_url( 'admin.php' )
 					)
@@ -215,31 +215,31 @@ class WC_SMA_Loader {
 	/**
 	 * Define the constants which will be used throughout the plugin.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 * @return void
 	 */
 	public function define_constants(): void {
-		define( 'EC_SALES_PULSE_UPGRADE_LINK', '#' );
-		define( 'EC_SALES_PULSE_TABLET_BREAKPOINT', '1024' );
-		define( 'EC_SALES_PULSE_MOBILE_BREAKPOINT', '768' );
+		define( 'MATRIQ_MSA_UPGRADE_LINK', '#' );
+		define( 'MATRIQ_MSA_TABLET_BREAKPOINT', '1024' );
+		define( 'MATRIQ_MSA_MOBILE_BREAKPOINT', '768' );
 
-		define( 'EC_SALES_PULSE_BASE', plugin_basename( EC_SALES_PULSE_FILE ) );
-		define( 'EC_SALES_PULSE_DIR', plugin_dir_path( EC_SALES_PULSE_FILE ) );
-		define( 'EC_SALES_PULSE_URL', plugins_url( '/', EC_SALES_PULSE_FILE ) );
+		define( 'MATRIQ_MSA_BASE', plugin_basename( MATRIQ_MSA_FILE ) );
+		define( 'MATRIQ_MSA_DIR', plugin_dir_path( MATRIQ_MSA_FILE ) );
+		define( 'MATRIQ_MSA_URL', plugins_url( '/', MATRIQ_MSA_FILE ) );
 
-		define( 'EC_SALES_PULSE_SETTINGS', 'wc_sma_settings' );
-		define( 'EC_SALES_PULSE_CAPABILITY', 'manage_options' );
+		define( 'MATRIQ_MSA_SETTINGS', 'matriq_msa_settings' );
+		define( 'MATRIQ_MSA_CAPABILITY', 'manage_options' );
 
-		! defined( 'EC_SALES_PULSE_DEVELOPMENT_MODE' ) && define( 'EC_SALES_PULSE_DEVELOPMENT_MODE', false );
+		! defined( 'MATRIQ_MSA_DEVELOPMENT_MODE' ) && define( 'MATRIQ_MSA_DEVELOPMENT_MODE', false );
 
-		$css_suffix = EC_SALES_PULSE_DEVELOPMENT_MODE ? '.css' : '.min.css';
-		$js_suffix  = EC_SALES_PULSE_DEVELOPMENT_MODE ? '.js' : '.min.js';
+		$css_suffix = MATRIQ_MSA_DEVELOPMENT_MODE ? '.css' : '.min.css';
+		$js_suffix  = MATRIQ_MSA_DEVELOPMENT_MODE ? '.js' : '.min.js';
 
-		define( 'EC_SALES_PULSE_CSS_SUFFIX', $css_suffix );
-		define( 'EC_SALES_PULSE_JS_SUFFIX', $js_suffix );
+		define( 'MATRIQ_MSA_CSS_SUFFIX', $css_suffix );
+		define( 'MATRIQ_MSA_JS_SUFFIX', $js_suffix );
 
-		define( 'EC_SALES_PULSE_CSS_ASSETS_FOLDER', EC_SALES_PULSE_DEVELOPMENT_MODE ? EC_SALES_PULSE_URL . 'assets/css/unminified/' : EC_SALES_PULSE_URL . 'assets/css/minified/' );
-		define( 'EC_SALES_PULSE_JS_ASSETS_FOLDER', EC_SALES_PULSE_DEVELOPMENT_MODE ? EC_SALES_PULSE_URL . 'assets/js/unminified/' : EC_SALES_PULSE_URL . 'assets/js/minified/' );
+		define( 'MATRIQ_MSA_CSS_ASSETS_FOLDER', MATRIQ_MSA_DEVELOPMENT_MODE ? MATRIQ_MSA_URL . 'assets/css/unminified/' : MATRIQ_MSA_URL . 'assets/css/minified/' );
+		define( 'MATRIQ_MSA_JS_ASSETS_FOLDER', MATRIQ_MSA_DEVELOPMENT_MODE ? MATRIQ_MSA_URL . 'assets/js/unminified/' : MATRIQ_MSA_URL . 'assets/js/minified/' );
 
 		// Include required functions.
 		require_once 'inc/functions/functions.php';
@@ -249,7 +249,7 @@ class WC_SMA_Loader {
 	/**
 	 * Plugin Activation actions.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function activation_actions(): void {
 		/**
@@ -258,7 +258,16 @@ class WC_SMA_Loader {
 		 * because of on activation not work well flush_rewrite_rules()
 		 */
 		delete_option( 'rewrite_rules' );
-		update_option( '__wc_sma_do_redirect', true );
+
+		// Orphan options from the predecessor `wc_sma_*` prefix. Pre-release rename: no data preservation needed.
+		delete_option( 'wc_sma_settings' );
+		delete_option( '__wc_sma_do_redirect' );
+		delete_option( '__wc_sma_onboarding_completed' );
+		delete_option( '__wc_sma_onboarding_skipped' );
+		delete_option( 'wc_sma_saved_version' );
+		delete_option( 'wc_sma_admin_settings' );
+
+		update_option( 'matriq_msa_do_redirect', true );
 
 		flush_rewrite_rules();
 
@@ -269,7 +278,7 @@ class WC_SMA_Loader {
 	/**
 	 * Plugin Deactivation actions.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function deactivation_actions(): void {
 		// Unschedule all plugin cron jobs (preserve tables on deactivation).
@@ -279,7 +288,7 @@ class WC_SMA_Loader {
 	/**
 	 * Enqueue required classes after plugins loaded.
 	 *
-	 * @since x.x.x
+	 * @since 0.0.2
 	 * @return void
 	 */
 	public function load_plugin(): void {
@@ -289,7 +298,7 @@ class WC_SMA_Loader {
 		/* API init */
 		API::get_instance();
 
-		/* --- Sales Pulse v2: Revenue Diagnosis Engine --- */
+		/* --- Matriq Store Analytics v2: Revenue Diagnosis Engine --- */
 
 		// Database schema check (auto-upgrade on version mismatch).
 		Schema::get_instance()->maybe_upgrade();
@@ -338,9 +347,9 @@ class WC_SMA_Loader {
 		 *
 		 * Fires when WC Smart Analytics is instantiated.
 		 *
-		 * @since x.x.x
+		 * @since 0.0.2
 		 */
-		do_action( 'salespulse_init' );
+		do_action( 'matriq_msa_init' );
 	}
 
 	/**
@@ -349,18 +358,18 @@ class WC_SMA_Loader {
 	 * @param array<int,string> $links Array of plugin meta links.
 	 * @param string            $file Plugin file path.
 	 * @return array<int,string> Modified plugin meta links.
-	 * @since x.x.x
+	 * @since 0.0.2
 	 */
 	public function add_meta_links( $links, $file ) {
-		if ( $file === EC_SALES_PULSE_BASE ) {
+		if ( $file === MATRIQ_MSA_BASE ) {
 			$stars = '';
 			for ( $indx = 0; $indx < 5; $indx++ ) {
 				$stars .= '<span class="dashicons dashicons-star-filled" style="color: #ffb900; font-size: 16px; width: 16px; height: 16px; line-height: 1.2;" aria-hidden="true"></span>';
 			}
 			$links[] = sprintf(
 				'<a href="%s" target="_blank" rel="noopener noreferrer" aria-label="%s" role="button">%s</a>',
-				esc_url( 'https://wordpress.org/support/plugin/sales-pulse/reviews/#new-post' ),
-				esc_attr__( 'Rate our plugin', 'sales-pulse' ),
+				esc_url( 'https://wordpress.org/support/plugin/matriq-store-analytics/reviews/#new-post' ),
+				esc_attr__( 'Rate our plugin', 'matriq-store-analytics' ),
 				$stars
 			);
 		}
@@ -372,4 +381,4 @@ class WC_SMA_Loader {
 /**
  * Kicking this off by calling 'get_instance()' method
  */
-WC_SMA_Loader::get_instance();
+Loader::get_instance();

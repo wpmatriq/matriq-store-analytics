@@ -2,62 +2,66 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Sales Pulse 0.0.1\n"
+"Project-Id-Version: Matriq Store Analytics 0.0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/sales-pulse\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-11T04:33:33+00:00\n"
+"POT-Creation-Date: 2026-05-16T04:13:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
-"X-Domain: sales-pulse\n"
+"X-Domain: matriq-store-analytics\n"
 
 #. Plugin Name of the plugin
-#: sales-pulse.php
-#: assets/build/wc-sma-app.js:2
-msgid "Sales Pulse"
+#: matriq-store-analytics.php
+#: assets/build/matriq-msa-app.js:2
+msgid "Matriq Store Analytics"
 msgstr ""
 
 #. Plugin URI of the plugin
-#. Author URI of the plugin
-#: sales-pulse.php
-msgid "https://matriq.in"
+#: matriq-store-analytics.php
+msgid "https://matriq.in/matriq-store-analytics/"
 msgstr ""
 
 #. Description of the plugin
-#: sales-pulse.php
-msgid "Sales Pulse is a WordPress plugin that helps you to deep dive into your E-Commerce business."
+#: matriq-store-analytics.php
+msgid "Daily revenue diagnosis for WooCommerce. Explains why store revenue changed each day in plain language, with deterministic math and no AI guessing."
 msgstr ""
 
 #. Author of the plugin
-#: sales-pulse.php
+#: matriq-store-analytics.php
 msgid "Matriq"
+msgstr ""
+
+#. Author URI of the plugin
+#: matriq-store-analytics.php
+msgid "https://matriq.in"
 msgstr ""
 
 #: admin/menu.php:121
 #: admin/menu.php:122
-#: assets/build/wc-sma-app.js:2
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:2
+#: assets/build/matriq-msa-app.js:5
 msgid "Impact"
 msgstr ""
 
 #: admin/menu.php:128
 #: admin/menu.php:129
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "History"
 msgstr ""
 
 #: admin/menu.php:135
 #: admin/menu.php:136
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Campaigns"
 msgstr ""
 
 #: admin/menu.php:142
 #: admin/menu.php:143
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Settings"
 msgstr ""
 
@@ -66,7 +70,7 @@ msgid "Onboarding"
 msgstr ""
 
 #: admin/menu.php:187
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Overview"
 msgstr ""
 
@@ -75,7 +79,7 @@ msgid "You do not have permission to access this resource."
 msgstr ""
 
 #: core/controllers/campaigns-controller.php:157
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "All fields are required."
 msgstr ""
 
@@ -84,12 +88,12 @@ msgid "Invalid campaign goal."
 msgstr ""
 
 #: core/controllers/campaigns-controller.php:167
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "End date must be after start date."
 msgstr ""
 
 #: core/controllers/campaigns-controller.php:174
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Failed to create campaign."
 msgstr ""
 
@@ -113,15 +117,15 @@ msgstr ""
 #: core/controllers/overview.php:287
 #: core/services/digest-mailer.php:484
 #: core/services/digest-mailer.php:554
-#: assets/build/wc-sma-app.js:2
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:2
+#: assets/build/matriq-msa-app.js:5
 msgid "Revenue"
 msgstr ""
 
 #: core/controllers/overview.php:292
 #: core/services/digest-mailer.php:489
 #: core/services/digest-mailer.php:548
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Orders"
 msgstr ""
 
@@ -136,7 +140,7 @@ msgid "Items per Order"
 msgstr ""
 
 #: core/cron/cron-manager.php:62
-msgid "Every 5 Minutes (Sales Pulse)"
+msgid "Every 5 Minutes (Matriq Store Analytics)"
 msgstr ""
 
 #: core/database/campaigns.php:69
@@ -264,11 +268,11 @@ msgid "Revenue %1$s %2$s%% %3$s %4$s."
 msgstr ""
 
 #: core/services/digest-email.php:45
-msgid "Sales Pulse: Morning digest"
+msgid "Matriq Store Analytics: Morning digest"
 msgstr ""
 
 #: core/services/digest-email.php:46
-msgid "Daily morning briefing combining yesterday, last 7 days, and last 30 days insights. Configured in Sales Pulse Settings."
+msgid "Daily morning briefing combining yesterday, last 7 days, and last 30 days insights. Configured in Matriq Store Analytics Settings."
 msgstr ""
 
 #: core/services/digest-email.php:50
@@ -276,13 +280,13 @@ msgid "Your morning briefing"
 msgstr ""
 
 #: core/services/digest-email.php:141
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Configuration"
 msgstr ""
 
-#. translators: %s: link to Sales Pulse Settings page.
+#. translators: %s: link to Matriq Store Analytics Settings page.
 #: core/services/digest-email.php:145
-msgid "This email is configured in Sales Pulse Settings, not here. <a href=\"%s\">Open Sales Pulse Settings</a>."
+msgid "This email is configured in Matriq Store Analytics Settings, not here. <a href=\"%s\">Open Matriq Store Analytics Settings</a>."
 msgstr ""
 
 #: core/services/digest-mailer.php:79
@@ -311,25 +315,25 @@ msgstr ""
 
 #. translators: 1: percent change without sign, 2: window noun.
 #: core/services/digest-mailer.php:211
-msgid "Sales Pulse: Revenue up %1$s%% %2$s"
+msgid "Matriq Store Analytics: Revenue up %1$s%% %2$s"
 msgstr ""
 
 #. translators: 1: factor noun (Revenue/Orders/etc.), 2: window noun.
 #: core/services/digest-mailer.php:216
-msgid "Sales Pulse: %1$s softened %2$s"
+msgid "Matriq Store Analytics: %1$s softened %2$s"
 msgstr ""
 
 #: core/services/digest-mailer.php:223
-msgid "Sales Pulse: Steady morning, one action ready"
+msgid "Matriq Store Analytics: Steady morning, one action ready"
 msgstr ""
 
 #. translators: %s: friendly date like "May 1".
 #: core/services/digest-mailer.php:228
-msgid "Sales Pulse: Steady morning, no alarms - %s"
+msgid "Matriq Store Analytics: Steady morning, no alarms - %s"
 msgstr ""
 
 #: core/services/digest-mailer.php:550
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Items per order"
 msgstr ""
 
@@ -379,886 +383,886 @@ msgstr ""
 msgid "Data saved successfully."
 msgstr ""
 
-#: loader.php:361
+#: loader.php:372
 msgid "Rate our plugin"
 msgstr ""
 
-#: templates/email/digest-html.php:72
-#: assets/build/wc-sma-app.js:2
+#: templates/email/digest-html.php:78
+#: assets/build/matriq-msa-app.js:2
 msgid "Yesterday"
 msgstr ""
 
-#: templates/email/digest-html.php:73
-#: assets/build/wc-sma-app.js:2
+#: templates/email/digest-html.php:79
+#: assets/build/matriq-msa-app.js:2
 msgid "Last 7 days"
 msgstr ""
 
-#: templates/email/digest-html.php:74
-#: assets/build/wc-sma-app.js:2
+#: templates/email/digest-html.php:80
+#: assets/build/matriq-msa-app.js:2
 msgid "Last 30 days"
 msgstr ""
 
-#: templates/email/digest-html.php:84
-msgid "Sales Pulse: Morning briefing"
+#: templates/email/digest-html.php:90
+msgid "Matriq Store Analytics: Morning briefing"
 msgstr ""
 
-#: templates/email/digest-html.php:96
-#: assets/build/wc-sma-app.js:2
+#: templates/email/digest-html.php:102
+#: assets/build/matriq-msa-app.js:2
 msgid "Morning briefing"
 msgstr ""
 
 #. translators: %s: campaign name.
-#: templates/email/digest-html.php:110
-#: templates/email/digest-text.php:65
+#: templates/email/digest-html.php:116
+#: templates/email/digest-text.php:71
 msgid "Campaign: %s"
 msgstr ""
 
-#: templates/email/digest-html.php:172
+#: templates/email/digest-html.php:178
 msgid "Copilot · Why this happened"
 msgstr ""
 
-#: templates/email/digest-html.php:182
+#: templates/email/digest-html.php:188
 msgid "AI insights paused"
 msgstr ""
 
-#: templates/email/digest-html.php:215
-#: assets/build/wc-sma-app.js:2
+#: templates/email/digest-html.php:221
+#: assets/build/matriq-msa-app.js:2
 msgid "Suggested action"
 msgstr ""
 
-#: templates/email/digest-html.php:230
+#: templates/email/digest-html.php:236
 msgid "Copilot · AI alternative"
 msgstr ""
 
-#: templates/email/digest-html.php:247
-msgid "Open Sales Pulse dashboard"
+#: templates/email/digest-html.php:253
+msgid "Open Matriq Store Analytics dashboard"
 msgstr ""
 
 #. translators: %s: site name.
-#: templates/email/digest-html.php:260
-#: templates/email/digest-text.php:132
-msgid "Sent by Sales Pulse on behalf of %s."
+#: templates/email/digest-html.php:266
+#: templates/email/digest-text.php:138
+msgid "Sent by Matriq Store Analytics on behalf of %s."
 msgstr ""
 
 #. translators: %s: settings page URL.
-#: templates/email/digest-html.php:270
-msgid "Manage your morning digest in <a href=\"%s\" style=\"color:#1a1d2e;\">Sales Pulse Settings</a>."
+#: templates/email/digest-html.php:276
+msgid "Manage your morning digest in <a href=\"%s\" style=\"color:#1a1d2e;\">Matriq Store Analytics Settings</a>."
 msgstr ""
 
-#: templates/email/digest-text.php:52
+#: templates/email/digest-text.php:58
 msgid "YESTERDAY"
 msgstr ""
 
-#: templates/email/digest-text.php:53
+#: templates/email/digest-text.php:59
 msgid "LAST 7 DAYS"
 msgstr ""
 
-#: templates/email/digest-text.php:54
+#: templates/email/digest-text.php:60
 msgid "LAST 30 DAYS"
 msgstr ""
 
-#: templates/email/digest-text.php:57
-msgid "Sales Pulse - Morning briefing"
+#: templates/email/digest-text.php:63
+msgid "Matriq Store Analytics - Morning briefing"
 msgstr ""
 
-#: templates/email/digest-text.php:99
+#: templates/email/digest-text.php:105
 msgid "COPILOT · WHY THIS HAPPENED"
 msgstr ""
 
-#: templates/email/digest-text.php:102
+#: templates/email/digest-text.php:108
 msgid "(AI insights paused)"
 msgstr ""
 
-#: templates/email/digest-text.php:116
+#: templates/email/digest-text.php:122
 msgid "Suggested action:"
 msgstr ""
 
-#: templates/email/digest-text.php:121
+#: templates/email/digest-text.php:127
 msgid "COPILOT · AI alternative"
 msgstr ""
 
-#: templates/email/digest-text.php:127
-msgid "Open Sales Pulse dashboard:"
+#: templates/email/digest-text.php:133
+msgid "Open Matriq Store Analytics dashboard:"
 msgstr ""
 
-#: templates/email/digest-text.php:136
-msgid "Manage your morning digest in Sales Pulse Settings."
+#: templates/email/digest-text.php:142
+msgid "Manage your morning digest in Matriq Store Analytics Settings."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Checking data readiness…"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Could not check system status"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Refresh the page to try again."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Setup"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
-msgid "Setting up Sales Pulse"
+#: assets/build/matriq-msa-app.js:1
+msgid "Setting up Matriq Store Analytics"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "We'll run through your store data once before the dashboard unlocks. This usually takes a few seconds."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "WooCommerce active"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Analytics tables available"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Orders found"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Plugin tables created"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Snapshot data available"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Your store has orders ready to analyze."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Analyzing your recent sales…"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Analyze your store"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:1
+#: assets/build/matriq-msa-app.js:1
 msgid "Backfilling historical data…"
 msgstr ""
 
 #. translators: %d: number of days
 #. translators: %d: total days
-#: assets/build/wc-sma-app.js:2
-#: assets/build/wc-sma-app.js:4
+#: assets/build/matriq-msa-app.js:2
+#: assets/build/matriq-msa-app.js:4
 msgid "%d days"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Processing…"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Speed up backfill"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Something went wrong"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "The dashboard hit an unexpected error. Reload the page to try again."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Reload dashboard"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Your Store Insights"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Dashboard sections"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Live"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Stale"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Built for WooCommerce stores that take revenue seriously."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Surge"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Needs Attention"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Stable"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "7-Day Revenue Trend"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Daily net revenue across the week"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "30-Day Revenue Trend"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Daily net revenue across the month"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Total"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Peak"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Avg"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Order volume"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Avg item price"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Pattern:"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Yesterday at a glance."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Last 7 days at a glance."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Last 30 days at a glance."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Daily store insights: what changed, why it matters, and what to do next."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "The last 7 days compared to the previous 7, what shifted across the week."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "The last 30 days compared to the previous 30, your rolling monthly pulse."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Comparison period"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Could not load overview"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "We hit an error fetching your diagnosis. Retry, or refresh the page."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:2
+#: assets/build/matriq-msa-app.js:5
 msgid "Retry"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "What changed"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "No significant changes detected"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Revenue factors remained stable across the comparison window."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "No action needed right now"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:2
+#: assets/build/matriq-msa-app.js:2
 msgid "Store performance is stable. We'll surface recommendations as soon as something shifts."
 msgstr ""
 
 #. translators: 1: current page, 2: total pages
-#: assets/build/wc-sma-app.js:3
+#: assets/build/matriq-msa-app.js:3
 msgid "Page %1$d of %2$d"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:4
+#: assets/build/matriq-msa-app.js:4
 msgid "Previous page"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:4
+#: assets/build/matriq-msa-app.js:4
 msgid "Next page"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:4
+#: assets/build/matriq-msa-app.js:4
 msgid "Diagnosis log"
 msgstr ""
 
 #. translators: %d: total days
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "%d days of pulse readings."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Your diagnosis log."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "A complete record of daily revenue diagnoses, change deltas, and status flags."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Could not load history"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "We hit an error fetching the diagnosis log. Retry, or refresh the page."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Trend"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Date"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Diagnosis"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Change"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Status"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "No history data available yet. Snapshots will appear here after the first nightly run."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Export CSV"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Coming soon"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "New campaign"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Set the scope so we know when to dampen alerts."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Close form"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Campaign name"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "e.g. Summer Sale 2026"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Campaign goal"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Clearance Sale"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Move existing inventory"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Product Launch"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Drive awareness for new SKUs"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Order Push"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Flash sale or coupon-driven campaign"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "AOV Boost"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Bundles, upsells, or basket builders"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Start date"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "End date"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Creating…"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Create campaign"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Cancel"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Active"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Ended"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "End campaign"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Delete campaign"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Delete this campaign?"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "The campaign log entry will be removed permanently. Historical diagnoses that referenced it will keep their recorded context."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Deleting…"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Delete"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Campaign tracker"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Mark what's running."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
-msgid "When a campaign is active, Sales Pulse adjusts diagnosis to suppress false alarms and credit lift correctly."
+#: assets/build/matriq-msa-app.js:5
+msgid "When a campaign is active, Matriq Store Analytics adjusts diagnosis to suppress false alarms and credit lift correctly."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Could not load campaigns"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "We hit an error fetching your campaigns. Retry, or refresh the page."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Active & recent"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "No campaigns yet"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Nothing running right now"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Create one when you run a sale, launch a product, or change pricing - we'll adjust diagnosis during the campaign window."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Your data foundation, day after day."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
-msgid "Sales Pulse keeps your numbers trustworthy: clean snapshots, repaired drift, briefings on a steady cadence. The richer \"what it earned\" story unlocks with Store Copilot."
+#: assets/build/matriq-msa-app.js:5
+msgid "Matriq Store Analytics keeps your numbers trustworthy: clean snapshots, repaired drift, briefings on a steady cadence. The richer \"what it earned\" story unlocks with Store Copilot."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Days of trustworthy data"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Earliest snapshot"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Snapshots build daily once orders flow."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Order edits caught & repaired"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Edits, refunds, and status changes that triggered a snapshot rebuild."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Campaigns tracked"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Tagged windows that adjust how the diagnosis reads your numbers."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Morning briefings delivered"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Each one a calm summary of what changed and why."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Latest data refresh"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Most recent snapshot date"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Run a manual snapshot from Settings to seed this."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Yesterday at a glance"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Not enough recent data to compare."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Pro shows revenue attributed, not just measured."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Store Copilot tracks emails clicked and converted, coupons redeemed, and the orders Copilot earned for you, alongside the AI economics behind each number."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Learn more about Store Copilot"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Could not load Impact data. Try again."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Could not load settings"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "We hit an error fetching your settings. Retry, or refresh the page."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Tune your pulse."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
-msgid "Configure how Sales Pulse interprets your store data, when it runs, and where it sends digests."
+#: assets/build/matriq-msa-app.js:5
+msgid "Configure how Matriq Store Analytics interprets your store data, when it runs, and where it sends digests."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Saved"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Saving…"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Save settings"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "General"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Core data interpretation rules."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Timezone"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Inherited from WordPress settings"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Currency"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Inherited from WooCommerce settings"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Snapshot schedule"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "When the nightly diagnosis runs in your store timezone."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Runs daily at"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Hour"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Minute"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Default 02:10 AM. Pick an off-peak window so snapshot calculations don't compete with checkout traffic."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "just now"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "1 minute ago"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "minutes ago"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "1 hour ago"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "hours ago"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "1 day ago"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "days ago"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Email digest"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Get the morning briefing delivered straight to your inbox."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Enable email digest"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Sent each morning after the snapshot completes."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Last attempt failed:"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Last sent"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Recipient email"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "admin@yourstore.com"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Test digest sent."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Could not send the test digest."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Sending…"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Send test digest"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Calm"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Only flag major shifts"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Balanced"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Recommended default"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Vigilant"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Surface every anomaly"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Diagnosis sensitivity"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
-msgid "How aggressively Sales Pulse flags anomalies."
+#: assets/build/matriq-msa-app.js:5
+msgid "How aggressively Matriq Store Analytics flags anomalies."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Settings sections"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Conversational analyst"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Ask anything about your store in plain language. Answers are grounded in your real data, never invented."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "AI-tailored diagnoses"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Plain-language explanations of why revenue moved, layered on top of the deterministic morning briefing."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Proactive anomaly alerts"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Revenue cliffs, refund spikes, and AOV crashes surface the moment they happen. Slack and webhook delivery included."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Revenue attribution"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "See exactly which campaigns and coupons earned each order. Email clicks, conversions, and AI economics in one dashboard."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Automated playbooks"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Win-back, Refund-triage, Flash-sale-recovery and more. Approve actions on a queue or let safe ones run on a schedule."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Your store, with an analyst on call."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
-msgid "Sales Pulse measures. Copilot acts."
+#: assets/build/matriq-msa-app.js:5
+msgid "Matriq Store Analytics measures. Copilot acts."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Close"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Store Copilot layers conversational analysis, proactive anomaly alerts, revenue attribution, and one-click automation onto the morning briefing you already trust."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Upgrade to Store Copilot"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Pro adds AI. The free brain stays exactly as it is."
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Discover Copilot"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Ask Copilot"
 msgstr ""
 
-#: assets/build/wc-sma-app.js:5
+#: assets/build/matriq-msa-app.js:5
 msgid "Discover Store Copilot"
 msgstr ""

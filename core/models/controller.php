@@ -2,10 +2,10 @@
 /**
  * WC SMA Query Model Initialize.
  *
- * @package EC_Sales_Pulse
+ * @package Matriq\MSA
  */
 
-namespace EC_Sales_Pulse\Core\Models;
+namespace Matriq\MSA\Core\Models;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -18,12 +18,12 @@ class Controller {
 	/**
 	 * Cache key.
 	 */
-	public const DB_CACHE_KEY = 'wc_sma_query_data';
+	public const DB_CACHE_KEY = 'matriq_msa_query_data';
 
 	/**
 	 * Base models.
 	 */
-	public const BASE_MODEL = 'EC_Sales_Pulse\Core\Models\\';
+	public const BASE_MODEL = 'Matriq\MSA\Core\Models\\';
 
 	/**
 	 * Get query data.

@@ -8,12 +8,12 @@
  *
  * Formula: Revenue = Orders x Items/Order x Avg Item Price
  *
- * @package EC_Sales_Pulse\Core\Services
+ * @package Matriq\MSA\Core\Services
  */
 
-namespace EC_Sales_Pulse\Core\Services;
+namespace Matriq\MSA\Core\Services;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
  * Compares a current period to a prior period, decomposes the revenue
  * delta into orders and AOV factors, weighs them against a sensitivity
  * threshold, and returns a "What changed and why" verdict. The output is
- * filterable via `salespulse_diagnosis_result` so Pro can layer LLM
+ * filterable via `matriq_msa_diagnosis_result` so Pro can layer LLM
  * explanations on top.
  */
 class DiagnosisEngine {
@@ -92,14 +92,14 @@ class DiagnosisEngine {
 		 * Premium extensions (e.g. Store Copilot) hook here to enrich the
 		 * diagnosis with AI-generated explanations or additional fields.
 		 *
-		 * @since x.x.x
+		 * @since 0.0.2
 		 *
 		 * @param array<string, mixed> $diagnosis   The computed diagnosis result.
 		 * @param mixed                $current     Current period metrics.
 		 * @param mixed                $previous    Previous period metrics.
 		 * @param string               $sensitivity Diagnosis sensitivity (calm|balanced|vigilant).
 		 */
-		return apply_filters( 'salespulse_diagnosis_result', $diagnosis, $current, $previous, $sensitivity );
+		return apply_filters( 'matriq_msa_diagnosis_result', $diagnosis, $current, $previous, $sensitivity );
 	}
 
 	/**
@@ -110,17 +110,17 @@ class DiagnosisEngine {
 	 */
 	public function get_confidence_label( float $confidence ): string {
 		if ( $confidence >= 0.6 ) {
-			return __( 'Clear cause identified.', 'sales-pulse' );
+			return __( 'Clear cause identified.', 'matriq-store-analytics' );
 		}
 		if ( $confidence >= 0.4 ) {
-			return __( 'Likely cause detected.', 'sales-pulse' );
+			return __( 'Likely cause detected.', 'matriq-store-analytics' );
 		}
-		return __( 'No strong single cause.', 'sales-pulse' );
+		return __( 'No strong single cause.', 'matriq-store-analytics' );
 	}
 
 	/**
 	 * Compute the deterministic diagnosis. Pure math, no filters - the public
-	 * `diagnose()` wraps this with `salespulse_diagnosis_result`.
+	 * `diagnose()` wraps this with `matriq_msa_diagnosis_result`.
 	 *
 	 * @param mixed  $current     Current period metrics.
 	 * @param mixed  $previous    Previous period metrics.
@@ -390,7 +390,7 @@ class DiagnosisEngine {
 			$verb = $direction === 'growth' ? 'increased' : 'decreased';
 			return sprintf(
 				/* translators: %1$s: verb, %2$s: percentage */
-				__( 'Revenue %1$s %2$s%% due to multiple smaller changes in customer behavior.', 'sales-pulse' ),
+				__( 'Revenue %1$s %2$s%% due to multiple smaller changes in customer behavior.', 'matriq-store-analytics' ),
 				$verb,
 				$abs_pct
 			);
@@ -402,27 +402,27 @@ class DiagnosisEngine {
 		switch ( $factor ) {
 			case 'orders':
 				$cause = $direction === 'decline'
-					? __( 'fewer completed orders', 'sales-pulse' )
-					: __( 'more completed orders', 'sales-pulse' );
+					? __( 'fewer completed orders', 'matriq-store-analytics' )
+					: __( 'more completed orders', 'matriq-store-analytics' );
 				break;
 			case 'items':
 				$cause = $direction === 'decline'
-					? __( 'customers buying fewer items per order', 'sales-pulse' )
-					: __( 'larger baskets per order', 'sales-pulse' );
+					? __( 'customers buying fewer items per order', 'matriq-store-analytics' )
+					: __( 'larger baskets per order', 'matriq-store-analytics' );
 				break;
 			case 'price':
 				$cause = $direction === 'decline'
-					? __( 'lower-priced products being purchased', 'sales-pulse' )
-					: __( 'higher-value products being purchased', 'sales-pulse' );
+					? __( 'lower-priced products being purchased', 'matriq-store-analytics' )
+					: __( 'higher-value products being purchased', 'matriq-store-analytics' );
 				break;
 		}
 
 		$verb    = $direction === 'growth' ? 'increased' : 'decreased';
-		$quality = $confidence >= 0.6 ? __( 'mainly due to', 'sales-pulse' ) : __( 'likely due to', 'sales-pulse' );
+		$quality = $confidence >= 0.6 ? __( 'mainly due to', 'matriq-store-analytics' ) : __( 'likely due to', 'matriq-store-analytics' );
 
 		return sprintf(
 			/* translators: %1$s: verb, %2$s: percentage, %3$s: quality, %4$s: cause */
-			__( 'Revenue %1$s %2$s%% %3$s %4$s.', 'sales-pulse' ),
+			__( 'Revenue %1$s %2$s%% %3$s %4$s.', 'matriq-store-analytics' ),
 			$verb,
 			$abs_pct,
 			$quality,

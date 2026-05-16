@@ -25,13 +25,13 @@ import classnames from '@Utils/classnames';
 function goalLabel( goal ) {
 	switch ( goal ) {
 		case 'clearance':
-			return __( 'Clearance Sale', 'sales-pulse' );
+			return __( 'Clearance Sale', 'matriq-store-analytics' );
 		case 'launch':
-			return __( 'Product Launch', 'sales-pulse' );
+			return __( 'Product Launch', 'matriq-store-analytics' );
 		case 'orders':
-			return __( 'Order Push', 'sales-pulse' );
+			return __( 'Order Push', 'matriq-store-analytics' );
 		case 'aov':
-			return __( 'AOV Boost', 'sales-pulse' );
+			return __( 'AOV Boost', 'matriq-store-analytics' );
 		default:
 			return goal;
 	}
@@ -72,11 +72,11 @@ export function CampaignRow( { campaign, onEnd, onDelete, endPending, deletePend
 							{ isActive ? (
 								<span className="inline-flex items-center gap-1.5 rounded-full border border-solid border-success/30 bg-success/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-success-foreground/80">
 									<span className="h-1.5 w-1.5 rounded-full bg-success pulse-dot" />
-									{ __( 'Active', 'sales-pulse' ) }
+									{ __( 'Active', 'matriq-store-analytics' ) }
 								</span>
 							) : (
 								<span className="inline-flex items-center gap-1.5 rounded-full border border-solid border-border bg-surface px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-									{ __( 'Ended', 'sales-pulse' ) }
+									{ __( 'Ended', 'matriq-store-analytics' ) }
 								</span>
 							) }
 						</div>
@@ -104,7 +104,7 @@ export function CampaignRow( { campaign, onEnd, onDelete, endPending, deletePend
 							className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-solid border-border bg-surface px-3 py-1.5 text-xs font-medium text-foreground transition-all hover:border-border/80 hover:bg-surface-elevated disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 						>
 							<StopCircle className="h-3.5 w-3.5" />
-							{ __( 'End campaign', 'sales-pulse' ) }
+							{ __( 'End campaign', 'matriq-store-analytics' ) }
 						</button>
 					) }
 					{ ! isActive && (
@@ -126,7 +126,7 @@ function DeleteCampaignDialog( { campaign, onDelete, pending } ) {
 			<AlertDialogTrigger asChild>
 				<button
 					type="button"
-					aria-label={ __( 'Delete campaign', 'sales-pulse' ) }
+					aria-label={ __( 'Delete campaign', 'matriq-store-analytics' ) }
 					className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 				>
 					<Trash2 className="h-3.5 w-3.5" />
@@ -135,18 +135,18 @@ function DeleteCampaignDialog( { campaign, onDelete, pending } ) {
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
-						{ __( 'Delete this campaign?', 'sales-pulse' ) }
+						{ __( 'Delete this campaign?', 'matriq-store-analytics' ) }
 					</AlertDialogTitle>
 					<AlertDialogDescription>
 						{ __(
 							'The campaign log entry will be removed permanently. Historical diagnoses that referenced it will keep their recorded context.',
-							'sales-pulse'
+							'matriq-store-analytics'
 						) }
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel disabled={ pending }>
-						{ __( 'Cancel', 'sales-pulse' ) }
+						{ __( 'Cancel', 'matriq-store-analytics' ) }
 					</AlertDialogCancel>
 					<AlertDialogAction
 						disabled={ pending }
@@ -154,8 +154,8 @@ function DeleteCampaignDialog( { campaign, onDelete, pending } ) {
 						className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
 					>
 						{ pending
-							? __( 'Deleting…', 'sales-pulse' )
-							: __( 'Delete', 'sales-pulse' ) }
+							? __( 'Deleting…', 'matriq-store-analytics' )
+							: __( 'Delete', 'matriq-store-analytics' ) }
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

@@ -19,10 +19,10 @@ parameters:
 	bootstrapFiles:
 		- %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
 		- %rootDir%/../../php-stubs/woocommerce-stubs/woocommerce-stubs.php
-		- tests/php/stubs/sales-pulse-constants.php
-		- tests/php/stubs/sales-pulse-stubs.php
+		- tests/php/stubs/matriq-store-analytics-constants.php
+		- tests/php/stubs/matriq-store-analytics-stubs.php
 	paths:
-		- sales-pulse.php
+		- matriq-store-analytics.php
 		- inc
 		- core
 		- admin
@@ -56,7 +56,7 @@ parameters:
 		# those constraints — list-of-class-string doesn't propagate the
 		# trait method.
 		-
-			message: '#^Call to an undefined static method EC_Sales_Pulse\\Core\\Database\\Base::get_instance\(\)\.$#'
+			message: '#^Call to an undefined static method Matriq\\MSA\\Core\\Database\\Base::get_instance\(\)\.$#'
 			path: core/database/schema.php
 			reportUnmatched: false
 		-

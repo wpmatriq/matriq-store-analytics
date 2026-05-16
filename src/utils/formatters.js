@@ -1,5 +1,5 @@
 /**
- * Formatting utilities for Sales Pulse dashboard.
+ * Formatting utilities for Matriq Store Analytics dashboard.
  */
 
 /**
@@ -10,7 +10,7 @@
  * @return {string} Formatted currency string.
  */
 export function formatCurrency( value, currency ) {
-	const code = currency || window.wc_sma_admin_data?.currency || 'USD';
+	const code = currency || window.matriqMSAData?.currency || 'USD';
 
 	return new Intl.NumberFormat( undefined, {
 		style: 'currency',

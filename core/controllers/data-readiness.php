@@ -11,16 +11,16 @@
  *
  * Also provides a manual snapshot trigger for admin use.
  *
- * @package EC_Sales_Pulse\Core\Controllers
+ * @package Matriq\MSA\Core\Controllers
  */
 
-namespace EC_Sales_Pulse\Core\Controllers;
+namespace Matriq\MSA\Core\Controllers;
 
-use EC_Sales_Pulse\Core\Database\DailyStats;
-use EC_Sales_Pulse\Core\Database\Schema;
-use EC_Sales_Pulse\Core\Database\SystemState;
-use EC_Sales_Pulse\Core\Services\DataCollector;
-use EC_Sales_Pulse\Core\Services\SnapshotBuilder;
+use Matriq\MSA\Core\Database\DailyStats;
+use Matriq\MSA\Core\Database\Schema;
+use Matriq\MSA\Core\Database\SystemState;
+use Matriq\MSA\Core\Services\DataCollector;
+use Matriq\MSA\Core\Services\SnapshotBuilder;
 
 defined( 'ABSPATH' ) || exit;
 

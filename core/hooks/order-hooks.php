@@ -7,13 +7,13 @@
  *
  * Lightweight - only writes to dirty_dates, never aggregates.
  *
- * @package EC_Sales_Pulse\Core\Hooks
+ * @package Matriq\MSA\Core\Hooks
  */
 
-namespace EC_Sales_Pulse\Core\Hooks;
+namespace Matriq\MSA\Core\Hooks;
 
-use EC_Sales_Pulse\Core\Database\DirtyDates;
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Core\Database\DirtyDates;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 

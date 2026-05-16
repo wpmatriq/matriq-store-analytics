@@ -51,18 +51,18 @@ Four DB tables: `daily_stats`, `dirty_dates`, `campaigns`, `system_state`. Order
 ## Code conventions
 
 - **PHP version**: 7.4+.
-- **Namespace root**: `EC_Sales_Pulse\` (PascalCase, never uppercased).
-- **Constants**: existing constants are mixed-case `EC_Sales_Pulse_VER`, `EC_Sales_Pulse_DIR`, etc. Don't introduce new mixed-case constants — prefer `EC_SALES_PULSE_*` (UPPER_SNAKE_CASE) for any new constant. Migrating existing ones is out of scope unless explicitly requested.
+- **Namespace root**: `Matriq\MSA\` (PascalCase, never uppercased).
+- **Constants**: existing constants are mixed-case `Matriq\MSA_VER`, `Matriq\MSA_DIR`, etc. Don't introduce new mixed-case constants — prefer `MATRIQ_MSA_*` (UPPER_SNAKE_CASE) for any new constant. Migrating existing ones is out of scope unless explicitly requested.
 - **Class names**: PascalCase (`DigestMailer`, `SnapshotBuilder`).
-- **Filenames**: lowercase-kebab-case so the autoloader maps `EC_Sales_Pulse\Foo\BarBaz` → `foo/bar-baz.php`.
-- **Option keys**: legacy entries use `__wc_sma_*`; new options use `salespulse_*` (e.g. `salespulse_settings`).
+- **Filenames**: lowercase-kebab-case so the autoloader maps `Matriq\MSA\Foo\BarBaz` → `foo/bar-baz.php`.
+- **Option keys**: legacy entries use `__wc_sma_*`; new options use `matriq_msa_*` (e.g. `matriq_msa_settings`).
 - **DB table prefix**: `wp_salespulse_*`.
-- **Hook prefix**: `salespulse_*` for action hooks (`salespulse_after_nightly_snapshot`, `salespulse_action_scenarios`); `EC_Sales_Pulse_*` for filters where existing code already uses that style. Pick the closest neighbour.
+- **Hook prefix**: `matriq_msa_*` for action hooks (`matriq_msa_after_nightly_snapshot`, `matriq_msa_action_scenarios`); `Matriq\MSA_*` for filters where existing code already uses that style. Pick the closest neighbour.
 - **Text domain**: `sales-pulse`. All user-facing strings via `__()` / `esc_html__()` / `_e()`. Add `/* translators: ... */` for `sprintf`.
 - **Permission check**: `manage_woocommerce` (use `BaseController::admin_permission_check`).
-- **Database**: extend `EC_Sales_Pulse\Core\Database\Base` for new tables. Always `$wpdb->prepare()`. Schema migrations tracked via `db_version` in `wp_salespulse_system_state`.
-- **REST**: namespace `sales-pulse/v2`. Extend `EC_Sales_Pulse\Core\Controllers\BaseController`. Use `$this->success()` / `$this->error()`.
-- **Singletons**: `use EC_Sales_Pulse\Inc\Traits\Get_Instance;` — `static::$instance` late binding so Pro can subclass and swap.
+- **Database**: extend `Matriq\MSA\Core\Database\Base` for new tables. Always `$wpdb->prepare()`. Schema migrations tracked via `db_version` in `wp_salespulse_system_state`.
+- **REST**: namespace `matriq-store-analytics/v2`. Extend `Matriq\MSA\Core\Controllers\BaseController`. Use `$this->success()` / `$this->error()`.
+- **Singletons**: `use Matriq\MSA\Inc\Traits\Get_Instance;` — `static::$instance` late binding so Pro can subclass and swap.
 - **React**: TanStack Query for server state, Radix-based primitives under `src/dashboard/Components/ui/`, design tokens via Tailwind `var(--*)`.
 - **Voice**: "Calm Intelligence" (STRATEGY.md Section 18). Observation → cause → guidance. Informed, not impressed.
 - **No em dashes** in user-facing strings or code comments. Regular hyphens or commas only. (Read as AI-generated; explicit user preference.)
@@ -78,7 +78,7 @@ composer install
 # Dev (watches src/, rebuilds on save)
 npm run start
 
-# Production build → assets/build/wc-sma-app.{js,css}
+# Production build → assets/build/matriq-msa-app.{js,css}
 npm run build
 
 # Linting
@@ -108,13 +108,13 @@ php -l path/to/file.php
 
 ## Asset filename quirk
 
-The webpack entry is `wc-sma-app` (legacy "WC Smart Analytics" naming). The plugin slug is `sales-pulse` everywhere else. When writing PHP that enqueues built assets, look up `wc-sma-app.js` / `wc-sma-app.css` under `assets/build/`. Don't rename — backwards-compat for any sites that have been pre-loading these.
+The webpack entry is `matriq-msa-app` (legacy "WC Smart Analytics" naming). The plugin slug is `matriq-store-analytics` everywhere else. When writing PHP that enqueues built assets, look up `wc-sma-app.js` / `wc-sma-app.css` under `assets/build/`. Don't rename — backwards-compat for any sites that have been pre-loading these.
 
 ## The Pro plugin (Store Copilot)
 
-[`../store-copilot`](../store-copilot) is a separate Pro plugin that **requires** Sales Pulse. It extends rather than forks: subclasses `DiagnosisEngine` / `ActionEngine` (both expose `static::$instance` late binding), listens on `salespulse_after_nightly_snapshot`, filters `salespulse_action_scenarios`, registers REST routes under the same `sales-pulse/v2/copilot/*` namespace, adds an admin sub-tab.
+[`../store-copilot`](../store-copilot) is a separate Pro plugin that **requires** Sales Pulse. It extends rather than forks: subclasses `DiagnosisEngine` / `ActionEngine` (both expose `static::$instance` late binding), listens on `matriq_msa_after_nightly_snapshot`, filters `matriq_msa_action_scenarios`, registers REST routes under the same `matriq-store-analytics/v2/copilot/*` namespace, adds an admin sub-tab.
 
-When extension would be cleaner with a new hook, the path is: small PR adds the hook here, then build on it in store-copilot. See `STORE-COPILOT-STRATEGY.md` Section 8 for the planned filter additions (e.g. `salespulse_diagnosis_result`, `salespulse_overview_response`, a React `registerTab` slot system).
+When extension would be cleaner with a new hook, the path is: small PR adds the hook here, then build on it in store-copilot. See `STORE-COPILOT-STRATEGY.md` Section 8 for the planned filter additions (e.g. `matriq_msa_diagnosis_result`, `matriq_msa_overview_response`, a React `registerTab` slot system).
 
 ## Things NOT to do
 

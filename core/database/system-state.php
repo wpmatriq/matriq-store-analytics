@@ -5,12 +5,12 @@
  * Key-value store for internal plugin state tracking.
  * Avoids polluting wp_options. Tracks backfill progress, snapshot dates, versions, etc.
  *
- * @package EC_Sales_Pulse\Core\Database
+ * @package Matriq\MSA\Core\Database
  */
 
-namespace EC_Sales_Pulse\Core\Database;
+namespace Matriq\MSA\Core\Database;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 

@@ -5,15 +5,15 @@
  * Aggregates daily metrics from DataCollector and writes to daily_stats table.
  * Called by nightly cron and backfill runner.
  *
- * @package EC_Sales_Pulse\Core\Services
+ * @package Matriq\MSA\Core\Services
  */
 
-namespace EC_Sales_Pulse\Core\Services;
+namespace Matriq\MSA\Core\Services;
 
-use EC_Sales_Pulse\Core\Database\DailyStats;
-use EC_Sales_Pulse\Core\Database\DirtyDates;
-use EC_Sales_Pulse\Core\Database\SystemState;
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Core\Database\DailyStats;
+use Matriq\MSA\Core\Database\DirtyDates;
+use Matriq\MSA\Core\Database\SystemState;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -57,12 +57,12 @@ class SnapshotBuilder {
 			 * (per-product, per-customer, cohort updates) for the same date,
 			 * sharing this run's WC analytics read pass.
 			 *
-			 * @since x.x.x
+			 * @since 0.0.2
 			 *
 			 * @param string               $date    Date the snapshot was built for (Y-m-d).
 			 * @param array<string, mixed> $metrics Metrics array that was upserted.
 			 */
-			do_action( 'salespulse_data_collector_extra', $date, $metrics );
+			do_action( 'matriq_msa_data_collector_extra', $date, $metrics );
 		}
 
 		return $result !== false;
@@ -130,7 +130,7 @@ class SnapshotBuilder {
 		 *
 		 * @param array<string, mixed> $summary Snapshot summary.
 		 */
-		do_action( 'salespulse_after_nightly_snapshot', $summary );
+		do_action( 'matriq_msa_after_nightly_snapshot', $summary );
 
 		return $summary;
 	}

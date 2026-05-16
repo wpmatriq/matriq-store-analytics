@@ -5,12 +5,12 @@
  * Handles table creation, migrations, and version tracking.
  * Uses WordPress dbDelta() for safe schema updates.
  *
- * @package EC_Sales_Pulse\Core\Database
+ * @package Matriq\MSA\Core\Database
  */
 
-namespace EC_Sales_Pulse\Core\Database;
+namespace Matriq\MSA\Core\Database;
 
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -56,8 +56,8 @@ class Schema {
 	 * @var array<int, string>
 	 */
 	private $dropped_in_v3 = [
-		'salespulse_digest_history',
-		'salespulse_dirty_dates',
+		'matriq_msa_digest_history',
+		'matriq_msa_dirty_dates',
 	];
 
 	/**
@@ -76,7 +76,7 @@ class Schema {
 		// Store the current DB version.
 		$state = SystemState::get_instance();
 		$state->set( SystemState::KEY_DB_VERSION, (string) self::DB_VERSION );
-		$state->set( SystemState::KEY_PLUGIN_VERSION, EC_SALES_PULSE_VER );
+		$state->set( SystemState::KEY_PLUGIN_VERSION, MATRIQ_MSA_VER );
 	}
 
 	/**
@@ -175,7 +175,7 @@ class Schema {
 		$state = SystemState::get_instance();
 
 		if ( $state->get( SystemState::KEY_DIGEST_SENT_TOTAL, null ) === null ) {
-			$digest_table = $wpdb->prefix . 'salespulse_digest_history';
+			$digest_table = $wpdb->prefix . 'matriq_msa_digest_history';
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 			$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $digest_table ) );
 			$count  = 0;
@@ -189,7 +189,7 @@ class Schema {
 		// `repaired_total` is the per-DirtyDates count of resolved rows -
 		// see DirtyDates::count_resolved(). Replaces the table read.
 		if ( $state->get( SystemState::KEY_REPAIRED_TOTAL, null ) === null ) {
-			$dirty_table = $wpdb->prefix . 'salespulse_dirty_dates';
+			$dirty_table = $wpdb->prefix . 'matriq_msa_dirty_dates';
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 			$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $dirty_table ) );
 			$count  = 0;
@@ -218,7 +218,7 @@ class Schema {
 		// for zero read benefit). dbDelta won't remove them on its own; we
 		// have to do it explicitly. Wrapped in IF EXISTS guard via prior
 		// existence check so re-running is safe.
-		$daily = $wpdb->prefix . 'salespulse_daily_stats';
+		$daily = $wpdb->prefix . 'matriq_msa_daily_stats';
 		foreach ( [ 'revenue_idx', 'orders_idx' ] as $idx ) {
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 			$exists = $wpdb->get_var( $wpdb->prepare( "SHOW INDEX FROM `{$daily}` WHERE Key_name = %s", $idx ) );

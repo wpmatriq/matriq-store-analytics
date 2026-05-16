@@ -22,12 +22,12 @@ const VARIANT_STYLES = {
 function defaultLabel( variant ) {
 	switch ( variant ) {
 		case 'surge':
-			return __( 'Surge', 'sales-pulse' );
+			return __( 'Surge', 'matriq-store-analytics' );
 		case 'attention':
-			return __( 'Needs Attention', 'sales-pulse' );
+			return __( 'Needs Attention', 'matriq-store-analytics' );
 		case 'stable':
 		default:
-			return __( 'Stable', 'sales-pulse' );
+			return __( 'Stable', 'matriq-store-analytics' );
 	}
 }
 

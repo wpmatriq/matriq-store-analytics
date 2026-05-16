@@ -37,11 +37,11 @@ export default function CampaignsPage() {
 			className="space-y-8"
 		>
 			<PageHeader
-				eyebrow={ __( 'Campaign tracker', 'sales-pulse' ) }
-				title={ __( "Mark what's running.", 'sales-pulse' ) }
+				eyebrow={ __( 'Campaign tracker', 'matriq-store-analytics' ) }
+				title={ __( "Mark what's running.", 'matriq-store-analytics' ) }
 				subtitle={ __(
-					'When a campaign is active, Sales Pulse adjusts diagnosis to suppress false alarms and credit lift correctly.',
-					'sales-pulse'
+					'When a campaign is active, Matriq Store Analytics adjusts diagnosis to suppress false alarms and credit lift correctly.',
+					'matriq-store-analytics'
 				) }
 				actions={
 					! showForm && (
@@ -51,7 +51,7 @@ export default function CampaignsPage() {
 							className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 						>
 							<Plus className="h-4 w-4" />
-							{ __( 'New campaign', 'sales-pulse' ) }
+							{ __( 'New campaign', 'matriq-store-analytics' ) }
 						</button>
 					)
 				}
@@ -69,14 +69,14 @@ export default function CampaignsPage() {
 			{ error ? (
 				<InsightCard
 					icon={ <AlertTriangle className="h-4 w-4" /> }
-					title={ __( 'Could not load campaigns', 'sales-pulse' ) }
+					title={ __( 'Could not load campaigns', 'matriq-store-analytics' ) }
 					accent="warning"
 				>
 					<div className="flex flex-col items-start gap-4">
 						<p className="m-0 text-sm text-muted-foreground">
 							{ __(
 								'We hit an error fetching your campaigns. Retry, or refresh the page.',
-								'sales-pulse'
+								'matriq-store-analytics'
 							) }
 						</p>
 						<button
@@ -84,14 +84,14 @@ export default function CampaignsPage() {
 							onClick={ () => refetch() }
 							className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 						>
-							{ __( 'Retry', 'sales-pulse' ) }
+							{ __( 'Retry', 'matriq-store-analytics' ) }
 						</button>
 					</div>
 				</InsightCard>
 			) : (
 				<section className="space-y-4">
 					<h2 className="m-0 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-						{ __( 'Active & recent', 'sales-pulse' ) }
+						{ __( 'Active & recent', 'matriq-store-analytics' ) }
 					</h2>
 
 					{ isLoading ? (
@@ -116,11 +116,11 @@ export default function CampaignsPage() {
 					) : (
 						<InsightCard
 							icon={ <Megaphone className="h-4 w-4" /> }
-							title={ __( 'No campaigns yet', 'sales-pulse' ) }
-							emptyTitle={ __( 'Nothing running right now', 'sales-pulse' ) }
+							title={ __( 'No campaigns yet', 'matriq-store-analytics' ) }
+							emptyTitle={ __( 'Nothing running right now', 'matriq-store-analytics' ) }
 							emptyDescription={ __(
 								"Create one when you run a sale, launch a product, or change pricing - we'll adjust diagnosis during the campaign window.",
-								'sales-pulse'
+								'matriq-store-analytics'
 							) }
 						/>
 					) }

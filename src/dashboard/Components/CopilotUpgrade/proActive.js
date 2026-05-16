@@ -13,10 +13,10 @@ export function isProActive() {
 	if ( typeof window === 'undefined' ) {
 		return false;
 	}
-	const tabs = window.salesPulse?.tabs || {};
+	const tabs = window.matriqMSA?.tabs || {};
 	if ( Object.keys( tabs ).length > 0 ) {
 		return true;
 	}
-	const slots = window.salesPulse?.slots?.[ 'app-overlay' ] || [];
+	const slots = window.matriqMSA?.slots?.[ 'app-overlay' ] || [];
 	return slots.some( ( s ) => s?.id === 'copilot-chat-drawer' );
 }

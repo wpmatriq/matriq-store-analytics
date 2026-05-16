@@ -2,8 +2,8 @@
 /**
  * Plugin functions.
  *
- * @package EC_Sales_Pulse
- * @since x.x.x
+ * @package Matriq\MSA
+ * @since 0.0.2
  */
 
 // Exit if accessed directly.
@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Check if pro version is active.
  *
  * @return bool
- * @since x.x.x
+ * @since 0.0.2
  */
-function wc_sma_is_pro_active() {
-	return defined( 'EC_SALES_PULSE_PRO_VER' );
+function matriq_msa_is_pro_active() {
+	return defined( 'MATRIQ_MSA_PRO_VER' );
 }
 
 /**
@@ -27,11 +27,11 @@ function wc_sma_is_pro_active() {
  * @param mixed $var Data to sanitize.
  * @return mixed
  *
- * @since x.x.x
+ * @since 0.0.2
  */
-function wc_sma_clean_data( $var ) {
+function matriq_msa_clean_data( $var ) {
 	if ( is_array( $var ) ) {
-		return array_map( 'wc_sma_clean_data', $var );
+		return array_map( 'matriq_msa_clean_data', $var );
 	}
 	return is_scalar( $var ) ? sanitize_text_field( (string) $var ) : $var;
 }

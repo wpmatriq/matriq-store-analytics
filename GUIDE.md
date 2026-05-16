@@ -46,7 +46,7 @@ wp db query "SELECT * FROM wp_salespulse_dirty_dates ORDER BY marked_at DESC"
 ```bash
 wp eval '
 $date = (new DateTime("yesterday", wp_timezone()))->format("Y-m-d");
-\EC_Sales_Pulse\Core\Services\SnapshotBuilder::get_instance()->build_snapshot($date);
+\Matriq\MSA\Core\Services\SnapshotBuilder::get_instance()->build_snapshot($date);
 echo "rebuilt $date\n";
 '
 ```
@@ -55,7 +55,7 @@ echo "rebuilt $date\n";
 
 ```bash
 wp eval '
-$builder = \EC_Sales_Pulse\Core\Services\SnapshotBuilder::get_instance();
+$builder = \Matriq\MSA\Core\Services\SnapshotBuilder::get_instance();
 $tz = wp_timezone();
 for ($i = 30; $i >= 1; $i--) {
     $d = (new DateTime("yesterday", $tz))->modify("-$i days")->format("Y-m-d");
@@ -67,10 +67,10 @@ echo "done\n";
 
 ### Trigger the full nightly run (snapshot + post-snapshot hooks)
 
-This is what cron fires at 02:10 site-time. Pro's `Forecaster` and `AnomalyDetector` listen on the `salespulse_after_nightly_snapshot` hook this emits.
+This is what cron fires at 02:10 site-time. Pro's `Forecaster` and `AnomalyDetector` listen on the `matriq_msa_after_nightly_snapshot` hook this emits.
 
 ```bash
-wp eval '\EC_Sales_Pulse\Core\Services\SnapshotBuilder::get_instance()->run_nightly();'
+wp eval '\Matriq\MSA\Core\Services\SnapshotBuilder::get_instance()->run_nightly();'
 ```
 
 ---
@@ -106,7 +106,7 @@ for ($i = 60; $i >= 1; $i--) {
     $wave   = 200 + 50 * sin($i / 7 * M_PI);
     $orders = max(1, (int) round($wave / 50));
     $rev    = round($wave + ($i % 7 === 0 ? 80 : 0), 2);
-    $wpdb->replace("{$wpdb->prefix}salespulse_daily_stats", [
+    $wpdb->replace("{$wpdb->prefix}matriq_msa_daily_stats", [
         "stat_date" => $d, "revenue" => $rev, "orders" => $orders,
         "items_sold" => $orders * 2, "avg_order_value" => $rev / $orders,
         "items_per_order" => 2, "avg_item_price" => $rev / ($orders * 2),
@@ -183,14 +183,14 @@ After this, rebuild snapshots (section 2) so daily_stats picks up the values.
 
 ```bash
 # Overview payload (uses the active period from query string).
-wp eval 'echo json_encode((array) wp_remote_retrieve_body(wp_remote_get(rest_url("sales-pulse/v2/overview?period=daily"), [ "headers" => [ "X-WP-Nonce" => wp_create_nonce("wp_rest") ] ])));'
+wp eval 'echo json_encode((array) wp_remote_retrieve_body(wp_remote_get(rest_url("matriq-store-analytics/v2/overview?period=daily"), [ "headers" => [ "X-WP-Nonce" => wp_create_nonce("wp_rest") ] ])));'
 
 # Data readiness gate.
-wp eval 'echo json_encode((array) wp_remote_retrieve_body(wp_remote_get(rest_url("sales-pulse/v2/data-readiness"), [ "headers" => [ "X-WP-Nonce" => wp_create_nonce("wp_rest") ] ])));'
+wp eval 'echo json_encode((array) wp_remote_retrieve_body(wp_remote_get(rest_url("matriq-store-analytics/v2/data-readiness"), [ "headers" => [ "X-WP-Nonce" => wp_create_nonce("wp_rest") ] ])));'
 ```
 
 Easier alternative: hit them logged-in via the browser at
-`http://localhost:10018/wp-json/sales-pulse/v2/overview?period=daily`.
+`http://localhost:10018/wp-json/matriq-store-analytics/v2/overview?period=daily`.
 
 ---
 
@@ -199,13 +199,13 @@ Easier alternative: hit them logged-in via the browser at
 ### Send the digest now (bypass schedule)
 
 ```bash
-wp eval '\EC_Sales_Pulse\Core\Services\DigestMailer::get_instance()->maybe_send_nightly();'
+wp eval '\Matriq\MSA\Core\Services\DigestMailer::get_instance()->maybe_send_nightly();'
 ```
 
 ### Force-send regardless of "already sent today" guard
 
 ```bash
-wp eval '\EC_Sales_Pulse\Core\Services\DigestMailer::get_instance()->send_test();'
+wp eval '\Matriq\MSA\Core\Services\DigestMailer::get_instance()->send_test();'
 ```
 
 ---

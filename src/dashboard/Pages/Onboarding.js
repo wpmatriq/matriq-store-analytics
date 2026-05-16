@@ -1,5 +1,5 @@
 /**
- * Onboarding - minimal welcome screen for the hidden sales-pulse-onboarding page.
+ * Onboarding - minimal welcome screen for the hidden matriq-store-analytics-onboarding page.
  *
  * The real first-run data-readiness flow lives in `ReadinessGate` inside the
  * main dashboard. This screen is only reached via the hidden submenu and acts
@@ -14,7 +14,7 @@ const EASE = [ 0.16, 1, 0.3, 1 ];
 
 const Onboarding = () => {
 	const dashboardUrl =
-		window.wc_sma_admin_data?.dashboard_url || 'admin.php?page=sales-pulse';
+		window.matriqMSAData?.dashboard_url || 'admin.php?page=matriq-store-analytics';
 
 	return (
 		<motion.div
@@ -29,20 +29,20 @@ const Onboarding = () => {
 				<div className="relative">
 					<div className="mb-3 inline-flex items-center gap-2 rounded-full border border-solid border-border bg-surface/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
 						<span className="h-1.5 w-1.5 rounded-full bg-pulse" />
-						{ __( 'Welcome', 'sales-pulse' ) }
+						{ __( 'Welcome', 'matriq-store-analytics' ) }
 					</div>
 
 					<h1 className="m-0 flex items-center gap-3 font-display text-4xl leading-tight text-ink md:text-5xl">
 						<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-ink text-pulse shadow-md">
 							<Activity className="h-5 w-5" strokeWidth={ 2.5 } />
 						</span>
-						{ __( "Let's take your pulse.", 'sales-pulse' ) }
+						{ __( "Let's take your pulse.", 'matriq-store-analytics' ) }
 					</h1>
 
 					<p className="mt-3 max-w-md text-sm text-muted-foreground">
 						{ __(
-							'Sales Pulse runs a nightly diagnosis of your store so you always know what changed, why it matters, and what to do next.',
-							'sales-pulse'
+							'Matriq Store Analytics runs a nightly diagnosis of your store so you always know what changed, why it matters, and what to do next.',
+							'matriq-store-analytics'
 						) }
 					</p>
 
@@ -50,7 +50,7 @@ const Onboarding = () => {
 						href={ dashboardUrl }
 						className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground no-underline shadow-sm transition-all hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pulse"
 					>
-						{ __( 'Open dashboard', 'sales-pulse' ) }
+						{ __( 'Open dashboard', 'matriq-store-analytics' ) }
 						<ArrowRight className="h-4 w-4" />
 					</a>
 				</div>

@@ -7,16 +7,16 @@
  * email. Honors the email_enabled / email_address settings, persists a
  * once-per-day idempotency token, and surfaces failures via SettingsController.
  *
- * @package EC_Sales_Pulse\Core\Services
+ * @package Matriq\MSA\Core\Services
  */
 
-namespace EC_Sales_Pulse\Core\Services;
+namespace Matriq\MSA\Core\Services;
 
-use EC_Sales_Pulse\Core\Controllers\SettingsController;
-use EC_Sales_Pulse\Core\Database\Campaigns;
-use EC_Sales_Pulse\Core\Database\DailyStats;
-use EC_Sales_Pulse\Core\Database\SystemState;
-use EC_Sales_Pulse\Inc\Traits\Get_Instance;
+use Matriq\MSA\Core\Controllers\SettingsController;
+use Matriq\MSA\Core\Database\Campaigns;
+use Matriq\MSA\Core\Database\DailyStats;
+use Matriq\MSA\Core\Database\SystemState;
+use Matriq\MSA\Inc\Traits\Get_Instance;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,7 +33,7 @@ class DigestMailer {
 	 * Constructor - listens for the nightly snapshot completion event.
 	 */
 	public function __construct() {
-		add_action( 'salespulse_after_nightly_snapshot', [ $this, 'maybe_send_nightly' ] );
+		add_action( 'matriq_msa_after_nightly_snapshot', [ $this, 'maybe_send_nightly' ] );
 	}
 
 	/**
@@ -76,7 +76,7 @@ class DigestMailer {
 		}
 
 		if ( $recipient === '' || ! is_email( $recipient ) ) {
-			$reason = __( 'Recipient email is missing or invalid.', 'sales-pulse' );
+			$reason = __( 'Recipient email is missing or invalid.', 'matriq-store-analytics' );
 			$this->record_error( $reason );
 			$this->log_history( $recipient, 'failed', $reason, $is_test );
 			return [
@@ -87,7 +87,7 @@ class DigestMailer {
 		}
 
 		if ( ! $is_test && ! SettingsController::get( 'email_enabled' ) ) {
-			$reason = __( 'Email digest is disabled.', 'sales-pulse' );
+			$reason = __( 'Email digest is disabled.', 'matriq-store-analytics' );
 			$this->log_history( $recipient, 'skipped', $reason, $is_test );
 			return [
 				'sent'      => false,
@@ -118,7 +118,7 @@ class DigestMailer {
 			];
 		}
 
-		$reason = __( 'Mail server rejected the message. Check your SMTP setup.', 'sales-pulse' );
+		$reason = __( 'Mail server rejected the message. Check your SMTP setup.', 'matriq-store-analytics' );
 		$this->record_error( $reason );
 		$this->log_history( $recipient, 'failed', $reason, $is_test );
 		return [
@@ -181,7 +181,7 @@ class DigestMailer {
 				'currency_symbol' => $settings['currency_symbol'] ?? '$',
 				'timezone'        => $settings['timezone'] ?? wp_timezone_string(),
 				'campaign'        => $campaign_arr,
-				'dashboard_url'   => admin_url( 'admin.php?page=sales-pulse' ),
+				'dashboard_url'   => admin_url( 'admin.php?page=matriq-store-analytics' ),
 			],
 			'daily'   => $this->run_section( 'daily', $build_section, $daily_current, $daily_previous, true ),
 			'weekly'  => $this->run_section( 'weekly', $build_section, $weekly_current, $weekly_previous, false ),
@@ -196,9 +196,9 @@ class DigestMailer {
 	 */
 	public function compose_subject( array $payload ): string {
 		$windows = [
-			'daily'   => __( 'yesterday', 'sales-pulse' ),
-			'weekly'  => __( 'this week', 'sales-pulse' ),
-			'monthly' => __( 'this month', 'sales-pulse' ),
+			'daily'   => __( 'yesterday', 'matriq-store-analytics' ),
+			'weekly'  => __( 'this week', 'matriq-store-analytics' ),
+			'monthly' => __( 'this month', 'matriq-store-analytics' ),
 		];
 
 		foreach ( $windows as $key => $when ) {
@@ -208,24 +208,24 @@ class DigestMailer {
 			if ( $direction === 'growth' ) {
 				$pct = $this->format_change_pct( $diagnosis );
 				/* translators: 1: percent change without sign, 2: window noun. */
-				return sprintf( __( 'Sales Pulse: Revenue up %1$s%% %2$s', 'sales-pulse' ), $pct, $when );
+				return sprintf( __( 'Matriq Store Analytics: Revenue up %1$s%% %2$s', 'matriq-store-analytics' ), $pct, $when );
 			}
 			if ( $direction === 'decline' ) {
 				$factor = $this->primary_factor_label( $diagnosis );
 				/* translators: 1: factor noun (Revenue/Orders/etc.), 2: window noun. */
-				return sprintf( __( 'Sales Pulse: %1$s softened %2$s', 'sales-pulse' ), $factor, $when );
+				return sprintf( __( 'Matriq Store Analytics: %1$s softened %2$s', 'matriq-store-analytics' ), $factor, $when );
 			}
 		}
 
 		// All three windows are stable - send a calm subject.
 		$has_action_for_daily = ! empty( $payload['daily']['recommendation']['recommendation'] );
 		if ( $has_action_for_daily ) {
-			return __( 'Sales Pulse: Steady morning, one action ready', 'sales-pulse' );
+			return __( 'Matriq Store Analytics: Steady morning, one action ready', 'matriq-store-analytics' );
 		}
 
 		$date = $payload['meta']['date'] ?? gmdate( 'Y-m-d' );
 		/* translators: %s: friendly date like "May 1". */
-		return sprintf( __( 'Sales Pulse: Steady morning, no alarms - %s', 'sales-pulse' ), $this->friendly_date( $date ) );
+		return sprintf( __( 'Matriq Store Analytics: Steady morning, no alarms - %s', 'matriq-store-analytics' ), $this->friendly_date( $date ) );
 	}
 
 	/**
@@ -267,7 +267,7 @@ class DigestMailer {
 
 	/**
 	 * Run one section build with the period announced via the standard
-	 * `salespulse_overview_period_resolved` action so premium extensions
+	 * `matriq_msa_overview_period_resolved` action so premium extensions
 	 * (e.g. Store Copilot) can scope per-window enrichment correctly.
 	 *
 	 * @param string                                                                               $period      Window name.
@@ -278,7 +278,7 @@ class DigestMailer {
 	 * @return array<string, mixed>
 	 */
 	private function run_section( string $period, callable $builder, $current, $previous, bool $is_daily ): array {
-		do_action( 'salespulse_overview_period_resolved', $period );
+		do_action( 'matriq_msa_overview_period_resolved', $period );
 		return $builder( $current, $previous, $is_daily );
 	}
 
@@ -329,7 +329,7 @@ class DigestMailer {
 	 * @return bool True when wp_mail() accepted the message.
 	 */
 	private function dispatch_via_wp_mail( string $recipient, string $subject, array $payload ): bool {
-		$html_template = EC_SALES_PULSE_DIR . 'templates/email/digest-html.php';
+		$html_template = MATRIQ_MSA_DIR . 'templates/email/digest-html.php';
 
 		if ( ! is_readable( $html_template ) ) {
 			return false;
@@ -348,7 +348,7 @@ class DigestMailer {
 
 		$headers = [
 			'Content-Type: text/html; charset=UTF-8',
-			'From: Sales Pulse <' . get_option( 'admin_email' ) . '>',
+			'From: Matriq Store Analytics <' . get_option( 'admin_email' ) . '>',
 		];
 
 		return (bool) wp_mail( $recipient, wp_specialchars_decode( $subject ), $html, $headers );
@@ -411,7 +411,7 @@ class DigestMailer {
 		// authoritative surface for the merchant either way.
 		if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log, Generic.PHP.ForbiddenFunctions.Found
-			error_log( '[Sales Pulse] Digest send failed: ' . $reason );
+			error_log( '[Matriq Store Analytics] Digest send failed: ' . $reason );
 		}
 	}
 
@@ -481,22 +481,22 @@ class DigestMailer {
 		$metrics = [
 			[
 				'key'    => 'revenue',
-				'label'  => __( 'Revenue', 'sales-pulse' ),
+				'label'  => __( 'Revenue', 'matriq-store-analytics' ),
 				'format' => 'currency',
 			],
 			[
 				'key'    => 'orders',
-				'label'  => __( 'Orders', 'sales-pulse' ),
+				'label'  => __( 'Orders', 'matriq-store-analytics' ),
 				'format' => 'number',
 			],
 			[
 				'key'    => 'avg_order_value',
-				'label'  => __( 'Avg Order Value', 'sales-pulse' ),
+				'label'  => __( 'Avg Order Value', 'matriq-store-analytics' ),
 				'format' => 'currency',
 			],
 			[
 				'key'    => 'items_per_order',
-				'label'  => __( 'Items per Order', 'sales-pulse' ),
+				'label'  => __( 'Items per Order', 'matriq-store-analytics' ),
 				'format' => 'decimal',
 			],
 		];
@@ -545,13 +545,13 @@ class DigestMailer {
 		$factor = (string) ( $diagnosis['primary_factor'] ?? 'none' );
 		switch ( $factor ) {
 			case 'orders':
-				return __( 'Orders', 'sales-pulse' );
+				return __( 'Orders', 'matriq-store-analytics' );
 			case 'items':
-				return __( 'Items per order', 'sales-pulse' );
+				return __( 'Items per order', 'matriq-store-analytics' );
 			case 'price':
-				return __( 'Price per item', 'sales-pulse' );
+				return __( 'Price per item', 'matriq-store-analytics' );
 			default:
-				return __( 'Revenue', 'sales-pulse' );
+				return __( 'Revenue', 'matriq-store-analytics' );
 		}
 	}
 

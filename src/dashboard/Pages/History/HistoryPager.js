@@ -33,7 +33,7 @@ export function HistoryPager( { page, totalPages, total, onPrev, onNext } ) {
 			<p className="m-0 text-xs text-muted-foreground">
 				{ sprintf(
 					/* translators: 1: current page, 2: total pages */
-					__( 'Page %1$d of %2$d', 'sales-pulse' ),
+					__( 'Page %1$d of %2$d', 'matriq-store-analytics' ),
 					page,
 					totalPages
 				) }
@@ -41,7 +41,7 @@ export function HistoryPager( { page, totalPages, total, onPrev, onNext } ) {
 				<span className="font-mono">
 					{ sprintf(
 						/* translators: %d: total days */
-						__( '%d days', 'sales-pulse' ),
+						__( '%d days', 'matriq-store-analytics' ),
 						total
 					) }
 				</span>
@@ -50,14 +50,14 @@ export function HistoryPager( { page, totalPages, total, onPrev, onNext } ) {
 				<PagerButton
 					onClick={ onPrev }
 					disabled={ page <= 1 }
-					ariaLabel={ __( 'Previous page', 'sales-pulse' ) }
+					ariaLabel={ __( 'Previous page', 'matriq-store-analytics' ) }
 				>
 					<ChevronLeft className="h-4 w-4" />
 				</PagerButton>
 				<PagerButton
 					onClick={ onNext }
 					disabled={ page >= totalPages }
-					ariaLabel={ __( 'Next page', 'sales-pulse' ) }
+					ariaLabel={ __( 'Next page', 'matriq-store-analytics' ) }
 				>
 					<ChevronRight className="h-4 w-4" />
 				</PagerButton>

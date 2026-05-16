@@ -12,9 +12,9 @@ import classnames from '@Utils/classnames';
 import { formatCurrency } from '@Utils/formatters';
 
 const FACTOR_LABELS = {
-	orders: __( 'Order volume', 'sales-pulse' ),
-	items: __( 'Items per order', 'sales-pulse' ),
-	price: __( 'Avg item price', 'sales-pulse' ),
+	orders: __( 'Order volume', 'matriq-store-analytics' ),
+	items: __( 'Items per order', 'matriq-store-analytics' ),
+	price: __( 'Avg item price', 'matriq-store-analytics' ),
 };
 
 export function ImpactBreakdownContent( { breakdown } ) {

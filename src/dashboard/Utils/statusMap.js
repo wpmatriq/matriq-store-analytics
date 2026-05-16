@@ -65,13 +65,13 @@ export function trendTextColor( direction ) {
 export function statusLabel( severity ) {
 	switch ( severity ) {
 		case 'success':
-			return __( 'Surge', 'sales-pulse' );
+			return __( 'Surge', 'matriq-store-analytics' );
 		case 'warning':
 		case 'danger':
-			return __( 'Needs Attention', 'sales-pulse' );
+			return __( 'Needs Attention', 'matriq-store-analytics' );
 		case 'info':
 		default:
-			return __( 'Stable', 'sales-pulse' );
+			return __( 'Stable', 'matriq-store-analytics' );
 	}
 }
 

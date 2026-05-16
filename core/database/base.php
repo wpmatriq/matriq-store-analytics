@@ -5,15 +5,15 @@
  * All database table models extend this class.
  * Provides common CRUD operations, table name resolution, and schema management.
  *
- * @package EC_Sales_Pulse\Core\Database
+ * @package Matriq\MSA\Core\Database
  */
 
-namespace EC_Sales_Pulse\Core\Database;
+namespace Matriq\MSA\Core\Database;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Shared base for every Sales Pulse / Store Copilot DB table model.
+ * Shared base for every Matriq Store Analytics / Store Copilot DB table model.
  *
  * Concrete subclasses declare a table name and prefix; this class supplies
  * the wpdb connection, charset_collate, and standard insert/update/delete
@@ -29,6 +29,9 @@ abstract class Base {
 
 	/**
 	 * Table prefix.
+	 *
+	 * Kept as `salespulse_` (not the new `matriq_msa_` code prefix) so existing
+	 * installs do not lose their `wp_salespulse_*` tables on rename.
 	 *
 	 * @var string
 	 */
