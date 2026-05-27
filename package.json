@@ -1,6 +1,6 @@
 {
 	"name": "matriq-store-analytics",
-	"version": "0.0.2",
+	"version": "1.0.0",
 	"description": "Daily revenue diagnosis for WooCommerce. Explains why store revenue changed each day in plain language using deterministic math.",
 	"volta": {
 		"node": "18.15.0"

@@ -1,8 +1,10 @@
-=== Matriq Store Analytics ===
+=== Store Analytics by Matriq ===
 Contributors: wpmatriq
 Tags: woocommerce, sales analytics, revenue reports, daily digest, store insights
-Tested up to: 6.9
-Stable tag: 0.0.2
+Tested up to: 7.0
+WC requires at least: 7.0
+WC tested up to: 10.8.0
+Stable tag: 1.0.0
 Requires at least: 6.7
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -45,6 +47,24 @@ The dominant driver is flagged as the primary cause with a confidence score, and
 * WooCommerce 7.0 or later, with WooCommerce Analytics enabled.
 * At least one completed order so a baseline can be built.
 
+== Premium Features ==
+
+Unlock AI-powered growth features with **Store Copilot**, the optional premium companion to Store Analytics by Matriq. The free plugin remains the deterministic truth engine. Copilot adds an intelligence layer on top of your store's reliable daily data, turning diagnosis into action.
+
+* **Conversational Analyst:** Ask questions about your store in plain English, like "why was Wednesday weird?", and get instant, grounded answers with supporting numbers and charts.
+* **30-day Revenue Forecasting:** Confidence-banded revenue projections built on your store's unique trends, seasonality, and campaign history.
+* **Anomaly Detection:** Get notified the moment something unusual happens, with an explanation of what changed and why it matters, instead of waiting for tomorrow's digest.
+* **Growth Playbooks:** Per-product trends and consent-gated playbooks that turn daily diagnoses into specific, ready-to-run next actions.
+* **Smart Scheduler:** Deliver each playbook to the right customers, at the right time, with the right discount, to maximize recovered revenue.
+* **Multi-channel Alerts:** Beyond the daily digest. Slack, WhatsApp, and webhook notifications for the moments that need attention now.
+* **Product-level Insights:** Top-mover surfacing and per-product diagnosis to finally answer "which product caused this change?"
+* **Customer Cohort Intelligence:** Track new versus returning behaviour, churn risk on past cohorts, and win-back opportunities with measurable goals.
+* **Automated Outreach (with consent):** Approve once, and Copilot executes segmenting, coupon creation, and follow-up scheduling for you.
+
+Store Analytics by Matriq stays free forever. Store Copilot is a separate annual license for stores ready to move from understanding to action.
+
+We have just launched so don't miss the early bird access. [Upgrade to Pro 🚀](https://matriq.in/)
+
 == Installation ==
 
 1. Install and activate WooCommerce, and visit WooCommerce > Analytics at least once so the analytics tables are populated.
@@ -72,6 +92,8 @@ The plugin records that the affected day is "dirty" and rebuilds only that day's
 No. All analysis happens on your own site against your own database. Nothing leaves your server.
 
 == Changelog ==
+= 1.0.0 =
+* Initial public release.
 
 = 0.0.2 =
 * Add: Public extension surface for premium add-ons (Phase 0 of Store Copilot integration).
