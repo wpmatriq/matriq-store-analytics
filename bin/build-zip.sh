@@ -31,17 +31,17 @@ fi
 
 
 # Copy files for zip.
-rsync -rc --delete --exclude-from ".distignore" "./" "artifact/suredash"
+rsync -rc --delete --exclude-from ".distignore" "./" "artifact/matriq-store-analytics"
 
 # Go to directory
 cd artifact
 
 # Create a zip copied files.
-zip -r suredash.zip "./suredash"
+zip -r matriq-store-analytics.zip "./matriq-store-analytics"
 
 if [ "no-clean" != "$1" ]; then
 	# Removed copied files folder.
-	rm -rf suredash
+	rm -rf matriq-store-analytics
 fi
 
 success "Done. Your SureDash zip is ready..! 🎉"
