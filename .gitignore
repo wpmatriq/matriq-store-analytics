@@ -28,3 +28,4 @@ examples/
 src/utils/.DS_Store
 jsconfig.json
 inc/lib/astra-notices/.phpunit.result.cache
+config.bat

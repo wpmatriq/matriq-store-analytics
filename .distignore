@@ -69,3 +69,5 @@ SUREDASH_ANALYSIS.md
 AGENTS.md
 playwright.config.ts
 wp-env.json
+.claudeignore
+.claude
