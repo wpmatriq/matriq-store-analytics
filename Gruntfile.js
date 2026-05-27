@@ -56,7 +56,7 @@ module.exports = function ( grunt ) {
 					'!jsconfig.json',
 					'!playwright.config.ts',
 					'!wp-env.json',
-					// '!src/**',
+					'!src/**',
 
 				],
 				dest: 'matriq-store-analytics/',
