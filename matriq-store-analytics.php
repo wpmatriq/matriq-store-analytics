@@ -5,7 +5,7 @@
  * Plugin URI: https://matriq.in/
  * Author: Matriq
  * Author URI: https://matriq.in/
- * Version: 1.0.0
+ * Version: 1.0.1
  * License: GPLv2 or later
  * Requires at least: 6.7
  * Requires PHP: 7.4
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Set constants
  */
-define( 'MATRIQ_MSA_VER', '1.0.0' );
+define( 'MATRIQ_MSA_VER', '1.0.1' );
 define( 'MATRIQ_MSA_FILE', __FILE__ );
 define( 'MATRIQ_MSA_PRO_MINIMUM_VER', '1.0.0' );
 
