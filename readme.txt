@@ -4,7 +4,7 @@ Tags: woocommerce, sales analytics, revenue reports, daily digest, store insight
 Tested up to: 7.0
 WC requires at least: 7.0
 WC tested up to: 10.8.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires at least: 6.7
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -92,6 +92,9 @@ The plugin records that the affected day is "dirty" and rebuilds only that day's
 No. All analysis happens on your own site against your own database. Nothing leaves your server.
 
 == Changelog ==
+= 1.0.1 =
+* Compatibility for Store Copilot premium add-on.
+
 = 1.0.0 =
 * Initial public release.
 
