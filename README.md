@@ -1,97 +1,108 @@
-# Store Analytics by Matriq #
+# Revenue Diagnosis for WooCommerce – Daily Store Analytics by Matriq #
 **Contributors:** [wpmatriq](https://profiles.wordpress.org/wpmatriq/)  
-**Tags:** woocommerce, sales analytics, revenue reports, daily digest, store insights  
-**Tested up to:** 7.0  
-**WC requires at least:** 7.0  
-**WC tested up to:** 10.8.0  
-**Stable tag:** 1.0.1  
+**Tags:** woocommerce, revenue, analytics, sales-analytics, store-insights  
 **Requires at least:** 6.7  
+**Tested up to:** 7.0  
 **Requires PHP:** 7.4  
+**Stable tag:** 1.0.2  
 **License:** GPLv2 or later  
-**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
+**License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
-Daily revenue diagnosis for WooCommerce. Explains why your store revenue changed, in plain language, with no AI guessing.
+Find out why your WooCommerce revenue went up or down yesterday — every morning, in plain language, with no charts to dig through.
 
 ## Description ##
 
-Matriq Store Analytics is a deterministic revenue diagnosis engine for WooCommerce. Every morning, it produces a one-page briefing that explains what changed in your store and why, using auditable math rather than AI.
+**Every morning, one clear answer: why did my revenue change?**
 
-Instead of another dashboard full of charts, you get one answer to the question merchants actually ask: "Did revenue go up or down yesterday, and what drove the change?"
+Most WooCommerce store owners check their revenue and think: *is this good? Is this bad? What do I do about it?* Dashboards and charts don't answer that. Matriq Store Analytics does.
 
-### How it works ###
+Each night, the plugin analyses your previous day's orders and delivers a plain-language briefing: revenue went down 12% because fewer customers bought (not because they spent less per order). Or: revenue jumped because average item price rose — your weekend sale ended and full-price items came back.
 
-Once a night, the plugin builds a single snapshot row for the previous day from WooCommerce's analytics tables. It then decomposes the change in revenue across three drivers:
+No guessing. No AI hallucinations. Just auditable math against your own WooCommerce data, run entirely on your server.
 
-* Orders, did fewer or more customers buy?
-* Items per order, did basket size shift?
-* Average item price, did discount mix or product mix change?
+**Who it's for:** WooCommerce store owners who want to understand their revenue without hiring an analyst or learning SQL.
 
-The dominant driver is flagged as the primary cause with a confidence score, and a short suggested action is attached.
+### What you get each morning ###
 
-### What you get ###
+* **Revenue Overview** – yesterday's revenue, compared to the prior day and prior week
+* **Primary Cause** – the single biggest driver of the change (orders, basket size, or item price mix), with a confidence score
+* **Suggested Action** – one short next step tied to the diagnosed cause
+* **Daily Email Digest** – optional morning email so you know before you open your laptop
+* **History Log** – every past briefing, fully auditable, so you can trace any number back to its source
+* **Campaigns Tracker** – log your sales and launches so the engine knows a post-sale revenue dip is expected, not alarming
 
-* A morning Overview page in WP Admin with the previous day's revenue, the comparison versus the prior day and prior week, and the primary cause of the change.
-* An optional daily email digest delivered to your inbox.
-* A History page listing every past daily briefing, so you can audit any number it ever showed you.
-* A Campaigns page to record sales and launches, so the engine knows when a drop is expected (a planned sale ending) versus a real signal.
-* A Settings page covering timezone, revenue basis, and snapshot time.
+### How the diagnosis works ###
 
-### What it does not do ###
+The engine breaks your revenue change into three components every night:
 
-* No real-time charts on page load. The dashboard reads from a pre-built daily snapshot.
-* No AI calls, no external services, no third-party tracking.
-* No paywalled features. The diagnostic engine is fully free.
+1. **Order volume** – did more or fewer customers buy?
+2. **Items per order** – did basket size grow or shrink?
+3. **Average item price** – did discount mix or product mix shift the per-item value?
+
+The dominant driver is flagged as the primary cause. This is deterministic arithmetic — you can audit every figure on the History page.
+
+### What it does NOT do ###
+
+* No real-time charts that slow your admin panel
+* No AI calls, no external services, no third-party data sharing
+* No paywalled core features — the diagnosis engine is completely free
+
+### Privacy & performance ###
+
+All analysis runs in a nightly WP-Cron job. Your order data never leaves your server. Admin pages load from pre-built daily snapshots — no heavy queries on page load. Fully compatible with WooCommerce HPOS (High-Performance Order Storage).
 
 ### Requirements ###
 
-* WooCommerce 7.0 or later, with WooCommerce Analytics enabled.
-* At least one completed order so a baseline can be built.
+* WooCommerce 7.0 or later, with WooCommerce Analytics enabled
+* At least one completed order so a baseline can be established
 
-## Premium Features ##
+### Premium: Store Copilot ###
 
-Unlock AI-powered growth features with **Store Copilot**, the optional premium companion to Store Analytics by Matriq. The free plugin remains the deterministic truth engine. Copilot adds an intelligence layer on top of your store's reliable daily data, turning diagnosis into action.
+The free plugin is your revenue truth engine — always free, no limits. **Store Copilot** is an optional premium add-on that turns diagnosis into action:
 
-* **Conversational Analyst:** Ask questions about your store in plain English, like "why was Wednesday weird?", and get instant, grounded answers with supporting numbers and charts.
-* **30-day Revenue Forecasting:** Confidence-banded revenue projections built on your store's unique trends, seasonality, and campaign history.
-* **Anomaly Detection:** Get notified the moment something unusual happens, with an explanation of what changed and why it matters, instead of waiting for tomorrow's digest.
-* **Growth Playbooks:** Per-product trends and consent-gated playbooks that turn daily diagnoses into specific, ready-to-run next actions.
-* **Smart Scheduler:** Deliver each playbook to the right customers, at the right time, with the right discount, to maximize recovered revenue.
-* **Multi-channel Alerts:** Beyond the daily digest. Slack, WhatsApp, and webhook notifications for the moments that need attention now.
-* **Product-level Insights:** Top-mover surfacing and per-product diagnosis to finally answer "which product caused this change?"
-* **Customer Cohort Intelligence:** Track new versus returning behaviour, churn risk on past cohorts, and win-back opportunities with measurable goals.
-* **Automated Outreach (with consent):** Approve once, and Copilot executes segmenting, coupon creation, and follow-up scheduling for you.
+* **Conversational Analyst** – ask "why was Wednesday weird?" in plain English and get an answer with supporting numbers
+* **30-day Revenue Forecasting** – confidence-banded projections built on your store's own trends and campaign history
+* **Anomaly Detection** – get notified the moment something unusual happens, before tomorrow's digest
+* **Product-level Insights** – find out which specific product caused the change
+* **Growth Playbooks** – per-product recommendations that go from diagnosis to a ready-to-run next action
+* **Multi-channel Alerts** – Slack, WhatsApp, and webhook notifications for the moments that need attention now
+* **Customer Cohort Intelligence** – new vs returning behaviour, churn risk, and win-back opportunities
+* **Smart Scheduler & Automated Outreach** – Copilot segments, creates coupons, and schedules follow-ups once you approve
 
-Store Analytics by Matriq stays free forever. Store Copilot is a separate annual license for stores ready to move from understanding to action.
-
-We have just launched so don't miss the early bird access. [Upgrade to Pro 🚀](https://matriq.in/)
+[Early bird access → matriq.in](https://matriq.in/)
 
 ## Installation ##
 
-1. Install and activate WooCommerce, and visit WooCommerce > Analytics at least once so the analytics tables are populated.
-2. Upload the plugin to /wp-content/plugins/matriq-store-analytics or install via Plugins > Add New.
-3. Activate the plugin through the Plugins screen.
-4. Open Matriq Store Analytics in the WP Admin sidebar and follow the onboarding to pick your timezone, revenue basis, and snapshot time.
-5. The first overnight snapshot runs at the configured snapshot time. Until then, a backfill builds the last 30 days progressively so the dashboard is populated within a few minutes.
+1. Make sure WooCommerce is active and you have visited **WooCommerce → Analytics** at least once (this populates the analytics tables).
+2. Install via **Plugins → Add New** and search for "Matriq Store Analytics", or upload the zip manually.
+3. Activate the plugin.
+4. Open **Matriq** in the WP Admin sidebar and complete the short onboarding (timezone, revenue basis, snapshot time).
+5. The first nightly snapshot runs at your configured time. A 30-day backfill runs immediately so the History page is populated within a few minutes.
 
 ## Frequently Asked Questions ##
 
-### Does this plugin use AI? ###
+### Does this plugin use AI or send my data anywhere? ###
+No. Every number is calculated with deterministic arithmetic against your own WooCommerce database. Nothing leaves your server.
 
-No. Every number and every cause attribution comes from deterministic math against your WooCommerce orders. You can audit how any figure was derived.
-
-### Does it slow down my store? ###
-
-No. All aggregation runs in a nightly cron job. Page loads in WP Admin only read pre-built snapshot rows.
+### Will this slow down my store? ###
+No. All aggregation happens in a nightly background job. WP Admin pages read from pre-built daily snapshots — no heavy queries on page load.
 
 ### What happens if I refund or edit an old order? ###
+The plugin marks that day as "dirty" and rebuilds only that day's snapshot in the next nightly run. The rest of your history is untouched.
 
-The plugin records that the affected day is "dirty" and rebuilds only that day's snapshot in the next nightly run. The rest of the history is untouched.
+### Does it work with WooCommerce HPOS? ###
+Yes. The plugin is fully compatible with WooCommerce High-Performance Order Storage.
 
-### Is my data sent anywhere? ###
+### What if I have a slow day because of a planned sale ending — will it flag a false alarm? ###
+That's exactly what the Campaigns page is for. Log your sales and launches, and the engine knows a post-sale dip is expected context, not a signal to act on.
 
-No. All analysis happens on your own site against your own database. Nothing leaves your server.
+### Is the diagnostic engine really free forever? ###
+Yes. The free plugin — daily briefings, email digest, history, campaigns — has no feature limits and will remain free. Store Copilot is a separate premium add-on for stores ready to automate action on those insights.
 
 ## Changelog ##
+### 1.0.2 ###
+* Compatibility with future release.
+
 ### 1.0.1 ###
 * Compatibility for Store Copilot premium add-on.
 

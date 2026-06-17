@@ -2,21 +2,21 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Store Analytics by Matriq 1.0.1\n"
+"Project-Id-Version: Revenue Diagnosis for WooCommerce 1.0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/matriq-store-analytics\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-07T05:29:45+00:00\n"
+"POT-Creation-Date: 2026-06-17T16:56:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: matriq-store-analytics\n"
 
 #. Plugin Name of the plugin
 #: matriq-store-analytics.php
-msgid "Store Analytics by Matriq"
+msgid "Revenue Diagnosis for WooCommerce"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -27,7 +27,7 @@ msgstr ""
 
 #. Description of the plugin
 #: matriq-store-analytics.php
-msgid "Daily revenue diagnosis for WooCommerce. Explains why store revenue changed each day in plain language, with deterministic math and no AI guessing."
+msgid "Daily revenue diagnosis for WooCommerce. Explains why your store revenue changed, in plain language, with no AI guessing."
 msgstr ""
 
 #. Author of the plugin
