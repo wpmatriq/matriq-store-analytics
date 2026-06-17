@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Store Analytics by Matriq
- * Description: Daily revenue diagnosis for WooCommerce. Explains why store revenue changed each day in plain language, with deterministic math and no AI guessing.
+ * Plugin Name: Revenue Diagnosis for WooCommerce
+ * Description: Daily revenue diagnosis for WooCommerce. Explains why your store revenue changed, in plain language, with no AI guessing.
  * Plugin URI: https://matriq.in/
  * Author: Matriq
  * Author URI: https://matriq.in/
- * Version: 1.0.1
+ * Version: 1.0.2
  * License: GPLv2 or later
  * Requires at least: 6.7
  * Requires PHP: 7.4
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Set constants
  */
-define( 'MATRIQ_MSA_VER', '1.0.1' );
+define( 'MATRIQ_MSA_VER', '1.0.2' );
 define( 'MATRIQ_MSA_FILE', __FILE__ );
 define( 'MATRIQ_MSA_PRO_MINIMUM_VER', '1.0.0' );
 
